@@ -1,0 +1,19 @@
+{
+  "name": "gmc-classes",
+  "version": "1.0.0",
+  "description": "gmc-classes",
+  "main": "index.js",
+  "dependencies": {
+    "uuid": "3.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
+  },
+  "scripts": {
+    "build": "babel classes -d dist",
+    "test": "jest"
+  }
+}
