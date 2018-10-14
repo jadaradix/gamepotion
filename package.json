@@ -5,6 +5,7 @@
   "dependencies": {},
   "devDependencies": {
     "eslint": "^5.7.0",
+    "eslint-plugin-jest": "^21.25.0",
     "eslint-plugin-react": "^7.11.1"
   },
   "scripts": {
