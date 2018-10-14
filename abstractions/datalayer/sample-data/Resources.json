@@ -12,5 +12,20 @@
     "createdAt": 200,
     "type": "sound",
     "name": "Bird Sound"
+  },
+  {
+    "id": "resource-hack-atom-bird",
+    "projectId": "project-hack-aggressive-avians",
+    "createdAt": 200,
+    "type": "atom",
+    "name": "Bird Atom",
+    "events": {
+      "Create": [
+        {
+          "name": "Debug",
+          "runArguments": ["hello", "world"]
+        }
+      ]
+    }
   }
 ]

@@ -1,0 +1,13 @@
+{
+  "name": "arca-platform-html5",
+  "version": "1.0.0",
+  "description": "arca-platform-html5",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^23.6.0"
+  },
+  "scripts": {
+    "test": "NODE_ENV=local jest"
+  }
+}
