@@ -1,6 +1,7 @@
 config-gcp.json
 
 classes/dist
+platforms/html5/dist-lib
 
 node_modules
 package-lock.json

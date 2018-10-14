@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "description": "arca-platform-html5",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0"
+  },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
     "jest": "^23.6.0"
   },
   "scripts": {
-    "test": "NODE_ENV=local jest"
+    "test": "NODE_ENV=local jest",
+    "build": "babel lib --out-dir dist-lib"
   }
 }
