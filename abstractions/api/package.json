@@ -1,0 +1,19 @@
+{
+  "name": "gmc-api-abstractions",
+  "version": "1.0.0",
+  "description": "gmc-api-abstractions",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "restify-cors-middleware": "^1.1.1",
+    "restify-errors": "5.0.0"
+  },
+  "scripts": {
+    "test": "NODE_ENV=local GOOGLE_APPLICATION_CREDENTIALS=/Users/james/src/gmc/config-gcp.json jest"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "supertest": "^3.1.0"
+  }
+}

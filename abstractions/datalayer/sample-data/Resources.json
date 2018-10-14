@@ -1,0 +1,16 @@
+[
+  {
+    "id": "resource-hack-image-bird",
+    "projectId": "project-hack-aggressive-avians",
+    "createdAt": 100,
+    "type": "image",
+    "name": "Bird Image"
+  },
+  {
+    "id": "resource-hack-sound-bird",
+    "projectId": "project-hack-aggressive-avians",
+    "createdAt": 200,
+    "type": "sound",
+    "name": "Bird Sound"
+  }
+]
