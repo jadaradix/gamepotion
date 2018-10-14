@@ -10,7 +10,7 @@ exports[`works 1`] = `
         <script>
           window.addEventListener('load', function () {
             const game = new window.GMC()
-            game.setResources([{\\"id\\":\\"7f561aa8-5145-4277-89fe-775047d2b3b4\\",\\"projectId\\":null,\\"createdAt\\":1539559308,\\"type\\":\\"space\\",\\"name\\":\\"Bird Space\\",\\"width\\":640,\\"height\\":480,\\"camera\\":{\\"width\\":640,\\"height\\":480,\\"x\\":0,\\"y\\":0}}])
+            game.setResources([{\\"id\\":\\"jest-hack-Bird Space\\",\\"projectId\\":null,\\"createdAt\\":0,\\"type\\":\\"space\\",\\"name\\":\\"Bird Space\\",\\"width\\":640,\\"height\\":480,\\"camera\\":{\\"width\\":640,\\"height\\":480,\\"x\\":0,\\"y\\":0}}])
 
             const canvasElement = document.querySelector('gmc-game')
             game.start(canvasElement)
