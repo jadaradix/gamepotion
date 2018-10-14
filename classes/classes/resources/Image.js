@@ -9,6 +9,10 @@ class ResourceImage extends Resource {
   getDefaultName () {
     return 'New Image'
   }
+
+  getRemoteUrl() {
+    return `https://storage.googleapis.com/gmc-resource-blobs/${this.id}.png`
+  }
 }
 
 export default ResourceImage

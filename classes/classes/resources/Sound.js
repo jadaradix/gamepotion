@@ -9,6 +9,10 @@ class ResourceSound extends Resource {
   getDefaultName () {
     return 'New Sound'
   }
+
+  getRemoteUrl() {
+    return `https://storage.googleapis.com/gmc-resource-blobs/${this.id}.wav`
+  }
 }
 
 export default ResourceSound

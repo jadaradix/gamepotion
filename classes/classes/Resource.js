@@ -60,6 +60,10 @@ class Project {
     this.type = json.type
     this.name = json.name
   }
+
+  getRemoteUrl() {
+    throw new Error('[class Resource] getRemoteUrl needs to be extended')
+  }
 }
 
 export default Project
