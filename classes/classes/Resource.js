@@ -62,7 +62,7 @@ class Project {
   }
 
   getRemoteUrl() {
-    throw new Error('[class Resource] getRemoteUrl needs to be extended')
+    return null
   }
 }
 

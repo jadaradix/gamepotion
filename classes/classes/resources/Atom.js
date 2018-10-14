@@ -5,6 +5,7 @@ class ResourceAtom extends Resource {
     super(json)
     this.type = 'atom'
     this.events = json.events || {}
+    this.imageId = json.imageId || null
   }
 
   setEvents(events) {
@@ -19,7 +20,8 @@ class ResourceAtom extends Resource {
     return JSON.parse(JSON.stringify(
       {
         ...super.toApi(),
-        events: this.events
+        events: this.events,
+        imageId: this.imageId
       }
     ))
   }
@@ -28,24 +30,28 @@ class ResourceAtom extends Resource {
     return JSON.parse(JSON.stringify(
       {
         ...super.toDatastore(),
-        events: this.events
+        events: this.events,
+        imageId: this.imageId
       }
     ))
   }
 
   fromApiPost(json) {
     super.fromApiPost(json)
-    this.events = json.events
+    this.events = (typeof json.events === 'object') ? json.events : this.events
+    this.imageId = (typeof json.imageId === 'string') ? json.imageId : this.imageId
   }
 
   fromApiPatch(json) {
-    super.fromApiPatch(json)
+    super.fromApiPost(json)
     this.events = (typeof json.events === 'object') ? json.events : this.events
+    this.imageId = (typeof json.imageId === 'string') ? json.imageId : this.imageId
   }
 
   clientFromApiGet(json) {
     super.clientFromApiGet(json)
     this.events = json.events
+    this.imageId = json.imageId
   }
 }
 
