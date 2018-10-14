@@ -1,16 +1,20 @@
 import Action from '../Action.js'
 
 class Debug extends Action {
-  constructor (json = {}) {
+  constructor(json = {}) {
     super(json)
     this.name = 'Debug'
   }
 
-  getDefaultRunArguments () {
+  getDefaultRunArguments() {
     return []
   }
 
-  run (runArguments) {
+  runBefore(platform, runArguments) {
+    return null
+  }
+
+  runStep(platform, runArguments) {
     console.log('[Action::Debug]', ...runArguments)
     return null
   }

@@ -6,13 +6,17 @@ class Action {
     this.runArguments = json.runArguments || this.getDefaultRunArguments()
   }
 
-  getDefaultRunArguments () {
-    console.warn('abstract getDefaultRunArguments() method of Action class was called. Bad news. Every action should extended this method.')
+  getDefaultRunArguments() {
+    console.warn('abstract getDefaultRunArguments() method of Action class was called. Bad news.')
     return []
   }
 
-  run () {
-    console.warn('abstract run() method of Action class was called. Bad news. Every action should extended this method.')
+  runBefore(platform, runArguments) {
+    console.warn('abstract run() method of Action class was called. Bad news.')
+    return null
+  }
+
+  runStep(platform, runArguments) {
     return null
   }
 }
