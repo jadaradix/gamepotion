@@ -10,7 +10,10 @@ const getRemoteStaticUrl = (environment = process.NODE_ENV) => {
 }
 
 const work = (team, project, resources) => {
-  const html = `
+  const figuredOut = {
+    resources: resources.map(resource => resource.toApi())
+  }
+  const code = `
     <!DOCTYPE html>
     <html>
       <head>
@@ -18,17 +21,21 @@ const work = (team, project, resources) => {
         <script src="${getRemoteStaticUrl()}" async>
         <script>
           window.addEventListener('load', function () {
-            const RESOURCE_SPACES = ${JSON.stringify(resources.filter(resource => resource.type === 'space').map(atom => atom.name))}
+            const game = new window.GMC()
+            game.setResources(${JSON.stringify(figuredOut.resources)})
+
+            const canvasElement = document.querySelector('gmc-game')
+            game.start(canvasElement)
           })
         </script>
       </head>
       <body>
-
+        <canvas id="gmc-game">Your browser doesn&rsquo;t support the &lt;canvas&gt; element.</canvas>
       </body>
     </html>
   `
   return new Promise((resolve, reject) => {
-    resolve(html)
+    resolve(code)
   })
 }
 
