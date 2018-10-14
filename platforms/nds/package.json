@@ -1,0 +1,13 @@
+{
+  "name": "gmc-platform-nds",
+  "version": "1.0.0",
+  "description": "gmc-platform-nds",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^23.6.0"
+  },
+  "scripts": {
+    "test": "NODE_ENV=local jest"
+  }
+}
