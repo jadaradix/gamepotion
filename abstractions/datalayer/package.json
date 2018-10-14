@@ -1,7 +1,7 @@
 {
-  "name": "arca-wiener",
+  "name": "gmc-wiener",
   "version": "1.0.0",
-  "description": "arca-wiener",
+  "description": "gmc-wiener",
   "main": "index.js",
   "dependencies": {
     "@google-cloud/datastore": "^2.0.0",

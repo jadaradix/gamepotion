@@ -14,6 +14,6 @@ test('works', () => {
 
   return work(team, project, resources)
     .then(result => {
-      expect(typeof result).toBe('string')
+      expect(result).toMatchSnapshot()
     })
 })

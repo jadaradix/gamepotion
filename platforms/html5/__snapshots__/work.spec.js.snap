@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`works 1`] = `
+"
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>New Project</title>
+        <script src=\\"https://gamemaker.club/static/platforms/html5/lib.js\\" async>
+        <script>
+          window.addEventListener('load', function () {
+            const RESOURCE_SPACES = [\\"Bird Space\\"]
+          })
+        </script>
+      </head>
+      <body>
+
+      </body>
+    </html>
+  "
+`;
