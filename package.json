@@ -1,0 +1,24 @@
+{
+  "name": "gmc",
+  "version": "1.0.0",
+  "description": "Game Maker Club",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.7.0",
+    "eslint-plugin-react": "^7.11.1"
+  },
+  "scripts": {
+    "build": ". build.sh",
+    "clean": ". clean.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Storydust/gmc.git"
+  },
+  "author": "James Garner <j@jada.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Storydust/gmc/issues"
+  },
+  "homepage": "https://github.com/Storydust/gmc"
+}
