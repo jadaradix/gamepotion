@@ -30,9 +30,9 @@ const route = (request, response, next) => {
   }
   (async () => {
     try {
-      const existingTeam = await getExistingTeam(userClass.teamId)
+      await getExistingTeam(userClass.teamId)
     } catch (error) {
-      response.send(new errors.BadRequestError(`team does not exist apparently`))
+      response.send(new errors.BadRequestError('team does not exist apparently'))
       return next(false)
     }
   })()
