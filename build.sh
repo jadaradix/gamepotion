@@ -1,4 +1,5 @@
 cd classes;
+  rm -rf abstractions; ln -s ../abstractions abstractions;
   npm run build;
 cd ..;
 

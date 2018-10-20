@@ -76,6 +76,12 @@ class User {
   }
 
   fromApiPatch (json) {
+    if (typeof json.name === 'string' && json.name.length === 0) {
+      throw new Error('name provided but not valid')
+    }
+    if (typeof json.email === 'string' && json.email.indexOf('@') < 1) { // -1 or 0
+      throw new Error('email provided but not valid')
+    }
     this.name = (typeof json.name === 'string') ? json.name : this.name
     this.email = (typeof json.email === 'string') ? json.email : this.email
   }

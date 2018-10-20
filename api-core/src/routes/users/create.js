@@ -7,15 +7,15 @@ const getExistingUser = (email) => {
   return datalayer.readOne('Users', { email })
 }
 
-const getExistingTeam = (id) => {
-  return datalayer.readOne('Teams', { id })
-}
+// const getExistingTeam = (id) => {
+//   return datalayer.readOne('Teams', { id })
+// }
 
 const getPasswordHash = (password, callback) => {
   return bcrypt.hash(password, null, null, callback)
 }
 
-const route = (request, response, next) => {
+const route = async (request, response, next) => {
   if (typeof request.body.password !== 'string' || request.body.password.length < 6 || request.body.password.length > 128) {
     response.send(new errors.BadRequestError('password does not conform'))
     return next(false)
@@ -24,18 +24,11 @@ const route = (request, response, next) => {
   try {
     userClass = new classes.User()
     userClass.fromApiPost(request.body)
+    // await getExistingTeam(userClass.teamId)
   } catch (error) {
     response.send(new errors.BadRequestError(`this user would not get created (${error.message})`))
     return next(false)
   }
-  (async () => {
-    try {
-      await getExistingTeam(userClass.teamId)
-    } catch (error) {
-      response.send(new errors.BadRequestError('team does not exist apparently'))
-      return next(false)
-    }
-  })()
   getExistingUser(userClass.email)
     .then(() => {
       response.send(new errors.BadRequestError('this email is already in use'))
