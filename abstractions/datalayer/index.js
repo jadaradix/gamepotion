@@ -16,7 +16,17 @@ const jsons = {
 const write = (entity, id, data) => {
   if (WORK_LOCALLY === true) {
     // warning: not persisted to filesystem!
-    jsons[entity].push(data)
+    let didUpdate = false
+    jsons[entity] = jsons[entity].map(e => {
+      if (e.id === id) {
+        e = data
+        didUpdate = true
+      }
+      return e
+    })
+    if (didUpdate === false) {
+      jsons[entity].push(data)
+    }
     return Promise.resolve(true)
   } else {
     if (!id) {
