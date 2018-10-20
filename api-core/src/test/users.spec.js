@@ -27,7 +27,7 @@ const configs = {
   }
 }
 
-test('doesnt create a user with a bad name (any field)', (done) => {
+test('doesnt create a user with a bad name (class testing)', (done) => {
   axios({
     method: 'post',
     url: `${API_URL}/users`,
@@ -40,13 +40,13 @@ test('doesnt create a user with a bad name (any field)', (done) => {
   })
     .then(response => {
       expect(response.status).toBe(400)
-      expect(response.data.message).toBe('password does not conform')
+      expect(response.data.message).toBe('this user would not get created (name is not valid)')
       return done()
     })
     .catch(done)
 })
 
-test('doesnt create a user with a bad password', (done) => {
+test('doesnt create a user with a bad password (route testing)', (done) => {
   axios({
     method: 'post',
     url: `${API_URL}/users`,
