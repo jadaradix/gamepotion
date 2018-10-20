@@ -30,8 +30,8 @@ class User {
       id: this.id,
       teamId: this.teamId,
       createdAt: this.createdAt,
-      email: this.email,
-      name: this.name
+      name: this.name,
+      email: this.email
     }
     return JSON.parse(JSON.stringify(json))
   }
@@ -40,8 +40,8 @@ class User {
     const json = {
       id: this.id,
       teamId: this.teamId,
-      email: this.email,
-      name: this.name
+      name: this.name,
+      email: this.email
     }
     return JSON.parse(JSON.stringify(json))
   }
@@ -51,8 +51,8 @@ class User {
       id: this.id,
       teamId: this.teamId,
       createdAt: this.createdAt,
-      email: this.email,
       name: this.name,
+      email: this.email,
       activationCode: this.activationCode,
       passwordHash: this.passwordHash
       // someBoolean: (this.someBoolean === true),
@@ -61,27 +61,28 @@ class User {
   }
 
   fromApiPost (json) {
-    if (typeof json.teamId !== 'string' || json.teamId.length === 0) {
-      throw new Error('teamId is not valid')
-    }
     if (typeof json.name !== 'string' || json.name.length === 0) {
       throw new Error('name is not valid')
     }
     if (typeof json.email !== 'string' || json.email.indexOf('@') < 1) { // -1 or 0
       throw new Error('email is not valid')
     }
-    this.teamId = json.teamId
+    this.teamId = (typeof json.teamId === 'string') ? json.teamId : this.teamId
     this.name = json.name
     this.email = json.email
   }
 
   fromApiPatch (json) {
+    if (typeof json.teamId === 'string' && json.teamId.length === 0) {
+      throw new Error('teamId provided but not valid')
+    }
     if (typeof json.name === 'string' && json.name.length === 0) {
       throw new Error('name provided but not valid')
     }
     if (typeof json.email === 'string' && json.email.indexOf('@') < 1) { // -1 or 0
       throw new Error('email provided but not valid')
     }
+    this.teamId = (typeof json.teamId === 'string') ? json.teamId : this.teamId
     this.name = (typeof json.name === 'string') ? json.name : this.name
     this.email = (typeof json.email === 'string') ? json.email : this.email
   }
@@ -89,8 +90,8 @@ class User {
   clientFromApiGet (json) {
     this.id = json.id
     this.teamId = json.teamId
-    this.email = json.email
     this.name = json.name
+    this.email = json.email
   }
 }
 

@@ -28,15 +28,6 @@ test('can be created from an API call', () => {
   expect(user.email).toBe('j@jada.io')
 })
 
-test('throws an error when being created from an API call if there is no teamId', () => {
-  const user = new User()
-  const body = {
-    name: 'James',
-    email: 'j@jada.io'
-  }
-  expect(() => user.fromApiPost(body)).toThrow('teamId is not valid')
-})
-
 test('throws an error when being created from an API call if there is no name', () => {
   const user = new User()
   const body = {
@@ -63,10 +54,12 @@ test('can be updated from an API call', () => {
   const body = {
     name: 'Robert',
     email: 'r@jada.io',
+    teamId: 'team-id',
     id: 'xyz'
   }
   user.fromApiPatch(body)
   expect(user.name).toBe('Robert')
   expect(user.email).toBe('r@jada.io')
+  expect(user.teamId).toBe('team-id')
   expect(user.id).not.toBe('xyz')
 })
