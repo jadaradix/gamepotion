@@ -6,3 +6,7 @@ config-gcp.json
 
 classes/dist
 platforms/html5/dist-lib
+
+
+app/build
+app/coverage
