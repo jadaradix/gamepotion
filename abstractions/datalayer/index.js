@@ -96,7 +96,9 @@ const read = (entity, queryObject, orderBy, select) => {
   if (WORK_LOCALLY === true) {
     return Promise.resolve(jsons[entity].filter($ => {
       return Object.keys(queryObject).every(queryObjectKey => {
-        if (queryObject[queryObjectKey][0] === '<') {
+        if (queryObject[queryObjectKey] === null) {
+          return ($[queryObjectKey] === queryObject[queryObjectKey])
+        } else if (queryObject[queryObjectKey][0] === '<') {
           return ($[queryObjectKey] < parseInt(queryObject[queryObjectKey].substring(1), 10))
         } else if (queryObject[queryObjectKey][0] === '>') {
           return ($[queryObjectKey] > parseInt(queryObject[queryObjectKey].substring(1), 10))
