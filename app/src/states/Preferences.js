@@ -58,11 +58,11 @@ const resourceTypes = [
     type: 'sound'
   },
   {
-    name: 'Atom',
+    name: 'Atoms',
     type: 'atom'
   },
   {
-    name: 'Space',
+    name: 'Spaces',
     type: 'space'
   }
 ]

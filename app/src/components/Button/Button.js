@@ -1,19 +1,23 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { font, outline } from '../abstractions'
+import { font, colours } from '../abstractions'
 import { withRouter } from 'react-router-dom'
 
 const StyledButton = styled.button`
   display: block;
-  padding: 0.75rem;
-  transition: background-color 0.2s ease-in-out;
+  padding: 0.7rem;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
   ${font}
   background-color: #2e3131;
   color: white;
   border-radius: 4px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #2e3131;
   :focus {
-    ${outline}
+    outline: 0;
+    border-color: ${colours.outline};
   }
   :hover {
     background-color: #6c7a89;

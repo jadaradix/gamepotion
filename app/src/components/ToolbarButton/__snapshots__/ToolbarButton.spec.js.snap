@@ -4,8 +4,8 @@ exports[`renders 1`] = `
 .c0 {
   display: block;
   float: left;
-  width: 3rem;
-  height: 3rem;
+  width: calc(3rem + 4px);
+  height: calc(3rem + 4px);
   -webkit-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out;
 }
@@ -17,10 +17,17 @@ exports[`renders 1`] = `
 .c0 a {
   display: block;
   padding: 0.75rem;
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent;
+  -webkit-transition: border-color 0.2s ease-in-out;
+  transition: border-color 0.2s ease-in-out;
 }
 
 .c0 a:focus {
-  outline: 2px solid #38EF7D;
+  outline: 0;
+  border-color: #38EF7D;
+  border-radius: 4px;
 }
 
 .c0 a img {

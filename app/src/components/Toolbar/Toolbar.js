@@ -6,7 +6,7 @@ import styled from 'styled-components'
 const StyledToolbar = styled.ul`
   display: block;
   list-style-type: none;
-  height: 3rem;
+  height: calc(3rem + 4px);
   background-color: #2e3131;
 `
 

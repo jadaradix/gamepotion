@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { outline } from '../abstractions'
+import { colours } from '../abstractions'
 
 const StyledToolbarButton = styled.li`
   display: block;
   float: left;
-  width: 3rem;
-  height: 3rem;
+  width: calc(3rem + 4px);
+  height: calc(3rem + 4px);
   transition: background-color 0.2s ease-in-out;
   :hover {
     background-color: #6c7a89;
@@ -16,8 +16,14 @@ const StyledToolbarButton = styled.li`
   a {
     display: block;
     padding: 0.75rem;
+    border-width: 2px;
+    border-style: solid;
+    border-color: transparent;
+    transition: border-color 0.2s ease-in-out;
     :focus {
-      ${outline}
+      outline: 0;
+      border-color: ${colours.outline};
+      border-radius: 4px;
     }
     img {
       display: block;
