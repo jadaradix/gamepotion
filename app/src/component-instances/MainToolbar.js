@@ -7,7 +7,7 @@ import icons from '../icons'
 const MainToolbar = () => {
   return (
     <Toolbar>
-      <ToolbarButton route='/projects' icon={icons.generic.projects} hint='Projects' />
+      <ToolbarButton route='/projects' icon={icons.generic.project} hint='Projects' />
       <ToolbarButton route='/preferences' icon={icons.generic.preferences} hint='Preferences' />
     </Toolbar>
   )

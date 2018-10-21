@@ -14,9 +14,9 @@ class Projects extends PureComponent {
         <ResponsiveContainer>
           <Button hint='New Project' route='/projects/new'>New Project</Button>
           <List>
-            <ListItem icon={icons.generic.projects}>Project 1</ListItem>
-            <ListItem icon={icons.generic.projects}>Project 2</ListItem>
-            <ListItem icon={icons.generic.projects}>Project 3</ListItem>
+            <ListItem icon={icons.generic.project}>Project 1</ListItem>
+            <ListItem icon={icons.generic.project}>Project 2</ListItem>
+            <ListItem icon={icons.generic.project}>Project 3</ListItem>
           </List>
         </ResponsiveContainer>
       </Fragment>

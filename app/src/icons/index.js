@@ -1,7 +1,9 @@
-import platforms from './platforms'
 import generic from './generic'
+import resources from './resources'
+import platforms from './platforms'
 
 export default {
-  platforms,
-  generic
+  generic,
+  resources,
+  platforms
 }

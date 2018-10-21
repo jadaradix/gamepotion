@@ -9,9 +9,9 @@ const StyledToolbarButton = styled.li`
   float: left;
   width: 3rem;
   height: 3rem;
-  transition: background-color 0.15s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
   :hover {
-    background-color: rgb(64, 64, 64);
+    background-color: #6c7a89;
   }
   a {
     display: block;

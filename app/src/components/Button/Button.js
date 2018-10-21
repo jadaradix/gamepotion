@@ -7,16 +7,16 @@ import { withRouter } from 'react-router-dom'
 const StyledButton = styled.button`
   display: block;
   padding: 0.75rem;
-  transition: background-color 0.1s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
   ${font}
-  background-color: rgb(48, 48, 48);
+  background-color: #2e3131;
   color: white;
   border-radius: 4px;
   :focus {
     ${outline}
   }
   :hover {
-    background-color: rgb(64, 64, 64);
+    background-color: #6c7a89;
   }
 `
 

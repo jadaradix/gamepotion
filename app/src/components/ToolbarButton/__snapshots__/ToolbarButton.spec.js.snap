@@ -6,12 +6,12 @@ exports[`renders 1`] = `
   float: left;
   width: 3rem;
   height: 3rem;
-  -webkit-transition: background-color 0.15s ease-in-out;
-  transition: background-color 0.15s ease-in-out;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .c0:hover {
-  background-color: rgb(64,64,64);
+  background-color: #6c7a89;
 }
 
 .c0 a {

@@ -7,7 +7,7 @@ const StyledToolbar = styled.ul`
   display: block;
   list-style-type: none;
   height: 3rem;
-  background-color: rgb(48, 48, 48);
+  background-color: #2e3131;
 `
 
 const Toolbar = ({ children, href }) => (
