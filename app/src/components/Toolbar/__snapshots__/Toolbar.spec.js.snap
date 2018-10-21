@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+.c0 {
+  display: block;
+  height: 48px;
+  background-color: rgb(64,64,64);
+}
+
+<ul
+  className="c0"
+/>
+`;

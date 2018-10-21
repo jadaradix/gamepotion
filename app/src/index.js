@@ -1,15 +1,23 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import './index.css'
 
-class App extends PureComponent {
-  render() {
-    return (
-      <main>
-        <p>Hello, World.</p>
-      </main>
-    )
-  }
-}
+import Projects from './states/Projects.js'
+import NewProject from './states/NewProject.js'
+import Project from './states/Project.js'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const router = (
+  <Router>
+    <div>
+      <Switch>
+        <Route path='/projects' exact strict component={Projects} />
+        <Route path='/projects/new' exact strict component={NewProject} />
+        <Route path='/projects/:projectId' component={Project} />
+        <Route component={Projects} />
+      </Switch>
+    </div>
+  </Router>
+)
+
+ReactDOM.render(router, document.getElementById('root'))

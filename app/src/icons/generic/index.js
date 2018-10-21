@@ -1,5 +1,7 @@
-import folder from './files/folder.svg'
+import projects from './files/projects.svg'
+import preferences from './files/preferences.svg'
 
 export default {
-  folder
+  projects,
+  preferences
 }
