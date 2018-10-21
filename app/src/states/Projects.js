@@ -7,7 +7,7 @@ class Projects extends PureComponent {
     return (
       <Fragment>
         <MainToolbar />
-        <Button hint='Hello, World' route='/projects/new'>Hello, World</Button>
+        <Button hint='New Project' route='/projects/new'>New Project</Button>
       </Fragment>
     )
   }

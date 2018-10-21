@@ -5,7 +5,7 @@ import './index.css'
 
 import Projects from './states/Projects.js'
 import NewProject from './states/NewProject.js'
-import Project from './states/Project.js'
+import Preferences from './states/Preferences.js'
 
 const router = (
   <Router>
@@ -13,7 +13,7 @@ const router = (
       <Switch>
         <Route path='/projects' exact strict component={Projects} />
         <Route path='/projects/new' exact strict component={NewProject} />
-        <Route path='/projects/:projectId' component={Project} />
+        <Route path='/preferences' component={Preferences} />
         <Route component={Projects} />
       </Switch>
     </div>

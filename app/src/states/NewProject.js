@@ -6,6 +6,9 @@ class NewProject extends PureComponent {
     return (
       <Fragment>
         <MainToolbar />
+        <p>
+          New Project.
+        </p>
       </Fragment>
     )
   }
