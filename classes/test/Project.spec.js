@@ -17,14 +17,6 @@ test('can be created from an API call', () => {
   expect(project.name).toBe('Aggressive Avians')
 })
 
-test('throws an error when being created from an API call if there is no teamId', () => {
-  const project = new Project()
-  const body = {
-    name: 'Aggressive Avians'
-  }
-  expect(() => project.fromApiPost(body)).toThrow('teamId is not valid')
-})
-
 test('throws an error when being created from an API call if there is no name', () => {
   const project = new Project()
   const body = {

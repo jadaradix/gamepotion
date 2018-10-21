@@ -1,5 +1,5 @@
 const errors = require('restify-errors')
-const wiener = require('../../../../abstractions/datalayer')
+const datalayer = require('../../../../abstractions/datalayer')
 const classFactory = require('../../../../classes/factory')
 
 const route = (request, response, next) => {
@@ -7,7 +7,7 @@ const route = (request, response, next) => {
     response.send(new errors.NotFoundError('not part of a team'))
     return next(false)
   }
-  wiener.readOne('Projects', {id: request.params.id, teamId: request.authorization.user.teamId})
+  datalayer.readOne('Projects', {id: request.params.id, teamId: request.authorization.user.teamId})
     .then(async object => {
       const c = classFactory.project(object)
       response.send(c.toApi())

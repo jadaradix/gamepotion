@@ -1,28 +1,24 @@
 const errors = require('restify-errors')
-const datalayer = require('../../../../abstractions/datalayer')
+const datalayer = require('../../../../../abstractions/datalayer')
 
-const findProject = (projectId, teamId) => {
+const findResource = (resourceId, projectId) => {
   return datalayer.readOne(
-    'Projects',
+    'Resources',
     {
-      id: projectId,
-      teamId
+      id: resourceId,
+      projectId
     }
   )
 }
 
 const route = async (request, response, next) => {
   try {
-    await findProject(request.params.id, request.authorization.user.teamId)
+    await findResource(request.params.resourceId, request.params.projectId)
   } catch (error) {
     response.send(new errors.NotFoundError('didnt work (1)'))
     return next(false)
   }
-  const projectResources = await datalayer.read('Resources', { projectId: request.params.id })
-  await Promise.all(projectResources.map(resource => {
-    return datalayer.deleteOne('Resources', resource.id)
-  }))
-  datalayer.deleteOne('Projects', request.params.id)
+  datalayer.deleteOne('Resources', request.params.resourceId)
     .then(() => {
       response.header('content-type', 'text/plain')
       response.send(204)

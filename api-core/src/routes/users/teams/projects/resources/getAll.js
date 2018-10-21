@@ -1,9 +1,25 @@
 const errors = require('restify-errors')
-const wiener = require('../../../../../abstractions/datalayer')
+const datalayer = require('../../../../../abstractions/datalayer')
 const classFactory = require('../../../../../classes/factory')
 
-const route = (request, response, next) => {
-  wiener.read('Resources', {projectId: request.params.id}, 'descending:createdAt')
+const findProject = (projectId, teamId) => {
+  return datalayer.readOne(
+    'Projects',
+    {
+      id: projectId,
+      teamId
+    }
+  )
+}
+
+const route = async (request, response, next) => {
+  try {
+    await findProject(request.params.projectId, request.authorization.user.teamId)
+  } catch (error) {
+    response.send(new errors.NotFoundError('didnt work (1)'))
+    return next(false)
+  }
+  datalayer.read('Resources', {projectId: request.params.projectId}, 'descending:createdAt')
     .then(objects => {
       const apiObjects = objects.map(object => {
         const c = classFactory.resource(object)

@@ -45,7 +45,7 @@ const route = async (request, response, next) => {
         userClass.passwordHash = result
         datalayer.write('Users', userClass.id, userClass.toDatastore())
           .then(() => {
-            response.send(userClass.toApi())
+            response.send(201, userClass.toApi())
             return next()
           })
           .catch(error => {

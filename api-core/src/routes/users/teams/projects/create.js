@@ -17,7 +17,7 @@ const route = (request, response, next) => {
   }
   datalayer.write('Projects', projectClass.id, projectClass.toDatastore())
     .then(() => {
-      response.send(projectClass.toApi())
+      response.send(201, projectClass.toApi())
       return next()
     })
     .catch(error => {

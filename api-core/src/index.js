@@ -44,6 +44,7 @@ const middlewares = {
 const routes = {
   'GET      /v1': require('./routes/healthcheck'),
   'GET      /v1/actions': require('./routes/actions'),
+  'GET      /v1/platforms': require('./routes/platforms'),
   // -> users
   'POST     /v1/users': require('./routes/users/create'),
   'GET      /v1/me': require('./routes/users/get'),
@@ -62,7 +63,9 @@ const routes = {
   'GET      /v1/me/team/projects/:id': require('./routes/users/teams/projects/get'),
   'DEL      /v1/me/team/projects/:id': require('./routes/users/teams/projects/delete'),
   // ->      -> resources
-  'GET      /v1/me/team/projects/:id/resources': require('./routes/users/teams/projects/resources/getAll')
+  'GET      /v1/me/team/projects/:projectId/resources': require('./routes/users/teams/projects/resources/getAll'),
+  'POST     /v1/me/team/projects/:projectId/resources': require('./routes/users/teams/projects/resources/create'),
+  'DEL      /v1/me/team/projects/:projectId/resources/:resourceId': require('./routes/users/teams/projects/resources/delete')
 }
 
 const corsMiddleware = require('./abstractions/api/middleware-cors')

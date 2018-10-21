@@ -38,9 +38,6 @@ class Project {
   }
 
   fromApiPost(json) {
-    if (typeof json.projectId !== 'string' || json.projectId.length === 0) {
-      throw new Error('projectId is not valid')
-    }
     if (typeof json.name !== 'string' || json.name.length === 0) {
       throw new Error('name is not valid')
     }

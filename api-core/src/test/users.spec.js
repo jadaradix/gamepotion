@@ -68,7 +68,7 @@ test('creates a user', (done) => {
     ...configs.noAuth
   })
     .then(response => {
-      expect(response.status).toBe(200)
+      expect(response.status).toBe(201)
       expect(response.data.teamId).toBe(null)
       expect(response.data.name).toBe('James')
       return done()

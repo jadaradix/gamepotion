@@ -9,7 +9,7 @@ const getRemoteStaticUrl = (environment = process.NODE_ENV) => {
   }
 }
 
-const work = (team, project, resources) => {
+const platform = (team, project, resources) => {
   const figuredOut = {
     resources: resources.map(resource => resource.toApi())
   }
@@ -39,4 +39,4 @@ const work = (team, project, resources) => {
   })
 }
 
-module.exports = work
+module.exports = platform

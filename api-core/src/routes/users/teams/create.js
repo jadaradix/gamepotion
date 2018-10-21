@@ -12,7 +12,7 @@ const route = (request, response, next) => {
   }
   datalayer.write('Teams', teamClass.id, teamClass.toDatastore())
     .then(() => {
-      response.send(teamClass.toApi())
+      response.send(201, teamClass.toApi())
       return next()
     })
     .catch(error => {

@@ -38,10 +38,10 @@ test('creates a user', (done) => {
     .catch(done)
 })
 
-test('gets the actions', (done) => {
+test('gets the platforms', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/actions`,
+    url: `${API_URL}/platforms`,
     ...configs.auth
   })
     .then(response => {
