@@ -1,6 +1,6 @@
 const errors = require('restify-errors')
 const datalayer = require('../../abstractions/datalayer')
-const classes = require('../../classes/dist.js')
+const classFactory = require('../../classes/factory')
 
 const route = (request, response, next) => {
   const updateUser = (userClass) => {
@@ -18,7 +18,7 @@ const route = (request, response, next) => {
   }
   datalayer.readOne('Users', {email: request.body.email})
     .then(user => {
-      const userClass = new classes.User(user)
+      const userClass = classFactory.user(user)
       if (userClass.id !== request.authorization.user.id) {
         response.send(new errors.ForbiddenError('this email is already in use'))
         return next(false)

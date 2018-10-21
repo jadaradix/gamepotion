@@ -4,10 +4,9 @@ const createRandomString = require('../abstractions/createRandomString.js')
 const API_URL = 'http://localhost:1025/v1'
 
 const user = {
-  name: 'james',
+  name: 'James',
   email: `${createRandomString()}@gamemaker.club`,
-  password: createRandomString(),
-  teamId: 'hacky-team'
+  password: createRandomString()
 }
 
 const configs = {
@@ -74,6 +73,8 @@ test('creates a user', (done) => {
   })
     .then(response => {
       expect(response.status).toBe(200)
+      expect(response.data.teamId).toBe(null)
+      expect(response.data.name).toBe('James')
       return done()
     })
     .catch(done)
@@ -86,8 +87,9 @@ test('gets the user', (done) => {
     ...configs.auth
   })
     .then(response => {
-      expect(response.data.name).toBe('james')
       expect(response.status).toBe(200)
+      expect(response.data.teamId).toBe(null)
+      expect(response.data.name).toBe('James')
       return done()
     })
     .catch(done)
@@ -98,13 +100,13 @@ test('updates the user', (done) => {
     method: 'patch',
     url: `${API_URL}/me`,
     data: {
-      name: 'robert'
+      name: 'Robert'
     },
     ...configs.auth
   })
     .then(response => {
-      expect(response.data.name).toBe('robert')
       expect(response.status).toBe(200)
+      expect(response.data.name).toBe('Robert')
       return done()
     })
     .catch(done)
@@ -117,8 +119,8 @@ test('gets the user (update persisted)', (done) => {
     ...configs.auth
   })
     .then(response => {
-      expect(response.data.name).toBe('robert')
       expect(response.status).toBe(200)
+      expect(response.data.name).toBe('Robert')
       return done()
     })
     .catch(done)

@@ -51,6 +51,8 @@ const routes = {
   //   -> teams
   'POST     /v1/teams': require('./routes/users/teams/create'),
   'GET      /v1/me/team': require('./routes/users/teams/get'),
+  'PATCH    /v1/me/team': require('./routes/users/teams/update'),
+  'DEL      /v1/me/team': require('./routes/users/teams/delete'),
   //     -> users
   'GET      /v1/me/team/users': require('./routes/users/teams/users/getAll'),
   //     -> projects

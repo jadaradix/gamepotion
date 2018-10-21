@@ -3,6 +3,10 @@ const wiener = require('../../../../abstractions/datalayer')
 const classFactory = require('../../../../classes/factory')
 
 const route = (request, response, next) => {
+  if (request.authorization.user.teamId === null) {
+    response.send(new errors.NotFoundError('not part of a team'))
+    return next(false)
+  }
   wiener.read('Projects', {teamId: request.authorization.user.teamId}, 'descending:createdAt')
     .then(objects => {
       const apiObjects = objects.map(object => {
