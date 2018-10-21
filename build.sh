@@ -11,3 +11,6 @@ cd ../..;
 cd platforms/html5;
   rm -rf classes; ln -s ../../classes classes;
 cd ../..;
+cd platforms/nds;
+  rm -rf classes; ln -s ../../classes classes;
+cd ../..;
