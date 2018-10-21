@@ -33,6 +33,9 @@ class Team {
   }
 
   fromApiPatch (json) {
+    if (typeof json.name === 'string' && json.name.length === 0) {
+      throw new Error('name provided but not valid')
+    }
     this.name = (typeof json.name === 'string') ? json.name : this.name
   }
 

@@ -4,7 +4,12 @@ const classFactory = require('../../classes/factory')
 
 const route = (request, response, next) => {
   const updateUser = (userClass) => {
-    userClass.fromApiPatch(request.body)
+    try {
+      userClass.fromApiPatch(request.body)
+    } catch (error) {
+      response.send(new errors.BadRequestError(`this would not get updated (${error.message})`))
+      return next(false)
+    }
     datalayer.write('Users', userClass.id, userClass.toDatastore())
       .then(() => {
         response.send(userClass.toApi())

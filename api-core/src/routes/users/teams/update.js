@@ -6,7 +6,12 @@ const route = (request, response, next) => {
   datalayer.readOne('Teams', {id: request.authorization.user.teamId})
     .then(team => {
       const teamClass = classFactory.team(team)
-      teamClass.fromApiPatch(request.body)
+      try {
+        teamClass.fromApiPatch(request.body)
+      } catch (error) {
+        response.send(new errors.BadRequestError(`this would not get updated (${error.message})`))
+        return next(false)
+      }
       datalayer.write('Teams', teamClass.id, teamClass.toDatastore())
         .then(() => {
           response.send(teamClass.toApi())
