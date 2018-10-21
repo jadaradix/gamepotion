@@ -10,7 +10,11 @@ const user = {
 }
 
 const team = {
-  name: 'Invisionsoft'
+  name: 'FatQuack'
+}
+
+const project = {
+  name: 'Angry Birds'
 }
 
 const configs = {
@@ -41,23 +45,6 @@ test('creates a user', (done) => {
     .catch(done)
 })
 
-test('doesnt create a team with a bad name (class testing)', (done) => {
-  axios({
-    method: 'post',
-    url: `${API_URL}/teams`,
-    data: {
-      name: ''
-    },
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(400)
-      expect(response.data.message).toBe('this would not get created (name is not valid)')
-      return done()
-    })
-    .catch(done)
-})
-
 test('creates a team', (done) => {
   axios({
     method: 'post',
@@ -69,20 +56,6 @@ test('creates a team', (done) => {
       expect(response.status).toBe(200)
       expect(response.data.name).toBe(team.name)
       team.id = response.data.id
-      return done()
-    })
-    .catch(done)
-})
-
-test('doesnt get the teams users', (done) => {
-  axios({
-    method: 'get',
-    url: `${API_URL}/me/team/users`,
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(404)
-      expect(response.data.message).toBe('not part of a team')
       return done()
     })
     .catch(done)
@@ -105,62 +78,60 @@ test('updates the users team', (done) => {
     .catch(done)
 })
 
-test('gets the team', (done) => {
+test('creates a project', (done) => {
   axios({
-    method: 'get',
-    url: `${API_URL}/me/team`,
+    method: 'post',
+    url: `${API_URL}/me/team/projects`,
+    data: project,
     ...configs.auth
   })
     .then(response => {
       expect(response.status).toBe(200)
-      expect(response.data.name).toBe(team.name)
+      expect(response.data.name).toBe(project.name)
+      project.id = response.data.id
       return done()
     })
     .catch(done)
 })
 
-test('gets the teams users', (done) => {
+test('lists the project', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team/users`,
+    url: `${API_URL}/me/team/projects`,
     ...configs.auth
   })
     .then(response => {
       expect(response.status).toBe(200)
       expect(response.data).toHaveLength(1)
-      expect(response.data[0].id).toBe(user.id)
+      const foundProject = response.data.find(p => p.id === project.id)
+      expect(typeof foundProject).toBe('object')
       return done()
     })
     .catch(done)
 })
 
-test('updates the team', (done) => {
+test('deletes the project', (done) => {
   axios({
-    method: 'patch',
-    url: `${API_URL}/me/team`,
-    data: {
-      name: 'FatQuack'
-    },
+    method: 'delete',
+    url: `${API_URL}/me/team/projects/${project.id}`,
     ...configs.auth
   })
     .then(response => {
-      expect(response.status).toBe(200)
-      expect(response.data.name).toBe('FatQuack')
-      team.name = 'FatQuack'
+      expect(response.status).toBe(204)
       return done()
     })
     .catch(done)
 })
 
-test('gets the team (update persisted)', (done) => {
+test('doesnt list the project', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team`,
+    url: `${API_URL}/me/team/projects`,
     ...configs.auth
   })
     .then(response => {
-      expect(response.data.name).toBe('FatQuack')
       expect(response.status).toBe(200)
+      expect(response.data).toHaveLength(0)
       return done()
     })
     .catch(done)
@@ -174,32 +145,6 @@ test('deletes the team', (done) => {
   })
     .then(response => {
       expect(response.status).toBe(204)
-      return done()
-    })
-    .catch(done)
-})
-
-test('doesnt get the team after deletion', (done) => {
-  axios({
-    method: 'get',
-    url: `${API_URL}/me/team`,
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(404)
-      return done()
-    })
-    .catch(done)
-})
-
-test('doesnt get the teams users after deletion', (done) => {
-  axios({
-    method: 'get',
-    url: `${API_URL}/me/team/users`,
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(404)
       return done()
     })
     .catch(done)

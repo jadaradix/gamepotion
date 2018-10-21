@@ -3,12 +3,11 @@ const datalayer = require('../../../abstractions/datalayer')
 const classes = require('../../../classes/dist.js')
 
 const route = (request, response, next) => {
-  let teamClass
+  let teamClass = new classes.Team()
   try {
-    teamClass = new classes.Team()
     teamClass.fromApiPost(request.body)
   } catch (error) {
-    response.send(new errors.BadRequestError(`this team would not get created (${error.message})`))
+    response.send(new errors.BadRequestError(`this would not get created (${error.message})`))
     return next(false)
   }
   datalayer.write('Teams', teamClass.id, teamClass.toDatastore())

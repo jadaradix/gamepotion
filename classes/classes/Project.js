@@ -29,13 +29,9 @@ class Project {
   }
 
   fromApiPost (json) {
-    if (typeof json.teamId !== 'string' || json.teamId.length === 0) {
-      throw new Error('teamId is not valid')
-    }
     if (typeof json.name !== 'string' || json.name.length === 0) {
       throw new Error('name is not valid')
     }
-    this.teamId = json.teamId
     this.name = json.name
   }
 

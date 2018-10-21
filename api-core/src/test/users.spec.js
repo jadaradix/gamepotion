@@ -18,11 +18,7 @@ const configs = {
     }
   },
   noAuth: {
-    validateStatus: false,
-    auth: {
-      username: user.email,
-      password: user.password
-    }
+    validateStatus: false
   }
 }
 
@@ -39,7 +35,7 @@ test('doesnt create a user with a bad name (class testing)', (done) => {
   })
     .then(response => {
       expect(response.status).toBe(400)
-      expect(response.data.message).toBe('this user would not get created (name is not valid)')
+      expect(response.data.message).toBe('this would not get created (name is not valid)')
       return done()
     })
     .catch(done)
@@ -126,7 +122,7 @@ test('gets the user (update persisted)', (done) => {
     .catch(done)
 })
 
-test('deletes a user', (done) => {
+test('deletes the user', (done) => {
   axios({
     method: 'delete',
     url: `${API_URL}/me`,

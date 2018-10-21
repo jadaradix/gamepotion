@@ -4,6 +4,7 @@ class Debug extends Action {
   constructor(json = {}) {
     super(json)
     this.name = 'Debug'
+    this.description = 'Debug something'
   }
 
   getDefaultRunArguments() {

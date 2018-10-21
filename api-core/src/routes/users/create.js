@@ -26,7 +26,7 @@ const route = async (request, response, next) => {
     userClass.fromApiPost(request.body)
     // await getExistingTeam(userClass.teamId)
   } catch (error) {
-    response.send(new errors.BadRequestError(`this user would not get created (${error.message})`))
+    response.send(new errors.BadRequestError(`this would not get created (${error.message})`))
     return next(false)
   }
   getExistingUser(userClass.email)

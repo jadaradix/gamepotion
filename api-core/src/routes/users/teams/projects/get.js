@@ -15,7 +15,7 @@ const route = (request, response, next) => {
     })
     .catch((error) => {
       console.error('[route users teams projects get] datalayer.readOne caught', error)
-      response.send(new errors.NotFoundError('this project doesnt exist or it doesnt belong to you'))
+      response.send(new errors.NotFoundError('this doesnt exist or it doesnt belong to you'))
       return next(false)
     })
 }

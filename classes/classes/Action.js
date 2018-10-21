@@ -3,6 +3,7 @@ class Action {
     // DO NOT CREATE INSTANCES OF THIS ABSTRACT CLASS (always extended) IN USERLAND
     // USE THE CLASS FACTORY!
     this.name = 'AbstractActionBadNewsIfYouEverSeeThis'
+    this.description = 'AbstractActionBadNewsIfYouEverSeeThis'
     this.runArguments = json.runArguments || this.getDefaultRunArguments()
   }
 
@@ -18,6 +19,13 @@ class Action {
 
   runStep(platform, runArguments) {
     return null
+  }
+
+  toApi() {
+    return {
+      name: this.name,
+      description: this.description
+    }
   }
 }
 

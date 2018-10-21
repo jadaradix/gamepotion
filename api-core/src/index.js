@@ -43,6 +43,7 @@ const middlewares = {
 
 const routes = {
   'GET      /v1': require('./routes/healthcheck'),
+  'GET      /v1/actions': require('./routes/actions'),
   // -> users
   'POST     /v1/users': require('./routes/users/create'),
   'GET      /v1/me': require('./routes/users/get'),
@@ -56,8 +57,10 @@ const routes = {
   //     -> users
   'GET      /v1/me/team/users': require('./routes/users/teams/users/getAll'),
   //     -> projects
+  'POST     /v1/me/team/projects': require('./routes/users/teams/projects/create'),
   'GET      /v1/me/team/projects': require('./routes/users/teams/projects/getAll'),
   'GET      /v1/me/team/projects/:id': require('./routes/users/teams/projects/get'),
+  'DEL      /v1/me/team/projects/:id': require('./routes/users/teams/projects/delete'),
   // ->      -> resources
   'GET      /v1/me/team/projects/:id/resources': require('./routes/users/teams/projects/resources/getAll')
 }
