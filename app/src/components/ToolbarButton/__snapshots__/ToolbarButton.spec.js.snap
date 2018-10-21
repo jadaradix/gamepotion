@@ -19,6 +19,10 @@ exports[`renders 1`] = `
   padding: 12px;
 }
 
+.c0 a:focus {
+  outline: 2px solid #38EF7D;
+}
+
 .c0 a img {
   display: block;
   width: 24px;

@@ -1,45 +1,37 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import font from '../font'
+import { font, outline } from '../abstractions'
+import { withRouter } from 'react-router-dom'
 
 const StyledButton = styled.button`
   display: block;
+  padding: 0.75rem;
+  transition: background-color 0.1s ease-in-out;
+  ${font}
   background-color: rgb(48, 48, 48);
   color: white;
   border-radius: 4px;
-  transition: background-color 0.1s ease-in-out;
-  ${font}
+  :focus {
+    ${outline}
+  }
   :hover {
     background-color: rgb(64, 64, 64);
   }
-  > * {
-    display: block;
-    padding: 12px;
-    color: inherit;
-    text-decoration: none;
-  }
 `
 
-const Button = ({ route, onClick, icon, hint, children }) => {
-  const inside = (
-    <Fragment>
+const Button = ({ history, route, onClick, icon, hint, children }) => {
+  const handleOnClick = () => {
+    if (typeof route === 'string') {
+      history.push(route)
+    } else if (typeof onClick === 'function') {
+      return onClick()
+    }
+  }
+  return (
+    <StyledButton title={hint} onClick={handleOnClick}>
       {children}
       {icon && <img src={icon} alt={hint} />}
-    </Fragment>
-  )
-  return (
-    <StyledButton title={hint} onClick={onClick}>
-      {route ?
-        <Link to={route}>
-          {inside}
-        </Link>
-        :
-        <span>
-          {inside}
-        </span>
-      }
     </StyledButton>
   )
 }
@@ -55,4 +47,4 @@ Button.defaultProps = {
   onClick: null
 }
 
-export default Button
+export default withRouter(Button)

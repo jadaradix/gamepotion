@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { outline } from '../abstractions'
 
 const StyledToolbarButton = styled.li`
   display: block;
@@ -15,6 +16,9 @@ const StyledToolbarButton = styled.li`
   a {
     display: block;
     padding: 12px;
+    :focus {
+      ${outline}
+    }
     img {
       display: block;
       width: 24px;
