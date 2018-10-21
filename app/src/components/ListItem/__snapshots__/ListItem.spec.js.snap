@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+.c0 {
+  display: block;
+  height: 2rem;
+  list-style-type: none;
+}
+
+.c0 img {
+  display: block;
+  float: left;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.c0 span {
+  display: block;
+  float: left;
+  height: 2rem;
+  line-height: 2rem;
+  margin-left: 0.5rem;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+<li
+  className="component--list-item c0"
+>
+  <img
+    alt=""
+    src=""
+  />
+  <span>
+    Hello, World
+  </span>
+</li>
+`;

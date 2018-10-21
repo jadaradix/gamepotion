@@ -5,6 +5,9 @@ const StyledResponsiveContainer = styled.div`
   .inner {
     padding: 1rem;
   }
+  .component--button + .component--list {
+    margin-top: 1rem;
+  }
   @media screen and (min-width: 720px) {
     max-width: 960px;
     margin: 4rem auto 0 auto;

@@ -25,7 +25,7 @@ exports[`renders 1`] = `
 }
 
 <button
-  className="c0"
+  className="component--button c0"
   onClick={[Function]}
 >
   Do Something

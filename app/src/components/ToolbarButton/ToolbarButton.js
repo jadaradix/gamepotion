@@ -7,22 +7,22 @@ import { outline } from '../abstractions'
 const StyledToolbarButton = styled.li`
   display: block;
   float: left;
-  width: 48px;
-  height: 48px;
+  width: 3rem;
+  height: 3rem;
   transition: background-color 0.15s ease-in-out;
   :hover {
     background-color: rgb(64, 64, 64);
   }
   a {
     display: block;
-    padding: 12px;
+    padding: 0.75rem;
     :focus {
       ${outline}
     }
     img {
       display: block;
-      width: 24px;
-      height: 24px;
+      width: 1.5rem;
+      height: 1.5rem;
       // background-color: green;
     }
   }

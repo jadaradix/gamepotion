@@ -29,7 +29,7 @@ const Button = ({ history, route, onClick, icon, hint, children }) => {
     }
   }
   return (
-    <StyledButton title={hint} onClick={handleOnClick}>
+    <StyledButton title={hint} onClick={handleOnClick} className='component--button'>
       {children}
       {icon && <img src={icon} alt={hint} />}
     </StyledButton>
