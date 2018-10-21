@@ -8,7 +8,7 @@ it('renders', () => {
   const tree = renderer
     .create(
       <MemoryRouter>
-        <Button>Do Something</Button>
+        <Button hint='Do Something'>Do Something</Button>
       </MemoryRouter>
     )
     .toJSON()
