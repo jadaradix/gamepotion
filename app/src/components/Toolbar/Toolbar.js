@@ -5,8 +5,9 @@ import styled from 'styled-components'
 
 const StyledToolbar = styled.ul`
   display: block;
+  list-style-type: none;
   height: 48px;
-  background-color: rgb(64, 64, 64);
+  background-color: rgb(48, 48, 48);
 `
 
 const Toolbar = ({ children, href }) => (

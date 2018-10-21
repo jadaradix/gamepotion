@@ -8,14 +8,17 @@ const StyledToolbarButton = styled.li`
   float: left;
   width: 48px;
   height: 48px;
+  transition: background-color 0.15s ease-in-out;
+  :hover {
+    background-color: rgb(64, 64, 64);
+  }
   a {
     display: block;
+    padding: 12px;
     img {
       display: block;
       width: 24px;
       height: 24px;
-      margin-top: 12px;
-      margin-left: 12px;
       // background-color: green;
     }
   }
