@@ -1,4 +1,4 @@
-const work = require('./work.js')
+const platform = require('./index.js')
 const classFactory = require('./classes/factory.js')
 
 test('works', () => {
@@ -21,7 +21,7 @@ test('works', () => {
   })
   //
 
-  return work(team, project, resources)
+  return platform(team, project, resources)
     .then(result => {
       expect(result).toMatchSnapshot()
     })
