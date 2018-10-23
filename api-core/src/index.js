@@ -63,6 +63,7 @@ const routes = {
   'POST     /v1/me/team/projects': require('./routes/users/teams/projects/create'),
   'GET      /v1/me/team/projects': require('./routes/users/teams/projects/getAll'),
   'GET      /v1/me/team/projects/:id': require('./routes/users/teams/projects/get'),
+  'PATCH    /v1/me/team/projects/:id': require('./routes/users/teams/projects/update'),
   'DEL      /v1/me/team/projects/:id': require('./routes/users/teams/projects/delete'),
   // ->      -> resources
   'GET      /v1/me/team/projects/:projectId/resources': require('./routes/users/teams/projects/resources/getAll'),

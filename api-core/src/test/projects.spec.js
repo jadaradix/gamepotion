@@ -14,7 +14,7 @@ const team = {
 }
 
 const project = {
-  name: 'Angry Birds'
+  name: 'Aggressive Avians'
 }
 
 const configs = {
@@ -89,6 +89,24 @@ test('creates a project', (done) => {
       expect(response.status).toBe(201)
       expect(response.data.name).toBe(project.name)
       project.id = response.data.id
+      return done()
+    })
+    .catch(done)
+})
+
+test('updates a project', (done) => {
+  axios({
+    method: 'patch',
+    url: `${API_URL}/me/team/projects/${project.id}`,
+    data: {
+      name: 'DinoRun'
+    },
+    ...configs.auth
+  })
+    .then(response => {
+      expect(response.status).toBe(200)
+      expect(response.data.name).toBe('DinoRun')
+      project.name = response.data.name
       return done()
     })
     .catch(done)
