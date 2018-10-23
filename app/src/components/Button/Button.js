@@ -16,8 +16,8 @@ const StyledButton = styled.button`
   border-width: 2px;
   border-style: solid;
   border-color: #2e3131;
+  outline: 0;
   :focus {
-    outline: 0;
     border-color: ${colours.outline};
   }
   :hover {

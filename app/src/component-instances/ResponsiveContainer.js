@@ -14,6 +14,9 @@ const StyledResponsiveContainer = styled.div`
   .component--heading1 + .component--input {
     margin-top: 1.5rem;
   }
+  .component--heading1 + .component--loading {
+    margin-top: 1.5rem;
+  }
   .component--input + .component--input {
     margin-top: 1.5rem;
   }

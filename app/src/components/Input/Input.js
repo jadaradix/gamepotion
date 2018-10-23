@@ -80,7 +80,6 @@ class Input extends PureComponent {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log('[component-Input] [componentWillReceiveProps] nextProps', nextProps)
     this.setState({ value: nextProps.value, disabled: nextProps.disabled, placeholder: nextProps.placeholder, label: nextProps.label })
   }
 
