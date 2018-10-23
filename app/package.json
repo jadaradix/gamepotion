@@ -2,13 +2,16 @@
   "name": "gmc-app",
   "version": "1.0.0",
   "dependencies": {
+    "classnames": "^2.2.6",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
     "react-scripts": "2.0.5",
-    "styled-components": "^4.0.2"
+    "redux": "^4.0.1",
+    "styled-components": "^4.0.2",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

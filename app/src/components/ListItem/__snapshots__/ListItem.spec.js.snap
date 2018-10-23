@@ -3,8 +3,21 @@
 exports[`renders 1`] = `
 .c0 {
   display: block;
-  height: 2rem;
+  width: 100%;
+  height: calc(2rem + 4px);
   list-style-type: none;
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent;
+  background-color: transparent;
+  -webkit-transition: border-color 0.2s ease-in-out;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.c0:focus {
+  outline: 0;
+  border-radius: 4px;
+  border-color: #38EF7D;
 }
 
 .c0 img {
@@ -13,6 +26,7 @@ exports[`renders 1`] = `
   width: 1.5rem;
   height: 1.5rem;
   margin-top: 0.25rem;
+  margin-left: 0.25rem;
 }
 
 .c0 span {
@@ -26,9 +40,10 @@ exports[`renders 1`] = `
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
+  color: #2e3131;
 }
 
-<li
+<button
   className="component--list-item c0"
 >
   <img
@@ -38,5 +53,5 @@ exports[`renders 1`] = `
   <span>
     Hello, World
   </span>
-</li>
+</button>
 `;

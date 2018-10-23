@@ -1,13 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import ToolbarButton from '../ToolbarButton/ToolbarButton'
 import styled from 'styled-components'
 
 const StyledToolbar = styled.ul`
-  display: block;
+  display: flex;
+  flex-direction: row;
   list-style-type: none;
-  height: calc(3rem + 4px);
   background-color: #2e3131;
+  box-shadow: 0 4px 20px rgb(212, 212, 212);
 `
 
 const Toolbar = ({ children, href }) => (
@@ -15,11 +14,5 @@ const Toolbar = ({ children, href }) => (
     {children}
   </StyledToolbar>
 )
-
-Toolbar.propTypes = {
-}
-
-Toolbar.defaultProps = {
-}
 
 export default Toolbar

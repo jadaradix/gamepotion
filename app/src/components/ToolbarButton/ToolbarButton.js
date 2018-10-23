@@ -1,27 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+
 import { colours } from '../abstractions'
 
 const StyledToolbarButton = styled.li`
-  display: block;
-  float: left;
+  display: flex;
+  flex-shrink: 0;
   width: calc(3rem + 4px);
   height: calc(3rem + 4px);
-  transition: background-color 0.2s ease-in-out;
-  :hover {
-    background-color: #6c7a89;
-  }
-  a {
+  button {
     display: block;
     padding: 0.75rem;
     border-width: 2px;
     border-style: solid;
     border-color: transparent;
-    transition: border-color 0.2s ease-in-out;
+    outline: 0;
+    background-color: #2e3131;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
     :focus {
-      outline: 0;
       border-color: ${colours.outline};
       border-radius: 4px;
     }
@@ -29,30 +27,45 @@ const StyledToolbarButton = styled.li`
       display: block;
       width: 1.5rem;
       height: 1.5rem;
-      // background-color: green;
+    }
+    &.significant {
+      background-color: #6c7a89;
+    }
+    &:hover {
+      background-color: #6c7a89;
     }
   }
 `
 
-const ToolbarButton = ({ route, icon, hint }) => {
-  return <StyledToolbarButton title={hint}>
-    <Link to={route}>
-      <img src={icon} alt={hint} />
-    </Link>
-  </StyledToolbarButton>
+const handleOnClick = (history, route, onClick) => {
+  if (typeof route === 'string') {
+    history.push(route)
+  } else if (typeof onClick === 'function') {
+    return onClick()
+  }
+}
+
+const ToolbarButton = ({ history, route, onClick, icon, hint, significant }) => {
+  return (
+    <StyledToolbarButton title={hint}>
+      <button onClick={() => handleOnClick(history, route, onClick)} className={`${significant ? 'significant': ''}`}>
+        <img src={icon} alt={hint} />
+      </button>
+    </StyledToolbarButton>
+  )
 }
 
 ToolbarButton.propTypes = {
-  // children: PropTypes.oneOfType([
-  //   PropTypes.arrayOf(PropTypes.node),
-  //   PropTypes.node
-  // ]),
-  route: PropTypes.string.isRequired,
+  route: PropTypes.string,
+  onClick: PropTypes.func,
   icon: PropTypes.string.isRequired,
-  hint: PropTypes.string.isRequired
+  hint: PropTypes.string.isRequired,
+  significant: PropTypes.bool.isRequired
 }
 
 ToolbarButton.defaultProps = {
+  onClick: null,
+  significant: false
 }
 
-export default ToolbarButton
+export default withRouter(ToolbarButton)

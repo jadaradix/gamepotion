@@ -2,52 +2,60 @@
 
 exports[`renders 1`] = `
 .c0 {
-  display: block;
-  float: left;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
   width: calc(3rem + 4px);
   height: calc(3rem + 4px);
-  -webkit-transition: background-color 0.2s ease-in-out;
-  transition: background-color 0.2s ease-in-out;
 }
 
-.c0:hover {
-  background-color: #6c7a89;
-}
-
-.c0 a {
+.c0 button {
   display: block;
   padding: 0.75rem;
   border-width: 2px;
   border-style: solid;
   border-color: transparent;
-  -webkit-transition: border-color 0.2s ease-in-out;
-  transition: border-color 0.2s ease-in-out;
+  outline: 0;
+  background-color: #2e3131;
+  -webkit-transition: background-color 0.2s ease-in-out,border-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out,border-color 0.2s ease-in-out;
 }
 
-.c0 a:focus {
-  outline: 0;
+.c0 button:focus {
   border-color: #38EF7D;
   border-radius: 4px;
 }
 
-.c0 a img {
+.c0 button img {
   display: block;
   width: 1.5rem;
   height: 1.5rem;
+}
+
+.c0 button.significant {
+  background-color: #6c7a89;
+}
+
+.c0 button:hover {
+  background-color: #6c7a89;
 }
 
 <li
   className="c0"
   title="Qwe"
 >
-  <a
-    href="/"
+  <button
+    className=""
     onClick={[Function]}
   >
     <img
       alt="Qwe"
       src=""
     />
-  </a>
+  </button>
 </li>
 `;

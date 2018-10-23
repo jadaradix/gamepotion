@@ -1,12 +1,12 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 import 'jest-styled-components'
-import Button from './Button'
+import ToolbarGap from './ToolbarGap'
 
 it('renders', () => {
   const tree = renderer
     .create(
-      <Button hint='Do Something'>Do Something</Button>
+      <ToolbarGap />
     )
     .toJSON()
   expect(tree).toMatchSnapshot()

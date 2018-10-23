@@ -6,5 +6,8 @@ export const font = `
 `
 
 export const colours = {
-  'outline': '#38EF7D'
+  'outline': '#38EF7D',
+  'highlight': '#dadfe1',
+  'fore': '#2e3131',
+  'back': '#ecf0f1'
 }

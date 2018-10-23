@@ -5,17 +5,29 @@ const StyledResponsiveContainer = styled.div`
   .inner {
     padding: 1rem;
   }
-  .component--button + .component--list {
+  .component--list + .component--button {
     margin-top: 1rem;
   }
+  .component--heading1 + .component--list {
+    margin-top: 1rem;
+  }
+  .component--heading1 + .component--input {
+    margin-top: 1.5rem;
+  }
+  .component--input + .component--input {
+    margin-top: 1.5rem;
+  }
+  .component--input + .component--button {
+    margin-top: 1.5rem;
+  }
+  // background-color: blue;
   @media screen and (min-width: 720px) {
     max-width: 960px;
-    margin: 4rem auto 0 auto;
+    margin: 2rem auto 0 auto;
     .inner {
-      margin: 0 4rem 0 4rem;
-      padding: 2rem;
-      border-radius: 4px;
-      box-shadow: 0 4px 20px rgb(212, 212, 212);
+      margin: 0 2rem 0 2rem;
+      padding: 0;
+      // background-color: green;
     }
 `
 
@@ -27,12 +39,6 @@ const ResponsiveContainer = ({ children }) => {
       </div>
     </StyledResponsiveContainer>
   )
-}
-
-ResponsiveContainer.propTypes = {
-}
-
-ResponsiveContainer.defaultProps = {
 }
 
 export default ResponsiveContainer

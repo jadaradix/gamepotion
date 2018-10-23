@@ -1,12 +1,12 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 import 'jest-styled-components'
-import Button from './Button'
+import Heading1 from './Heading1'
 
 it('renders', () => {
   const tree = renderer
     .create(
-      <Button hint='Do Something'>Do Something</Button>
+      <Heading1>Hello, World</Heading1>
     )
     .toJSON()
   expect(tree).toMatchSnapshot()

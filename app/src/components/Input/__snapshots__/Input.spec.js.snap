@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+.c0 label {
+  display: block;
+  width: 100%;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  color: #bdc3c7;
+}
+
+.c0 input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 0px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: 0;
+  border: 0;
+  border-bottom: 2px solid #dadfe1;
+  background-color: transparent;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  -webkit-transition: border-color 0.2s ease-in-out;
+  transition: border-color 0.2s ease-in-out;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  color: #2e3131;
+}
+
+.c0 input:focus {
+  border-color: #bdc3c7;
+}
+
+.c0 input::selection {
+  background-color: #dadfe1;
+}
+
+.c0 input::-webkit-input-placeholder {
+  color: #dadfe1;
+}
+
+input.c0::-moz-placeholder {
+  color: #dadfe1;
+}
+
+.c0 input:-moz-placeholder {
+  color: #dadfe1;
+}
+
+.c0 input:-ms-input-placeholder {
+  color: #dadfe1;
+}
+
+<div
+  className="component--input c0"
+>
+  
+  <input
+    autoFocus={false}
+    disabled={false}
+    id="component-Input-63e225e2-a4c5-4734-97d9-1af9ab3c2386"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    placeholder=""
+    required={false}
+    type="text"
+    value="James"
+  />
+</div>
+`;

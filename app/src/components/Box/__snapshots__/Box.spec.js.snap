@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+.c0 {
+  display: block;
+  padding: 2rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgb(212,212,212);
+  background-color: #f0f3f4;
+}
+
+<div
+  className="component--box c0"
+>
+  Hello, World
+</div>
+`;

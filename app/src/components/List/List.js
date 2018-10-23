@@ -1,5 +1,4 @@
-import React, { Fragment } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import styled from 'styled-components'
 
 const StyledList = styled.ul`
@@ -23,12 +22,6 @@ const List = ({ children }) => {
       {children}
     </StyledList>
   )
-}
-
-List.propTypes = {
-}
-
-List.defaultProps = {
 }
 
 export default List

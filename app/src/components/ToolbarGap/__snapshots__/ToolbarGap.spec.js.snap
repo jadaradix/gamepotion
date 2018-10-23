@@ -6,15 +6,15 @@ exports[`renders 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  list-style-type: none;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: calc(3rem + 4px);
   background-color: #2e3131;
-  box-shadow: 0 4px 20px rgb(212,212,212);
 }
 
-<ul
+<li
   className="c0"
 />
 `;

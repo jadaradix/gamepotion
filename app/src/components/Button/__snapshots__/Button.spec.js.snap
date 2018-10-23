@@ -17,6 +17,7 @@ exports[`renders 1`] = `
   border-width: 2px;
   border-style: solid;
   border-color: #2e3131;
+  cursor: pointer;
 }
 
 .c0:focus {
@@ -26,6 +27,7 @@ exports[`renders 1`] = `
 
 .c0:hover {
   background-color: #6c7a89;
+  border-color: #6c7a89;
 }
 
 <button
