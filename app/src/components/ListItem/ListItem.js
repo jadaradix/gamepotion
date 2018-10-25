@@ -72,7 +72,7 @@ const StyledListItem = styled.button`
 `
 
 const actions = {
-  // 'load': (id, onAction) => (<img title='Load' key='action-load' onClick={() => onAction(id, 'load')} className='action' src={icons.generic.folder} alt='' tabIndex='0' />),
+  'load': (id, onAction) => (<img title='Load' key='action-load' onClick={() => onAction(id, 'load')} className='action' src={icons.generic.folder} alt='' tabIndex='0' />),
   'rename': (id, onAction) => (<img title='Rename' key='action-rename' onClick={() => onAction(id, 'rename')} className='action' src={icons.generic.actions.edit} alt='' tabIndex='0' />),
   'delete': (id, onAction) => (<img title='Delete' key='action-delete' onClick={() => onAction(id, 'delete')} className='action' src={icons.generic.actions.delete} alt='' tabIndex='0' />)
 }

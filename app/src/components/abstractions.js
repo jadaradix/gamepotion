@@ -9,5 +9,6 @@ export const colours = {
   'outline': '#38EF7D',
   'highlight': '#dadfe1',
   'fore': '#2e3131',
+  'foreNegative': '#ffffff',
   'back': '#ecf0f1'
 }

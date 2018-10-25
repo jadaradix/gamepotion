@@ -15,9 +15,9 @@ const router = (
     <Switch>
       <Route path='/dashboard' exact strict component={Dashboard} />
       <Route path='/project/new' exact strict component={ProjectNew} />
-      <Route path='/project' exact component={ProjectProject} />
-      <Route path='/project/preferences' component={ProjectPreferences} />
-      <Route path='/auth' component={Auth} />
+      <Route path='/project/preferences' exact strict component={ProjectPreferences} />
+      <Route path='/project/:id' exact strict component={ProjectProject} />
+      <Route path='/auth' exact strict component={Auth} />
       <Route component={Dashboard} />
     </Switch>
   </Router>

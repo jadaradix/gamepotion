@@ -1,15 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import classnames from 'classnames'
 import { withRouter } from 'react-router-dom'
 
-import { colours } from '../abstractions'
+import { font, colours } from '../abstractions'
 
 const StyledToolbarButton = styled.li`
   display: flex;
   flex-shrink: 0;
-  width: calc(3rem + 4px);
   height: calc(3rem + 4px);
+  background-color: #2e3131;
   button {
     display: block;
     padding: 0.75rem;
@@ -17,21 +18,42 @@ const StyledToolbarButton = styled.li`
     border-style: solid;
     border-color: transparent;
     outline: 0;
-    background-color: #2e3131;
-    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    background-color: transparent;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.5s ease-in-out;
+    overflow: hidden;
     :focus {
       border-color: ${colours.outline};
       border-radius: 4px;
     }
     img {
       display: block;
+      float: left;
       width: 1.5rem;
       height: 1.5rem;
+    }
+    span {
+      display: block;
+      height: 1.5rem;
+      margin-left: 0.75rem;
+      margin-right: 0.75rem;
+      line-height: 1.5rem;
+      color: ${colours.foreNegative};
+      ${font}
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    img + span {
+      margin-left: 2rem;
     }
     &.significant {
       background-color: #6c7a89;
     }
-    &:hover {
+    &[disabled] {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+    &:not([disabled]):hover {
       background-color: #6c7a89;
     }
   }
@@ -45,11 +67,19 @@ const handleOnClick = (history, route, onClick) => {
   }
 }
 
-const ToolbarButton = ({ history, route, onClick, icon, hint, significant }) => {
+const ToolbarButton = ({ history, route, onClick, icon, hint, significant, disabled, fixedWidth, children }) => {
+  const style = {
+    main: {},
+    span: {}
+  }
+  if (typeof fixedWidth === 'string') {
+    style.main.width = `${fixedWidth}px`
+  }
   return (
-    <StyledToolbarButton title={hint}>
-      <button onClick={() => handleOnClick(history, route, onClick)} className={`${significant ? 'significant': ''}`}>
-        <img src={icon} alt={hint} />
+    <StyledToolbarButton title={hint} style={style.main}>
+      <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={classnames({'significant': significant, 'disabled': disabled})}>
+        {icon && <img src={icon} alt={hint} className={`icon-${icon}`} />}
+        {children && <span>{children}</span>}
       </button>
     </StyledToolbarButton>
   )
@@ -58,14 +88,17 @@ const ToolbarButton = ({ history, route, onClick, icon, hint, significant }) => 
 ToolbarButton.propTypes = {
   route: PropTypes.string,
   onClick: PropTypes.func,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
   hint: PropTypes.string.isRequired,
-  significant: PropTypes.bool.isRequired
+  significant: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
+  fixedWidth: PropTypes.string
 }
 
 ToolbarButton.defaultProps = {
   onClick: null,
-  significant: false
+  significant: false,
+  disabled: false
 }
 
 export default withRouter(ToolbarButton)

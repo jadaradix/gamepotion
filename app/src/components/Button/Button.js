@@ -11,7 +11,7 @@ const StyledButton = styled.button`
   transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
   ${font}
   background-color: #2e3131;
-  color: white;
+  color: ${colours.foreNegative};
   border-radius: 4px;
   border-width: 2px;
   border-style: solid;

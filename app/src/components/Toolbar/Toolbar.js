@@ -6,7 +6,9 @@ const StyledToolbar = styled.ul`
   flex-direction: row;
   list-style-type: none;
   background-color: #2e3131;
-  box-shadow: 0 4px 20px rgb(212, 212, 212);
+  overflow: scroll;
+  box-shadow: 0 2px 4px rgb(172, 172, 172);
+  // box-shadow: 0 2px 4px red;
 `
 
 const Toolbar = ({ children, href }) => (

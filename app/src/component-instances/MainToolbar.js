@@ -1,38 +1,49 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import icons from '../icons'
 
 import Toolbar from '../components/Toolbar/Toolbar'
 import ToolbarButton from '../components/ToolbarButton/ToolbarButton'
 import ToolbarGap from '../components/ToolbarGap/ToolbarGap'
 
-const runProject = () => {
-  console.warn('[MainToolbar] [runProject]')
-}
-
-const shareProject = () => {
-  console.warn('[MainToolbar] [shareProject]')
-}
-
-const addResource = (type) => {
-  console.warn('[MainToolbar] [addResource]', type)
-}
-
-const MainToolbar = () => {
+const MainToolbar = ({ currentProject, onClick }) => {
+  // console.warn('[MainToolbar] currentProject', currentProject)
   return (
     <Toolbar>
       <ToolbarButton route='/dashboard' icon={icons.generic.symbol} hint='Dashboard' significant />
+      {currentProject !== null &&
+        <ToolbarButton fixedWidth='180' route={`/project/${currentProject.project.id}`} hint={currentProject.project.name}>
+          {currentProject.project.name}
+        </ToolbarButton>
+      }
+      {currentProject === null &&
+        <ToolbarButton fixedWidth='180' disabled hint='Loading...' />
+      }
       <ToolbarGap />
-      <ToolbarButton onClick={runProject} icon={icons.generic.project.run} hint='Run project' />
-      <ToolbarButton onClick={shareProject} icon={icons.generic.project.share} hint='Share project' />
+      <ToolbarButton onClick={() => onClick('project-run')} disabled={currentProject === null} icon={icons.generic.project.run} hint='Run project' />
+      <ToolbarButton onClick={() => onClick('project-share')} disabled={currentProject === null} icon={icons.generic.project.share} hint='Share project' />
       <ToolbarGap />
-      <ToolbarButton onClick={() => addResource('image')} icon={icons.resources.image} hint='Add image' />
-      <ToolbarButton onClick={() => addResource('sound')} icon={icons.resources.sound} hint='Add sound' />
-      <ToolbarButton onClick={() => addResource('atom')} icon={icons.resources.atom} hint='Add atom' />
-      <ToolbarButton onClick={() => addResource('space')} icon={icons.resources.space} hint='Add space' />
+      <ToolbarButton onClick={() => onClick('add-resource-image')} disabled={currentProject === null} icon={icons.resources.image} hint='Add image' />
+      <ToolbarButton onClick={() => onClick('add-resource-sound')} disabled={currentProject === null} icon={icons.resources.sound} hint='Add sound' />
+      <ToolbarButton onClick={() => onClick('add-resource-atom')} disabled={currentProject === null} icon={icons.resources.atom} hint='Add atom' />
+      <ToolbarButton onClick={() => onClick('add-resource-space')} disabled={currentProject === null} icon={icons.resources.space} hint='Add space' />
       <ToolbarGap />
-      <ToolbarButton route='/project/preferences' icon={icons.generic.preferences} hint='Project preferences' />
+      <ToolbarButton route='/project/preferences' disabled={currentProject === null} icon={icons.generic.preferences} hint='Project preferences' />
     </Toolbar>
   )
+}
+
+MainToolbar.propTypes = {
+  currentProject: PropTypes.oneOf([
+    PropTypes.null,
+    PropTypes.object
+  ]),
+  onClick: PropTypes.func
+}
+
+MainToolbar.defaultProps = {
+  currentProject: null,
+  onClick: () => {}
 }
 
 export default MainToolbar

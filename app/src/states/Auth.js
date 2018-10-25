@@ -7,7 +7,7 @@ import Heading1 from '../components/Heading1/Heading1'
 import Input from '../components/Input/Input'
 import Button from '../components/Button/Button'
 
-import MainToolbar from '../component-instances/MainToolbar'
+import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
 
 const StyledState = styled.div`
@@ -37,7 +37,7 @@ class StateDashboard extends PureComponent {
   render() {
     return (
       <Fragment>
-        <MainToolbar />
+        <MainToolbarContainer />
         <ResponsiveContainer>
           <StyledState>
             <Box>

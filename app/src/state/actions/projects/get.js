@@ -6,19 +6,28 @@ export default function (state) {
     setTimeout(() => {
       const projects = [
         {
-          id: 'project-1',
-          name: 'Project X'
+          project: {
+            id: 'project-1',
+            name: 'Project X'
+          },
+          resources: null,
+          currentResource: null
         },
         {
-          id: 'project-2',
-          name: 'Project Y'
+          project: {
+            id: 'project-2',
+            name: 'Project Y'
+          },
+          resources: null,
+          currentResource: null
         }
       ]
       const currentProject = (() => {
+        // this is some auto load logic; it seems bad?
         if (state.currentProject === null) {
-          return (projects.length > 0 ? projects[0] : null)
+          return null
         } else {
-          const foundCurrentProject = projects.find(project => project.id === state.currentProject.id)
+          const foundCurrentProject = projects.find(project => project.project.id === state.currentProject.project.id)
           return foundCurrentProject || null
         }
       })()

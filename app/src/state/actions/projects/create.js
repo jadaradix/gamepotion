@@ -4,17 +4,21 @@ export default async function (state, { name }) {
   const { projects } = await getProjects(state)
   return new Promise((resolve) => {
     setTimeout(() => {
-      const createdProject = {
-        id: 'project-3',
-        name
+      const currentProject = {
+        project: {
+          id: 'project-3',
+          name
+        },
+        resources: null,
+        currentResource: null
       }
       return resolve({
         ...state,
         projects: [
           ...projects,
-          createdProject
+          currentProject
         ],
-        currentProject: createdProject
+        currentProject
       })
     }, 1000)
   })

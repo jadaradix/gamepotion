@@ -32,6 +32,7 @@ const StyledResponsiveContainer = styled.div`
       padding: 0;
       // background-color: green;
     }
+  }
 `
 
 const ResponsiveContainer = ({ children }) => {

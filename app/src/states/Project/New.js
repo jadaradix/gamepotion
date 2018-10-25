@@ -1,14 +1,14 @@
 import React, { PureComponent, Fragment } from 'react'
 import { Redirect } from 'react-router'
 
-import MainToolbar from '../../component-instances/MainToolbar'
+import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../../component-instances/ResponsiveContainer'
 
 import Heading1 from '../../components/Heading1/Heading1'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 
-import dispatch from '../../state'
+import { dispatch, subscribe } from '../../state'
 
 // <Input label='Project Description' value='New Project Description' />
 
@@ -17,7 +17,7 @@ class StateProjectNew extends PureComponent {
     super(props)
     this.state = {
       created: false,
-      project: {
+      currentProject: {
         name: ''
       }
     }
@@ -25,40 +25,48 @@ class StateProjectNew extends PureComponent {
     this.updateProject = this.updateProject.bind(this)
   }
 
-  createProject() {
-    const d = {
-      name: 'PROJECTS_CREATE',
-      data: {
-        name: this.state.project.name
-      }
-    }
-    dispatch(d)
-      .then(() => {
+  componentDidMount () {
+    this.subscriptions = [
+      subscribe('PROJECTS_CREATE', (state) => {
         this.setState({
-          created: true
+          currentProject: state.currentProject
         })
       })
+    ]
+  }
+
+  componentWillUnmount () {
+    this.subscriptions.forEach(s => s.unsubscribe())
+  }
+
+  createProject() {
+    dispatch({
+      name: 'PROJECTS_CREATE',
+      data: {
+        name: this.state.currentProject.name
+      }
+    })
   }
 
   updateProject(prop, value) {
     this.setState({
-      project: {
-        ...this.state.project,
+      currentProject: {
+        ...this.state.currentProject,
         [prop]: value
       }
     })
   }
 
   render() {
-    if (this.state.created === true) {
-      return <Redirect to="/dashboard" />
+    if (this.state.currentProject.id !== undefined) {
+      return <Redirect to={`/project/${this.state.currentProject.id}`} />
     }
     return (
       <Fragment>
-        <MainToolbar />
+        <MainToolbarContainer />
         <ResponsiveContainer>
           <Heading1>Create Project</Heading1>
-          <Input label='Name' autoFocus value={this.state.project.name} onChange={(v) => this.updateProject('name', v)} onDone={this.createProject} />
+          <Input label='Name' autoFocus value={this.state.currentProject.name} onChange={(v) => this.updateProject('name', v)} onDone={this.createProject} />
           <Button onClick={this.createProject}>Create</Button>
         </ResponsiveContainer>
       </Fragment>

@@ -1,5 +1,7 @@
-import React, { Fragment } from 'react'
+import React, { PureComponent, Fragment } from 'react'
+import styled from 'styled-components'
 import PropTypes from 'prop-types'
+
 import icons from '../icons'
 
 import List from '../components/List/List'
@@ -24,29 +26,39 @@ const resourceTypes = [
   }
 ]
 
-const choose = (resource) => {
-  console.warn('[ResourceList] [choose]', resource)
-}
+const StyledResourceList = styled.div`
+`
 
-const ResourceList = ({ resources }) => {
+const ResourceList = ({ resources, currentResource, loadResource }) => {
   return (
-    <List>
-      {resourceTypes.map(rt => {
-        return (
-          <Fragment key={`rt-${rt.type}`}>
-            <ListItem icon={icons.generic.folder}>{rt.name}</ListItem>
-            <List>
-              {resources.filter(r => r.type === rt.type).map(r => <ListItem key={r.id} icon={icons.resources[rt.type]}>{r.name}</ListItem>)}
-            </List>
-          </Fragment>
-        )
-      })}
-    </List>
+    <StyledResourceList className='component--resource-list'>
+      <List>
+        {resourceTypes.map(rt => {
+          return (
+            <Fragment key={`rt-${rt.type}`}>
+              <ListItem id={`resource-type-${rt.type}`} icon={icons.generic.folder}>{rt.name}</ListItem>
+              <List>
+                {resources.filter(r => r.type === rt.type).map(r => <ListItem onChoose={(id) => loadResource(id)} key={r.id} id={r.id} icon={icons.resources[rt.type]} selected={r === currentResource}>{r.name}</ListItem>)}
+              </List>
+            </Fragment>
+          )
+        })}
+      </List>
+    </StyledResourceList>
   )
 }
 
 ResourceList.propTypes = {
-  resources: PropTypes.array.isRequired
+  resources: PropTypes.array.isRequired,
+  currentResource: PropTypes.oneOf([
+    PropTypes.null,
+    PropTypes.object
+  ]),
+  loadResource: PropTypes.func 
+}
+
+ResourceList.defaultProps = {
+  loadResource: () => {}
 }
 
 export default ResourceList
