@@ -8,6 +8,9 @@ export default async function (state, { id }) {
     })
   })()
   const currentProject = (() => {
+    if (state.currentProject === null) {
+      return state.currentProject
+    }
     if (state.currentProject.project.id === id) {
       return null
     }

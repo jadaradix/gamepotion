@@ -53,6 +53,12 @@ class StateDashboard extends PureComponent {
           projects: state.projects,
           currentProject: state.currentProject
         })
+      }),
+      subscribe('PROJECTS_DELETE', (state) => {
+        this.setState({
+          projects: state.projects,
+          currentProject: state.currentProject
+        })
       })
     ]
   }
@@ -95,19 +101,12 @@ class StateDashboard extends PureComponent {
         if (confirmation === false) {
           return
         }
-        const d = {
+        dispatch({
           name: 'PROJECTS_DELETE',
           data: {
             id
           }
-        }
-        dispatch(d)
-          .then(state => {
-            this.setState({
-              projects: state.projects,
-              currentProject: state.currentProject
-            })
-          })
+        })
       }
     }
     const foundAction = actions[action]
