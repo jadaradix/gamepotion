@@ -32,6 +32,11 @@ class MainToolbarContainer extends Component {
         this.setState({
           currentProject: state.currentProject
         })
+      }),
+      subscribe('PROJECTS_DELETE', (state) => {
+        this.setState({
+          currentProject: state.currentProject
+        })
       })
     ]
   }
