@@ -46,7 +46,7 @@ class StateProjectProject extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentProject: getState().currentProject
+      currentProject: null
     }
     this.loadResource = this.loadResource.bind(this)
   }

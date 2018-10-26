@@ -16,9 +16,10 @@ class StateProjectNew extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      created: false,
       currentProject: {
-        name: ''
+        project: {
+          name: ''
+        }
       }
     }
     this.createProject = this.createProject.bind(this)
@@ -43,7 +44,7 @@ class StateProjectNew extends PureComponent {
     dispatch({
       name: 'PROJECTS_CREATE',
       data: {
-        name: this.state.currentProject.name
+        name: this.state.currentProject.project.name
       }
     })
   }
@@ -52,21 +53,24 @@ class StateProjectNew extends PureComponent {
     this.setState({
       currentProject: {
         ...this.state.currentProject,
-        [prop]: value
+        project: {
+          ...this.state.currentProject.project,
+          [prop]: value
+        }
       }
     })
   }
 
   render() {
-    if (this.state.currentProject.id !== undefined) {
-      return <Redirect to={`/project/${this.state.currentProject.id}`} />
+    if (this.state.currentProject.project.id !== undefined) {
+      return <Redirect to={`/project/${this.state.currentProject.project.id}`} />
     }
     return (
       <Fragment>
         <MainToolbarContainer />
         <ResponsiveContainer>
           <Heading1>Create Project</Heading1>
-          <Input label='Name' autoFocus value={this.state.currentProject.name} onChange={(v) => this.updateProject('name', v)} onDone={this.createProject} />
+          <Input label='Name' autoFocus value={this.state.currentProject.project.name} onChange={(v) => this.updateProject('name', v)} onDone={this.createProject} />
           <Button onClick={this.createProject}>Create</Button>
         </ResponsiveContainer>
       </Fragment>
