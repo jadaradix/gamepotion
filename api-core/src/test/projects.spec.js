@@ -197,6 +197,25 @@ describe('resources', () => {
       .catch(done)
   })
 
+  test('renames it', (done) => {
+    axios({
+      method: 'patch',
+      url: `${API_URL}/me/team/projects/${project.id}/resources/${resourceId}`,
+      data: {
+        type: 'stoopid-type',
+        name: 'Fox Sound'
+      },
+      ...configs.auth
+    })
+      .then(response => {
+        expect(response.status).toBe(200)
+        expect(response.data.type).toBe('sound')
+        expect(response.data.name).toBe('Fox Sound')
+        return done()
+      })
+      .catch(done)
+  })
+
   test('deletes it', (done) => {
     axios({
       method: 'delete',

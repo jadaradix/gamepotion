@@ -66,8 +66,9 @@ const routes = {
   'PATCH    /v1/me/team/projects/:id': require('./routes/users/teams/projects/update'),
   'DEL      /v1/me/team/projects/:id': require('./routes/users/teams/projects/delete'),
   // ->      -> resources
-  'GET      /v1/me/team/projects/:projectId/resources': require('./routes/users/teams/projects/resources/getAll'),
   'POST     /v1/me/team/projects/:projectId/resources': require('./routes/users/teams/projects/resources/create'),
+  'GET      /v1/me/team/projects/:projectId/resources': require('./routes/users/teams/projects/resources/getAll'),
+  'PATCH    /v1/me/team/projects/:projectId/resources/:resourceId': require('./routes/users/teams/projects/resources/update'),
   'DEL      /v1/me/team/projects/:projectId/resources/:resourceId': require('./routes/users/teams/projects/resources/delete')
 }
 
