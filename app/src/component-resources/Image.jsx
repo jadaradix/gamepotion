@@ -55,8 +55,9 @@ class Image extends PureComponent {
   // }
 
   componentWillReceiveProps (nextProps) {
-    console.warn('asasd', nextProps)
-    this.setState({ resource: nextProps.resource, imageLoaded: false, imageErrored: false })
+    if (nextProps.resource.fixed !== this.state.resource.fixed) {
+      this.setState({ resource: nextProps.resource, imageLoaded: false, imageErrored: false })
+    }
   }
 
   onLoad() {
