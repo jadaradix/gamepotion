@@ -5,8 +5,7 @@ import createResource from './resources/create'
 import resourceTypes from '../../../resourceTypes'
 
 const doCreateResource = async (state) => {
-  const name = resourceTypes.find(rt => rt.type === 'space').nameNew
-  return await createResource(state, { type: 'space', name })
+  return await createResource(state, { type: 'space' })
 }
 
 const doCreateProject = async (state, name) => {

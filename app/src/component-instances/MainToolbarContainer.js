@@ -75,12 +75,10 @@ class MainToolbarContainer extends Component {
   }
 
   addResource(type) {
-    const name = resourceTypes.find(rt => rt.type === type).nameNew
     dispatch({
       name: 'PROJECTS_RESOURCES_CREATE',
       data: {
-        type,
-        name
+        type
       }
     })
   }

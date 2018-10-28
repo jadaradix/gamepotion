@@ -12,7 +12,7 @@ class Project {
   }
 
   getDefaultName () {
-    return 'New Abstract Resource'
+    return 'New Resource'
   }
 
   toApi() {
@@ -38,16 +38,12 @@ class Project {
   }
 
   fromApiPost(json) {
-    if (typeof json.name !== 'string' || json.name.length === 0) {
-      throw new Error('name is not valid')
-    }
-    this.projectId = json.projectId
     this.type = json.type
-    this.name = json.name
+    this.name = (typeof json.name === 'string') ? json.name : this.getDefaultName()
   }
 
   fromApiPatch(json) {
-    this.name = (typeof json.name === 'string') ? json.name : this.name
+    this.name = (typeof json.name === 'string') ? json.name : this.getDefaultName()
   }
 
   clientFromApiGet(json) {

@@ -1,8 +1,8 @@
 import api from '../../../api.js'
 import classFactory from '../../../../classes/factory'
 
-export default async function (state, { type, name }) {
-  return api.post('api-core', `me/team/projects/${state.currentProject.project.id}/resources`, { type, name })
+export default async function (state, { type }) {
+  return api.post('api-core', `me/team/projects/${state.currentProject.project.id}/resources`, { type })
     .then(resource => {
       const resourceClass = classFactory.resource(resource)
       const currentProject = state.currentProject
