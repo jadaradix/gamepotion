@@ -4,24 +4,54 @@ class ResourceSound extends Resource {
   constructor (json = {}) {
     super(json)
     this.type = 'sound'
-    this.remoteUrl = json.remoteUrl || this.getRemoteUrl()
+    this.fixed = ((typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : 'zap')
   }
 
   getDefaultName () {
     return 'New Sound'
   }
 
-  getRemoteUrl() {
-    const id = 'fixed-sound-zap' || this.id
-    return `https://storage.googleapis.com/gmc-resources/${id}.wav`
-  }
-
   toApi() {
     const r = super.toApi()
     return {
       ...r,
-      remoteUrl: this.remoteUrl
+      fixed: this.fixed,
+      remoteUrl: this.getRemoteUrl()
     }
+  }
+
+  toDatastore() {
+    const r = super.toApi()
+    return {
+      ...r,
+      fixed: this.fixed
+    }
+  }
+
+  getRemoteUrl() {
+    const pathname = (() => {
+      if (typeof this.fixed === 'string') {
+        return `fixed-sound-${this.fixed}`
+      } else {
+        return this.id
+      }
+    })()
+    return `https://storage.googleapis.com/gmc-resources/${pathname}.wav`
+  }
+
+  fromApiPost(json) {
+    super.fromApiPost(json)
+    this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
+  }
+
+  fromApiPatch(json) {
+    super.fromApiPatch(json)
+    this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
+  }
+
+  clientFromApiGet(json) {
+    super.clientFromApiGet(json)
+    this.fixed = json.fixed
   }
 }
 
