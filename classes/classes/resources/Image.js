@@ -4,24 +4,54 @@ class ResourceImage extends Resource {
   constructor (json = {}) {
     super(json)
     this.type = 'image'
-    this.remoteUrl = json.remoteUrl || this.getRemoteUrl()
+    this.fixed = ((typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : 'ball')
   }
 
   getDefaultName () {
     return 'New Image'
   }
 
-  getRemoteUrl() {
-    const id = 'fixed-image-ball' || this.id
-    return `https://storage.googleapis.com/gmc-resources/${id}.png`
-  }
-
   toApi() {
     const r = super.toApi()
     return {
       ...r,
-      remoteUrl: this.remoteUrl
+      fixed: this.fixed,
+      remoteUrl: this.getRemoteUrl()
     }
+  }
+
+  toDatastore() {
+    const r = super.toApi()
+    return {
+      ...r,
+      fixed: this.fixed
+    }
+  }
+
+  getRemoteUrl() {
+    const pathname = (() => {
+      if (typeof this.fixed === 'string') {
+        return `fixed-image-${this.fixed}`
+      } else {
+        return this.id
+      }
+    })()
+    return `https://storage.googleapis.com/gmc-resources/${pathname}.png`
+  }
+
+  fromApiPost(json) {
+    super.fromApiPost(json)
+    this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
+  }
+
+  fromApiPatch(json) {
+    super.fromApiPatch(json)
+    this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
+  }
+
+  clientFromApiGet(json) {
+    super.clientFromApiGet(json)
+    this.fixed = json.fixed
   }
 }
 

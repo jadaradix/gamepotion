@@ -171,7 +171,7 @@ class StateProjectProject extends Component {
 
   render() {
     // if (this.state.currentProject && this.state.currentProject.currentResource) {
-    //   console.log('debug here', this.state.currentProject.currentResource)
+    //   console.warn('debug here', this.state.currentProject.currentResource)
     // }
     return (
       <Fragment>
@@ -188,7 +188,7 @@ class StateProjectProject extends Component {
             }
           </aside>
           <main>
-            {this.state.currentProject !== null && this.state.currentProject.currentResource &&
+            {this.state.currentProject !== null && this.state.currentProject.currentResource !== null &&
               <Resource resource={this.state.currentProject.currentResource} onUpdate={(data) => this.onUpdateResource(this.state.currentProject.currentResource, data)} />
             }
           </main>

@@ -37,13 +37,17 @@ class Project {
     return JSON.parse(JSON.stringify(json))
   }
 
+  getRemoteUrl() {
+    return null
+  }
+
   fromApiPost(json) {
     this.type = json.type
     this.name = (typeof json.name === 'string') ? json.name : this.getDefaultName()
   }
 
   fromApiPatch(json) {
-    this.name = (typeof json.name === 'string') ? json.name : this.getDefaultName()
+    this.name = (typeof json.name === 'string') ? json.name : this.name
   }
 
   clientFromApiGet(json) {
@@ -52,10 +56,6 @@ class Project {
     this.createdAt = json.createdAt
     this.type = json.type
     this.name = json.name
-  }
-
-  getRemoteUrl() {
-    return null
   }
 }
 

@@ -7,7 +7,6 @@ class ResourceSpace extends Resource {
   constructor (json = {}) {
     super(json)
     this.type = 'space'
-    this.instances = json.instances || []
     this.width = (typeof json.width === 'number' ? json.width : DEFAULT_WIDTH)
     this.height = (typeof json.height === 'number' ? json.height : DEFAULT_HEIGHT)
     this.camera = (typeof json.camera === 'object' ?
@@ -19,6 +18,7 @@ class ResourceSpace extends Resource {
         y: 0
       }
     )
+    this.instances = json.instances || []
   }
 
   getDefaultName () {
@@ -26,25 +26,25 @@ class ResourceSpace extends Resource {
   }
 
   toApi() {
-    return JSON.parse(JSON.stringify(
-      {
-        ...super.toApi(),
-        width: this.width,
-        height: this.height,
-        camera: this.camera
-      }
-    ))
+    const r = super.toApi()
+    return {
+      ...r,
+      width: this.width,
+      height: this.height,
+      camera: this.camera,
+      instances: this.instances
+    }
   }
 
   toDatastore() {
-    return JSON.parse(JSON.stringify(
-      {
-        ...super.toDatastore(),
-        width: this.width,
-        height: this.height,
-        camera: this.camera
-      }
-    ))
+    const r = super.toDatastore()
+    return {
+      ...r,
+      width: this.width,
+      height: this.height,
+      camera: this.camera,
+      instances: this.instances
+    }
   }
 
   fromApiPost(json) {
@@ -52,6 +52,7 @@ class ResourceSpace extends Resource {
     this.width = (typeof json.width === 'number') ? json.width : this.width
     this.height = (typeof json.height === 'number') ? json.height : this.height
     this.camera = (typeof json.camera === 'object') ? json.camera : this.camera
+    this.instances = Array.isArray(json.instances) ? json.instances : this.instances
   }
 
   fromApiPatch(json) {
@@ -59,6 +60,7 @@ class ResourceSpace extends Resource {
     this.width = (typeof json.width === 'number') ? json.width : this.width
     this.height = (typeof json.height === 'number') ? json.height : this.height
     this.camera = (typeof json.camera === 'object') ? json.camera : this.camera
+    this.instances = Array.isArray(json.instances) ? json.instances : this.instances
   }
 
   clientFromApiGet(json) {
@@ -66,6 +68,7 @@ class ResourceSpace extends Resource {
     this.width = json.width
     this.height = json.height
     this.camera = json.camera
+    this.instances = json.instances
   }
 }
 
