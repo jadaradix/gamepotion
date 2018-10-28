@@ -1,17 +1,20 @@
 import Resource from '../Resource.js'
 
+const DEFAULT_WIDTH = 320
+const DEFAULT_HEIGHT = 240
+
 class ResourceSpace extends Resource {
   constructor (json = {}) {
     super(json)
     this.type = 'space'
     this.instances = json.instances || []
-    this.width = (typeof json.width === 'number' ? json.width : 640)
-    this.height = (typeof json.height === 'number' ? json.height : 480)
+    this.width = (typeof json.width === 'number' ? json.width : DEFAULT_WIDTH)
+    this.height = (typeof json.height === 'number' ? json.height : DEFAULT_HEIGHT)
     this.camera = (typeof json.camera === 'object' ?
       json.camera :
       {
-        width: 640,
-        height: 480,
+        width: DEFAULT_WIDTH,
+        height: DEFAULT_HEIGHT,
         x: 0,
         y: 0
       }
