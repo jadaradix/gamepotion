@@ -138,6 +138,16 @@ class StateProjectProject extends Component {
     })
   }
 
+  onUpdate(resource, data) {
+    return dispatch({
+      name: 'PROJECTS_RESOURCES_UPDATE',
+      data: {
+        id: resource.id,
+        ...data
+      }
+    })
+  }
+
   onDelete(resource) {
     const confirmation = window.confirm(`Are you sure you want to delete ${resource.name}?`)
     if (confirmation === false) {
@@ -168,7 +178,7 @@ class StateProjectProject extends Component {
           </aside>
           <main>
             {this.state.currentProject !== null && this.state.currentProject.currentResource &&
-              <Resource resource={this.state.currentProject.currentResource} onDelete={() => this.onDelete(this.state.currentProject.currentResource)} />
+              <Resource resource={this.state.currentProject.currentResource} onUpdate={(data) => this.onUpdate(this.state.currentProject.currentResource, data)} onDelete={() => this.onDelete(this.state.currentProject.currentResource)} />
             }
           </main>
         </StyledState>

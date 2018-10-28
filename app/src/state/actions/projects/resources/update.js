@@ -1,10 +1,10 @@
 import api from '../../../api.js'
-import classes from '../../../../classes'
+import classFactory from '../../../../classes/factory'
 
 export default async function (state, data) {
   return api.patch('api-core', `me/team/projects/${state.currentProject.project.id}/resources/${data.id}`, data)
     .then(resource => {
-      const resourceClass = new classes.Resource()
+      const resourceClass = classFactory.resource(resource)
       resourceClass.clientFromApiGet(resource)
       const currentProject = state.currentProject
       currentProject.resources = currentProject.resources.map(resource => {

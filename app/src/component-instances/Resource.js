@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import icons from '../icons'
+import resourceTypes from '../resourceTypes'
 
 import Heading1 from '../components/Heading1/Heading1'
 import Button from '../components/Button/Button'
@@ -27,19 +28,25 @@ const StyledResource = styled.div`
   }
 `
 
+const getComponent = (resource, onUpdate) => {
+  const FoundResourceType = resourceTypes.find(r => r.type === resource.type).component
+  return <FoundResourceType resource={resource} onUpdate={onUpdate} />
+}
+
 const Resource = ({ resource, onUpdate }) => {
   return (
     <StyledResource className='component--resource'>
       <div className='heading'>
         <img src={icons.resources[resource.type]} alt={'nice'} />
         <Heading1>{resource.name}</Heading1>
+        {getComponent(resource, onUpdate)}
       </div>
     </StyledResource>
   )
 }
 
 Resource.propTypes = {
-  resource: PropTypes.object,
+  resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func
 }
 
