@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
-import { font, colours } from '../abstractions'
+import { font, colours } from '../../styleAbstractions'
 
 const StyledButton = styled.button`
   display: block;
   padding: 0.7rem;
-  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
   ${font}
   background-color: #2e3131;
   color: ${colours.foreNegative};
@@ -17,10 +17,13 @@ const StyledButton = styled.button`
   border-style: solid;
   border-color: #2e3131;
   outline: 0;
+  &[disabled] {
+    opacity: 0.5;
+  }
   :focus {
     border-color: ${colours.outline};
   }
-  :hover {
+  &:not([disabled]):hover {
     background-color: #6c7a89;
     border-color: #6c7a89;
   }
@@ -34,9 +37,9 @@ const handleOnClick = (history, route, onClick) => {
   }
 }
 
-const Button = ({ history, route, onClick, icon, hint, children }) => {
+const Button = ({ history, route, onClick, icon, hint, disabled, children }) => {
   return (
-    <StyledButton title={hint} onClick={() => handleOnClick(history, route, onClick)} className='component--button'>
+    <StyledButton disabled={disabled} title={hint} onClick={() => handleOnClick(history, route, onClick)} className='component--button'>
       {children}
       {icon && <img src={icon} alt={hint} />}
     </StyledButton>
@@ -47,12 +50,14 @@ Button.propTypes = {
   route: PropTypes.string,
   onClick: PropTypes.func,
   icon: PropTypes.string,
-  hint: PropTypes.string
+  hint: PropTypes.string,
+  disabled: PropTypes.bool
 }
 
 Button.defaultProps = {
   onClick: null,
-  hint: ''
+  hint: '',
+  disabled: false
 }
 
 export default withRouter(Button)

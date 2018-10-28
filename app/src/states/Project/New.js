@@ -1,16 +1,23 @@
 import React, { PureComponent, Fragment } from 'react'
+import styled from 'styled-components'
 import { Redirect } from 'react-router'
 
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../../component-instances/ResponsiveContainer'
 
+import Box from '../../components/Box/Box'
 import Heading1 from '../../components/Heading1/Heading1'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 
 import { dispatch, subscribe } from '../../state'
 
-// <Input label='Project Description' value='New Project Description' />
+const StyledState = styled.div`
+  .component--box {
+    max-width: 480px;
+    margin: 4rem auto 0 auto;
+  }
+`
 
 class StateProjectNew extends PureComponent {
   constructor(props) {
@@ -22,8 +29,9 @@ class StateProjectNew extends PureComponent {
         }
       }
     }
-    this.createProject = this.createProject.bind(this)
-    this.updateProject = this.updateProject.bind(this)
+    this.update = this.update.bind(this)
+    this.submit = this.submit.bind(this)
+    this.canSubmit = this.canSubmit.bind(this)
   }
 
   componentDidMount () {
@@ -40,16 +48,7 @@ class StateProjectNew extends PureComponent {
     this.subscriptions.forEach(s => s.unsubscribe())
   }
 
-  createProject() {
-    dispatch({
-      name: 'PROJECTS_CREATE',
-      data: {
-        name: this.state.currentProject.project.name
-      }
-    })
-  }
-
-  updateProject(prop, value) {
+  update(prop, value) {
     this.setState({
       currentProject: {
         ...this.state.currentProject,
@@ -61,6 +60,21 @@ class StateProjectNew extends PureComponent {
     })
   }
 
+  submit(e) {
+    e.preventDefault()
+    dispatch({
+      name: 'PROJECTS_CREATE',
+      data: {
+        name: this.state.currentProject.project.name
+      }
+    })
+  }
+
+  canSubmit () {
+    const isNameValid = (this.state.currentProject.project.name.length > 0)
+    return (isNameValid)
+  }
+
   render() {
     if (this.state.currentProject.project.id !== undefined) {
       return <Redirect to={`/project/${this.state.currentProject.project.id}`} />
@@ -69,9 +83,15 @@ class StateProjectNew extends PureComponent {
       <Fragment>
         <MainToolbarContainer />
         <ResponsiveContainer>
-          <Heading1>Create Project</Heading1>
-          <Input label='Name' autoFocus value={this.state.currentProject.project.name} onChange={(v) => this.updateProject('name', v)} onDone={this.createProject} />
-          <Button onClick={this.createProject}>Create</Button>
+          <StyledState>
+            <Box>
+              <form onSubmit={this.submit}>
+                <Heading1>Create project</Heading1>
+                <Input label='Name' autoFocus value={this.state.currentProject.project.name} onChange={(v) => this.update('name', v)} onDone={this.createProject} />
+                <Button disabled={!this.canSubmit()} onClick={this.createProject}>Create</Button>
+              </form>
+            </Box>
+          </StyledState>
         </ResponsiveContainer>
       </Fragment>
     )

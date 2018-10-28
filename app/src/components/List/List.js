@@ -9,7 +9,7 @@ const StyledList = styled.ul`
     }
   }
   .component--list + .component--list-item {
-    margin-top: 1rem;
+    margin-top: 0.25rem;
   }
   .component--list-item + .component--list-item {
     margin-top: 0.25rem;

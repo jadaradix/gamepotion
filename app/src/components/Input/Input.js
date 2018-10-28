@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import uuid from 'uuid'
 
-import { font, colours } from '../abstractions'
+import { font, colours } from '../../styleAbstractions'
 
 const StyledInput = styled.div`
   label {
     display: block;
     width: 100%;
     ${font}
+    font-size: 80%;
     color: #bdc3c7;
   }
   input {

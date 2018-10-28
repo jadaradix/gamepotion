@@ -4,9 +4,10 @@ import styled from 'styled-components'
 import classnames from 'classnames'
 
 import icons from '../../icons'
-import { font, colours } from '../abstractions'
+import { font, colours } from '../../styleAbstractions'
 
 const StyledListItem = styled.button`
+  position: relative;
   display: block;
   width: 100%;
   height: calc(2rem + 4px);
@@ -21,7 +22,7 @@ const StyledListItem = styled.button`
   &.selected {
     background-color: #dadfe1;
   }
-  :focus {
+  &:focus {
     border-color: ${colours.outline};
   }
   > img {
@@ -43,10 +44,21 @@ const StyledListItem = styled.button`
     color: ${colours.fore};
     // background-color: green;
   }
+  &:hover {
+    > .actions {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
   > .actions {
-    float: right;
-    // background-color: pink;
+    position: absolute;
+    top: 0;
+    right: 0;
     height: 2rem;
+    transition: opacity 0.1s ease-in-out;
+    visibility: hidden;
+    opacity: 0;
+    // background-color: pink;
     img {
       display: block;
       float: left;
@@ -72,9 +84,9 @@ const StyledListItem = styled.button`
 `
 
 const actions = {
-  'load': (id, onAction) => (<img title='Load' key='action-load' onClick={() => onAction(id, 'load')} className='action' src={icons.generic.folder} alt='' tabIndex='0' />),
-  'rename': (id, onAction) => (<img title='Rename' key='action-rename' onClick={() => onAction(id, 'rename')} className='action' src={icons.generic.actions.edit} alt='' tabIndex='0' />),
-  'delete': (id, onAction) => (<img title='Delete' key='action-delete' onClick={() => onAction(id, 'delete')} className='action' src={icons.generic.actions.delete} alt='' tabIndex='0' />)
+  'add': (id, handleOnAction) => (<img title='Add' key='action-add' onClick={(e) => handleOnAction(e, id, 'add')} className='action' src={icons.generic.actions.add} alt='' tabIndex='0' />),
+  'rename': (id, handleOnAction) => (<img title='Rename' key='action-rename' onClick={(e) => handleOnAction(e, id, 'rename')} className='action' src={icons.generic.actions.edit} alt='' tabIndex='0' />),
+  'delete': (id, handleOnAction) => (<img title='Delete' key='action-delete' onClick={(e) => handleOnAction(e, id, 'delete')} className='action' src={icons.generic.actions.delete} alt='' tabIndex='0' />)
 }
 
 const getAction = (onAction, id, name) => {
@@ -86,12 +98,16 @@ const getAction = (onAction, id, name) => {
 }
 
 const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction }) => {
+  const handleOnAction = (e, id, action) => {
+    e.stopPropagation()
+    onAction(id, action)
+  }
   return (
-    <StyledListItem onDoubleClick={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})}>
+    <StyledListItem onClick={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})}>
       <img src={icon} alt='' />
       <span>{children}</span>
       <div className='actions'>
-        {actions.map(name => getAction(onAction, id, name))}
+        {actions.map(name => getAction(handleOnAction, id, name))}
       </div>
     </StyledListItem>
   )

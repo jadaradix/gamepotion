@@ -8,12 +8,6 @@ const StyledResponsiveContainer = styled.div`
   .component--list + .component--button {
     margin-top: 1rem;
   }
-  .component--heading1 + .component--list {
-    margin-top: 1rem;
-  }
-  .component--heading1 + .component--input {
-    margin-top: 1.5rem;
-  }
   .component--heading1 + .component--loading {
     margin-top: 1.5rem;
   }
@@ -21,6 +15,12 @@ const StyledResponsiveContainer = styled.div`
     margin-top: 1.5rem;
   }
   .component--input + .component--button {
+    margin-top: 1.5rem;
+  }
+  .component--heading1 + .component--list {
+    margin-top: 1rem;
+  }
+  .component--heading1 + .component--input {
     margin-top: 1.5rem;
   }
   // background-color: blue;

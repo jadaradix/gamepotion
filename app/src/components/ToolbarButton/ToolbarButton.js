@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import classnames from 'classnames'
 import { withRouter } from 'react-router-dom'
 
-import { font, colours } from '../abstractions'
+import { font, colours } from '../../styleAbstractions'
 
 const StyledToolbarButton = styled.li`
   display: flex;
@@ -70,16 +70,19 @@ const handleOnClick = (history, route, onClick) => {
 const ToolbarButton = ({ history, route, onClick, icon, hint, significant, disabled, fixedWidth, children }) => {
   const style = {
     main: {},
+    button: {},
     span: {}
   }
   if (typeof fixedWidth === 'string') {
     style.main.width = `${fixedWidth}px`
+    style.button.width = '100%'
+    style.button.textAlign = 'left'
   }
   return (
     <StyledToolbarButton title={hint} style={style.main}>
-      <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={classnames({'significant': significant, 'disabled': disabled})}>
+      <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={classnames({'significant': significant, 'disabled': disabled})} style={style.button}>
         {icon && <img src={icon} alt={hint} className={`icon-${icon}`} />}
-        {children && <span>{children}</span>}
+        {children && <span style={style.span}>{children}</span>}
       </button>
     </StyledToolbarButton>
   )

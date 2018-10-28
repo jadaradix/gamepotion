@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
+import resourceTypes from '../resourceTypes'
 import icons from '../icons'
 
 import Toolbar from '../components/Toolbar/Toolbar'
@@ -23,10 +25,10 @@ const MainToolbar = ({ currentProject, onClick }) => {
       <ToolbarButton onClick={() => onClick('project-run')} disabled={currentProject === null} icon={icons.generic.project.run} hint='Run project' />
       <ToolbarButton onClick={() => onClick('project-share')} disabled={currentProject === null} icon={icons.generic.project.share} hint='Share project' />
       <ToolbarGap />
-      <ToolbarButton onClick={() => onClick('add-resource-image')} disabled={currentProject === null} icon={icons.resources.image} hint='Add image' />
-      <ToolbarButton onClick={() => onClick('add-resource-sound')} disabled={currentProject === null} icon={icons.resources.sound} hint='Add sound' />
-      <ToolbarButton onClick={() => onClick('add-resource-atom')} disabled={currentProject === null} icon={icons.resources.atom} hint='Add atom' />
-      <ToolbarButton onClick={() => onClick('add-resource-space')} disabled={currentProject === null} icon={icons.resources.space} hint='Add space' />
+      {resourceTypes.map(rt => (
+        <ToolbarButton key={rt.type} onClick={() => onClick(`add-resource-${rt.type}`)} disabled={currentProject === null} icon={icons.resources[rt.type]} hint={`Add ${rt.nameSingular}`} />
+      ))
+      }
       <ToolbarGap />
       <ToolbarButton route='/project/preferences' disabled={currentProject === null} icon={icons.generic.preferences} hint='Project preferences' />
     </Toolbar>

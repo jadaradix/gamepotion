@@ -14,3 +14,7 @@ cd api-core/src;
   rm -rf classes;
   rm -rf platforms;
 cd ../..;
+
+cd app/src;
+  rm -rf classes;
+cd ../..;

@@ -1,3 +1,5 @@
+import logIn from './actions/user/logIn'
+import logOut from './actions/user/logOut'
 import createProject from './actions/projects/create'
 import getProjects from './actions/projects/get'
 import updateProject from './actions/projects/update'
@@ -5,21 +7,31 @@ import deleteProject from './actions/projects/delete'
 import startLoadProject from './actions/projects/startLoad'
 import loadProject from './actions/projects/load'
 import loadProjectResource from './actions/projects/resources/load'
+import createProjectResource from './actions/projects/resources/create'
+import updateProjectResource from './actions/projects/resources/update'
+import deleteProjectResource from './actions/projects/resources/delete'
 
 let state = {
+  user: null,
+  team: null,
   projects: null,
   currentProject: null
 }
 
 const actions = (() => {
   const actions = new Map()
+  actions.set('USER_LOG_IN', logIn)
+  actions.set('USER_LOG_OUT', logOut)
   actions.set('PROJECTS_CREATE', createProject)
   actions.set('PROJECTS_GET', getProjects)
   actions.set('PROJECTS_UPDATE', updateProject)
   actions.set('PROJECTS_DELETE', deleteProject)
   actions.set('PROJECTS_START_LOAD', startLoadProject)
   actions.set('PROJECTS_LOAD', loadProject)
+  actions.set('PROJECTS_RESOURCES_CREATE', createProjectResource)
   actions.set('PROJECTS_RESOURCES_LOAD', loadProjectResource)
+  actions.set('PROJECTS_RESOURCES_UPDATE', updateProjectResource)
+  actions.set('PROJECTS_RESOURCES_DELETE', deleteProjectResource)
   return actions
 })()
 

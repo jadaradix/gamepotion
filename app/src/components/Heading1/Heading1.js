@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { font, colours } from '../abstractions'
+import { font, colours } from '../../styleAbstractions'
 
 const StyledHeading1 = styled.h1`
   display: block;

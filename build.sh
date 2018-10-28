@@ -15,3 +15,7 @@ cd api-core/src;
   rm -rf classes; ln -s ../../classes classes;
   rm -rf platforms; ln -s ../../platforms platforms;
 cd ../..;
+
+cd app/src;
+  rm -rf classes; ln -s ../../classes classes;
+cd ../..;

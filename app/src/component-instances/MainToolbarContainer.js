@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-import { getState, subscribe } from '../state'
+import { getState, dispatch, subscribe } from '../state'
+import resourceTypes from '../resourceTypes'
 
 import MainToolbar from './MainToolbar'
 
@@ -47,24 +48,16 @@ class MainToolbarContainer extends Component {
 
   handleOnClick (action) {
     console.warn('[MainToolbarContainer] [handleOnClick] action', action)
+    if (action.indexOf('add-resource-') === 0) {
+      const resourceType = action.substring('add-resource-'.length)
+      return this.addResource(resourceType)
+    }
     const actions = {
       'project-run': () => {
         this.runProject()
       },
       'project-share': () => {
         this.shareProject()
-      },
-      'add-resource-image': () => {
-        this.addResource('image')
-      },
-      'add-resource-sound': () => {
-        this.addResource('sound')
-      },
-      'add-resource-atom': () => {
-        this.addResource('atom')
-      },
-      'add-resource-space': () => {
-        this.addResource('space')
       }
     }
     const foundAction = actions[action]
@@ -82,7 +75,14 @@ class MainToolbarContainer extends Component {
   }
 
   addResource(type) {
-    console.warn('[MainToolbarContainer] [addResource] type', type)
+    const name = resourceTypes.find(rt => rt.type === type).nameNew
+    dispatch({
+      name: 'PROJECTS_RESOURCES_CREATE',
+      data: {
+        type,
+        name
+      }
+    })
   }
 
   render() {
