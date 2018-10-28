@@ -38,7 +38,7 @@ const StyledState = styled.div`
       height: calc(100% - 2rem);
       // background-color: red;
       > .component--box {
-        height: calc(100% - 4rem);
+        height: calc(100% - 2rem);
         overflow: scroll;
       }
     }
