@@ -13,6 +13,9 @@ export default async function (state, data) {
         }
         return resource
       })
+      if (currentProject.currentResource.id === data.id) {
+        currentProject.currentResource = resourceClass
+      }
       return {
         ...state,
         currentProject

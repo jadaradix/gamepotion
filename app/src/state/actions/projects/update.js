@@ -16,14 +16,14 @@ export default async function (state, { id, name }) {
           return project
         })
       })()
-      // let currentProject = state.currentProject
-      // if (currentProject !== null && currentProject.project.id === id) {
-      //   currentProject.project = projectClass
-      // }
+      let currentProject = state.currentProject
+      if (currentProject !== null && currentProject.project.id === id) {
+        currentProject.project = projectClass
+      }
       return {
         ...state,
         projects,
-        // currentProject
+        currentProject
       }
     })
 }

@@ -162,6 +162,9 @@ class StateProjectProject extends Component {
   }
 
   render() {
+    // if (this.state.currentProject && this.state.currentProject.currentResource) {
+    //   console.log('debug here', this.state.currentProject.currentResource)
+    // }
     return (
       <Fragment>
         <MainToolbarContainer />

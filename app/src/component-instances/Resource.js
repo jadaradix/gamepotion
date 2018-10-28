@@ -6,7 +6,6 @@ import icons from '../icons'
 import resourceTypes from '../resourceTypes'
 
 import Heading1 from '../components/Heading1/Heading1'
-import Button from '../components/Button/Button'
 
 const StyledResource = styled.div`
   .heading {
