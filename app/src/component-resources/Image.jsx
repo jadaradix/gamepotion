@@ -9,7 +9,7 @@ import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
 
 const StyledResource = styled.div`
-  @keyframes no-image {
+  @keyframes no-resource {
     from { opacity: 0; }
     to   { opacity: 1; }
   }
@@ -25,11 +25,11 @@ const StyledResource = styled.div`
     visibility: visible;
     opacity: 1;
   }
-  .no-image {
+  .no-resource {
     margin-top: 1rem;
     ${font}
     color: ${colours.fore};
-    animation: no-image 0.5s;
+    animation: no-resource 0.5s;
   }
   .component--box {
     margin-top: 1rem;
@@ -41,8 +41,8 @@ class Image extends PureComponent {
     super(props)
     this.state = {
       resource: props.resource,
-      imageLoaded: false,
-      imageErrored: false
+      fileLoaded: false,
+      fileErrored: false
     }
     this.onLoad = this.onLoad.bind(this)
     this.onError = this.onError.bind(this)
@@ -56,19 +56,19 @@ class Image extends PureComponent {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.resource.fixed !== this.state.resource.fixed) {
-      this.setState({ resource: nextProps.resource, imageLoaded: false, imageErrored: false })
+      this.setState({ resource: nextProps.resource, fileLoaded: false, fileErrored: false })
     }
   }
 
   onLoad() {
     this.setState({
-      imageLoaded: true
+      fileLoaded: true
     })
   }
 
   onError() {
     this.setState({
-      imageErrored: true
+      fileErrored: true
     })
   }
 
@@ -99,13 +99,13 @@ class Image extends PureComponent {
 
     return (
       <StyledResource>
-        {!this.state.imageErrored ?
-          <img src={remoteUrl} onLoad={this.onLoad} onError={this.onError} className={this.state.imageLoaded ? 'visible' : ''} alt='' />
+        {!this.state.fileErrored ?
+          <img src={remoteUrl} onLoad={this.onLoad} onError={this.onError} className={this.state.fileLoaded ? 'visible' : ''} alt='' />
           :
-          <p className='no-image'>You haven&rsquo;t chosen an image yet.</p>
+          <p className='no-resource'>You haven&rsquo;t chosen a file yet.</p>
         }
         <Box>
-          <Dropper label='Choose a Game Maker Club image' onChoose={this.onChooseFixed} options={fixedOptions} value={fixedValue} />
+          <Dropper label='Choose a Game Maker Club file' onChoose={this.onChooseFixed} options={fixedOptions} value={fixedValue} />
         </Box>
       </StyledResource>
     )
