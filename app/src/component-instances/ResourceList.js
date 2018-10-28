@@ -12,8 +12,20 @@ import resourceTypes from '../resourceTypes'
 const StyledResourceList = styled.div`
 `
 
-const ResourceList = ({ resources, currentResource, onLoad, onRename, onDelete }) => {
-  const onAction = (id, action) => {
+const ResourceList = ({ resources, currentResource, onAdd, onLoad, onRename, onDelete }) => {
+  const onResourceTypeAction = (id, action) => {
+    const actions = {
+      'add': () => {
+        onAdd(id)
+      }
+    }
+    const foundAction = actions[action]
+    if (typeof foundAction === 'function') {
+      actions[action]()
+    }
+  }
+
+  const onResourceAction = (id, action) => {
     const actions = {
       'rename': () => {
         onRename(resources.find(r => r.id === id))
@@ -34,9 +46,9 @@ const ResourceList = ({ resources, currentResource, onLoad, onRename, onDelete }
         {resourceTypes.map(rt => {
           return (
             <Fragment key={`rt-${rt.type}`}>
-              <ListItem id={`resource-type-${rt.type}`} icon={icons.generic.folder}>{rt.namePlural}</ListItem>
+              <ListItem onAction={onResourceTypeAction} actions={['add']} id={rt.type} icon={icons.generic.folder}>{rt.namePlural}</ListItem>
               <List>
-                {resources.filter(r => r.type === rt.type).map(r => <ListItem onChoose={(id) => onLoad(resources.find(r => r.id === id))} key={r.id} id={r.id} icon={icons.resources[rt.type]} selected={r === currentResource} actions={['rename', 'delete']} onAction={onAction}>{r.name}</ListItem>)}
+                {resources.filter(r => r.type === rt.type).map(r => <ListItem onChoose={(id) => onLoad(resources.find(r => r.id === id))} key={r.id} id={r.id} icon={icons.resources[rt.type]} selected={r === currentResource} actions={['rename', 'delete']} onAction={onResourceAction}>{r.name}</ListItem>)}
               </List>
             </Fragment>
           )
@@ -52,12 +64,14 @@ ResourceList.propTypes = {
     PropTypes.null,
     PropTypes.object
   ]),
+  onAdd: PropTypes.func,
   onLoad: PropTypes.func,
   onRename: PropTypes.func,
   onDelete: PropTypes.func
 }
 
 ResourceList.defaultProps = {
+  onAdd: () => {},
   onLoad: () => {},
   onRename: () => {},
   onDelete: () => {}

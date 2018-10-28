@@ -7,6 +7,7 @@ import loading from './files/loading.svg'
 import projectRun from './files/project-run.svg'
 import projectShare from './files/project-share.svg'
 
+import actionAdd from './files/action-add.svg'
 import actionEdit from './files/action-edit.svg'
 import actionDelete from './files/action-delete.svg'
 
@@ -17,6 +18,7 @@ export default {
   preferences,
   loading,
   actions: {
+    add: actionAdd,
     edit: actionEdit,
     delete: actionDelete
   },

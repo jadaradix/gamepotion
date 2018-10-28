@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import icons from '../../icons'
 import { getState, dispatch, subscribe } from '../../state'
+import resourceTypes from '../../resourceTypes'
 import notify from '../../notify'
 
 import List from '../../components/List/List'
@@ -55,8 +56,6 @@ class StateProjectProject extends Component {
       currentProject: null,
       errored: false
     }
-    this.onLoad = this.onLoad.bind(this)
-    this.onDelete = this.onDelete.bind(this)
   }
 
   componentDidMount() {
@@ -115,7 +114,18 @@ class StateProjectProject extends Component {
     this.subscriptions.forEach(s => s.unsubscribe())
   }
 
-  onLoad(resource) {
+  onAddResource(type) {
+    const name = resourceTypes.find(rt => rt.type === type).nameNew
+    dispatch({
+      name: 'PROJECTS_RESOURCES_CREATE',
+      data: {
+        type,
+        name
+      }
+    })
+  }
+
+  onLoadResource(resource) {
     return dispatch({
       name: 'PROJECTS_RESOURCES_LOAD',
       data: {
@@ -124,7 +134,7 @@ class StateProjectProject extends Component {
     })
   }
 
-  onRename(resource) {
+  onRenameResource(resource) {
     const name = window.prompt(`What would you like to call ${resource.name}?`, resource.name)
     if (name === undefined) {
       return
@@ -138,7 +148,7 @@ class StateProjectProject extends Component {
     })
   }
 
-  onUpdate(resource, data) {
+  onUpdateResource(resource, data) {
     return dispatch({
       name: 'PROJECTS_RESOURCES_UPDATE',
       data: {
@@ -148,7 +158,7 @@ class StateProjectProject extends Component {
     })
   }
 
-  onDelete(resource) {
+  onDeleteResource(resource) {
     const confirmation = window.confirm(`Are you sure you want to delete ${resource.name}?`)
     if (confirmation === false) {
       return
@@ -172,7 +182,7 @@ class StateProjectProject extends Component {
           <aside>
             {this.state.currentProject !== null &&
               <Box>
-                <ResourceList onLoad={this.onLoad} onRename={this.onRename} onDelete={this.onDelete} resources={this.state.currentProject.resources} currentResource={this.state.currentProject.currentResource} />
+                <ResourceList onAdd={this.onAddResource} onLoad={this.onLoadResource} onRename={this.onRenameResource} onDelete={this.onDeleteResource} resources={this.state.currentProject.resources} currentResource={this.state.currentProject.currentResource} />
               </Box>
             }
             {this.state.currentProject === null && this.state.errored === false &&
@@ -181,7 +191,7 @@ class StateProjectProject extends Component {
           </aside>
           <main>
             {this.state.currentProject !== null && this.state.currentProject.currentResource &&
-              <Resource resource={this.state.currentProject.currentResource} onUpdate={(data) => this.onUpdate(this.state.currentProject.currentResource, data)} onDelete={() => this.onDelete(this.state.currentProject.currentResource)} />
+              <Resource resource={this.state.currentProject.currentResource} onUpdate={(data) => this.onUpdateResource(this.state.currentProject.currentResource, data)} />
             }
           </main>
         </StyledState>
