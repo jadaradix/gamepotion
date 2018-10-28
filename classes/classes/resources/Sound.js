@@ -4,6 +4,7 @@ class ResourceSound extends Resource {
   constructor (json = {}) {
     super(json)
     this.type = 'sound'
+    this.remoteUrl = json.remoteUrl || this.getRemoteUrl()
   }
 
   getDefaultName () {
@@ -11,7 +12,16 @@ class ResourceSound extends Resource {
   }
 
   getRemoteUrl() {
-    return `https://storage.googleapis.com/gmc-resource-blobs/${this.id}.wav`
+    const id = 'fixed-sound-zap' || this.id
+    return `https://storage.googleapis.com/gmc-resources/${id}.wav`
+  }
+
+  toApi() {
+    const r = super.toApi()
+    return {
+      ...r,
+      remoteUrl: this.remoteUrl
+    }
   }
 }
 
