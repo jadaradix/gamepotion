@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
 import { getState, dispatch, subscribe } from '../state'
-import resourceTypes from '../resourceTypes'
 
 import MainToolbar from './MainToolbar'
 

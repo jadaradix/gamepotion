@@ -1,11 +1,9 @@
 import React, { PureComponent, Fragment } from 'react'
 import { Redirect } from 'react-router'
 import styled from 'styled-components'
-import icons from '../icons'
 import { get, set } from '../localStorage'
 
 import Box from '../components/Box/Box'
-import Heading1 from '../components/Heading1/Heading1'
 import Input from '../components/Input/Input'
 import Button from '../components/Button/Button'
 

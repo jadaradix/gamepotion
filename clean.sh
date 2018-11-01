@@ -1,3 +1,6 @@
+cd abstractions/uuid;
+cd ../..;
+
 cd classes;
   rm -rf abstractions;
 cd ..;
@@ -17,5 +20,4 @@ cd ../..;
 
 cd app/src;
   rm -rf classes;
-  rm -rf abstractions;
 cd ../..;

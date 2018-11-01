@@ -6,6 +6,10 @@ cd abstractions/storage;
   npm test;
 cd ../..;
 
+cd abstractions/uuid;
+  npm test;
+cd ../..;
+
 cd api-core/src;
   npm test;
 cd ../..;

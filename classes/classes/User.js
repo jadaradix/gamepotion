@@ -1,5 +1,4 @@
-import uuid from 'uuid'
-import createRandomString from '../abstractions/createRandomString.js'
+import uuid from '../abstractions/uuid/index.dist.js'
 
 class User {
   constructor (json = {}) {
@@ -12,7 +11,7 @@ class User {
     // activation code
     this.activationCode = json.activationCode || null
     if (this.activationCode === null) {
-      this.activationCode = `todo-${createRandomString()}`
+      this.activationCode = `todo-${uuid()}`
     }
     //
   }

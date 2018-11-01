@@ -2,7 +2,6 @@ import api from '../../api.js'
 import classes from '../../../classes'
 import getProjects from './get'
 import createResource from './resources/create'
-import resourceTypes from '../../../resourceTypes'
 
 const doCreateResource = async (state) => {
   return await createResource(state, { type: 'space' })

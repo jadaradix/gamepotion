@@ -1,7 +1,12 @@
+cd abstractions/uuid;
+  npm run build;
+cd ../..;
+
 cd classes;
   rm -rf abstractions;
   mkdir abstractions;
-  cp ../abstractions/createRandomString.js abstractions/createRandomString.js;
+  mkdir abstractions/uuid;
+  cp ../abstractions/uuid/index.dist.js abstractions/uuid/index.dist.js;
   npm run build;
 cd ..;
 
@@ -19,5 +24,8 @@ cd api-core/src;
 cd ../..;
 
 cd app/src;
-  rm -rf classes; ln -s ../../classes classes;
+  rm -rf classes; cp -R ../../classes classes;
+  cd classes;
+    rm -rf node_modules;
+  cd ..;
 cd ../..;

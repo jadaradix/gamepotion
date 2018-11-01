@@ -1,4 +1,4 @@
-import uuid from 'uuid'
+import uuid from '../abstractions/uuid/index.dist.js'
 
 class Team {
   constructor (json = {}) {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import ReactDOM from 'react-dom'
 
@@ -12,10 +12,10 @@ import Auth from './states/Auth.js'
 
 import './index.css'
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PrivateRoute = ({ WhichComponent, ...rest }) => (
   <Route {...rest} render={(props) => (
     api.isLoggedIn() === true
-      ? <Component {...props} />
+      ? <WhichComponent {...props} />
       : <Redirect to='/auth' />
   )} />
 )
@@ -24,11 +24,11 @@ const router = (
   <Router>
     <Switch>
       <Route path='/auth' exact strict component={Auth} />
-      <PrivateRoute path='/dashboard' exact strict component={Dashboard} />
-      <PrivateRoute path='/project/new' exact strict component={ProjectNew} />
-      <PrivateRoute path='/project/:id/preferences' exact strict component={ProjectPreferences} />
-      <PrivateRoute path='/project/:id' exact strict component={ProjectProject} />
-      <PrivateRoute component={Dashboard} />
+      <PrivateRoute path='/dashboard' exact strict WhichComponent={Dashboard} />
+      <PrivateRoute path='/project/new' exact strict WhichComponent={ProjectNew} />
+      <PrivateRoute path='/project/:id/preferences' exact strict WhichComponent={ProjectPreferences} />
+      <PrivateRoute path='/project/:id' exact strict WhichComponent={ProjectProject} />
+      <PrivateRoute WhichComponent={Dashboard} />
     </Switch>
   </Router>
 )

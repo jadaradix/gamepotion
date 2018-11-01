@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+         "targets": {
+          "node": "current",
+          "browsers": ["last 2 versions", "> 5% in US"],
+          "uglify": false
+        }
+      }
+    ]
+  ],
+  "plugins": ["add-module-exports"]
+}

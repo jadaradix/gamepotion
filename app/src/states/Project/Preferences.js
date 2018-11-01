@@ -6,10 +6,6 @@ import MainToolbarContainer from '../../component-instances/MainToolbarContainer
 import ResponsiveContainer from '../../component-instances/ResponsiveContainer'
 
 class StateProjectPreferences extends PureComponent {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return (
       <Fragment>
