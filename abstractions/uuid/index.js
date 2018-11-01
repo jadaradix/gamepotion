@@ -18,11 +18,12 @@ const uuid = () => {
   }
   
   const getRandomBytes = () => {
-    const getRandomValues = (typeof(window.crypto) != 'undefined' && window.crypto.getRandomValues) || (typeof(window.msCrypto) != 'undefined' && window.msCrypto.getRandomValues)
     if (typeof require === 'function') {
       const crypto = require('crypto')
       return crypto.randomBytes(16)
-    } else if (getRandomValues) {
+    }
+    const getRandomValues = (window && typeof(window.crypto) !== 'undefined' && window.crypto.getRandomValues) || (window && typeof(window.msCrypto) !== 'undefined' && window.msCrypto.getRandomValues)
+    if (getRandomValues) {
       return getRandomValues(16)
     } else {
       const randomBytes = new Array(16)
