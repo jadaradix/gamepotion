@@ -1,4 +1,4 @@
-const factory = require('../factory.js')
+const factory = require('../factory-commonjs.js')
 
 test('creates a resource based on type (image; no name)', () => {
   const resource = factory.resource({

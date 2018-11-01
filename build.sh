@@ -1,5 +1,7 @@
 cd classes;
-  rm -rf abstractions; ln -s ../abstractions abstractions;
+  rm -rf abstractions;
+  mkdir abstractions;
+  cp ../abstractions/createRandomString.js abstractions/createRandomString.js;
   npm run build;
 cd ..;
 

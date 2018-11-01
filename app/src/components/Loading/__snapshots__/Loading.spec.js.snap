@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+.c0 {
+  display: block;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.c0 img {
+  display: block;
+  width: 2rem;
+  margin: 0 auto 0 auto;
+  -webkit-animation: gmc-loading 4s linear infinite;
+  animation: gmc-loading 4s linear infinite;
+}
+
+<div
+  className="component--loading c0"
+>
+  <img
+    alt=""
+    src="loading.svg"
+  />
+</div>
+`;

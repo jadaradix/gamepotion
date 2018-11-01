@@ -1,19 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
-import icons from '../../icons'
-import { getState, dispatch, subscribe } from '../../state'
-import resourceTypes from '../../resourceTypes'
+import { dispatch, subscribe } from '../../state'
 import notify from '../../notify'
 
-import List from '../../components/List/List'
-import ListItem from '../../components/ListItem/ListItem'
 import Box from '../../components/Box/Box'
 import Loading from '../../components/Loading/Loading'
 
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
 import ResourceList from '../../component-instances/ResourceList'
-import ResponsiveContainer from '../../component-instances/ResponsiveContainer'
 import Resource from '../../component-instances/Resource'
 
 const StyledState = styled.div`

@@ -3,6 +3,8 @@ import renderer from 'react-test-renderer'
 import 'jest-styled-components'
 import Dropper from './Dropper'
 
+jest.mock('uuid', () => jest.fn().mockReturnValue('id'))
+
 it('renders', () => {
   const options = [
     {

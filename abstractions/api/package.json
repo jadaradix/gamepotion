@@ -9,7 +9,6 @@
     "restify-errors": "5.0.0"
   },
   "scripts": {
-    "test": "NODE_ENV=local GOOGLE_APPLICATION_CREDENTIALS=/Users/james/src/gmc/config-gcp.json jest"
   },
   "devDependencies": {
   }

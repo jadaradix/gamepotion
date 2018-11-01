@@ -7,9 +7,9 @@ const StyledLoading = styled.div`
   display: block;
   padding-top: 2rem;
   padding-bottom: 2rem;
-  @keyframes gmc-loading { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-  @-webkit-keyframes gmc-loading { 100% { -webkit-transform: rotate(360deg); } }
-  @-moz-keyframes gmc-loading { 100% { -moz-transform: rotate(360deg); } }
+  @keyframes gmc-loading {
+    100% { transform: rotate(360deg); }
+  }
   // background-color: red;
   img {
     display: block;

@@ -17,4 +17,5 @@ cd ../..;
 
 cd app/src;
   rm -rf classes;
+  rm -rf abstractions;
 cd ../..;

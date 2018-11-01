@@ -6,7 +6,7 @@ import ListItem from './ListItem'
 it('renders', () => {
   const tree = renderer
     .create(
-      <ListItem icon=''>Hello, World</ListItem>
+      <ListItem id='list-item-1'>List Item 1</ListItem>
     )
     .toJSON()
   expect(tree).toMatchSnapshot()

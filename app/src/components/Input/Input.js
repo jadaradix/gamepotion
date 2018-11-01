@@ -18,7 +18,6 @@ const StyledInput = styled.div`
     width: 100%;
     padding: 0.5rem 0.5rem 0.5rem 0px;
     appearance: none;
-    -webkit-appearance: none;
     outline: 0;
     border: 0;
     border-bottom: 2px solid #dadfe1;

@@ -9,8 +9,8 @@ exports[`renders 1`] = `
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-  width: calc(3rem + 4px);
   height: calc(3rem + 4px);
+  background-color: #2e3131;
 }
 
 .c0 button {
@@ -20,9 +20,10 @@ exports[`renders 1`] = `
   border-style: solid;
   border-color: transparent;
   outline: 0;
-  background-color: #2e3131;
-  -webkit-transition: background-color 0.2s ease-in-out,border-color 0.2s ease-in-out;
-  transition: background-color 0.2s ease-in-out,border-color 0.2s ease-in-out;
+  background-color: transparent;
+  -webkit-transition: background-color 0.2s ease-in-out,border-color 0.2s ease-in-out,opacity 0.5s ease-in-out;
+  transition: background-color 0.2s ease-in-out,border-color 0.2s ease-in-out,opacity 0.5s ease-in-out;
+  overflow: hidden;
 }
 
 .c0 button:focus {
@@ -32,30 +33,57 @@ exports[`renders 1`] = `
 
 .c0 button img {
   display: block;
+  float: left;
   width: 1.5rem;
   height: 1.5rem;
+}
+
+.c0 button span {
+  display: block;
+  height: 1.5rem;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  line-height: 1.5rem;
+  color: #ffffff;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.c0 button img + span {
+  margin-left: 2rem;
 }
 
 .c0 button.significant {
   background-color: #6c7a89;
 }
 
-.c0 button:hover {
+.c0 button[disabled] {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.c0 button:not([disabled]):hover {
   background-color: #6c7a89;
 }
 
 <li
   className="c0"
+  style={Object {}}
   title="Qwe"
 >
   <button
     className=""
+    disabled={false}
     onClick={[Function]}
+    style={Object {}}
   >
-    <img
-      alt="Qwe"
-      src=""
-    />
+    
   </button>
 </li>
 `;

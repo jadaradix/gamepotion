@@ -115,7 +115,7 @@ const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction })
 
 ListItem.propTypes = {
   id: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
   selected: PropTypes.bool,
   actions: PropTypes.array,
   onChoose: PropTypes.func,
@@ -123,6 +123,7 @@ ListItem.propTypes = {
 }
 
 ListItem.defaultProps = {
+  icon: '',
   selected: false,
   actions: [],
   onChoose: () => {},

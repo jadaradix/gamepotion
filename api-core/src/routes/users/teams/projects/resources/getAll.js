@@ -1,6 +1,6 @@
 const errors = require('restify-errors')
 const datalayer = require('../../../../../abstractions/datalayer')
-const classFactory = require('../../../../../classes/factory')
+const classFactory = require('../../../../../classes/factory-commonjs.js')
 
 const findProject = (projectId, teamId) => {
   return datalayer.readOne(

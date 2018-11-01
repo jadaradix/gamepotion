@@ -1,5 +1,5 @@
 const platform = require('./index.js')
-const classFactory = require('./classes/factory.js')
+const classFactory = require('./classes/factory-commonjs.js')
 
 test('works', () => {
   const team = classFactory.team()

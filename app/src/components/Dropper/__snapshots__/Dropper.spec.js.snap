@@ -44,7 +44,7 @@ exports[`renders 1`] = `
   className="component--dropper c0"
 >
   <select
-    id="component--dropper-958fb390-9119-4633-86fd-bedc144ff2aa"
+    id="component--dropper-id"
     onChange={[Function]}
     required={false}
     value="none"

@@ -1,4 +1,4 @@
-import classes from './index.js'
+const classes = require('./dist.js')
 
 const resourceTypeFunctions = new Map()
 resourceTypeFunctions.set(
@@ -35,7 +35,7 @@ resourceTypeFunctions.set(
   },
 )
 
-export default {
+module.exports = {
   user: (user) => {
     const c = new classes.User(user)
     return c
