@@ -33,12 +33,14 @@ class StateAuth extends PureComponent {
         })
       })
     ]
-    dispatch({
-      name: 'PROJECTS_LOAD',
-      data: {
-        id: this.props.match.params.id
-      }
-    })
+    if (this.state.currentProject === null) {
+      dispatch({
+        name: 'PROJECTS_LOAD',
+        data: {
+          id: this.props.match.params.id
+        }
+      })
+    }
   }
 
   componentWillUnmount () {
