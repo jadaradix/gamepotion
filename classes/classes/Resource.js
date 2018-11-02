@@ -43,11 +43,25 @@ class Project {
 
   fromApiPost(json) {
     this.type = json.type
-    this.name = (typeof json.name === 'string') ? json.name : this.getDefaultName()
+    if (typeof json.name === 'string') {
+      if (json.name.length === 0) {
+        throw new Error('name is not valid')
+      } else {
+        this.name = json.name
+      }
+    } else {
+      this.name = this.getDefaultName()
+    }
   }
 
   fromApiPatch(json) {
-    this.name = (typeof json.name === 'string') ? json.name : this.name
+    if (typeof json.name === 'string') {
+      if (json.name.length === 0) {
+        throw new Error('name is not valid')
+      } else {
+        this.name = json.name
+      }
+    }
   }
 
   clientFromApiGet(json) {

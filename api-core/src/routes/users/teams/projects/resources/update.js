@@ -13,13 +13,19 @@ const findResource = (resourceId, projectId) => {
 }
 
 const route = async (request, response, next) => {
+  let resource
+  try {
+    resource = await findResource(request.params.resourceId, request.params.projectId)
+  } catch (error) {
+    response.send(new errors.NotFoundError())
+    return next(false)
+  }
   let resourceClass
   try {
-    const resource = await findResource(request.params.resourceId, request.params.projectId)
     resourceClass = classFactory.resource(resource)
     resourceClass.fromApiPatch(request.body)
   } catch (error) {
-    response.send(new errors.NotFoundError('didnt work (1)'))
+    response.send(new errors.BadRequestError(error.message))
     return next(false)
   }
   datalayer.write('Resources', resourceClass.id, resourceClass.toDatastore())
