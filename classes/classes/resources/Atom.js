@@ -1,7 +1,7 @@
 import Resource from '../Resource.js'
 
 const DEFAULT_EVENTS = {
-  'Create': [
+  'create': [
     {
       name: 'Debug',
       runArguments: ['hello', 'world']
