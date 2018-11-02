@@ -8,6 +8,13 @@ import Toolbar from '../components/Toolbar/Toolbar'
 import ToolbarButton from '../components/ToolbarButton/ToolbarButton'
 import ToolbarGap from '../components/ToolbarGap/ToolbarGap'
 
+const getPreferencesRoute = (currentProject) => {
+  if (currentProject === null) {
+    return ''
+  }
+  return `/project/${currentProject.project.id}/preferences`
+}
+
 const MainToolbar = ({ currentProject, onClick }) => {
   // console.warn('[MainToolbar] currentProject', currentProject)
   return (
@@ -30,7 +37,7 @@ const MainToolbar = ({ currentProject, onClick }) => {
       ))
       }
       <ToolbarGap />
-      <ToolbarButton route='/project/preferences' disabled={currentProject === null} icon={icons.generic.preferences} hint='Project preferences' />
+      <ToolbarButton route={getPreferencesRoute(currentProject)} disabled={currentProject === null} icon={icons.generic.preferences} hint='Project preferences' />
     </Toolbar>
   )
 }
