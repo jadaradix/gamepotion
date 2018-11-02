@@ -27,6 +27,22 @@ const StyledButton = styled.button`
     background-color: #6c7a89;
     border-color: #6c7a89;
   }
+  > img {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto 0 auto;
+    // background-color: blue;
+  }
+  > span {
+    display: block;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    // background-color: red;
+  }
+  > img + span {
+    margin-top: 0.5rem;
+  }
 `
 
 const handleOnClick = (history, route, onClick) => {
@@ -40,8 +56,8 @@ const handleOnClick = (history, route, onClick) => {
 const Button = ({ history, route, onClick, icon, hint, disabled, children }) => {
   return (
     <StyledButton disabled={disabled} title={hint} onClick={() => handleOnClick(history, route, onClick)} className='component--button'>
-      {children}
       {icon && <img src={icon} alt={hint} />}
+      {children && <span>{children}</span>}
     </StyledButton>
   )
 }
