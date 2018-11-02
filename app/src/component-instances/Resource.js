@@ -9,6 +9,7 @@ import Heading1 from '../components/Heading1/Heading1'
 
 const StyledResource = styled.div`
   .heading {
+    margin-bottom: 1rem;
     // background-color: red;
     > img {
       display: block;
@@ -38,8 +39,8 @@ const Resource = ({ resource, onUpdate }) => {
       <div className='heading'>
         <img src={icons.resources[resource.type]} alt={'nice'} />
         <Heading1>{resource.name}</Heading1>
-        {getComponent(resource, onUpdate)}
       </div>
+      {getComponent(resource, onUpdate)}
     </StyledResource>
   )
 }

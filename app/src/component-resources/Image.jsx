@@ -16,7 +16,6 @@ const StyledResource = styled.div`
   img {
     display: block;
     max-width: 100%;
-    margin-top: 1rem;
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;

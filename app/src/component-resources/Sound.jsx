@@ -9,9 +9,6 @@ import AudioPlayer from '../components/AudioPlayer/AudioPlayer'
 import Dropper from '../components/Dropper/Dropper'
 
 const StyledResource = styled.div`
-  .component--audio-player {
-    margin-top: 1rem;
-  }
   .component--box {
     margin-top: 1rem;
   }
