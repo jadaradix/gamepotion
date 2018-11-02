@@ -11,6 +11,9 @@ import actionAdd from './files/action-add.svg'
 import actionEdit from './files/action-edit.svg'
 import actionDelete from './files/action-delete.svg'
 
+import resourceSoundPlay from './files/resource-sound-play.svg'
+import resourceSoundStop from './files/resource-sound-stop.svg'
+
 export default {
   symbol,
   folder,
@@ -26,5 +29,11 @@ export default {
     project,
     run: projectRun,
     share: projectShare
+  },
+  resource: {
+    sound: {
+      play: resourceSoundPlay,
+      stop: resourceSoundStop
+    }
   }
 }
