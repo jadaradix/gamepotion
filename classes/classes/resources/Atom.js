@@ -1,11 +1,20 @@
 import Resource from '../Resource.js'
 
+const DEFAULT_EVENTS = {
+  'Create': [
+    {
+      name: 'Debug',
+      runArguments: ['hello', 'world']
+    }
+  ]
+}
+
 class ResourceAtom extends Resource {
   constructor(json = {}) {
     super(json)
     this.type = 'atom'
-    this.events = json.events || {}
-    this.imageId = json.imageId || null
+    this.events = (typeof json.imageId === 'object') ? json.imageId : DEFAULT_EVENTS
+    this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : null
   }
 
   setEvents(events) {
@@ -39,13 +48,13 @@ class ResourceAtom extends Resource {
   fromApiPost(json) {
     super.fromApiPost(json)
     this.events = (typeof json.events === 'object') ? json.events : this.events
-    this.imageId = (typeof json.imageId === 'string') ? json.imageId : this.imageId
+    this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : this.imageId
   }
 
   fromApiPatch(json) {
     super.fromApiPost(json)
     this.events = (typeof json.events === 'object') ? json.events : this.events
-    this.imageId = (typeof json.imageId === 'string') ? json.imageId : this.imageId
+    this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : this.imageId
   }
 
   clientFromApiGet(json) {
