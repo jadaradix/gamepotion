@@ -57,6 +57,10 @@ class Dropper extends PureComponent {
     this.props.onChoose(value)
   }
 
+  componentWillReceiveProps (nextProps) {
+    this.setState({ value: nextProps.value })
+  }
+
   render() {
     return (
       <StyledDropper className='component--dropper'>
