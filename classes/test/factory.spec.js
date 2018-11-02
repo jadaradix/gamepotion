@@ -22,7 +22,7 @@ test('creates an atom resource with events/actions (one action doesnt exist)', (
     type: 'atom',
     name: 'Bird Atom',
     events: {
-      'Create': [
+      'create': [
         {
           name: 'Debug',
           runArguments: ['hello', 'world']
@@ -36,7 +36,7 @@ test('creates an atom resource with events/actions (one action doesnt exist)', (
   })
   expect(resource.type).toBe('atom')
   expect(resource.events).toEqual({
-    'Create': [
+    'create': [
       {
         name: 'Debug',
         runArguments: ['hello', 'world']

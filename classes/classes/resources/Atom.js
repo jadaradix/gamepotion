@@ -4,7 +4,15 @@ const DEFAULT_EVENTS = {
   'create': [
     {
       name: 'Debug',
-      runArguments: ['hello', 'world']
+      runArguments: ['hello']
+    },
+    {
+      name: 'Debug',
+      runArguments: ['world']
+    },
+    {
+      name: 'Debug',
+      runArguments: ['123']
     }
   ]
 }
@@ -13,7 +21,7 @@ class ResourceAtom extends Resource {
   constructor(json = {}) {
     super(json)
     this.type = 'atom'
-    this.events = (typeof json.imageId === 'object') ? json.imageId : DEFAULT_EVENTS
+    this.events = (typeof json.events === 'object') ? json.events : DEFAULT_EVENTS
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : null
   }
 

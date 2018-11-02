@@ -19,11 +19,9 @@ resourceTypeFunctions.set(
   'atom',
   (resource) => {
     const resourceClass = new classes.resources.Atom(resource)
-    const events = {}
-    Object.keys(resource.events || {}).forEach((eventName) => {
-      events[eventName] = resource.events[eventName].filter(action => (classes.actions[action.name] !== undefined))
+    Object.keys(resourceClass.events).forEach((eventName) => {
+      resourceClass.events[eventName] = resourceClass.events[eventName].filter(action => (classes.actions[action.name] !== undefined))
     })
-    resourceClass.setEvents(events)
     return resourceClass
   },
 )
