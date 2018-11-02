@@ -103,7 +103,7 @@ class StateDashboard extends PureComponent {
       'rename': () => {
         console.warn('[state-Dashboard] [actOnProject] rename')
         const name = window.prompt(`What would you like to call ${project.project.name}`, project.project.name)
-        if (name === undefined) {
+        if (name === undefined || name.length === 0) {
           return
         }
         dispatch({

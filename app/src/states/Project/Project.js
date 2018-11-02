@@ -129,7 +129,7 @@ class StateProjectProject extends Component {
 
   onRenameResource(resource) {
     const name = window.prompt(`What would you like to call ${resource.name}?`, resource.name)
-    if (name === undefined) {
+    if (name === undefined || name.length === 0) {
       return
     }
     return dispatch({
