@@ -43,7 +43,7 @@ const StyledResource = styled.div`
     }
   }
   section + section {
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 `
 

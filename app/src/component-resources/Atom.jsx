@@ -3,40 +3,78 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import { font, colours } from '../styleAbstractions'
+import icons from '../icons'
+import events from '../abstractions/events.json'
 
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
+import List from '../components/List/List'
+import ListItem from '../components/ListItem/ListItem'
 
 const StyledResource = styled.div`
-  .component--box.image {
-    position: relative;
-    height: 192px;
-    > .component--dropper {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-      width: 100%;
-      max-width: 192px;
-      opacity: 0.75;
+  section.image-events {
+    .component--box.image {
+      position: relative;
+      height: 192px;
+      > .component--dropper {
+        position: absolute;
+        bottom: 2rem;
+        width: calc(100% - 4rem);
+        opacity: 0.75;
+      }
+      > img, > p {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      > img {
+        display: block;
+        max-width: calc(100% - 1rem);
+        max-height: calc(100% - 1rem);
+      }
+      > p {
+        ${font}
+        color: ${colours.fore};
+        opacity: 0.5;
+        // background-color: orange;
+      }
+      // background-color: pink;
     }
-    > img, > p {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    > img {
-      display: block;
-      max-width: calc(100% - 1rem);
-      max-height: calc(100% - 1rem);
-    }
-    > p {
-      ${font}
-      color: ${colours.fore};
-      opacity: 0.5;
+    .component--box.events {
+      margin-top: 2rem;
+      padding: 1rem;
       // background-color: yellow;
     }
-    // background-color: pink;
+  }
+  section.actions {
+    margin-top: 2rem;
+    // background-color: red;
+    .component--box.actions {
+      padding: 1rem;
+      .no-actions {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        ${font}
+        text-align: center;
+        color: ${colours.fore};
+        opacity: 0.5;
+        // background-color: navy;
+      }
+    }
+    .component--box.add-action {
+      margin-top: 2rem;
+    }
+  }
+  @media screen and (min-width: 960px) {
+    section.image-events {
+      float: left;
+      width: 240px;
+    }
+    section.actions {
+      margin-top: 0;
+      margin-left: calc(240px + 2rem);
+    }
   }
 `
 
@@ -44,14 +82,18 @@ class Atom extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      resource: props.resource
+      resource: props.resource,
+      currentEvent: 'create'
     }
     this.onChooseImage = this.onChooseImage.bind(this)
+    this.onChooseEvent = this.onChooseEvent.bind(this)
   }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.resource.imageId !== this.state.resource.imageId) {
-      this.setState({ resource: nextProps.resource })
+      this.setState({
+        resource: nextProps.resource
+      })
     }
   }
 
@@ -62,6 +104,38 @@ class Atom extends PureComponent {
     this.props.onUpdate({
       imageId
     })
+  }
+
+  onChooseEvent(currentEvent) {
+    this.setState({
+      currentEvent
+    })
+  }
+
+  getEventActions() {
+    const getEmpty = () => {
+      return (
+        <p className='no-actions'>There aren&rsquo;t any actions for this event.</p>
+      )
+    }
+    const getList = (actions) => {
+      return (
+        <List>
+          {actions.map((a, i) => {
+            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.generic.project.project} actions={['edit', 'delete']}>{a.name}</ListItem>)
+          })}
+        </List>
+      )
+    }
+    const keyActions = this.state.resource.events[this.state.currentEvent]
+    if (Array.isArray(keyActions) === false) {
+      this.state.resource.events[this.state.currentEvent] = []
+    }
+    if (this.state.resource.events[this.state.currentEvent].length > 0) {
+      return getList(this.state.resource.events[this.state.currentEvent])
+    } else {
+      return getEmpty()
+    }
   }
 
   render() {
@@ -85,17 +159,34 @@ class Atom extends PureComponent {
     const foundImageResource = this.props.resources.find(r => r.id === this.state.resource.imageId)
 
     const image = (foundImageResource !== undefined ?
-      <img src={foundImageResource.getRemoteUrl()} />
+      <img src={foundImageResource.getRemoteUrl()} alt={foundImageResource.name} />
       :
       <p>No image.</p>
     )
 
     return (
       <StyledResource>
-        <Box className='image'>
-          {image}
-          <Dropper options={imageResources} value={imageId} onChoose={this.onChooseImage} />
-        </Box>
+        <section className='image-events'>
+          <Box className='image'>
+            {image}
+            <Dropper options={imageResources} value={imageId} onChoose={this.onChooseImage} />
+          </Box>
+          <Box className='events'>
+            <List>
+              {events.map(e => {
+                return <ListItem id={e.id} key={e.id} icon={icons.events[e.icon]} onChoose={this.onChooseEvent} selected={e.id === this.state.currentEvent}>{e.name}</ListItem>
+              })}
+            </List>
+          </Box>
+        </section>
+        <section className='actions'>
+          <Box className='actions'>
+            {this.getEventActions()}
+          </Box>
+          <Box className='add-action'>
+            (add action goes here)
+          </Box>
+        </section>
       </StyledResource>
     )
   }

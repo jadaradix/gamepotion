@@ -21,7 +21,7 @@
     "name": "Ball",
     "imageId": "resource-hack-image-bird",
     "events": {
-      "Create": [
+      "create": [
         {
           "name": "Debug",
           "runArguments": ["hello", "world"]

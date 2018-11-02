@@ -19,7 +19,7 @@ const StyledResource = styled.div`
     }
   }
   section + section {
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 `
 
@@ -74,10 +74,10 @@ class Sound extends PureComponent {
         <section className='split-two'>
           <Box>
               <Dropper label='Choose a Game Maker Club file' onChoose={this.onChooseFixed} options={fixedOptions} value={fixedValue} />
-            </Box>
-            <Box>
-              <p>(upload goes here)</p>
-            </Box>
+          </Box>
+          <Box>
+            <p>(upload goes here)</p>
+          </Box>
         </section>
       </StyledResource>
     )

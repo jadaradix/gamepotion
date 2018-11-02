@@ -10,6 +10,7 @@ classes/dist
 classes/abstractions
 
 api-core/src/abstractions
+app/src/abstractions
 
 platforms/html5/classes
 platforms/nds/classes

@@ -19,5 +19,6 @@ cd api-core/src;
 cd ../..;
 
 cd app/src;
+  rm -rf abstractions;
   rm -rf classes;
 cd ../..;
