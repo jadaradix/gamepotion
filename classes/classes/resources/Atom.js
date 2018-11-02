@@ -26,23 +26,21 @@ class ResourceAtom extends Resource {
   }
 
   toApi() {
-    return JSON.parse(JSON.stringify(
-      {
-        ...super.toApi(),
-        events: this.events,
-        imageId: this.imageId
-      }
-    ))
+    const r = super.toApi()
+    return {
+      ...r,
+      events: this.events,
+      imageId: this.imageId
+    }
   }
 
   toDatastore() {
-    return JSON.parse(JSON.stringify(
-      {
-        ...super.toDatastore(),
-        events: this.events,
-        imageId: this.imageId
-      }
-    ))
+    const r = super.toDatastore()
+    return {
+      ...r,
+      events: this.events,
+      imageId: this.imageId
+    }
   }
 
   fromApiPost(json) {
@@ -52,7 +50,7 @@ class ResourceAtom extends Resource {
   }
 
   fromApiPatch(json) {
-    super.fromApiPost(json)
+    super.fromApiPatch(json)
     this.events = (typeof json.events === 'object') ? json.events : this.events
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : this.imageId
   }

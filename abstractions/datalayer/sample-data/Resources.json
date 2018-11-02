@@ -19,6 +19,7 @@
     "createdAt": 200,
     "type": "atom",
     "name": "Ball",
+    "imageId": "resource-hack-image-bird",
     "events": {
       "Create": [
         {

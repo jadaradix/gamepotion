@@ -11,6 +11,17 @@ class ResourceSound extends Resource {
     return 'New Sound'
   }
 
+  getRemoteUrl() {
+    const pathname = (() => {
+      if (typeof this.fixed === 'string') {
+        return `fixed-sound-${this.fixed}`
+      } else {
+        return this.id
+      }
+    })()
+    return `https://storage.googleapis.com/gmc-resources/${pathname}.wav`
+  }
+
   toApi() {
     const r = super.toApi()
     return {
@@ -21,22 +32,11 @@ class ResourceSound extends Resource {
   }
 
   toDatastore() {
-    const r = super.toApi()
+    const r = super.toDatastore()
     return {
       ...r,
       fixed: this.fixed
     }
-  }
-
-  getRemoteUrl() {
-    const pathname = (() => {
-      if (typeof this.fixed === 'string') {
-        return `fixed-sound-${this.fixed}`
-      } else {
-        return this.id
-      }
-    })()
-    return `https://storage.googleapis.com/gmc-resources/${pathname}.wav`
   }
 
   fromApiPost(json) {

@@ -11,6 +11,17 @@ class ResourceImage extends Resource {
     return 'New Image'
   }
 
+  getRemoteUrl() {
+    const pathname = (() => {
+      if (typeof this.fixed === 'string') {
+        return `fixed-image-${this.fixed}`
+      } else {
+        return this.id
+      }
+    })()
+    return `https://storage.googleapis.com/gmc-resources/${pathname}.png`
+  }
+
   toApi() {
     const r = super.toApi()
     return {
@@ -21,22 +32,11 @@ class ResourceImage extends Resource {
   }
 
   toDatastore() {
-    const r = super.toApi()
+    const r = super.toDatastore()
     return {
       ...r,
       fixed: this.fixed
     }
-  }
-
-  getRemoteUrl() {
-    const pathname = (() => {
-      if (typeof this.fixed === 'string') {
-        return `fixed-image-${this.fixed}`
-      } else {
-        return this.id
-      }
-    })()
-    return `https://storage.googleapis.com/gmc-resources/${pathname}.png`
   }
 
   fromApiPost(json) {

@@ -56,7 +56,7 @@ class ResourceSpace extends Resource {
   }
 
   fromApiPatch(json) {
-    super.fromApiPost(json)
+    super.fromApiPatch(json)
     this.width = (typeof json.width === 'number') ? json.width : this.width
     this.height = (typeof json.height === 'number') ? json.height : this.height
     this.camera = (typeof json.camera === 'object') ? json.camera : this.camera
