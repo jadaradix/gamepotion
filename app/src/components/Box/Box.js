@@ -1,5 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import classnames from 'classnames'
 
 const StyledBox = styled.div`
   display: block;
@@ -9,12 +11,20 @@ const StyledBox = styled.div`
   background-color: #f0f3f4;
 `
 
-const Box = ({ children }) => {
+const Box = ({ children, className }) => {
   return (
-    <StyledBox className='component--box'>
+    <StyledBox className={classnames('component--box', className)}>
       {children}
     </StyledBox>
   )
+}
+
+Box.propTypes = {
+  className: PropTypes.string
+}
+
+Box.defaultProps = {
+  className: ''
 }
 
 export default Box
