@@ -8,6 +8,8 @@ import resourceTypes from '../resourceTypes'
 import Heading1 from '../components/Heading1/Heading1'
 
 const StyledResource = styled.div`
+  max-width: 960px;
+  // background-color: yellow;
   .heading {
     margin-bottom: 1rem;
     // background-color: red;

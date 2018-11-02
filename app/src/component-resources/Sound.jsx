@@ -9,7 +9,16 @@ import AudioPlayer from '../components/AudioPlayer/AudioPlayer'
 import Dropper from '../components/Dropper/Dropper'
 
 const StyledResource = styled.div`
-  .component--box {
+  section.split-two {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    @media screen and (min-width: 720px) {
+      grid-template-columns: 2fr 2fr;
+      grid-gap: 2rem;
+    }
+  }
+  section + section {
     margin-top: 1rem;
   }
 `
@@ -59,10 +68,17 @@ class Sound extends PureComponent {
 
     return (
       <StyledResource>
-        <AudioPlayer url={remoteUrl} />
-        <Box>
-          <Dropper label='Choose a Game Maker Club file' onChoose={this.onChooseFixed} options={fixedOptions} value={fixedValue} />
-        </Box>
+        <section className='resource'>
+          <AudioPlayer url={remoteUrl} />
+        </section>
+        <section className='split-two'>
+          <Box>
+              <Dropper label='Choose a Game Maker Club file' onChoose={this.onChooseFixed} options={fixedOptions} value={fixedValue} />
+            </Box>
+            <Box>
+              <p>(upload goes here)</p>
+            </Box>
+        </section>
       </StyledResource>
     )
   }

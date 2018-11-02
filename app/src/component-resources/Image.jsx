@@ -13,25 +13,36 @@ const StyledResource = styled.div`
     from { opacity: 0; }
     to   { opacity: 1; }
   }
-  img {
-    display: block;
-    max-width: 100%;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+  section.split-two {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    @media screen and (min-width: 720px) {
+      grid-template-columns: 2fr 2fr;
+      grid-gap: 2rem;
+    }
   }
-  img.visible {
-    visibility: visible;
-    opacity: 1;
+  section.resource {
+    img {
+      display: block;
+      max-width: 100%;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+    img.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+    .no-resource {
+      margin-top: 1rem;
+      ${font}
+      color: ${colours.fore};
+      opacity: 0.75;
+      animation: no-resource 0.5s;
+    }
   }
-  .no-resource {
-    margin-top: 1rem;
-    ${font}
-    color: ${colours.fore};
-    opacity: 0.75;
-    animation: no-resource 0.5s;
-  }
-  .component--box {
+  section + section {
     margin-top: 1rem;
   }
 `
@@ -99,14 +110,21 @@ class Image extends PureComponent {
 
     return (
       <StyledResource>
-        {!this.state.fileErrored ?
-          <img src={remoteUrl} onLoad={this.onLoad} onError={this.onError} className={this.state.fileLoaded ? 'visible' : ''} alt='' />
-          :
-          <p className='no-resource'>You haven&rsquo;t chosen a file yet.</p>
-        }
-        <Box>
-          <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
-        </Box>
+        <section className='resource'>
+          {!this.state.fileErrored ?
+            <img src={remoteUrl} onLoad={this.onLoad} onError={this.onError} className={this.state.fileLoaded ? 'visible' : ''} alt='' />
+            :
+            <p className='no-resource'>You haven&rsquo;t chosen a file yet.</p>
+          }
+        </section>
+        <section className='split-two'>
+          <Box>
+            <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+          </Box>
+          <Box>
+            <p>(upload goes here)</p>
+          </Box>
+        </section>
       </StyledResource>
     )
   }
