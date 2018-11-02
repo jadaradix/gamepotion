@@ -15,7 +15,7 @@ const StyledDropper = styled.div`
   }
   select {
     display: block;
-    margin-top: 0.5rem;
+    width: 100%;
     transition: border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
     ${font}
     background-color: #dadfe1;
@@ -31,6 +31,9 @@ const StyledDropper = styled.div`
     :focus {
       border-color: ${colours.outline};
     }
+  }
+  label + select {
+    margin-top: 0.5rem;
   }
 `
 

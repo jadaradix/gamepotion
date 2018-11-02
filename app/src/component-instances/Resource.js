@@ -28,24 +28,26 @@ const StyledResource = styled.div`
   }
 `
 
-const getComponent = (resource, onUpdate) => {
+const getComponent = (resources, resource, onUpdate) => {
   const FoundResourceType = resourceTypes.find(r => r.type === resource.type).component
-  return <FoundResourceType resource={resource} onUpdate={onUpdate} />
+  return <FoundResourceType resources={resources} resource={resource} onUpdate={onUpdate} />
 }
 
-const Resource = ({ resource, onUpdate }) => {
+const Resource = ({ resources, resource, onUpdate }) => {
+  // console.warn('[component-Resource] resource', resource)
   return (
     <StyledResource className='component--resource'>
       <div className='heading'>
         <img src={icons.resources[resource.type]} alt={'nice'} />
         <Heading1>{resource.name}</Heading1>
       </div>
-      {getComponent(resource, onUpdate)}
+      {getComponent(resources, resource, onUpdate)}
     </StyledResource>
   )
 }
 
 Resource.propTypes = {
+  resources: PropTypes.array.isRequired,
   resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func
 }

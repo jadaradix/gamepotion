@@ -28,6 +28,7 @@ const StyledResource = styled.div`
     margin-top: 1rem;
     ${font}
     color: ${colours.fore};
+    opacity: 0.75;
     animation: no-resource 0.5s;
   }
   .component--box {
@@ -104,7 +105,7 @@ class Image extends PureComponent {
           <p className='no-resource'>You haven&rsquo;t chosen a file yet.</p>
         }
         <Box>
-          <Dropper label='Choose a Game Maker Club file' onChoose={this.onChooseFixed} options={fixedOptions} value={fixedValue} />
+          <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
         </Box>
       </StyledResource>
     )

@@ -184,7 +184,7 @@ class StateProjectProject extends Component {
           </aside>
           <main>
             {this.state.currentProject !== null && this.state.currentProject.currentResource !== null &&
-              <Resource resource={this.state.currentProject.currentResource} onUpdate={(data) => this.onUpdateResource(this.state.currentProject.currentResource, data)} />
+              <Resource resources={this.state.currentProject.resources} resource={this.state.currentProject.currentResource} onUpdate={(data) => this.onUpdateResource(this.state.currentProject.currentResource, data)} />
             }
           </main>
         </StyledState>
