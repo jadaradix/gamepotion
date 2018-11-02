@@ -54,15 +54,6 @@ class StateProjectProject extends Component {
   }
 
   componentDidMount() {
-    dispatch({
-      name: 'PROJECTS_START_LOAD'
-    })
-    dispatch({
-      name: 'PROJECTS_LOAD',
-      data: {
-        id: this.props.match.params.id
-      }
-    })
     this.subscriptions = [
       subscribe('PROJECTS_LOAD', (state) => {
         if (state.currentProject === null) {
@@ -103,6 +94,15 @@ class StateProjectProject extends Component {
         })
       })
     ]
+    dispatch({
+      name: 'PROJECTS_START_LOAD'
+    })
+    dispatch({
+      name: 'PROJECTS_LOAD',
+      data: {
+        id: this.props.match.params.id
+      }
+    })
   }
 
   componentWillUnmount() {

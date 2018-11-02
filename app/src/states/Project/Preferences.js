@@ -1,7 +1,9 @@
 import React, { PureComponent, Fragment } from 'react'
-import { Redirect } from 'react-router'
 import styled from 'styled-components'
 
+import { getState, dispatch, subscribe } from '../../state'
+
+import Loading from '../../components/Loading/Loading'
 import Box from '../../components/Box/Box'
 import Heading1 from '../../components/Heading1/Heading1'
 
@@ -18,6 +20,29 @@ const StyledState = styled.div`
 class StateAuth extends PureComponent {
   constructor(props) {
     super(props)
+    this.state = {
+      currentProject: getState().currentProject
+    }
+  }
+
+  componentDidMount () {
+    this.subscriptions = [
+      subscribe('PROJECTS_LOAD', (state) => {
+        this.setState({
+          currentProject: state.currentProject
+        })
+      })
+    ]
+    dispatch({
+      name: 'PROJECTS_LOAD',
+      data: {
+        id: this.props.match.params.id
+      }
+    })
+  }
+
+  componentWillUnmount () {
+    this.subscriptions.forEach(s => s.unsubscribe())
   }
 
   render() {
@@ -27,7 +52,10 @@ class StateAuth extends PureComponent {
         <ResponsiveContainer>
           <StyledState>
             <Box>
-              <Heading1>Project preferences</Heading1>
+              {this.state.currentProject === null && <Loading />}
+              {this.state.currentProject !== null && <Fragment>
+                <Heading1>{this.state.currentProject.project.name}</Heading1>
+              </Fragment>}
             </Box>
           </StyledState>
         </ResponsiveContainer>
