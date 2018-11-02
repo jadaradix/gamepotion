@@ -60,10 +60,7 @@ const ResourceList = ({ resources, currentResource, onAdd, onLoad, onRename, onD
 
 ResourceList.propTypes = {
   resources: PropTypes.array.isRequired,
-  currentResource: PropTypes.oneOf([
-    PropTypes.null,
-    PropTypes.object
-  ]),
+  currentResource: PropTypes.object,
   onAdd: PropTypes.func,
   onLoad: PropTypes.func,
   onRename: PropTypes.func,

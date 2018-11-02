@@ -36,10 +36,7 @@ const MainToolbar = ({ currentProject, onClick }) => {
 }
 
 MainToolbar.propTypes = {
-  currentProject: PropTypes.oneOf([
-    PropTypes.null,
-    PropTypes.object
-  ]),
+  currentProject: PropTypes.object,
   onClick: PropTypes.func
 }
 
