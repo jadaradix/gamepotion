@@ -1,0 +1,15 @@
+{
+  "name": "gmc-canvas-render-space",
+  "version": "1.0.0",
+  "description": "gmc-canvas-render-space",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.6.0"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}

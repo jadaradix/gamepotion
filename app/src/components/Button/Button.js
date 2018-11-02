@@ -7,7 +7,7 @@ import { font, colours } from '../../styleAbstractions'
 
 const StyledButton = styled.button`
   display: block;
-  padding: 0.7rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.8rem;
   transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
   ${font}
   background-color: #2e3131;
