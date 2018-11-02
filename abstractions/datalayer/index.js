@@ -1,4 +1,4 @@
-const uuid = require('../uuid')
+const uuid = require('../uuid/index.dist.js')
 const Datastore = require('@google-cloud/datastore')
 const datastore = new Datastore({
   projectId: 'thegmc-219013'
