@@ -10,6 +10,10 @@ cd abstractions/uuid;
   npm test;
 cd ../..;
 
+cd abstractions/canvasRenderSpace;
+  npm test;
+cd ../..;
+
 cd api-core/src;
   npm test;
 cd ../..;
