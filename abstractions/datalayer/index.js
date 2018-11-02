@@ -1,4 +1,4 @@
-const uuid = require('uuid/v4')
+const uuid = require('../uuid')
 const Datastore = require('@google-cloud/datastore')
 const datastore = new Datastore({
   projectId: 'thegmc-219013'
@@ -29,7 +29,7 @@ const write = (entity, id, data) => {
     }
     return Promise.resolve(true)
   } else {
-    if (!id) {
+    if (typeof id !== 'string') {
       id = uuid()
     }
     const entities = {
