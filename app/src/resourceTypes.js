@@ -1,6 +1,7 @@
 import Image from './component-resources/Image'
 import Sound from './component-resources/Sound'
-import NotDoneYet from './component-resources/NotDoneYet'
+import Atom from './component-resources/Atom'
+import Space from './component-resources/Space'
 
 export default [
   {
@@ -31,14 +32,14 @@ export default [
     type: 'atom',
     nameSingular: 'atom',
     namePlural: 'Atoms',
-    component: NotDoneYet,
+    component: Atom,
     fixed: []
   },
   {
     type: 'space',
     nameSingular: 'space',
     namePlural: 'Spaces',
-    component: NotDoneYet,
+    component: Space,
     fixed: []
   }
 ]
