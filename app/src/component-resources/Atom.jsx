@@ -26,13 +26,13 @@ const StyledResource = styled.div`
       }
     }
     .component--box.events {
-      margin-top: 2rem;
+      margin-top: 1rem;
       padding: 1rem;
       // background-color: yellow;
     }
   }
   section.actions {
-    margin-top: 2rem;
+    margin-top: 1rem;
     // background-color: red;
     .component--box.actions {
       padding: 1rem;
@@ -47,17 +47,23 @@ const StyledResource = styled.div`
       }
     }
     .component--box.add-action {
-      margin-top: 2rem;
+      margin-top: 1rem;
     }
   }
   @media screen and (min-width: 960px) {
     section.image-events {
       float: left;
       width: 240px;
+      .component--box.events {
+        margin-top: 2rem;
+      }
     }
     section.actions {
       margin-top: 0;
       margin-left: calc(240px + 2rem);
+      .component--box.add-action {
+        margin-top: 2rem;
+      }
     }
   }
 `

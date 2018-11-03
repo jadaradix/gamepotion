@@ -16,7 +16,7 @@ const StyledInput = styled.div`
   input {
     display: block;
     width: 100%;
-    padding: 0.5rem 0.5rem 0.5rem 0px;
+    padding: 0.5rem 0 0.5rem 0;
     appearance: none;
     outline: 0;
     border: 0;
@@ -56,7 +56,7 @@ class Input extends PureComponent {
       type: props.type || 'text',
       checked: props.checked || false,
       label: props.label || '',
-      value: props.value || '',
+      value: props.value || (props.type === 'number' ? 0 : ''),
       placeholder: props.placeholder || '',
       required: (typeof props.required === 'boolean' ? props.required : false),
       patten: (props.type === 'password' ? '.{6,128}' : undefined),

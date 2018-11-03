@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import resourceTypes from '../resourceTypes'
-import { font, colours } from '../styleAbstractions'
 
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
@@ -22,6 +21,8 @@ const StyledResource = styled.div`
   section.resource {
     position: relative;
     height: 256px;
+    border-radius: 4px;
+    background-color: #dadfe1;
   }
   section + section {
     margin-top: 2rem;

@@ -1,15 +1,11 @@
 {
-  "name": "gmc-canvas-render-space",
+  "name": "gmc-magic-canvas",
   "version": "1.0.0",
-  "description": "gmc-canvas-render-space",
+  "description": "gmc-magic-canvas",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "jest": "^23.6.0"
   },
   "scripts": {
-    "test": "jest"
   }
 }
