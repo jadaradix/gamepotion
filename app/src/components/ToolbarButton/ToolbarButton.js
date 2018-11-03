@@ -49,7 +49,7 @@ const StyledToolbarButton = styled.li`
     &.significant {
       background-color: white;
     }
-    &.selected {
+    &:not(.significant).selected {
       background-color: #6c7a89;
     }
     &[disabled] {
