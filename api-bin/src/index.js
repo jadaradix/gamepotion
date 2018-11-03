@@ -41,8 +41,7 @@ const middlewares = {
 
 const routes = {
   'GET      /v1': require('./routes/healthcheck'),
-  // ->      -> resources
-  'PATCH    /v1/me/team/projects/:projectId/resources/:resourceId': require('./routes/users/teams/projects/resources/update'),
+  'POST     /v1/me/team/projects/:projectId/resources/:resourceId': require('./routes/users/teams/projects/resources/update'),
 }
 
 const corsMiddleware = require('./abstractions/api/middleware-cors')
