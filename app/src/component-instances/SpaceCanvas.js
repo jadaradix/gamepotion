@@ -42,16 +42,30 @@ class SpaceCanvas extends PureComponent {
     this.removeEventListeners()
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
     const getTouchData = (e) => {
+      e.preventDefault()
       const x = e.touches[0].clientX - cDomBounds.x
       const y = e.touches[0].clientY - cDomBounds.y
+      const z = 0
+      return [parseInt(x, 10), parseInt(y, 10), z]
+    }
+    const getMouseData = (e) => {
+      e.preventDefault()
+      const x = e.clientX - cDomBounds.x
+      const y = e.clientY - cDomBounds.y
       const z = 0
       return [parseInt(x, 10), parseInt(y, 10), z]
     }
     this.addEventListener(canvas, 'touchstart', (e) => {
       this.props.onTouch(getTouchData(e))
     })
+    this.addEventListener(canvas, 'click', (e) => {
+      this.props.onTouch(getMouseData(e))
+    })
     this.addEventListener(canvas, 'touchmove', (e) => {
       this.props.onTouchMove(getTouchData(e))
+    })
+    this.addEventListener(canvas, 'mousemove', (e) => {
+      this.props.onTouchMove(getMouseData(e))
     })
     let loadedSoFar = 0
     const totalLoadableCount = resources.filter(r => ['image', 'sound'].includes(r.type)).length
