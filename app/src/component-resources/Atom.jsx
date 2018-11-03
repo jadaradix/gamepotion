@@ -85,7 +85,7 @@ class ResourceAtom extends PureComponent {
     this.actOnAction = this.actOnAction.bind(this)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.setState({
       resource: nextProps.resource
     })

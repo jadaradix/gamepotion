@@ -7,7 +7,7 @@ import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 
-import spaceCanvas from '../abstractions/spaceCanvas'
+import SpaceCanvas from '../component-instances/SpaceCanvas'
 
 const StyledResource = styled.div`
   section.settings-plot-info {
@@ -54,7 +54,6 @@ const StyledResource = styled.div`
 class ResourceSpace extends PureComponent {
   constructor(props) {
     super(props)
-    this.canvasRef = React.createRef()
     this.state = {
       resource: props.resource
     }
@@ -63,19 +62,10 @@ class ResourceSpace extends PureComponent {
     }, 500)
   }
 
-  componentDidMount() {
-    this.renderCanvas(this.state.resource)
-  }
-
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.setState({
       resource: nextProps.resource
     })
-    this.renderCanvas(nextProps.resource)
-  }
-
-  renderCanvas(resource) {
-    spaceCanvas(this.canvasRef.current, resource, this.props.resources)
   }
 
   onChangeMasterProp(prop, v) {
@@ -123,7 +113,7 @@ class ResourceSpace extends PureComponent {
           </Box>
         </section>
         <section className='canvas'>
-          <canvas ref={this.canvasRef} />
+          <SpaceCanvas space={this.state.resource} resources={this.props.resources} />
         </section>
       </StyledResource>
     )
