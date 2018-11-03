@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const StyledResource = styled.div`
 `
 
-class Space extends PureComponent {
+class ResourceSpace extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -20,13 +20,13 @@ class Space extends PureComponent {
   }
 }
 
-Space.propTypes = {
+ResourceSpace.propTypes = {
   resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func
 }
 
-Space.defaultProps = {
+ResourceSpace.defaultProps = {
   onUpdate: () => {}
 }
 
-export default Space
+export default ResourceSpace

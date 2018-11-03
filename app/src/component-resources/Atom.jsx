@@ -10,36 +10,20 @@ import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
 import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
+import Image from '../components/Image/Image'
 
 const StyledResource = styled.div`
   section.image-events {
     .component--box.image {
       position: relative;
       height: 192px;
+      // background-color: pink;
       > .component--dropper {
         position: absolute;
         bottom: 2rem;
         width: calc(100% - 4rem);
         opacity: 0.75;
       }
-      > img, > p {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-      > img {
-        display: block;
-        max-width: calc(100% - 1rem);
-        max-height: calc(100% - 1rem);
-      }
-      > p {
-        ${font}
-        color: ${colours.fore};
-        opacity: 0.5;
-        // background-color: orange;
-      }
-      // background-color: pink;
     }
     .component--box.events {
       margin-top: 2rem;
@@ -78,7 +62,7 @@ const StyledResource = styled.div`
   }
 `
 
-class Atom extends PureComponent {
+class ResourceAtom extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -177,17 +161,17 @@ class Atom extends PureComponent {
     const imageId = (this.state.resource.imageId === null ? 'none' : this.state.resource.imageId)
     const foundImageResource = this.props.resources.find(r => r.id === this.state.resource.imageId)
 
-    const image = (foundImageResource !== undefined ?
-      <img src={foundImageResource.getRemoteUrl()} alt={foundImageResource.name} />
+    const imageSrc = (foundImageResource !== undefined ?
+      foundImageResource.getRemoteUrl()
       :
-      <p>No image.</p>
+      null
     )
 
     return (
       <StyledResource>
         <section className='image-events'>
           <Box className='image'>
-            {image}
+            <Image src={imageSrc} />
             <Dropper options={imageResources} value={imageId} onChoose={this.onChooseImage} />
           </Box>
           <Box className='events'>
@@ -211,14 +195,14 @@ class Atom extends PureComponent {
   }
 }
 
-Atom.propTypes = {
+ResourceAtom.propTypes = {
   resources: PropTypes.array,
   resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func
 }
 
-Atom.defaultProps = {
+ResourceAtom.defaultProps = {
   onUpdate: () => {}
 }
 
-export default Atom
+export default ResourceAtom

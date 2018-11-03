@@ -7,12 +7,9 @@ import { font, colours } from '../styleAbstractions'
 
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
+import Image from '../components/Image/Image'
 
 const StyledResource = styled.div`
-  @keyframes no-resource {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
   section.split-two {
     display: grid;
     grid-template-columns: 1fr;
@@ -23,40 +20,20 @@ const StyledResource = styled.div`
     }
   }
   section.resource {
-    img {
-      display: block;
-      max-width: 100%;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-    }
-    img.visible {
-      visibility: visible;
-      opacity: 1;
-    }
-    .no-resource {
-      margin-top: 1rem;
-      ${font}
-      color: ${colours.fore};
-      opacity: 0.75;
-      animation: no-resource 0.5s;
-    }
+    position: relative;
+    height: 256px;
   }
   section + section {
     margin-top: 2rem;
   }
 `
 
-class Image extends PureComponent {
+class ResourceImage extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      resource: props.resource,
-      fileLoaded: false,
-      fileErrored: false
+      resource: props.resource
     }
-    this.onLoad = this.onLoad.bind(this)
-    this.onError = this.onError.bind(this)
     this.onChooseFixed = this.onChooseFixed.bind(this)
   }
 
@@ -67,20 +44,8 @@ class Image extends PureComponent {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.resource.fixed !== this.state.resource.fixed) {
-      this.setState({ resource: nextProps.resource, fileLoaded: false, fileErrored: false })
+      this.setState({ resource: nextProps.resource })
     }
-  }
-
-  onLoad() {
-    this.setState({
-      fileLoaded: true
-    })
-  }
-
-  onError() {
-    this.setState({
-      fileErrored: true
-    })
   }
 
   onChooseFixed(fixed) {
@@ -111,11 +76,7 @@ class Image extends PureComponent {
     return (
       <StyledResource>
         <section className='resource'>
-          {!this.state.fileErrored ?
-            <img src={remoteUrl} onLoad={this.onLoad} onError={this.onError} className={this.state.fileLoaded ? 'visible' : ''} alt='' />
-            :
-            <p className='no-resource'>You haven&rsquo;t chosen a file yet.</p>
-          }
+          <Image src={remoteUrl} />
         </section>
         <section className='split-two'>
           <Box>
@@ -130,13 +91,13 @@ class Image extends PureComponent {
   }
 }
 
-Image.propTypes = {
+ResourceImage.propTypes = {
   resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func
 }
 
-Image.defaultProps = {
+ResourceImage.defaultProps = {
   onUpdate: () => {}
 }
 
-export default Image
+export default ResourceImage
