@@ -23,7 +23,7 @@ const StyledResource = styled.div`
   }
 `
 
-class Sound extends PureComponent {
+class ResourceSound extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -84,13 +84,13 @@ class Sound extends PureComponent {
   }
 }
 
-Sound.propTypes = {
+ResourceSound.propTypes = {
   resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func
 }
 
-Sound.defaultProps = {
+ResourceSound.defaultProps = {
   onUpdate: () => {}
 }
 
-export default Sound
+export default ResourceSound
