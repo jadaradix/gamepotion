@@ -24,6 +24,31 @@ class Instance {
   }
 }
 
+const start = (ctx, spaceWithExtras, instanceClasses, designMode) => {
+  console.warn('[start]', ctx, spaceWithExtras, instanceClasses, designMode)
+}
+
+const step = (ctx, spaceWithExtras, instanceClasses, designMode) => {
+  console.warn('[step] instanceClasses', instanceClasses)
+  ctx.clearRect(0, 0, spaceWithExtras.resource.width, spaceWithExtras.resource.height)
+  console.warn('spaceWithExtras.extras!', spaceWithExtras.extras)
+  if (spaceWithExtras.extras.backgroundImage !== null) {
+    ctx.drawImage(spaceWithExtras.extras.backgroundImage, 0, 0)
+  }
+  instanceClasses.forEach(i => {
+    console.warn(i.atomWithExtras)
+    ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
+  })
+  if (spaceWithExtras.extras.foregroundImage !== null) {
+    ctx.drawImage(spaceWithExtras.extras.foregroundImage, 0, 0)
+  }
+  if (designMode === true) {
+    ctx.strokeStyle = '#ffffff'
+    ctx.rect(spaceWithExtras.resource.camera.x + 1, spaceWithExtras.resource.camera.y + 1, spaceWithExtras.resource.camera.width - 2, spaceWithExtras.resource.camera.height - 2)
+    ctx.stroke()
+  }
+}
+
 class SpaceCanvas extends PureComponent {
   constructor() {
     super()
@@ -59,6 +84,13 @@ class SpaceCanvas extends PureComponent {
         extras: {}
       }
     })
+    const spaceWithExtras = {
+      resource: space,
+      extras: {
+        backgroundImage: null,
+        foregroundImage: null
+      }
+    }
     this.removeEventListeners()
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
     const getTouchData = (e) => {
@@ -109,29 +141,11 @@ class SpaceCanvas extends PureComponent {
       })
     }
 
-    const start = (instanceClasses) => {
-      console.warn('[start] instanceClasses', instanceClasses)
-    }
-
-    const step = (instanceClasses) => {
-      console.warn('[step] instanceClasses', instanceClasses)
-      ctx.clearRect(0, 0, space.width, space.height)
-      instanceClasses.forEach(i => {
-        console.warn(i.atomWithExtras)
-        ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
-      })
-      if (this.props.designMode === true) {
-        ctx.strokeStyle = '#ffffff'
-        ctx.rect(space.camera.x + 1, space.camera.y + 1, space.camera.width - 2, space.camera.height - 2)
-        ctx.stroke()
-      }
-    }
-
     const loadedGood = () => {
-      console.warn('renderCanvas] loadedGood!')
+      console.warn('[renderCanvas] loadedGood!')
       const instanceClasses = getInstanceClasses(space.instances)
-      start(instanceClasses)
-      step(instanceClasses)
+      start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+      step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
     }
     const loadedBad = () => {
       console.warn('[renderCanvas] loadedBad!')
@@ -159,6 +173,12 @@ class SpaceCanvas extends PureComponent {
       this.addEventListener(element, 'error', loadBadLogic)
       resource.extras.element = element
       element.src = resource.resource.getRemoteUrl()
+      if (spaceWithExtras.resource.backgroundImage === resource.resource.id) {
+        spaceWithExtras.extras.backgroundImage = element
+      }
+      if (spaceWithExtras.resource.foregroundImage === resource.resource.id) {
+        spaceWithExtras.extras.foregroundImage = element
+      }
       resourcesWithExtras
         .filter(r => r.resource.type === 'atom' && r.resource.imageId === resource.resource.id)
         .map(r => {

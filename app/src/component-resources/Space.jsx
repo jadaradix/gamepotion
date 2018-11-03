@@ -20,6 +20,23 @@ const getAtomDropperResources = (resources) => {
     })
 }
 
+const getImageDropperResources = (resources) => {
+  return [
+    ...resources
+      .filter(r => r.type === 'image')
+      .map(r => {
+        return {
+          id: r.id,
+          name: r.name
+        }
+      }),
+    {
+      id: 'none',
+      name: '<None>'
+    }
+  ]
+}
+
 const getAtomToPlot = (resources) => {
   const foundAtom = resources.find(r => r.type === 'atom')
   if (foundAtom !== undefined) {
@@ -31,9 +48,15 @@ const getAtomToPlot = (resources) => {
 const StyledResource = styled.div`
   section.settings-plot-info {
     .component--box.settings {
-      display: grid;
-      grid-template-columns: 2fr 2fr;
-      grid-gap: 1rem;
+      .coords {
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+        grid-gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .component--dropper:not(:last-child) {
+        margin-bottom: 1rem;
+      }
     }
     .component--box.plot {
       margin-top: 1rem;
@@ -85,6 +108,8 @@ class ResourceSpace extends PureComponent {
     this.onUpdate = debounce((data) => {
       this.props.onUpdate(data)
     }, 500)
+    this.onChooseBackgroundImage = this.onChooseBackgroundImage.bind(this)
+    this.onChooseForegroundImage = this.onChooseForegroundImage.bind(this)
     this.onChooseAtomToPlot = this.onChooseAtomToPlot.bind(this)
     this.plotAtom = this.plotAtom.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
@@ -108,6 +133,24 @@ class ResourceSpace extends PureComponent {
         ...this.state.resource.camera,
         [prop]: parseInt(v, 10)
       }
+    })
+  }
+
+  onChooseBackgroundImage(backgroundImage) {
+    if (backgroundImage === 'none') {
+      backgroundImage = null
+    }
+    this.onUpdate({
+      backgroundImage
+    })
+  }
+
+  onChooseForegroundImage(foregroundImage) {
+    if (foregroundImage === 'none') {
+      foregroundImage = null
+    }
+    this.onUpdate({
+      foregroundImage
     })
   }
 
@@ -149,16 +192,24 @@ class ResourceSpace extends PureComponent {
 
   render() {
     const atomDropperResources = getAtomDropperResources(this.props.resources)
+    const imageDropperResources = getImageDropperResources(this.props.resources)
+
+    const backgroundImage = (this.state.resource.backgroundImage === null ? 'none' : this.state.resource.backgroundImage)
+    const foregroundImage = (this.state.resource.foregroundImage === null ? 'none' : this.state.resource.foregroundImage)
     return (
       <StyledResource>
         <section className='settings-plot-info'>
           <Box className='settings'>
-            <Input label='Width' type='number' value={this.state.resource.width} onChange={(v) => this.onChangeMasterProp('width', v)} min='0' max='4096' />
-            <Input label='Height' type='number' value={this.state.resource.height} onChange={(v) => this.onChangeMasterProp('height', v)} min='0' max='4096' />
-            <Input label='Cam Width' type='number' value={this.state.resource.camera.width} onChange={(v) => this.onChangeCameraProp('width', v)} min='0' max='4096' />
-            <Input label='Cam Height' type='number' value={this.state.resource.camera.height} onChange={(v) => this.onChangeCameraProp('height', v)} min='0' max='4096' />
-            <Input label='Cam X' type='number' value={this.state.resource.camera.x} min='0' onChange={(v) => this.onChangeCameraProp('x', v)} max='4096' />
-            <Input label='Cam Y' type='number' value={this.state.resource.camera.y} min='0' onChange={(v) => this.onChangeCameraProp('y', v)} max='4096' />
+            <div className='coords'>
+              <Input label='Width' type='number' value={this.state.resource.width} onChange={(v) => this.onChangeMasterProp('width', v)} min='0' max='4096' />
+              <Input label='Height' type='number' value={this.state.resource.height} onChange={(v) => this.onChangeMasterProp('height', v)} min='0' max='4096' />
+              <Input label='Cam Width' type='number' value={this.state.resource.camera.width} onChange={(v) => this.onChangeCameraProp('width', v)} min='0' max='4096' />
+              <Input label='Cam Height' type='number' value={this.state.resource.camera.height} onChange={(v) => this.onChangeCameraProp('height', v)} min='0' max='4096' />
+              <Input label='Cam X' type='number' value={this.state.resource.camera.x} min='0' onChange={(v) => this.onChangeCameraProp('x', v)} max='4096' />
+              <Input label='Cam Y' type='number' value={this.state.resource.camera.y} min='0' onChange={(v) => this.onChangeCameraProp('y', v)} max='4096' />
+            </div>
+            <Dropper options={imageDropperResources} value={backgroundImage} onChoose={this.onChooseBackgroundImage} label='Background image' />
+            <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
           </Box>
           <Box className='plot'>
             <Dropper options={atomDropperResources} value={this.state.atomToPlot} label='Atom to plot' onChoose={this.onChooseAtomToPlot} />
