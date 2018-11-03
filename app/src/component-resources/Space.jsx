@@ -31,6 +31,7 @@ const StyledResource = styled.div`
   }
   section.canvas {
     margin-top: 1rem;
+    overflow: scroll;
     // background-color: red;
   }
   @media screen and (min-width: 960px) {
