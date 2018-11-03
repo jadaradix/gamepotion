@@ -47,13 +47,16 @@ const StyledToolbarButton = styled.li`
       margin-left: 2rem;
     }
     &.significant {
+      background-color: white;
+    }
+    &.selected {
       background-color: #6c7a89;
     }
     &[disabled] {
       opacity: 0.25;
       cursor: not-allowed;
     }
-    &:not([disabled]):hover {
+    &:not([disabled]):not(.significant):hover {
       background-color: #6c7a89;
     }
   }
@@ -67,7 +70,7 @@ const handleOnClick = (history, route, onClick) => {
   }
 }
 
-const ToolbarButton = ({ history, route, onClick, icon, hint, significant, disabled, fixedWidth, children }) => {
+const ToolbarButton = ({ match, history, route, onClick, icon, hint, significant, disabled, fixedWidth, children }) => {
   const style = {
     main: {},
     button: {},
@@ -78,9 +81,10 @@ const ToolbarButton = ({ history, route, onClick, icon, hint, significant, disab
     style.button.width = '100%'
     style.button.textAlign = 'left'
   }
+  const className = classnames({'significant': significant, 'selected': (match.url === route), 'disabled': disabled})
   return (
     <StyledToolbarButton title={hint} style={style.main}>
-      <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={classnames({'significant': significant, 'disabled': disabled})} style={style.button}>
+      <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={className} style={style.button}>
         {icon && <img src={icon} alt={hint} className={`icon-${icon}`} />}
         {children && <span style={style.span}>{children}</span>}
       </button>
