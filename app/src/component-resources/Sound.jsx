@@ -32,7 +32,7 @@ class ResourceSound extends PureComponent {
     this.onChooseFixed = this.onChooseFixed.bind(this)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.resource.fixed !== this.state.resource.fixed) {
       this.setState({ resource: nextProps.resource })
     }
