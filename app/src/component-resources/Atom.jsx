@@ -11,6 +11,7 @@ import Dropper from '../components/Dropper/Dropper'
 import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
 import Image from '../components/Image/Image'
+import Heading2 from '../components/Heading2/Heading2'
 
 const StyledResource = styled.div`
   section.image-events {
@@ -28,6 +29,9 @@ const StyledResource = styled.div`
     .component--box.events {
       margin-top: 1rem;
       padding: 1rem;
+      .component--heading2 {
+        margin-bottom: 1rem;
+      }
       // background-color: yellow;
     }
   }
@@ -48,6 +52,7 @@ const StyledResource = styled.div`
     }
     .component--box.add-action {
       margin-top: 1rem;
+      padding: 1rem;
     }
   }
   @media screen and (min-width: 960px) {
@@ -185,6 +190,7 @@ class ResourceAtom extends PureComponent {
             <Dropper options={imageResources} value={imageId} onChoose={this.onChooseImage} />
           </Box>
           <Box className='events'>
+            <Heading2>Events</Heading2>
             <List>
               {events.map(e => {
                 return <ListItem id={e.id} key={e.id} icon={icons.events[e.icon]} onChoose={this.onChooseEvent} selected={e.id === this.state.currentEvent}>{e.name}</ListItem>
@@ -197,7 +203,7 @@ class ResourceAtom extends PureComponent {
             {this.getEventActions()}
           </Box>
           <Box className='add-action'>
-            (add action goes here)
+            <Heading2>Add action</Heading2>
           </Box>
         </section>
       </StyledResource>
