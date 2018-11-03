@@ -87,14 +87,13 @@ class Atom extends PureComponent {
     }
     this.onChooseImage = this.onChooseImage.bind(this)
     this.onChooseEvent = this.onChooseEvent.bind(this)
+    this.actOnAction = this.actOnAction.bind(this)
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.resource.imageId !== this.state.resource.imageId) {
-      this.setState({
-        resource: nextProps.resource
-      })
-    }
+    this.setState({
+      resource: nextProps.resource
+    })
   }
 
   onChooseImage(imageId) {
@@ -112,6 +111,26 @@ class Atom extends PureComponent {
     })
   }
 
+  actOnAction(id, action) {
+    id = parseInt(id, 10)
+    const actions = {
+      'delete': () => {
+        this.props.onUpdate({
+          events: {
+            ...this.state.resource.events,
+            [this.state.currentEvent]: this.state.resource.events[this.state.currentEvent].filter((a, i) => {
+              return (i !== id)
+            })
+          }
+        })
+      }
+    }
+    const foundAction = actions[action]
+    if (typeof foundAction === 'function') {
+      actions[action]()
+    }
+  }
+
   getEventActions() {
     const getEmpty = () => {
       return (
@@ -122,7 +141,7 @@ class Atom extends PureComponent {
       return (
         <List>
           {actions.map((a, i) => {
-            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.generic.project.project} actions={['edit', 'delete']}>{a.name}</ListItem>)
+            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.generic.project.project} actions={['edit', 'delete']} onAction={this.actOnAction}>{a.name}</ListItem>)
           })}
         </List>
       )
@@ -139,7 +158,7 @@ class Atom extends PureComponent {
   }
 
   render() {
-    // console.warn('[resource-Atom] [render] this.state.resourc', this.state.resource)
+    // console.warn('[resource-Atom] [render] this.state.resource', this.state.resource)
     const imageResources = [
       ...this.props.resources
         .filter(r => r.type === 'image')

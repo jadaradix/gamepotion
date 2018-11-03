@@ -166,20 +166,20 @@ class StateProjectProject extends Component {
 
   render() {
     // if (this.state.currentProject && this.state.currentProject.currentResource) {
-    //   console.warn('debug here', this.state.currentProject.currentResource)
+    //   console.warn('[state-Project] this.state.currentProject.currentResource', this.state.currentProject.currentResource)
     // }
     return (
       <Fragment>
         <MainToolbarContainer />
         <StyledState>
           <aside>
+            {this.state.currentProject === null && this.state.errored === false &&
+              <Loading />
+            }
             {this.state.currentProject !== null &&
               <Box>
                 <ResourceList onAdd={this.onAddResource} onLoad={this.onLoadResource} onRename={this.onRenameResource} onDelete={this.onDeleteResource} resources={this.state.currentProject.resources} currentResource={this.state.currentProject.currentResource} />
               </Box>
-            }
-            {this.state.currentProject === null && this.state.errored === false &&
-              <Loading />
             }
           </aside>
           <main>
