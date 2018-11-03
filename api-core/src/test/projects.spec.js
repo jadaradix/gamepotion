@@ -1,7 +1,7 @@
 const axios = require('axios')
 const createRandomString = require('../abstractions/createRandomString.js')
 
-const API_URL = 'http://localhost:1025/v1'
+const URL_API_CORE = 'http://localhost:1025/v1'
 
 const user = {
   name: 'James',
@@ -33,7 +33,7 @@ const configs = {
 test('creates a user', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/users`,
+    url: `${URL_API_CORE}/users`,
     data: user,
     ...configs.noAuth
   })
@@ -48,7 +48,7 @@ test('creates a user', (done) => {
 test('creates a team', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/teams`,
+    url: `${URL_API_CORE}/teams`,
     data: team,
     ...configs.auth
   })
@@ -64,7 +64,7 @@ test('creates a team', (done) => {
 test('updates the users team', (done) => {
   axios({
     method: 'patch',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     data: {
       teamId: team.id
     },
@@ -81,7 +81,7 @@ test('updates the users team', (done) => {
 test('creates a project', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/me/team/projects`,
+    url: `${URL_API_CORE}/me/team/projects`,
     data: project,
     ...configs.auth
   })
@@ -97,7 +97,7 @@ test('creates a project', (done) => {
 test('updates a project', (done) => {
   axios({
     method: 'patch',
-    url: `${API_URL}/me/team/projects/${project.id}`,
+    url: `${URL_API_CORE}/me/team/projects/${project.id}`,
     data: {
       name: 'DinoRun'
     },
@@ -115,7 +115,7 @@ test('updates a project', (done) => {
 test('lists the project', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team/projects`,
+    url: `${URL_API_CORE}/me/team/projects`,
     ...configs.auth
   })
     .then(response => {
@@ -132,7 +132,7 @@ describe('resources', () => {
   test('lists none', (done) => {
     axios({
       method: 'get',
-      url: `${API_URL}/me/team/projects/${project.id}/resources`,
+      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
       ...configs.auth
     })
       .then(response => {
@@ -146,7 +146,7 @@ describe('resources', () => {
   test('doesnt add one with a stupid type', (done) => {
     axios({
       method: 'post',
-      url: `${API_URL}/me/team/projects/${project.id}/resources`,
+      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
       data: {
         type: 'qweqweqwe'
       },
@@ -164,7 +164,7 @@ describe('resources', () => {
   test('adds one', (done) => {
     axios({
       method: 'post',
-      url: `${API_URL}/me/team/projects/${project.id}/resources`,
+      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
       data: {
         type: 'sound',
         name: 'Bird Sound'
@@ -184,7 +184,7 @@ describe('resources', () => {
   test('lists one', (done) => {
     axios({
       method: 'get',
-      url: `${API_URL}/me/team/projects/${project.id}/resources`,
+      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
       ...configs.auth
     })
       .then(response => {
@@ -200,7 +200,7 @@ describe('resources', () => {
   test('renames it', (done) => {
     axios({
       method: 'patch',
-      url: `${API_URL}/me/team/projects/${project.id}/resources/${resourceId}`,
+      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources/${resourceId}`,
       data: {
         type: 'stoopid-type',
         name: 'Fox Sound'
@@ -219,7 +219,7 @@ describe('resources', () => {
   test('deletes it', (done) => {
     axios({
       method: 'delete',
-      url: `${API_URL}/me/team/projects/${project.id}/resources/${resourceId}`,
+      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources/${resourceId}`,
       ...configs.auth
     })
       .then(response => {
@@ -232,7 +232,7 @@ describe('resources', () => {
   test('lists none after deletion', (done) => {
     axios({
       method: 'get',
-      url: `${API_URL}/me/team/projects/${project.id}/resources`,
+      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
       ...configs.auth
     })
       .then(response => {
@@ -247,7 +247,7 @@ describe('resources', () => {
 test('deletes the project', (done) => {
   axios({
     method: 'delete',
-    url: `${API_URL}/me/team/projects/${project.id}`,
+    url: `${URL_API_CORE}/me/team/projects/${project.id}`,
     ...configs.auth
   })
     .then(response => {
@@ -260,7 +260,7 @@ test('deletes the project', (done) => {
 test('doesnt list the project', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team/projects`,
+    url: `${URL_API_CORE}/me/team/projects`,
     ...configs.auth
   })
     .then(response => {
@@ -274,7 +274,7 @@ test('doesnt list the project', (done) => {
 test('deletes the team', (done) => {
   axios({
     method: 'delete',
-    url: `${API_URL}/me/team`,
+    url: `${URL_API_CORE}/me/team`,
     ...configs.auth
   })
     .then(response => {
@@ -287,7 +287,7 @@ test('deletes the team', (done) => {
 test('deletes the user', (done) => {
   axios({
     method: 'delete',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     ...configs.auth
   })
     .then(response => {

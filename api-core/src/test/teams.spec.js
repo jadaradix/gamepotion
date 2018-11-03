@@ -1,7 +1,7 @@
 const axios = require('axios')
 const createRandomString = require('../abstractions/createRandomString.js')
 
-const API_URL = 'http://localhost:1025/v1'
+const URL_API_CORE = 'http://localhost:1025/v1'
 
 const user = {
   name: 'James',
@@ -29,7 +29,7 @@ const configs = {
 test('creates a user', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/users`,
+    url: `${URL_API_CORE}/users`,
     data: user,
     ...configs.noAuth
   })
@@ -44,7 +44,7 @@ test('creates a user', (done) => {
 test('doesnt create a team with a bad name (class testing)', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/teams`,
+    url: `${URL_API_CORE}/teams`,
     data: {
       name: ''
     },
@@ -61,7 +61,7 @@ test('doesnt create a team with a bad name (class testing)', (done) => {
 test('creates a team', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/teams`,
+    url: `${URL_API_CORE}/teams`,
     data: team,
     ...configs.auth
   })
@@ -77,7 +77,7 @@ test('creates a team', (done) => {
 test('doesnt get the teams users', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team/users`,
+    url: `${URL_API_CORE}/me/team/users`,
     ...configs.auth
   })
     .then(response => {
@@ -91,7 +91,7 @@ test('doesnt get the teams users', (done) => {
 test('updates the users team', (done) => {
   axios({
     method: 'patch',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     data: {
       teamId: team.id
     },
@@ -108,7 +108,7 @@ test('updates the users team', (done) => {
 test('gets the team', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team`,
+    url: `${URL_API_CORE}/me/team`,
     ...configs.auth
   })
     .then(response => {
@@ -122,7 +122,7 @@ test('gets the team', (done) => {
 test('gets the teams users', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team/users`,
+    url: `${URL_API_CORE}/me/team/users`,
     ...configs.auth
   })
     .then(response => {
@@ -137,7 +137,7 @@ test('gets the teams users', (done) => {
 test('updates the team', (done) => {
   axios({
     method: 'patch',
-    url: `${API_URL}/me/team`,
+    url: `${URL_API_CORE}/me/team`,
     data: {
       name: 'FatQuack'
     },
@@ -155,7 +155,7 @@ test('updates the team', (done) => {
 test('gets the team (update persisted)', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team`,
+    url: `${URL_API_CORE}/me/team`,
     ...configs.auth
   })
     .then(response => {
@@ -169,7 +169,7 @@ test('gets the team (update persisted)', (done) => {
 test('deletes the team', (done) => {
   axios({
     method: 'delete',
-    url: `${API_URL}/me/team`,
+    url: `${URL_API_CORE}/me/team`,
     ...configs.auth
   })
     .then(response => {
@@ -182,7 +182,7 @@ test('deletes the team', (done) => {
 test('doesnt get the team after deletion', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team`,
+    url: `${URL_API_CORE}/me/team`,
     ...configs.auth
   })
     .then(response => {
@@ -195,7 +195,7 @@ test('doesnt get the team after deletion', (done) => {
 test('doesnt get the teams users after deletion', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me/team/users`,
+    url: `${URL_API_CORE}/me/team/users`,
     ...configs.auth
   })
     .then(response => {
@@ -208,7 +208,7 @@ test('doesnt get the teams users after deletion', (done) => {
 test('deletes the user', (done) => {
   axios({
     method: 'delete',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     ...configs.auth
   })
     .then(response => {

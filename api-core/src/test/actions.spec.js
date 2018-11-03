@@ -1,7 +1,7 @@
 const axios = require('axios')
 const createRandomString = require('../abstractions/createRandomString.js')
 
-const API_URL = 'http://localhost:1025/v1'
+const URL_API_CORE = 'http://localhost:1025/v1'
 
 const user = {
   name: 'James',
@@ -25,7 +25,7 @@ const configs = {
 test('creates a user', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/users`,
+    url: `${URL_API_CORE}/users`,
     data: user,
     ...configs.noAuth
   })
@@ -41,7 +41,7 @@ test('creates a user', (done) => {
 test('gets the actions', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/actions`,
+    url: `${URL_API_CORE}/actions`,
     ...configs.auth
   })
     .then(response => {
@@ -55,7 +55,7 @@ test('gets the actions', (done) => {
 test('deletes the user', (done) => {
   axios({
     method: 'delete',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     ...configs.auth
   })
     .then(response => {

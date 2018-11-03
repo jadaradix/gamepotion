@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const API_URL = 'http://localhost:1025/v1'
+const URL_API_CORE = 'http://localhost:1025/v1'
 
 const configs = {
   noAuth: {
@@ -11,7 +11,7 @@ const configs = {
 test('gets the news', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/news`,
+    url: `${URL_API_CORE}/news`,
     ...configs.auth
   })
     .then(response => {

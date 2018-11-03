@@ -1,7 +1,7 @@
 const axios = require('axios')
 const createRandomString = require('../abstractions/createRandomString.js')
 
-const API_URL = 'http://localhost:1025/v1'
+const URL_API_CORE = 'http://localhost:1025/v1'
 
 const user = {
   name: 'James',
@@ -25,7 +25,7 @@ const configs = {
 test('doesnt create a user with a bad name (class testing)', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/users`,
+    url: `${URL_API_CORE}/users`,
     data: {
       name: '',
       email: 'j@jada.io',
@@ -44,7 +44,7 @@ test('doesnt create a user with a bad name (class testing)', (done) => {
 test('doesnt create a user with a bad password (route testing)', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/users`,
+    url: `${URL_API_CORE}/users`,
     data: {
       name: 'james',
       email: 'j@jada.io',
@@ -63,7 +63,7 @@ test('doesnt create a user with a bad password (route testing)', (done) => {
 test('creates a user', (done) => {
   axios({
     method: 'post',
-    url: `${API_URL}/users`,
+    url: `${URL_API_CORE}/users`,
     data: user,
     ...configs.noAuth
   })
@@ -79,7 +79,7 @@ test('creates a user', (done) => {
 test('gets the user', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     ...configs.auth
   })
     .then(response => {
@@ -94,7 +94,7 @@ test('gets the user', (done) => {
 test('updates the user', (done) => {
   axios({
     method: 'patch',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     data: {
       name: 'Robert'
     },
@@ -111,7 +111,7 @@ test('updates the user', (done) => {
 test('gets the user (update persisted)', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     ...configs.auth
   })
     .then(response => {
@@ -125,7 +125,7 @@ test('gets the user (update persisted)', (done) => {
 test('deletes the user', (done) => {
   axios({
     method: 'delete',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     ...configs.auth
   })
     .then(response => {
@@ -138,7 +138,7 @@ test('deletes the user', (done) => {
 test('doesnt get the user after deletion', (done) => {
   axios({
     method: 'get',
-    url: `${API_URL}/me`,
+    url: `${URL_API_CORE}/me`,
     ...configs.auth
   })
     .then(response => {
