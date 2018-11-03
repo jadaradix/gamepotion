@@ -146,14 +146,17 @@ class SpaceCanvas extends PureComponent {
       console.warn('[renderCanvas] loadedGood!')
       const instanceClasses = getInstanceClasses(space.instances)
       start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
-      const runStep = () => {
+      const runStepOnce = () => {
         step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
-        window.requestAnimationFrame(runStep)
+      }
+      const runStepLoop = () => {
+        step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+        window.requestAnimationFrame(runStepLoop)
       }
       if (this.props.designMode === true) {
-        runStep()
+        runStepOnce()
       } else {
-        window.requestAnimationFrame(runStep)
+        runStepLoop()
       }
     }
     const loadedBad = () => {

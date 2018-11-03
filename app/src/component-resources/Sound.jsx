@@ -77,7 +77,7 @@ class ResourceSound extends PureComponent {
         </section>
         <section className='split-two'>
           <Box>
-              <Dropper label='Choose a Game Maker Club file' onChoose={this.onChooseFixed} options={fixedOptions} value={fixedValue} />
+            <Dropper label='Choose a Game Maker Club file' onChoose={this.onChooseFixed} options={fixedOptions} value={fixedValue} />
           </Box>
           <Box>
             <p>(upload goes here)</p>
