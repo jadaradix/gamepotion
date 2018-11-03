@@ -114,7 +114,7 @@ class ResourceSpace extends PureComponent {
           </Box>
         </section>
         <section className='canvas'>
-          <SpaceCanvas space={this.state.resource} resources={this.props.resources} />
+          <SpaceCanvas space={this.state.resource} resources={this.props.resources} designMode={true} />
         </section>
       </StyledResource>
     )

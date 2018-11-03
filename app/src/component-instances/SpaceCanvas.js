@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 const LOADING_STYLE = {
@@ -14,24 +14,42 @@ class SpaceCanvas extends PureComponent {
   constructor() {
     super()
     this.canvasRef = React.createRef()
-    this.canvasContext = null
-    this.state = {
-      isLoading: false
+    this.eventListeners = new Map()
+  }
+
+  // componentWillReceiveProps() {
+  //   this.forceUpdate()
+  // }
+
+  componentWillUnmount() {
+    this.removeEventListeners()
+  }
+
+  addEventListener(element, event, logic) {
+    element.addEventListener(event, logic)
+    this.eventListeners.set(
+      {
+        element,
+        event
+      },
+      logic
+    )
+  }
+
+  removeEventListeners() {
+    for (const [k, v] of this.eventListeners.entries()) {
+      k.element.removeEventListener(k.event, v)
     }
   }
 
-  componentDidMount() {
-    this.renderCanvas(this.props.space)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.renderCanvas(nextProps.space)
-  }
-
-  renderCanvas(space) {
-    const canvas = this.canvasRef.current
-    if (canvas === null) return false;
-    ((c, ctx) => {
+  renderCanvas(canvas, space, resources) {
+    this.removeEventListeners()
+    const [c, ctx] = [canvas, canvas.getContext('2d')]
+    let loadedSoFar = 0
+    const totalLoadableCount = resources.filter(r => ['image', 'sound'].includes(r.type)).length
+    const imageUrls = resources.filter(r => r.type === 'image').map(i => i.getRemoteUrl())
+    const startLoading = () => {
+      console.warn('start loading!')
       c.width = space.width
       c.height = space.height
       c.style.display = 'block'
@@ -39,32 +57,65 @@ class SpaceCanvas extends PureComponent {
       c.style.width = space.width
       c.style.height = space.height
       ctx.clearRect(0, 0, space.width, space.height)
-      ctx.strokeStyle = '#ffffff'
-      ctx.rect(space.camera.x + 1, space.camera.y + 1, space.camera.width - 1, space.camera.height - 1)
-      ctx.stroke()
-    })(canvas, canvas.getContext('2d'))
+    }
+    const loadedGood = () => {
+      console.warn('loadedGood!')
+      ctx.clearRect(0, 0, space.width, space.height)
+      if (this.props.designMode === true) {
+        ctx.strokeStyle = '#ffffff'
+        ctx.rect(space.camera.x + 1, space.camera.y + 1, space.camera.width - 1, space.camera.height - 1)
+        ctx.stroke()
+      }
+    }
+    const loadedBad = () => {
+      console.warn('loadedBad!')
+      this.removeEventListeners()
+    }
+    const loadGoodLogic = () => {
+      console.warn('loadLogic! total = ', totalLoadableCount)
+      loadedSoFar += 1
+      if (loadedSoFar === totalLoadableCount) {
+        loadedGood()
+      }
+    }
+    const loadBadLogic = () => {
+      loadedBad()
+    }
+    startLoading()
+    imageUrls.forEach(imageUrl => {
+      const image = new window.Image()
+      this.addEventListener(image, 'load', loadGoodLogic)
+      this.addEventListener(image, 'error', loadBadLogic)
+      image.src = imageUrl
+    })
   }
 
   render() {
-    if (this.state.isLoading === true) {
-      return (
-        <div style={{
-          ...LOADING_STYLE,
-          width: this.props.space.width,
-          height: this.props.space.height,
-          lineHeight: `${this.props.space.height}px`
-        }}>Loading...</div>
-      )
+    console.warn('react render!')
+    const canvasStyle = {
+      width: this.props.space.width,
+      height: this.props.space.height,
+      lineHeight: `${this.props.space.height}px`
     }
     return (
-      <canvas ref={this.canvasRef} />
+      <canvas style={canvasStyle} ref={(element) => {
+        if (element === null) {
+          return
+        }
+        this.renderCanvas(element, this.props.space, this.props.resources)
+      }} />
     )
   }
 }
 
 SpaceCanvas.propTypes = {
+  designMode: PropTypes.bool,
   space: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired
+}
+
+SpaceCanvas.defaultProps = {
+  designMode: false
 }
 
 export default SpaceCanvas
