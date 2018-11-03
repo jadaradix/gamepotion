@@ -38,11 +38,15 @@ class ResourceSound extends PureComponent {
     }
   }
 
+  onUpdate(data) {
+    this.props.onUpdate(data)
+  }
+
   onChooseFixed(fixed) {
     if (fixed === 'none') {
       fixed = null
     }
-    this.props.onUpdate({
+    this.onUpdate({
       fixed
     })
   }

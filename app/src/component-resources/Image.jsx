@@ -38,22 +38,21 @@ class ResourceImage extends PureComponent {
     this.onChooseFixed = this.onChooseFixed.bind(this)
   }
 
-  // <Button onClick={this.renameToTest}>Rename to Test</Button>
-  // renameToTest () {
-  //   this.props.onUpdate({ name: 'Test' })
-  // }
-
   componentWillReceiveProps (nextProps) {
     if (nextProps.resource.fixed !== this.state.resource.fixed) {
       this.setState({ resource: nextProps.resource })
     }
   }
 
+  onUpdate(data) {
+    this.props.onUpdate(data)
+  }
+
   onChooseFixed(fixed) {
     if (fixed === 'none') {
       fixed = null
     }
-    this.props.onUpdate({
+    this.onUpdate({
       fixed
     })
   }

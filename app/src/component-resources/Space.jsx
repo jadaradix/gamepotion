@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import debounce from 'debounce'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -57,10 +58,9 @@ class ResourceSpace extends PureComponent {
     this.state = {
       resource: props.resource
     }
-  }
-
-  renderCanvas(resource) {
-    spaceCanvas(this.canvasRef.current, resource, this.props.resources)
+    this.onUpdate = debounce((data) => {
+      this.props.onUpdate(data)
+    }, 500)
   }
 
   componentDidMount() {
@@ -72,6 +72,25 @@ class ResourceSpace extends PureComponent {
       resource: nextProps.resource
     })
     this.renderCanvas(nextProps.resource)
+  }
+
+  renderCanvas(resource) {
+    spaceCanvas(this.canvasRef.current, resource, this.props.resources)
+  }
+
+  onChangeMasterProp(prop, v) {
+    this.onUpdate({
+      [prop]: parseInt(v, 10)
+    })
+  }
+
+  onChangeCameraProp(prop, v) {
+    this.onUpdate({
+      camera: {
+        ...this.state.resource.camera,
+        [prop]: parseInt(v, 10)
+      }
+    })
   }
 
   render() {
@@ -88,12 +107,12 @@ class ResourceSpace extends PureComponent {
       <StyledResource>
         <section className='settings-plot-info'>
           <Box className='settings'>
-            <Input label='Width' type='number' value={this.state.resource.width} />
-            <Input label='Height' type='number' value={this.state.resource.height} />
-            <Input label='Cam Width' type='number' value={this.state.resource.camera.width} />
-            <Input label='Cam Height' type='number' value={this.state.resource.camera.height} />
-            <Input label='Cam X' type='number' value={this.state.resource.camera.x} />
-            <Input label='Cam Y' type='number' value={this.state.resource.camera.y} />
+            <Input label='Width' type='number' value={this.state.resource.width} onChange={(v) => this.onChangeMasterProp('width', v)} min='0' max='4096' />
+            <Input label='Height' type='number' value={this.state.resource.height} onChange={(v) => this.onChangeMasterProp('height', v)} min='0' max='4096' />
+            <Input label='Cam Width' type='number' value={this.state.resource.camera.width} onChange={(v) => this.onChangeCameraProp('width', v)} min='0' max='4096' />
+            <Input label='Cam Height' type='number' value={this.state.resource.camera.height} onChange={(v) => this.onChangeCameraProp('height', v)} min='0' max='4096' />
+            <Input label='Cam X' type='number' value={this.state.resource.camera.x} min='0' onChange={(v) => this.onChangeCameraProp('x', v)} max='4096' />
+            <Input label='Cam Y' type='number' value={this.state.resource.camera.y} min='0' onChange={(v) => this.onChangeCameraProp('y', v)} max='4096' />
           </Box>
           <Box className='plot'>
             <Dropper options={atomResources} label='Atom to plot' />

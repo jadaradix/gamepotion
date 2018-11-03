@@ -86,11 +86,15 @@ class ResourceAtom extends PureComponent {
     })
   }
 
+  onUpdate(data) {
+    this.props.onUpdate(data)
+  }
+
   onChooseImage(imageId) {
     if (imageId === 'none') {
       imageId = null
     }
-    this.props.onUpdate({
+    this.onUpdate({
       imageId
     })
   }
@@ -105,7 +109,7 @@ class ResourceAtom extends PureComponent {
     id = parseInt(id, 10)
     const actions = {
       'delete': () => {
-        this.props.onUpdate({
+        this.onUpdate({
           events: {
             ...this.state.resource.events,
             [this.state.currentEvent]: this.state.resource.events[this.state.currentEvent].filter((a, i) => {

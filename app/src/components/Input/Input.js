@@ -61,7 +61,9 @@ class Input extends PureComponent {
       required: (typeof props.required === 'boolean' ? props.required : false),
       patten: (props.type === 'password' ? '.{6,128}' : undefined),
       title: (props.type === 'password' ? '8 to 128 characters' : undefined),
-      disabled: props.disabled || false
+      disabled: props.disabled || false,
+      min: (typeof props.min === 'string' ? props.min : '0'),
+      max: (typeof props.max === 'string' ? props.max : '0')
     }
     this.onChange = props.onChange ? props.onChange.bind(this) : () => {}
     this.onDone = props.onDone ? props.onDone.bind(this) : null
@@ -91,9 +93,13 @@ class Input extends PureComponent {
           id={`component-Input-${this.state.id}`}
           disabled={this.state.disabled}
           autoFocus={this.state.autoFocus}
-          type={this.state.type}required={this.state.required}
-          pattern={this.state.patten} title={this.state.title}
+          type={this.state.type}
+          required={this.state.required}
+          pattern={this.state.patten}
+          title={this.state.title}
           value={this.state.value}
+          min={this.state.min}
+          max={this.state.max}
           placeholder={this.state.placeholder}
           onChange={this.handleOnChange}
           onKeyDown={this.handleOnDone}
