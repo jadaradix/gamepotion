@@ -14,7 +14,7 @@ class Instance {
   constructor(atomWithExtras, coords) {
     this.atomWithExtras = atomWithExtras
     this.coords = coords
-    this.vcoords = Array(coords.length).fill(0)
+    this.vcoords = Array(coords.length).fill(1)
   }
 
   step() {
@@ -36,7 +36,8 @@ const step = (ctx, spaceWithExtras, instanceClasses, designMode) => {
     ctx.drawImage(spaceWithExtras.extras.backgroundImage, 0, 0)
   }
   instanceClasses.forEach(i => {
-    console.warn(i.atomWithExtras)
+    // console.warn(i.atomWithExtras)
+    i.step()
     ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
   })
   if (spaceWithExtras.extras.foregroundImage !== null) {
@@ -145,7 +146,15 @@ class SpaceCanvas extends PureComponent {
       console.warn('[renderCanvas] loadedGood!')
       const instanceClasses = getInstanceClasses(space.instances)
       start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
-      step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+      const runStep = () => {
+        step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+        window.requestAnimationFrame(runStep)
+      }
+      if (this.props.designMode === true) {
+        runStep()
+      } else {
+        window.requestAnimationFrame(runStep)
+      }
     }
     const loadedBad = () => {
       console.warn('[renderCanvas] loadedBad!')
