@@ -1,0 +1,9 @@
+{
+  "name": "gmc-space-canvas",
+  "version": "1.0.0",
+  "description": "gmc-space-canvas",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {}
+}

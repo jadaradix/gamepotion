@@ -6,7 +6,7 @@ import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 
-import canvasRenderSpace from '../abstractions/canvasRenderSpace'
+import spaceCanvas from '../abstractions/spaceCanvas'
 
 const StyledResource = styled.div`
   section.settings-plot-info {
@@ -60,7 +60,7 @@ class ResourceSpace extends PureComponent {
   }
 
   renderCanvas(resource) {
-    canvasRenderSpace(this.canvasRef.current, resource, this.props.resources)
+    spaceCanvas(this.canvasRef.current, resource, this.props.resources)
   }
 
   componentDidMount() {

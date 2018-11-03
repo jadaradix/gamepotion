@@ -1,4 +1,4 @@
-const magicCanvas = (element, space, resources) => {
+const spaceCanvas = (element, space, resources) => {
   ((e) => {
     e.width = space.width
     e.height = space.height
@@ -10,4 +10,4 @@ const magicCanvas = (element, space, resources) => {
   return null
 }
 
-export default magicCanvas
+export default spaceCanvas
