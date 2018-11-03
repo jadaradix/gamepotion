@@ -5,12 +5,14 @@ const env = (window.location.protocol === 'http:' ? 'local' : 'production')
 const envs = {
   'local': {
     apis: {
-      'api-core': 'http://localhost:1025/v1'
+      'api-core': 'http://localhost:1025/v1',
+      'api-bin': 'http://localhost:1026/v1'
     }
   },
   'production': {
     apis: {
-      'api-core': 'https://api-core.gamemaker.club/v1'
+      'api-core': 'https://api-core.gamemaker.club/v1',
+      'api-bin': 'https://api-bin.gamemaker.club/v1'
     }
   }
 }

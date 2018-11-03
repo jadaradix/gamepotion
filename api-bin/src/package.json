@@ -1,0 +1,21 @@
+{
+  "name": "gmc-api-bin",
+  "version": "1.0.0",
+  "description": "gmc-api-bin",
+  "main": "index.js",
+  "dependencies": {
+    "console-stamp": "^0.2.7",
+    "morgan": "^1.9.1",
+    "restify": "6.4.0",
+    "restify-errors": "5.0.0"
+  },
+  "scripts": {
+    "start": "NODE_ENV=local PORT=1026 GOOGLE_APPLICATION_CREDENTIALS=/Users/james/src/gmc/config-gcp.json node --max-old-space-size=8192 index.js",
+    "start-production": "NODE_ENV=production PORT=8000 GOOGLE_APPLICATION_CREDENTIALS=/files/config-gcp.json node --max-old-space-size=8192 index.js",
+    "test": "NODE_ENV=local PORT=1026 GOOGLE_APPLICATION_CREDENTIALS=/Users/james/src/gmc/config-gcp.json jest"
+  },
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "jest": "^23.6.0"
+  }
+}

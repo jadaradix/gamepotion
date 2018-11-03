@@ -14,6 +14,10 @@ cd api-core/src;
   npm test;
 cd ../..;
 
+cd api-bin/src;
+  npm test;
+cd ../..;
+
 cd app;
   npm test;
 cd ..;

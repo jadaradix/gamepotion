@@ -18,6 +18,11 @@ cd api-core/src;
   rm -rf platforms;
 cd ../..;
 
+cd api-bin/src;
+  rm -rf abstractions;
+  rm -rf classes;
+cd ../..;
+
 cd app/src;
   rm -rf abstractions;
   rm -rf classes;

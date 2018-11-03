@@ -23,6 +23,11 @@ cd api-core/src;
   rm -rf platforms; ln -s ../../platforms platforms;
 cd ../..;
 
+cd api-bin/src;
+  rm -rf abstractions; ln -s ../../abstractions abstractions;
+  rm -rf classes; ln -s ../../classes classes;
+cd ../..;
+
 cd app/src;
   rm -rf abstractions;
   mkdir abstractions;
