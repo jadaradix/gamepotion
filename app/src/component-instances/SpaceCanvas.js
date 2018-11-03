@@ -17,10 +17,6 @@ class SpaceCanvas extends PureComponent {
     this.eventListeners = new Map()
   }
 
-  // componentWillReceiveProps() {
-  //   this.forceUpdate()
-  // }
-
   componentWillUnmount() {
     this.removeEventListeners()
   }
@@ -44,11 +40,23 @@ class SpaceCanvas extends PureComponent {
 
   renderCanvas(canvas, space, resources) {
     this.removeEventListeners()
-    const [c, ctx] = [canvas, canvas.getContext('2d')]
+    const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
+    const getTouchData = (e) => {
+      const x = e.touches[0].clientX - cDomBounds.x
+      const y = e.touches[0].clientY - cDomBounds.y
+      const z = 0
+      return [parseInt(x, 10), parseInt(y, 10), z]
+    }
+    this.addEventListener(canvas, 'touchstart', (e) => {
+      this.props.onTouch(getTouchData(e))
+    })
+    this.addEventListener(canvas, 'touchmove', (e) => {
+      this.props.onTouchMove(getTouchData(e))
+    })
     let loadedSoFar = 0
     const totalLoadableCount = resources.filter(r => ['image', 'sound'].includes(r.type)).length
     const startLoading = () => {
-      console.warn('start loading!')
+      console.warn('[renderCanvas] start loading!')
       c.width = space.width
       c.height = space.height
       c.style.display = 'block'
@@ -58,7 +66,7 @@ class SpaceCanvas extends PureComponent {
       ctx.clearRect(0, 0, space.width, space.height)
     }
     const loadedGood = () => {
-      console.warn('loadedGood!')
+      console.warn('renderCanvas] loadedGood!')
       ctx.clearRect(0, 0, space.width, space.height)
       if (this.props.designMode === true) {
         ctx.strokeStyle = '#ffffff'
@@ -67,12 +75,12 @@ class SpaceCanvas extends PureComponent {
       }
     }
     const loadedBad = () => {
-      console.warn('loadedBad!')
+      console.warn('[renderCanvas] loadedBad!')
       this.removeEventListeners()
     }
     const loadGoodLogic = () => {
       loadedSoFar += 1
-      console.warn(`loadLogic! done ${loadedSoFar}/${totalLoadableCount}`)
+      console.warn(`[renderCanvas] loadLogic! done ${loadedSoFar}/${totalLoadableCount}`)
       if (loadedSoFar === totalLoadableCount) {
         loadedGood()
       }
@@ -105,7 +113,7 @@ class SpaceCanvas extends PureComponent {
   }
 
   render() {
-    console.warn('react render!')
+    console.warn('[render]')
     const canvasStyle = {
       width: this.props.space.width,
       height: this.props.space.height,
@@ -125,11 +133,15 @@ class SpaceCanvas extends PureComponent {
 SpaceCanvas.propTypes = {
   designMode: PropTypes.bool,
   space: PropTypes.any.isRequired,
-  resources: PropTypes.array.isRequired
+  resources: PropTypes.array.isRequired,
+  onTouch: PropTypes.func,
+  onTouchMove: PropTypes.func
 }
 
 SpaceCanvas.defaultProps = {
-  designMode: false
+  designMode: false,
+  onTouch: () => {},
+  onTouchMove: () => {}
 }
 
 export default SpaceCanvas

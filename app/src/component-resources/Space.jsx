@@ -56,11 +56,17 @@ class ResourceSpace extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      resource: props.resource
+      resource: props.resource,
+      touchCoords: {
+        x: 0,
+        y: 0
+      }
     }
     this.onUpdate = debounce((data) => {
       this.props.onUpdate(data)
     }, 500)
+    this.plotAtom = this.plotAtom.bind(this)
+    this.updateTouchCoords = this.updateTouchCoords.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,6 +86,21 @@ class ResourceSpace extends PureComponent {
       camera: {
         ...this.state.resource.camera,
         [prop]: parseInt(v, 10)
+      }
+    })
+  }
+
+  plotAtom(coords) {
+    // console.warn('[plotAtoms] coords', coords)
+  }
+
+  updateTouchCoords(coords) {
+    // console.warn('[updateTouchCoords] coords', coords)
+    this.setState({
+      touchCoords: {
+        x: coords[0],
+        y: coords[1],
+        z: coords[2]
       }
     })
   }
@@ -109,12 +130,12 @@ class ResourceSpace extends PureComponent {
             <Dropper options={atomResources} label='Atom to plot' />
           </Box>
           <Box className='info'>
-            <Input label='Touch X' value='32' disabled />
-            <Input label='Touch Y' value='32' disabled />
+            <Input label='Touch X' value={this.state.touchCoords.x} type='number' disabled />
+            <Input label='Touch Y' value={this.state.touchCoords.y} type='number' disabled />
           </Box>
         </section>
         <section className='canvas'>
-          <SpaceCanvas space={this.state.resource} resources={this.props.resources} designMode={true} />
+          <SpaceCanvas space={this.state.resource} resources={this.props.resources} designMode={true} onTouch={this.plotAtom} onTouchMove={this.updateTouchCoords} />
         </section>
       </StyledResource>
     )
