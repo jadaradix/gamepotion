@@ -26,7 +26,6 @@ cd ../..;
 cd app/src;
   rm -rf abstractions;
   mkdir abstractions;
-  mkdir abstractions/canvasRenderSpace;
   ln -s ../../../abstractions/events.json abstractions/events.json;
   ln -s ../../../abstractions/canvasRenderSpace abstractions/canvasRenderSpace;
   rm -rf classes; cp -R ../../classes classes;
