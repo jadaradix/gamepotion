@@ -9,6 +9,25 @@ import Dropper from '../components/Dropper/Dropper'
 
 import SpaceCanvas from '../component-instances/SpaceCanvas'
 
+const getAtomDropperResources = (resources) => {
+  return resources
+    .filter(r => r.type === 'atom')
+    .map(r => {
+      return {
+        id: r.id,
+        name: r.name
+      }
+    })
+}
+
+const getAtomToPlot = (resources) => {
+  const foundAtom = resources.find(r => r.type === 'atom')
+  if (foundAtom !== undefined) {
+    return foundAtom.id
+  }
+  return 'none'
+}
+
 const StyledResource = styled.div`
   section.settings-plot-info {
     .component--box.settings {
@@ -60,11 +79,13 @@ class ResourceSpace extends PureComponent {
       touchCoords: {
         x: 0,
         y: 0
-      }
+      },
+      atomToPlot: getAtomToPlot(props.resources)
     }
     this.onUpdate = debounce((data) => {
       this.props.onUpdate(data)
     }, 500)
+    this.onChooseAtomToPlot = this.onChooseAtomToPlot.bind(this)
     this.plotAtom = this.plotAtom.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
   }
@@ -90,8 +111,17 @@ class ResourceSpace extends PureComponent {
     })
   }
 
+  onChooseAtomToPlot(atomToPlot) {
+    this.setState({
+      atomToPlot
+    })
+  }
+
   plotAtom(coords) {
-    // console.warn('[plotAtoms] coords', coords)
+    console.warn('[plotAtoms]', this.state.atomToPlot, 'at', coords)
+    if (this.state.atomToPlot === 'none') {
+      return
+    }
   }
 
   updateTouchCoords(coords) {
@@ -106,15 +136,7 @@ class ResourceSpace extends PureComponent {
   }
 
   render() {
-    const atomResources = this.props.resources
-      .filter(r => r.type === 'atom')
-      .map(r => {
-        return {
-          id: r.id,
-          name: r.name
-        }
-      })
-
+    const atomDropperResources = getAtomDropperResources(this.props.resources)
     return (
       <StyledResource>
         <section className='settings-plot-info'>
@@ -127,7 +149,7 @@ class ResourceSpace extends PureComponent {
             <Input label='Cam Y' type='number' value={this.state.resource.camera.y} min='0' onChange={(v) => this.onChangeCameraProp('y', v)} max='4096' />
           </Box>
           <Box className='plot'>
-            <Dropper options={atomResources} label='Atom to plot' />
+            <Dropper options={atomDropperResources} value={this.state.atomToPlot} label='Atom to plot' onChoose={this.onChooseAtomToPlot} />
           </Box>
           <Box className='info'>
             <Input label='Touch X' value={this.state.touchCoords.x} type='number' disabled />
