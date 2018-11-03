@@ -122,6 +122,18 @@ class ResourceSpace extends PureComponent {
     if (this.state.atomToPlot === 'none') {
       return
     }
+    const [x, y, z] = coords
+    this.onUpdate({
+      instances: [
+        ...this.state.resource.instances,
+        {
+          atomId: this.state.atomToPlot,
+          x,
+          y,
+          z
+        }
+      ]
+    })
   }
 
   updateTouchCoords(coords) {

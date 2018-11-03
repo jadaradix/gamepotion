@@ -10,6 +10,20 @@ const LOADING_STYLE = {
   color: 'white'
 }
 
+class Instance {
+  constructor(atomWithExtras, coords) {
+    this.atomWithExtras = atomWithExtras
+    this.coords = coords
+    this.vcoords = Array(coords.length).fill(0)
+  }
+
+  step() {
+    this.vcoords.forEach((vc, i) => {
+      this.coords[i] += vc
+    })
+  }
+}
+
 class SpaceCanvas extends PureComponent {
   constructor() {
     super()
@@ -39,6 +53,12 @@ class SpaceCanvas extends PureComponent {
   }
 
   renderCanvas(canvas, space, resources) {
+    const resourcesWithExtras = resources.map(resource => {
+      return {
+        resource,
+        extras: {}
+      }
+    })
     this.removeEventListeners()
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
     const getTouchData = (e) => {
@@ -68,7 +88,7 @@ class SpaceCanvas extends PureComponent {
       this.props.onTouchMove(getMouseData(e))
     })
     let loadedSoFar = 0
-    const totalLoadableCount = resources.filter(r => ['image', 'sound'].includes(r.type)).length
+    const totalLoadableCount = resourcesWithExtras.filter(r => ['image', 'sound'].includes(r.resource.type)).length
     const startLoading = () => {
       console.warn('[renderCanvas] start loading!')
       c.width = space.width
@@ -79,14 +99,39 @@ class SpaceCanvas extends PureComponent {
       c.style.height = space.height
       ctx.clearRect(0, 0, space.width, space.height)
     }
-    const loadedGood = () => {
-      console.warn('renderCanvas] loadedGood!')
+
+    const getInstanceClasses = (instances) => {
+      console.warn('resourcesWithExtras', resourcesWithExtras)
+      return instances.map(i => {
+        const atomWithExtras = resourcesWithExtras.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
+        const coords = [i.x, i.y, i.z]
+        return new Instance(atomWithExtras, coords)
+      })
+    }
+
+    const start = (instanceClasses) => {
+      console.warn('[start] instanceClasses', instanceClasses)
+    }
+
+    const step = (instanceClasses) => {
+      console.warn('[step] instanceClasses', instanceClasses)
       ctx.clearRect(0, 0, space.width, space.height)
+      instanceClasses.forEach(i => {
+        console.warn(i.atomWithExtras)
+        ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
+      })
       if (this.props.designMode === true) {
         ctx.strokeStyle = '#ffffff'
-        ctx.rect(space.camera.x + 1, space.camera.y + 1, space.camera.width - 1, space.camera.height - 1)
+        ctx.rect(space.camera.x + 1, space.camera.y + 1, space.camera.width - 2, space.camera.height - 2)
         ctx.stroke()
       }
+    }
+
+    const loadedGood = () => {
+      console.warn('renderCanvas] loadedGood!')
+      const instanceClasses = getInstanceClasses(space.instances)
+      start(instanceClasses)
+      step(instanceClasses)
     }
     const loadedBad = () => {
       console.warn('[renderCanvas] loadedBad!')
@@ -107,22 +152,31 @@ class SpaceCanvas extends PureComponent {
     //
     // LOAD IMAGES
     //
-    const imageUrls = resources.filter(r => r.type === 'image').map(i => i.getRemoteUrl())
-    imageUrls.forEach(url => {
-      const image = new window.Image()
-      this.addEventListener(image, 'load', loadGoodLogic)
-      this.addEventListener(image, 'error', loadBadLogic)
-      image.src = url
+    const images = resourcesWithExtras.filter(r => r.resource.type === 'image')
+    images.forEach(resource => {
+      const element = new window.Image()
+      this.addEventListener(element, 'load', loadGoodLogic)
+      this.addEventListener(element, 'error', loadBadLogic)
+      resource.extras.element = element
+      element.src = resource.resource.getRemoteUrl()
+      resourcesWithExtras
+        .filter(r => r.resource.type === 'atom' && r.resource.imageId === resource.resource.id)
+        .map(r => {
+          console.error('wow hit here!')
+          r.extras.image = element
+          return r
+        })
     })
 
     // LOAD SOUNDS
-    const soundUrls = resources.filter(r => r.type === 'sound').map(i => i.getRemoteUrl())
-    soundUrls.forEach(url => {
-      const audio = new window.Audio()
-      this.addEventListener(audio, 'loadedmetadata', loadGoodLogic)
-      this.addEventListener(audio, 'error', loadBadLogic)
-      audio.src = url
-      audio.load()
+    const sounds = resourcesWithExtras.filter(r => r.resource.type === 'sound')
+    sounds.forEach(resource => {
+      const element = new window.Audio()
+      this.addEventListener(element, 'loadedmetadata', loadGoodLogic)
+      this.addEventListener(element, 'error', loadBadLogic)
+      resource.extras.element = element
+      element.src = resource.resource.getRemoteUrl()
+      element.load()
     })
   }
 
