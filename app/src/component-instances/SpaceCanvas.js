@@ -47,7 +47,6 @@ class SpaceCanvas extends PureComponent {
     const [c, ctx] = [canvas, canvas.getContext('2d')]
     let loadedSoFar = 0
     const totalLoadableCount = resources.filter(r => ['image', 'sound'].includes(r.type)).length
-    const imageUrls = resources.filter(r => r.type === 'image').map(i => i.getRemoteUrl())
     const startLoading = () => {
       console.warn('start loading!')
       c.width = space.width
@@ -72,8 +71,8 @@ class SpaceCanvas extends PureComponent {
       this.removeEventListeners()
     }
     const loadGoodLogic = () => {
-      console.warn('loadLogic! total = ', totalLoadableCount)
       loadedSoFar += 1
+      console.warn(`loadLogic! done ${loadedSoFar}/${totalLoadableCount}`)
       if (loadedSoFar === totalLoadableCount) {
         loadedGood()
       }
@@ -82,11 +81,26 @@ class SpaceCanvas extends PureComponent {
       loadedBad()
     }
     startLoading()
-    imageUrls.forEach(imageUrl => {
+
+    //
+    // LOAD IMAGES
+    //
+    const imageUrls = resources.filter(r => r.type === 'image').map(i => i.getRemoteUrl())
+    imageUrls.forEach(url => {
       const image = new window.Image()
       this.addEventListener(image, 'load', loadGoodLogic)
       this.addEventListener(image, 'error', loadBadLogic)
-      image.src = imageUrl
+      image.src = url
+    })
+
+    // LOAD SOUNDS
+    const soundUrls = resources.filter(r => r.type === 'sound').map(i => i.getRemoteUrl())
+    soundUrls.forEach(url => {
+      const audio = new window.Audio()
+      this.addEventListener(audio, 'loadedmetadata', loadGoodLogic)
+      this.addEventListener(audio, 'error', loadBadLogic)
+      audio.src = url
+      audio.load()
     })
   }
 
