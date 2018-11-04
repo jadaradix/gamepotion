@@ -3,7 +3,10 @@ import folder from './files/folder.svg'
 import user from './files/user.svg'
 import preferences from './files/preferences.svg'
 import loading from './files/loading.svg'
+
 import upload from './files/upload.svg'
+import uploadInProgress from './files/upload-in-progress.svg'
+import uploadDone from './files/upload-done.svg'
 
 import actionAdd from './files/action-add.svg'
 import actionEdit from './files/action-edit.svg'
@@ -23,6 +26,8 @@ export default {
   preferences,
   loading,
   upload,
+  uploadInProgress,
+  uploadDone,
   actions: {
     add: actionAdd,
     edit: actionEdit,

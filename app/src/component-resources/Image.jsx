@@ -70,16 +70,16 @@ class ResourceImage extends PureComponent {
   render() {
     // console.warn('[component-resource-Image] [render]')
     const fixedOptions = [
+      {
+        id: 'none',
+        name: '<None>'
+      },
       ...resourceTypes.find(rt => rt.type === 'image').fixed.map(o => {
         return {
           id: o,
           name: o
         }
-      }),
-      {
-        id: 'none',
-        name: '<None>'
-      }
+      })
     ]
     const fixedValue = (this.state.resource.fixed === null ? 'none' : this.state.resource.fixed)
     const remoteUrl = this.state.resource.getRemoteUrl()

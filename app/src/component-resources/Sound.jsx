@@ -63,16 +63,16 @@ class ResourceSound extends PureComponent {
 
   render() {
     const fixedOptions = [
+      {
+        id: 'none',
+        name: '<None>'
+      },
       ...resourceTypes.find(rt => rt.type === 'sound').fixed.map(o => {
         return {
           id: o,
           name: o
         }
-      }),
-      {
-        id: 'none',
-        name: '<None>'
-      }
+      })
     ]
     const fixedValue = (this.state.resource.fixed === null ? 'none' : this.state.resource.fixed)
     const remoteUrl = this.state.resource.getRemoteUrl()
