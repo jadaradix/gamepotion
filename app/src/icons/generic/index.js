@@ -11,7 +11,7 @@ import actionAdd from './files/action-add.svg'
 import actionEdit from './files/action-edit.svg'
 import actionDelete from './files/action-delete.svg'
 
-import project from './files/project.svg'
+import project from './files/project.png'
 import projectRun from './files/project-run.svg'
 import projectShare from './files/project-share.svg'
 
