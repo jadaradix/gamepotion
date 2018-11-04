@@ -51,13 +51,12 @@ class Uploader extends PureComponent {
     })
     const formData = new FormData()
     formData.append('bin', files[0])
-    console.warn('before uploadBin call', files[0], formData.values())
     api.uploadBin(this.props.route, formData)
       .then(() => {
-        console.log('great!')
         this.setState({
           inProgress: false
         })
+        this.props.onDone()
       })
   }
 
