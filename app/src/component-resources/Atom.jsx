@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { font, colours } from '../styleAbstractions'
 import icons from '../icons'
-import events from '../abstractions/events.json'
+import events from '../AtomEvents'
 
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'

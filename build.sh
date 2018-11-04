@@ -31,7 +31,7 @@ cd ../..;
 cd app/src;
   rm -rf abstractions;
   mkdir abstractions;
-  ln -s ../../../abstractions/events.json abstractions/events.json;
+  # ln -s ../../../abstractions/events.json abstractions/events.json;
   rm -rf classes; cp -R ../../classes classes;
   cd classes;
     rm -rf node_modules;
