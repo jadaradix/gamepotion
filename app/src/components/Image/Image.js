@@ -40,11 +40,11 @@ class Image extends Component {
     this.doLoad(props.src)
   }
 
-  // componentWillReceiveProps (nextProps) {
-  //   if (nextProps.src !== this.props.src) {
-  //     this.doLoad(nextProps.src)
-  //   }
-  // }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.src !== this.props.src) {
+      this.doLoad(nextProps.src)
+    }
+  }
 
   componentWillUnmount() {
     if (this.image !== null) {
@@ -81,7 +81,7 @@ class Image extends Component {
   }
 
   render() {
-    // console.warn('[component-Image] this.props.src', this.props.src)
+    console.warn('[component-Image] this.props.src', this.props.src)
     return (
       <StyledImage className='component--image'>
         {(this.state.hasErrored || this.props.src === null) && <p>No image.</p>}

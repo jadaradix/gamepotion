@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 
 import classes from '../classes'
 
-const LOADING_STYLE = {
-  font: '16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-  fontWeight: '400',
-  textSizeAdjust: '100%',
-  textAlign: 'center',
-  backgroundColor: 'black',
-  color: 'white'
-}
+// const LOADING_STYLE = {
+//   font: '16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+//   fontWeight: '400',
+//   textSizeAdjust: '100%',
+//   textAlign: 'center',
+//   backgroundColor: 'black',
+//   color: 'white'
+// }
 
 class AtomInstance {
   constructor(atomWithExtras, coords) {
