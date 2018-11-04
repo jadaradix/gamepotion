@@ -87,7 +87,7 @@ class ResourceSound extends PureComponent {
         </section>
         <section className='split-two'>
           <Box>
-            <Uploader mimeTypes={['audio/wav']} />
+            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.state.resource.id}`} mimeTypes={['audio/wav']} onDone={() => this.onUpdate({ fixed: null })} />
           </Box>
           <Box>
             <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />

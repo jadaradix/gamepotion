@@ -91,7 +91,7 @@ class ResourceImage extends PureComponent {
         </section>
         <section className='split-two'>
           <Box>
-            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.state.resource.id}`} mimeTypes={['image/png']} onDone={() => this.onUpdate({})} />
+            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.state.resource.id}`} mimeTypes={['image/png']} onDone={() => this.onUpdate({ fixed: null })} />
           </Box>
           <Box>
             <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
