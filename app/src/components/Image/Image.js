@@ -26,7 +26,7 @@ const StyledImage = styled.div`
   }
 `
 
-const getUncachedSrc =(src) => {
+const getNoCacheSrc =(src) => {
   return `${src}?fry-cache-${uuid()}`
 }
 
@@ -63,6 +63,7 @@ class Image extends Component {
     this.eventListeners.set('error', onError)
     this.image.addEventListener('error', onError)
     this.image.src = src
+    this.ifOnLoadFiresNoCacheSrc = getNoCacheSrc(src)
   }
 
   onLoad() {
@@ -84,7 +85,7 @@ class Image extends Component {
     return (
       <StyledImage className='component--image'>
         {(this.state.hasErrored || this.props.src === null) && <p>No image.</p>}
-        {this.state.hasLoaded && <img src={getUncachedSrc(this.props.src)} alt={this.props.string} />}
+        {this.state.hasLoaded && <img src={this.ifOnLoadFiresNoCacheSrc} alt={this.props.string} />}
       </StyledImage>
     )
   }
