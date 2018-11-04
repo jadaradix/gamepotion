@@ -4,6 +4,7 @@
     "projectId": "project-hack-aggressive-avians",
     "createdAt": 100,
     "type": "image",
+    "fixed": null,
     "name": "Ball"
   },
   {
@@ -11,6 +12,7 @@
     "projectId": "project-hack-aggressive-avians",
     "createdAt": 200,
     "type": "sound",
+    "fixed": null,
     "name": "Zap"
   },
   {

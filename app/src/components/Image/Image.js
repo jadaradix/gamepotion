@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import uuid from 'uuid'
 
 import { font, colours } from '../../styleAbstractions'
 
@@ -24,6 +25,10 @@ const StyledImage = styled.div`
     transform: translate(-50%, -50%);
   }
 `
+
+const getUncachedSrc =(src) => {
+  return `${src}?fry-cache-${uuid()}`
+}
 
 class Image extends Component {
   constructor(props) {
@@ -76,7 +81,7 @@ class Image extends Component {
     return (
       <StyledImage className='component--image'>
         {(this.state.hasErrored || this.props.src === null) && <p>No image.</p>}
-        {this.state.hasLoaded && <img src={this.props.src} alt={this.props.string} />}
+        {this.state.hasLoaded && <img src={getUncachedSrc(this.props.src)} alt={this.props.string} />}
       </StyledImage>
     )
   }
