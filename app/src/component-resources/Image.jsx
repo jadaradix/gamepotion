@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import resourceTypes from '../resourceTypes'
+import { font } from '../styleAbstractions'
 
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
+import Uploader from '../components/Uploader/Uploader'
 import Image from '../components/Image/Image'
 
 const StyledResource = styled.div`
@@ -26,6 +28,14 @@ const StyledResource = styled.div`
   }
   section + section {
     margin-top: 2rem;
+  }
+  .component--box > p {
+    ${font}
+    font-size: 80%;
+    color: #bdc3c7;
+  }
+  .component--box > .component--dropper + p {
+    margin-top: 1rem;
   }
 `
 
@@ -80,10 +90,11 @@ class ResourceImage extends PureComponent {
         </section>
         <section className='split-two'>
           <Box>
-            <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.state.resource.id}`} mimeTypes={['image/png']} />
           </Box>
           <Box>
-            <p>(upload goes here)</p>
+            <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+            <p>Choosing a Game Maker Club file won&rsquo;t erase a file you have uploaded.</p>
           </Box>
         </section>
       </StyledResource>
@@ -92,6 +103,7 @@ class ResourceImage extends PureComponent {
 }
 
 ResourceImage.propTypes = {
+  project: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func
 }

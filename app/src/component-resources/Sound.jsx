@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import resourceTypes from '../resourceTypes'
+import { font } from '../styleAbstractions'
 
 import Box from '../components/Box/Box'
-import AudioPlayer from '../components/AudioPlayer/AudioPlayer'
 import Dropper from '../components/Dropper/Dropper'
+import Uploader from '../components/Uploader/Uploader'
+import AudioPlayer from '../components/AudioPlayer/AudioPlayer'
 
 const StyledResource = styled.div`
   section.split-two {
@@ -20,6 +22,14 @@ const StyledResource = styled.div`
   }
   section + section {
     margin-top: 2rem;
+  }
+  .component--box > p {
+    ${font}
+    font-size: 80%;
+    color: #bdc3c7;
+  }
+  .component--box > .component--dropper + p {
+    margin-top: 1rem;
   }
 `
 
@@ -77,10 +87,11 @@ class ResourceSound extends PureComponent {
         </section>
         <section className='split-two'>
           <Box>
-            <Dropper label='Choose a Game Maker Club file' onChoose={this.onChooseFixed} options={fixedOptions} value={fixedValue} />
+            <Uploader mimeTypes={['audio/wav']} />
           </Box>
           <Box>
-            <p>(upload goes here)</p>
+            <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+            <p>Choosing a Game Maker Club file won&rsquo;t erase a file you have uploaded.</p>
           </Box>
         </section>
       </StyledResource>

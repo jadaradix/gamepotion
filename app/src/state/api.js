@@ -140,6 +140,19 @@ function del (whichApi, url, data) {
     .then(response => response.data)
 }
 
+function uploadBin (url, formData) {
+  const config = {
+    baseURL: apis['api-bin'],
+    auth,
+    responseType: 'json',
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  }
+  return axios.post(url, formData, config)
+    .then(response => response.data)
+}
+
 export default {
   public: {
     createUser: (payload) => {
@@ -197,5 +210,6 @@ export default {
   get: dGet,
   post,
   patch,
-  del
+  del,
+  uploadBin
 }

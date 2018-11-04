@@ -30,12 +30,12 @@ const StyledResource = styled.div`
   }
 `
 
-const getComponent = (resources, resource, onUpdate) => {
+const getComponent = (project, resources, resource, onUpdate) => {
   const FoundResourceType = resourceTypes.find(r => r.type === resource.type).component
-  return <FoundResourceType resources={resources} resource={resource} onUpdate={onUpdate} />
+  return <FoundResourceType project={project} resources={resources} resource={resource} onUpdate={onUpdate} />
 }
 
-const Resource = ({ resources, resource, onUpdate }) => {
+const Resource = ({ project, resources, resource, onUpdate }) => {
   // console.warn('[component-Resource] resource', resource)
   return (
     <StyledResource className='component--resource'>
@@ -43,12 +43,13 @@ const Resource = ({ resources, resource, onUpdate }) => {
         <img src={icons.resources[resource.type]} alt={'nice'} />
         <Heading1>{resource.name}</Heading1>
       </div>
-      {getComponent(resources, resource, onUpdate)}
+      {getComponent(project, resources, resource, onUpdate)}
     </StyledResource>
   )
 }
 
 Resource.propTypes = {
+  project: PropTypes.object.isRequired,
   resources: PropTypes.array.isRequired,
   resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func

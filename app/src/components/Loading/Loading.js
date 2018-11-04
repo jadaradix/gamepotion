@@ -4,12 +4,12 @@ import styled from 'styled-components'
 import icons from '../../icons'
 
 const StyledLoading = styled.div`
-  display: block;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
   @keyframes gmc-loading {
     100% { transform: rotate(360deg); }
   }
+  display: block;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   // background-color: red;
   img {
     display: block;
