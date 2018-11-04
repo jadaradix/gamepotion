@@ -12,12 +12,13 @@ class Action {
     return []
   }
 
-  runBefore(platform, runArguments) {
-    console.warn('abstract run() method of Action class was called. Bad news.')
+  runStart(platform, runArguments) {
+    console.warn('abstract runStart() method of Action class was called. Bad news.')
     return null
   }
 
   runStep(platform, runArguments) {
+    console.warn('abstract runStep() method of Action class was called. Bad news.')
     return null
   }
 

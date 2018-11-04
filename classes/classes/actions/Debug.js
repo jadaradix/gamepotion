@@ -11,7 +11,7 @@ class Debug extends Action {
     return []
   }
 
-  runBefore(platform, runArguments) {
+  runStart(platform, runArguments) {
     return null
   }
 
