@@ -13,6 +13,10 @@ const StyledInput = styled.div`
     font-size: 80%;
     color: #bdc3c7;
   }
+  label[aria-disabled] {
+    color: ${colours.fore};
+    opacity: 0.5;
+  }
   input {
     display: block;
     width: 100%;
@@ -32,6 +36,9 @@ const StyledInput = styled.div`
     &::selection {
       background-color: ${colours.highlight};
     }
+  }
+  input[disabled] {
+    opacity: 0.5;
   }
   input::-webkit-input-placeholder {
     color: #dadfe1;
@@ -88,7 +95,7 @@ class Input extends PureComponent {
   render () {
     return (
       <StyledInput className='component--input'>
-        {this.state.label && <label htmlFor={`component-Input-${this.state.id}`}>{this.state.label}</label>}
+        {this.state.label && <label htmlFor={`component-Input-${this.state.id}`} aria-disabled={this.state.disabled}>{this.state.label}</label>}
         <input
           id={`component-Input-${this.state.id}`}
           disabled={this.state.disabled}
