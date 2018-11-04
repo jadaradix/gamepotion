@@ -16,14 +16,14 @@ import Heading2 from '../components/Heading2/Heading2'
 const StyledResource = styled.div`
   section.image-events {
     .component--box.image {
-      position: relative;
-      height: 192px;
-      // background-color: pink;
-      > .component--dropper {
-        position: absolute;
-        bottom: 2rem;
-        width: calc(100% - 4rem);
-        opacity: 0.75;
+      .image-container {
+        position: relative;
+        height: 128px;
+        border: 1px solid #dadfe1;
+        border-radius: 4px;
+      }
+      .image-container + .component--dropper {
+        margin-top: 1rem;
       }
     }
     .component--box.events {
@@ -140,7 +140,7 @@ class ResourceAtom extends PureComponent {
       return (
         <List>
           {actions.map((a, i) => {
-            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.name]} actions={['edit', 'delete']} onAction={this.actOnAction}>{a.name}</ListItem>)
+            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.name]} actions={['edit', 'delete']} onAction={this.actOnAction}>{a.name} {a.runArguments.join(', ')}</ListItem>)
           })}
         </List>
       )
@@ -186,7 +186,9 @@ class ResourceAtom extends PureComponent {
       <StyledResource>
         <section className='image-events'>
           <Box className='image'>
-            <Image src={imageSrc} />
+            <div className='image-container'>
+              <Image src={imageSrc} />
+            </div>
             <Dropper options={imageResources} value={imageId} onChoose={this.onChooseImage} />
           </Box>
           <Box className='events'>
