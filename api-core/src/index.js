@@ -44,8 +44,6 @@ const middlewares = {
 
 const routes = {
   'GET      /v1': require('./routes/healthcheck'),
-  'GET      /v1/actions': require('./routes/actions'),
-  'GET      /v1/platforms': require('./routes/platforms'),
   'GET      /v1/news': require('./routes/news'),
   // -> users
   'POST     /v1/users': require('./routes/users/create'),
