@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { font, colours } from '../styleAbstractions'
 import icons from '../icons'
-import events from '../AtomEvents'
+import events from '../atomEvents'
 
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
@@ -140,7 +140,7 @@ class ResourceAtom extends PureComponent {
       return (
         <List>
           {actions.map((a, i) => {
-            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.generic.project.project} actions={['edit', 'delete']} onAction={this.actOnAction}>{a.name}</ListItem>)
+            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.name]} actions={['edit', 'delete']} onAction={this.actOnAction}>{a.name}</ListItem>)
           })}
         </List>
       )
