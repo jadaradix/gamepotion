@@ -11,13 +11,19 @@ class Debug extends Action {
     return []
   }
 
-  runStart(platform, runArguments) {
-    return null
+  runStart() {
+    return ''
   }
 
-  runStep(platform, runArguments) {
-    console.log('[Action::Debug]', ...runArguments)
-    return null
+  runStep(platform) {
+    switch(platform) {
+    case 'html5':
+      return `console.log(${this.runArguments.join(', ')})`
+    case 'nds':
+      return `printf(${this.runArguments.join(', ')})`
+    default:
+      return ''
+    }
   }
 }
 
