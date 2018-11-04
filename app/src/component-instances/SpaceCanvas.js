@@ -1,6 +1,8 @@
 import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
 
+import classes from '../classes'
+
 const LOADING_STYLE = {
   font: '16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
   fontWeight: '400',
@@ -10,34 +12,53 @@ const LOADING_STYLE = {
   color: 'white'
 }
 
-class Instance {
+class AtomInstance {
   constructor(atomWithExtras, coords) {
     this.atomWithExtras = atomWithExtras
     this.coords = coords
-    this.vcoords = Array(coords.length).fill(1)
+    this.vcoords = Array(coords.length).fill(0)
+  }
+
+  create() {
+    const instance = this
+    this.atomWithExtras.extras.events['create'].forEach(a => {
+      const r = a.run('create', 'html5', instance, a.runArguments)
+      console.warn('[AtomInstance] [create] r', r)
+    })
   }
 
   step() {
     this.vcoords.forEach((vc, i) => {
       this.coords[i] += vc
     })
+    const instance = this
+    this.atomWithExtras.extras.events['step'].forEach(a => {
+      const r = a.run('step', 'html5', instance, a.runArguments)
+      console.warn('[AtomInstance] [step] r', r)
+    })
   }
 }
 
 const start = (ctx, spaceWithExtras, instanceClasses, designMode) => {
   console.warn('[start]', ctx, spaceWithExtras, instanceClasses, designMode)
+  if (designMode === false) {
+    instanceClasses.forEach(i => {
+      i.create()
+    })
+  }
 }
 
 const step = (ctx, spaceWithExtras, instanceClasses, designMode) => {
   console.warn('[step] instanceClasses', instanceClasses)
   ctx.clearRect(0, 0, spaceWithExtras.resource.width, spaceWithExtras.resource.height)
-  console.warn('spaceWithExtras.extras!', spaceWithExtras.extras)
+  console.warn('[step] spaceWithExtras.extras', spaceWithExtras.extras)
   if (spaceWithExtras.extras.backgroundImage !== null) {
     ctx.drawImage(spaceWithExtras.extras.backgroundImage, 0, 0)
   }
   instanceClasses.forEach(i => {
-    // console.warn(i.atomWithExtras)
-    i.step()
+    if (designMode === false) {
+      i.step()
+    }
     ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
   })
   if (spaceWithExtras.extras.foregroundImage !== null) {
@@ -134,28 +155,29 @@ class SpaceCanvas extends PureComponent {
     }
 
     const getInstanceClasses = (instances) => {
-      console.warn('resourcesWithExtras', resourcesWithExtras)
+      console.warn('[getInstanceClasses] resourcesWithExtras', resourcesWithExtras)
       return instances.map(i => {
         const atomWithExtras = resourcesWithExtras.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
         const coords = [i.x, i.y, i.z]
-        return new Instance(atomWithExtras, coords)
+        return new AtomInstance(atomWithExtras, coords)
       })
     }
 
     const loadedGood = () => {
       console.warn('[renderCanvas] loadedGood!')
       const instanceClasses = getInstanceClasses(space.instances)
-      start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
-      const runStepOnce = () => {
-        step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
-      }
       const runStepLoop = () => {
         step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
         window.requestAnimationFrame(runStepLoop)
       }
+      const runStepOnce = () => {
+        step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+      }
       if (this.props.designMode === true) {
-        runStepOnce()
+        start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+        runStepOnce() // call step once so we get to see something (draw call)
       } else {
+        start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
         runStepLoop()
       }
     }
@@ -174,6 +196,29 @@ class SpaceCanvas extends PureComponent {
       loadedBad()
     }
     startLoading()
+
+    //
+    // GET READY FOR EVENTS
+    //
+    const actionClassInstances = {}
+    Object.keys(classes.actions).forEach(k => {
+      actionClassInstances[k] = new classes.actions[k]()
+    })
+    resourcesWithExtras
+      .filter(r => r.resource.type === 'atom')
+      .map(r => {
+        r.extras.events = {}
+        Object.keys(r.resource.events).forEach(k => {
+          r.extras.events[k] = r.resource.events[k].map(a => {
+            const actionClassRunLogic = actionClassInstances[a.name].run
+            return {
+              run: actionClassRunLogic,
+              runArguments: a.runArguments
+            }
+          })
+        })
+        return r
+      })
 
     //
     // LOAD IMAGES

@@ -4,23 +4,20 @@ class Debug extends Action {
   constructor(json = {}) {
     super(json)
     this.name = 'Debug'
-    this.description = 'Debug something'
+    this.description = 'Print arguments'
   }
 
   getDefaultRunArguments() {
     return []
   }
 
-  runStart() {
-    return ''
-  }
-
-  runStep(platform) {
+  run(event, platform, instance, runArguments) {
     switch(platform) {
     case 'html5':
-      return `console.log(${this.runArguments.join(', ')})`
+      console.log(runArguments)
+      return null
     case 'nds':
-      return `printf(${this.runArguments.join(', ')})`
+      return `printf(${runArguments.join(', ')})`
     default:
       return ''
     }

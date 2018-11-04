@@ -12,14 +12,9 @@ class Action {
     return []
   }
 
-  runStart(platform) {
-    console.warn('abstract runStart() method of Action class was called. Bad news.')
-    return ''
-  }
-
-  runStep(platform) {
-    console.warn('abstract runStep() method of Action class was called. Bad news.')
-    return ''
+  run(event, platform, instance, runArguments) {
+    console.warn('abstract run() method of Action class was called. Bad news.')
+    return null
   }
 
   toApi() {
