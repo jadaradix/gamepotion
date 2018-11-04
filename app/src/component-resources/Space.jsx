@@ -7,6 +7,7 @@ import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Image from '../components/Image/Image'
+import Button from '../components/Button/Button'
 
 import SpaceCanvas from '../component-instances/SpaceCanvas'
 
@@ -83,6 +84,9 @@ const StyledResource = styled.div`
     margin-top: 1rem;
     overflow: scroll;
     // background-color: red;
+    .component--gmc-engine-space + .component--button {
+      margin-top: 1rem;
+    }
   }
   @media screen and (min-width: 960px) {
     section.settings-plot-info {
@@ -114,7 +118,8 @@ class ResourceSpace extends PureComponent {
         x: 0,
         y: 0
       },
-      atomToPlot: getAtomToPlot(props.resources)
+      atomToPlot: getAtomToPlot(props.resources),
+      designMode: true
     }
     this.onUpdate = debounce((data) => {
       this.props.onUpdate(data)
@@ -124,6 +129,7 @@ class ResourceSpace extends PureComponent {
     this.onChooseAtomToPlot = this.onChooseAtomToPlot.bind(this)
     this.plotAtom = this.plotAtom.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
+    this.toggleDesignMode = this.toggleDesignMode.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -201,6 +207,12 @@ class ResourceSpace extends PureComponent {
     })
   }
 
+  toggleDesignMode() {
+    this.setState({
+      designMode: !this.state.designMode
+    })
+  }
+
   render() {
     // console.warn('[component-resource-Space] [render]')
 
@@ -246,7 +258,8 @@ class ResourceSpace extends PureComponent {
           </Box>
         </section>
         <section className='canvas'>
-          <SpaceCanvas space={this.state.resource} resources={this.props.resources} designMode={true} onTouch={this.plotAtom} onTouchMove={this.updateTouchCoords} />
+          <SpaceCanvas space={this.state.resource} resources={this.props.resources} designMode={this.state.designMode} onTouch={this.plotAtom} onTouchMove={this.updateTouchCoords} />
+          <Button onClick={this.toggleDesignMode}>Toggle design mode</Button>
         </section>
       </StyledResource>
     )

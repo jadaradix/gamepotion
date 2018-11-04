@@ -25,7 +25,7 @@ class SetYSpeed extends Action {
   }
 
   toString(runArguments) {
-    return `Set X speed to ${runArguments[0]}`
+    return `Set Y speed to ${runArguments[0]}`
   }
 }
 

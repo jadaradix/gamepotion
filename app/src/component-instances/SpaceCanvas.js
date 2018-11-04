@@ -19,22 +19,22 @@ class AtomInstance {
     this.vcoords = Array(coords.length).fill(0)
   }
 
-  create() {
+  create(space) {
     const instance = this
     this.atomWithExtras.extras.events.get('create').forEach(a => {
-      const r = a.run('create', 'html5', instance, a.runArguments)
-      console.warn('[AtomInstance] [create] r', r)
+      const r = a.run('create', 'html5', space, instance, a.runArguments)
+      // console.warn('[AtomInstance] [create] r', r)
     })
   }
 
-  step() {
+  step(space) {
     this.vcoords.forEach((vc, i) => {
       this.coords[i] += vc
     })
     const instance = this
     this.atomWithExtras.extras.events.get('step').forEach(a => {
-      const r = a.run('step', 'html5', instance, a.runArguments)
-      console.warn('[AtomInstance] [step] r', r)
+      const r = a.run('step', 'html5', space, instance, a.runArguments)
+      // console.warn('[AtomInstance] [step] r', r)
     })
   }
 }
@@ -43,21 +43,21 @@ const start = (ctx, spaceWithExtras, instanceClasses, designMode) => {
   console.warn('[start]', ctx, spaceWithExtras, instanceClasses, designMode)
   if (designMode === false) {
     instanceClasses.forEach(i => {
-      i.create()
+      i.create(spaceWithExtras.space)
     })
   }
 }
 
 const step = (ctx, spaceWithExtras, instanceClasses, designMode) => {
-  console.warn('[step] instanceClasses', instanceClasses)
+  // console.warn('[step] instanceClasses', instanceClasses)
+  // console.warn('[step] spaceWithExtras.extras', spaceWithExtras.extras)
   ctx.clearRect(0, 0, spaceWithExtras.resource.width, spaceWithExtras.resource.height)
-  console.warn('[step] spaceWithExtras.extras', spaceWithExtras.extras)
   if (spaceWithExtras.extras.backgroundImage !== null) {
     ctx.drawImage(spaceWithExtras.extras.backgroundImage, 0, 0)
   }
   instanceClasses.forEach(i => {
     if (designMode === false) {
-      i.step()
+      i.step(spaceWithExtras.space)
     }
     ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
   })
@@ -265,7 +265,7 @@ class SpaceCanvas extends PureComponent {
       lineHeight: `${this.props.space.height}px`
     }
     return (
-      <canvas style={canvasStyle} ref={(element) => {
+      <canvas style={canvasStyle} className='component--gmc-engine-space' ref={(element) => {
         if (element === null) {
           return
         }

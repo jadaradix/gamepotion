@@ -81,7 +81,7 @@ class Image extends Component {
   }
 
   render() {
-    console.warn('[component-Image] this.props.src', this.props.src)
+    // console.warn('[component-Image] this.props.src', this.props.src)
     return (
       <StyledImage className='component--image'>
         {(this.state.hasErrored || this.props.src === null) && <p>No image.</p>}

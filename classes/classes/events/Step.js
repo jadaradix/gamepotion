@@ -4,7 +4,7 @@ class Step extends Event {
   constructor(json = {}) {
     super(json)
     this.id = 'step'
-    this.name = 'Step'
+    this.name = 'Every Frame'
     this.icon = 'step'
   }
 }
