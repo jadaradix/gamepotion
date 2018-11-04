@@ -3,15 +3,16 @@ import Action from '../Action.js'
 class Debug extends Action {
   constructor(json = {}) {
     super(json)
+    this.id = 'Debug'
     this.name = 'Debug'
-    this.description = 'Print arguments'
+    this.description = 'Print arguments.'
   }
 
   getDefaultRunArguments() {
     return []
   }
 
-  run(event, platform, instance, runArguments) {
+  run(event, platform, space, instance, runArguments) {
     switch(platform) {
     case 'html5':
       console.log(runArguments)
@@ -19,8 +20,18 @@ class Debug extends Action {
     case 'nds':
       return `printf(${runArguments.join(', ')})`
     default:
-      return ''
+      return null
     }
+  }
+
+  toString(runArguments) {
+    const runArgumentsString = (() => {
+      if (runArguments.length === 0) {
+        return 'nothing'
+      }
+      return runArguments.join(', ')
+    })()
+    return `Print ${runArgumentsString}`
   }
 }
 

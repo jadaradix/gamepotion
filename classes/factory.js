@@ -30,7 +30,7 @@ resourceTypeFunctions.set(
       }
     })
     Object.keys(resourceClass.events).forEach((eventName) => {
-      resourceClass.events[eventName] = resourceClass.events[eventName].filter(action => (classes.actions[action.name] !== undefined))
+      resourceClass.events[eventName] = resourceClass.events[eventName].filter(action => (classes.actions[action.id] !== undefined))
     })
     return resourceClass
   },

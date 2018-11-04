@@ -202,6 +202,8 @@ class ResourceSpace extends PureComponent {
   }
 
   render() {
+    // console.warn('[component-resource-Space] [render]')
+
     const atomDropperResources = getAtomDropperResources(this.props.resources)
     const imageDropperResources = getImageDropperResources(this.props.resources)
 

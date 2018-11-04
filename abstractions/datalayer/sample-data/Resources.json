@@ -25,7 +25,7 @@
     "events": {
       "create": [
         {
-          "name": "Debug",
+          "id": "Debug",
           "runArguments": ["hello", "world"]
         }
       ]

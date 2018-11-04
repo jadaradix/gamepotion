@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import classes from '../classes'
+
 import { font, colours } from '../styleAbstractions'
 import icons from '../icons'
 import events from '../atomEvents'
@@ -40,6 +42,9 @@ const StyledResource = styled.div`
     // background-color: red;
     .component--box.actions {
       padding: 1rem;
+      .component--heading2 {
+        margin-bottom: 1rem;
+      }
       .no-actions {
         padding-top: 2rem;
         padding-bottom: 2rem;
@@ -53,6 +58,9 @@ const StyledResource = styled.div`
     .component--box.add-action {
       margin-top: 1rem;
       padding: 1rem;
+      .component--heading2 {
+        margin-bottom: 1rem;
+      }
     }
   }
   @media screen and (min-width: 960px) {
@@ -82,7 +90,11 @@ class ResourceAtom extends PureComponent {
     }
     this.onChooseImage = this.onChooseImage.bind(this)
     this.onChooseEvent = this.onChooseEvent.bind(this)
+    this.onChooseAddAction = this.onChooseAddAction.bind(this)
     this.actOnAction = this.actOnAction.bind(this)
+    this.actionClassInstances = Object.keys(classes.actions).map(k => {
+      return new classes.actions[k]()
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -107,6 +119,22 @@ class ResourceAtom extends PureComponent {
   onChooseEvent(currentEvent) {
     this.setState({
       currentEvent
+    })
+  }
+
+  onChooseAddAction(id) {
+    const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === id)
+    this.onUpdate({
+      events: {
+        ...this.state.resource.events,
+        [this.state.currentEvent]: [
+          ...this.state.resource.events[this.state.currentEvent],
+          {
+            id: actionClassInstance.id,
+            runArguments: actionClassInstance.getDefaultRunArguments()
+          }
+        ]
+      }
     })
   }
 
@@ -140,15 +168,12 @@ class ResourceAtom extends PureComponent {
       return (
         <List>
           {actions.map((a, i) => {
-            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.name]} actions={['edit', 'delete']} onAction={this.actOnAction}>{a.name} {a.runArguments.join(', ')}</ListItem>)
+            const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === a.id)
+            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.id]} actions={['delete']} onAction={this.actOnAction}>{actionClassInstance.toString(a.runArguments)}</ListItem>)
           })}
         </List>
       )
     }
-    // const keyActions = this.state.resource.events[this.state.currentEvent]
-    // if (Array.isArray(keyActions) === false) {
-    //   this.state.resource.events[this.state.currentEvent] = []
-    // }
     if (this.state.resource.events[this.state.currentEvent].length > 0) {
       return getList(this.state.resource.events[this.state.currentEvent])
     } else {
@@ -157,7 +182,7 @@ class ResourceAtom extends PureComponent {
   }
 
   render() {
-    // console.warn('[resource-Atom] [render] this.state.resource', this.state.resource)
+    // console.warn('[component-resource-Atom] [render]')
     const imageResources = [
       ...this.props.resources
         .filter(r => r.type === 'image')
@@ -202,10 +227,16 @@ class ResourceAtom extends PureComponent {
         </section>
         <section className='actions'>
           <Box className='actions'>
+            <Heading2>Event Actions</Heading2>
             {this.getEventActions()}
           </Box>
           <Box className='add-action'>
-            <Heading2>Add action</Heading2>
+            <Heading2>Add an action</Heading2>
+            <List>
+              {this.actionClassInstances.map(a => {
+                return <ListItem id={a.id} key={a.id} icon={icons.actions[a.id]} onChoose={this.onChooseAddAction}>{a.name}</ListItem>
+              })}
+            </List>
           </Box>
         </section>
       </StyledResource>

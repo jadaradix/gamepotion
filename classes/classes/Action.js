@@ -2,8 +2,9 @@ class Action {
   constructor (json = {}) {
     // DO NOT CREATE INSTANCES OF THIS ABSTRACT CLASS (always extended) IN USERLAND
     // USE THE CLASS FACTORY!
-    this.name = 'AbstractActionBadNewsIfYouEverSeeThis'
-    this.description = 'AbstractActionBadNewsIfYouEverSeeThis'
+    this.id = 'AbstractActionIdBadNewsIfYouEverSeeThis'
+    this.name = 'AbstractActionNameBadNewsIfYouEverSeeThis'
+    this.description = 'AbstractActionDescriptionBadNewsIfYouEverSeeThis'
     this.runArguments = json.runArguments || this.getDefaultRunArguments()
   }
 
@@ -12,16 +13,16 @@ class Action {
     return []
   }
 
-  run(event, platform, instance, runArguments) {
+  run(event, platform, space, instance, runArguments) {
     console.warn('abstract run() method of Action class was called. Bad news.')
     return null
   }
 
-  toApi() {
-    return {
-      name: this.name,
-      description: this.description
-    }
+  // optimisation hack; we are not creating instances of this class
+  // on every Atom.jsx render; we cache them. so we do not have runArguments
+  // on the class instance!
+  toString(runArguments) {
+    return `${this.name} (${runArguments.join(', ')})`
   }
 }
 

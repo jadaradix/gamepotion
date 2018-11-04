@@ -21,7 +21,7 @@ class AtomInstance {
 
   create() {
     const instance = this
-    this.atomWithExtras.extras.events['create'].forEach(a => {
+    this.atomWithExtras.extras.events.get('create').forEach(a => {
       const r = a.run('create', 'html5', instance, a.runArguments)
       console.warn('[AtomInstance] [create] r', r)
     })
@@ -32,7 +32,7 @@ class AtomInstance {
       this.coords[i] += vc
     })
     const instance = this
-    this.atomWithExtras.extras.events['step'].forEach(a => {
+    this.atomWithExtras.extras.events.get('step').forEach(a => {
       const r = a.run('step', 'html5', instance, a.runArguments)
       console.warn('[AtomInstance] [step] r', r)
     })
@@ -200,22 +200,22 @@ class SpaceCanvas extends PureComponent {
     //
     // GET READY FOR EVENTS
     //
-    const actionClassInstances = {}
+    const actionClassInstances = new Map()
     Object.keys(classes.actions).forEach(k => {
-      actionClassInstances[k] = new classes.actions[k]()
+      actionClassInstances.set(k, new classes.actions[k]())
     })
     resourcesWithExtras
       .filter(r => r.resource.type === 'atom')
       .map(r => {
-        r.extras.events = {}
+        r.extras.events = new Map()
         Object.keys(r.resource.events).forEach(k => {
-          r.extras.events[k] = r.resource.events[k].map(a => {
-            const actionClassRunLogic = actionClassInstances[a.name].run
+          r.extras.events.set(k, r.resource.events[k].map(a => {
+            const actionClassRunLogic = actionClassInstances.get(a.id).run
             return {
               run: actionClassRunLogic,
               runArguments: a.runArguments
             }
-          })
+          }))
         })
         return r
       })
