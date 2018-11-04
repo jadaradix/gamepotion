@@ -145,10 +145,10 @@ class ResourceAtom extends PureComponent {
         </List>
       )
     }
-    const keyActions = this.state.resource.events[this.state.currentEvent]
-    if (Array.isArray(keyActions) === false) {
-      this.state.resource.events[this.state.currentEvent] = []
-    }
+    // const keyActions = this.state.resource.events[this.state.currentEvent]
+    // if (Array.isArray(keyActions) === false) {
+    //   this.state.resource.events[this.state.currentEvent] = []
+    // }
     if (this.state.resource.events[this.state.currentEvent].length > 0) {
       return getList(this.state.resource.events[this.state.currentEvent])
     } else {

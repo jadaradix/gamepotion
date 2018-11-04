@@ -1,5 +1,10 @@
 import classes from './index.js'
 
+const eventNames = Object.values(classes.events).map(eventClass => {
+  const eventClassInstance = new eventClass()
+  return eventClassInstance.toApi().id
+})
+
 const resourceTypeFunctions = new Map()
 resourceTypeFunctions.set(
   'image',
@@ -19,6 +24,11 @@ resourceTypeFunctions.set(
   'atom',
   (resource) => {
     const resourceClass = new classes.resources.Atom(resource)
+    eventNames.forEach(eventName => {
+      if (!Array.isArray(resourceClass.events[eventName])) {
+        resourceClass.events[eventName] = []
+      }
+    })
     Object.keys(resourceClass.events).forEach((eventName) => {
       resourceClass.events[eventName] = resourceClass.events[eventName].filter(action => (classes.actions[action.name] !== undefined))
     })
