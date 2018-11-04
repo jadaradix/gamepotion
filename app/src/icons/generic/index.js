@@ -1,6 +1,5 @@
 import symbol from './files/symbol.png'
 import folder from './files/folder.svg'
-import user from './files/user.svg'
 import preferences from './files/preferences.svg'
 import loading from './files/loading.svg'
 
@@ -22,7 +21,6 @@ import resourceSoundStop from './files/resource-sound-stop.svg'
 export default {
   symbol,
   folder,
-  user,
   preferences,
   loading,
   upload,
