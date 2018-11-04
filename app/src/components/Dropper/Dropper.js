@@ -11,7 +11,7 @@ const StyledDropper = styled.div`
     width: 100%;
     ${font}
     font-size: 80%;
-    color: #bdc3c7;
+    color: #6c7a89;
   }
   select {
     display: block;
