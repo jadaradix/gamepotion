@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
+import Image from '../components/Image/Image'
 
 import SpaceCanvas from '../component-instances/SpaceCanvas'
 
@@ -48,6 +49,7 @@ const getAtomToPlot = (resources) => {
 const StyledResource = styled.div`
   section.settings-plot-info {
     .component--box.settings {
+      margin-bottom: 1rem;
       .coords {
         display: grid;
         grid-template-columns: 2fr 2fr;
@@ -59,13 +61,19 @@ const StyledResource = styled.div`
       }
     }
     .component--box.plot {
-      margin-top: 1rem;
-      .component--heading2 + .component--dropper {
+      margin-bottom: 1rem;
+      .image-container {
+        position: relative;
+        height: 128px;
+        border: 1px solid #dadfe1;
+        border-radius: 4px;
+      }
+      .image-container + .component--dropper {
         margin-top: 1rem;
       }
     }
     .component--box.info {
-      margin-top: 1rem;
+      margin-bottom: 1rem;
       display: grid;
       grid-template-columns: 2fr 2fr;
       grid-gap: 1rem;
@@ -80,11 +88,14 @@ const StyledResource = styled.div`
     section.settings-plot-info {
       float: left;
       width: 240px;
+      .component--box.settings {
+        margin-bottom: 2rem;
+      }
       .component--box.plot {
-        margin-top: 2rem;
+        margin-bottom: 2rem;
       }
       .component--box.info {
-        margin-top: 2rem;
+        margin-bottom: 2rem;
       }
     }
     section.canvas {
@@ -196,6 +207,16 @@ class ResourceSpace extends PureComponent {
 
     const backgroundImage = (this.state.resource.backgroundImage === null ? 'none' : this.state.resource.backgroundImage)
     const foregroundImage = (this.state.resource.foregroundImage === null ? 'none' : this.state.resource.foregroundImage)
+
+    const atomToPlot = this.state.atomToPlot
+    const foundAtomResource = this.props.resources.find(r => r.id === atomToPlot)
+    const foundImageResource = (foundAtomResource !== undefined ? this.props.resources.find(r => r.id === foundAtomResource.imageId) : undefined)
+    const imageSrc = (foundImageResource !== undefined?
+      foundImageResource.getRemoteUrl()
+      :
+      null
+    )
+
     return (
       <StyledResource>
         <section className='settings-plot-info'>
@@ -212,7 +233,10 @@ class ResourceSpace extends PureComponent {
             <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
           </Box>
           <Box className='plot'>
-            <Dropper options={atomDropperResources} value={this.state.atomToPlot} label='Atom to plot' onChoose={this.onChooseAtomToPlot} />
+            <div className='image-container'>
+              <Image src={imageSrc} />
+            </div>
+            <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={this.onChooseAtomToPlot} />
           </Box>
           <Box className='info'>
             <Input label='Touch X' value={this.state.touchCoords.x} type='number' disabled />
