@@ -19,23 +19,25 @@ class AtomInstance {
     this.vcoords = Array(coords.length).fill(0)
   }
 
-  create(space) {
+  onEvent(event, spaceWithExtras) {
     const instance = this
-    this.atomWithExtras.extras.events.get('create').forEach(a => {
-      const r = a.run('create', 'html5', space, instance, a.runArguments)
-      // console.warn('[AtomInstance] [create] r', r)
-    })
-  }
-
-  step(space) {
-    this.vcoords.forEach((vc, i) => {
-      this.coords[i] += vc
-    })
-    const instance = this
-    this.atomWithExtras.extras.events.get('step').forEach(a => {
-      const r = a.run('step', 'html5', space, instance, a.runArguments)
-      // console.warn('[AtomInstance] [step] r', r)
-    })
+    switch (event) {
+    case 'step':
+      this.vcoords.forEach((vc, i) => {
+        this.coords[i] += vc
+      })
+      this.atomWithExtras.extras.events.get('step').forEach(a => {
+        const r = a.run('step', 'html5', spaceWithExtras.space, instance, a.runArguments)
+        // console.warn('[AtomInstance] [step] r', r)
+      })
+      break
+    default:
+      this.atomWithExtras.extras.events.get(event).forEach(a => {
+        const r = a.run(event, 'html5', spaceWithExtras.space, instance, a.runArguments)
+        // console.warn('[AtomInstance] [create] r', r)
+      })
+      break
+    }
   }
 }
 
@@ -43,7 +45,7 @@ const start = (ctx, spaceWithExtras, instanceClasses, designMode) => {
   console.warn('[start]', ctx, spaceWithExtras, instanceClasses, designMode)
   if (designMode === false) {
     instanceClasses.forEach(i => {
-      i.create(spaceWithExtras.space)
+      i.onEvent('create', spaceWithExtras)
     })
   }
 }
@@ -57,7 +59,7 @@ const step = (ctx, spaceWithExtras, instanceClasses, designMode) => {
   }
   instanceClasses.forEach(i => {
     if (designMode === false) {
-      i.step(spaceWithExtras.space)
+      i.onEvent('step', spaceWithExtras)
     }
     ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
   })
@@ -69,6 +71,28 @@ const step = (ctx, spaceWithExtras, instanceClasses, designMode) => {
     ctx.rect(spaceWithExtras.resource.camera.x + 1, spaceWithExtras.resource.camera.y + 1, spaceWithExtras.resource.camera.width - 2, spaceWithExtras.resource.camera.height - 2)
     ctx.stroke()
   }
+}
+
+const getInstancesAtCoords = (instanceClasses, coords) => {
+  const w = 64
+  const h = 64
+  return instanceClasses.filter(i => {
+    return (
+      coords[0] >= i.coords[0] &&
+      coords[1] >= i.coords[1] &&
+      coords[0] < (i.coords[0] + w) &&
+      coords[1] < (i.coords[1] + h)
+    )
+  })
+}
+
+const getInstanceClasses = (instances, resourcesWithExtras) => {
+  console.warn('[SpaceCanvas] [renderCanvas] [getInstanceClasses] resourcesWithExtras', resourcesWithExtras)
+  return instances.map(i => {
+    const atomWithExtras = resourcesWithExtras.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
+    const coords = [i.x, i.y, i.z]
+    return new AtomInstance(atomWithExtras, coords)
+  })
 }
 
 class SpaceCanvas extends PureComponent {
@@ -114,6 +138,9 @@ class SpaceCanvas extends PureComponent {
       }
     }
     this.removeEventListeners()
+
+    const instanceClasses = getInstanceClasses(space.instances, resourcesWithExtras)
+
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
     const getTouchData = (e) => {
       e.preventDefault()
@@ -130,10 +157,28 @@ class SpaceCanvas extends PureComponent {
       return [parseInt(x, 10), parseInt(y, 10), z]
     }
     this.addEventListener(canvas, 'touchstart', (e) => {
-      this.props.onTouch(getTouchData(e))
+      const touchData = getTouchData(e)
+      if (this.props.designMode === true) {
+        this.props.onTouch(touchData)
+      } else {
+        const instancesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
+        // console.warn('[touchstart] instancesAtCoords', instancesAtCoords)
+        instancesAtCoords.forEach(i => {
+          i.onEvent('touch', spaceWithExtras)
+        })
+      }
     })
     this.addEventListener(canvas, 'click', (e) => {
-      this.props.onTouch(getMouseData(e))
+      const touchData = getMouseData(e)
+      if (this.props.designMode === true) {
+        this.props.onTouch(touchData)
+      } else {
+        const instancesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
+        // console.warn('[click] instancesAtCoords', instancesAtCoords)
+        instancesAtCoords.forEach(i => {
+          i.onEvent('touch', spaceWithExtras)
+        })
+      }
     })
     this.addEventListener(canvas, 'touchmove', (e) => {
       this.props.onTouchMove(getTouchData(e))
@@ -144,7 +189,7 @@ class SpaceCanvas extends PureComponent {
     let loadedSoFar = 0
     const totalLoadableCount = resourcesWithExtras.filter(r => ['image', 'sound'].includes(r.resource.type)).length
     const startLoading = () => {
-      console.warn('[renderCanvas] start loading!')
+      console.warn('[SpaceCanvas] [renderCanvas] start loading!')
       c.width = space.width
       c.height = space.height
       c.style.display = 'block'
@@ -154,18 +199,8 @@ class SpaceCanvas extends PureComponent {
       ctx.clearRect(0, 0, space.width, space.height)
     }
 
-    const getInstanceClasses = (instances) => {
-      console.warn('[getInstanceClasses] resourcesWithExtras', resourcesWithExtras)
-      return instances.map(i => {
-        const atomWithExtras = resourcesWithExtras.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
-        const coords = [i.x, i.y, i.z]
-        return new AtomInstance(atomWithExtras, coords)
-      })
-    }
-
     const loadedGood = () => {
-      console.warn('[renderCanvas] loadedGood!')
-      const instanceClasses = getInstanceClasses(space.instances)
+      console.warn('[SpaceCanvas] [renderCanvas] [loadedGood]')
       const runStepLoop = () => {
         step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
         window.requestAnimationFrame(runStepLoop)
@@ -175,19 +210,19 @@ class SpaceCanvas extends PureComponent {
       }
       if (this.props.designMode === true) {
         start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
-        runStepOnce() // call step once so we get to see something (draw call)
+        runStepOnce() // call step once so we see something (draw call)
       } else {
         start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
         runStepLoop()
       }
     }
     const loadedBad = () => {
-      console.warn('[renderCanvas] loadedBad!')
+      console.warn('[SpaceCanvas] [renderCanvas] [loadedBad]')
       this.removeEventListeners()
     }
     const loadGoodLogic = () => {
       loadedSoFar += 1
-      console.warn(`[renderCanvas] loadLogic! done ${loadedSoFar}/${totalLoadableCount}`)
+      console.warn(`[SpaceCanvas] [renderCanvas] [loadGoodLogic] done ${loadedSoFar}/${totalLoadableCount}`)
       if (loadedSoFar === totalLoadableCount) {
         loadedGood()
       }
@@ -258,7 +293,7 @@ class SpaceCanvas extends PureComponent {
   }
 
   render() {
-    console.warn('[render]')
+    console.warn('[SpaceCanvas] render]')
     const canvasStyle = {
       width: this.props.space.width,
       height: this.props.space.height,
