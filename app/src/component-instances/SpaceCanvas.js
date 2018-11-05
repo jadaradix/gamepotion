@@ -35,14 +35,15 @@ class AtomInstance {
 }
 
 const start = (spaceWithExtras, instanceClasses) => {
-  console.warn('[start]', spaceWithExtras, instanceClasses)
-  abstraction('create', instanceClasses, spaceWithExtras)
+  // console.warn('[start] spaceWithExtras', spaceWithExtras)
+  // console.warn('[start] instanceClasses', instanceClasses)
+  abstraction('create', spaceWithExtras, instanceClasses)
 }
 
 const step = (spaceWithExtras, instanceClasses) => {
-  // console.warn('[step] instanceClasses', instanceClasses)
   // console.warn('[step] spaceWithExtras', spaceWithExtras)
-  abstraction('step', instanceClasses, spaceWithExtras)
+  // console.warn('[step] instanceClasses', instanceClasses)
+  abstraction('step', spaceWithExtras, instanceClasses)
   instanceClasses.forEach(i => {
     i.vcoords.forEach((vc, vci) => {
       i.coords[vci] += vc
@@ -72,7 +73,7 @@ const getInstanceClasses = (instances, resourcesWithExtras) => {
   })
 }
 
-const abstraction = (event, instanceClasses, spaceWithExtras) => {
+const abstraction = (event, spaceWithExtras, instanceClasses) => {
   instanceClasses.forEach(i => {
     i.onEvent(event, spaceWithExtras)
   })
@@ -163,7 +164,7 @@ class SpaceCanvas extends PureComponent {
         this.props.onTouch(touchData)
       } else {
         const instanceClassesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
-        abstraction('touch', instanceClassesAtCoords, spaceWithExtras)
+        abstraction('touch', spaceWithExtras, instanceClassesAtCoords)
       }
     })
     this.addEventListener(canvas, 'click', (e) => {
@@ -172,7 +173,7 @@ class SpaceCanvas extends PureComponent {
         this.props.onTouch(touchData)
       } else {
         const instanceClassesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
-        abstraction('touch', instanceClassesAtCoords, spaceWithExtras)
+        abstraction('touch', spaceWithExtras, instanceClassesAtCoords)
       }
     })
     this.addEventListener(canvas, 'touchmove', (e) => {
