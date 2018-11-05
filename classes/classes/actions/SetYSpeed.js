@@ -12,7 +12,7 @@ class SetYSpeed extends Action {
     return [1]
   }
 
-  run(event, platform, space, instance, runArguments) {
+  run(event, platform, space, instance, runArguments, appliesTo) {
     switch(platform) {
     case 'html5':
       instance.vcoords[1] = runArguments[0]
@@ -24,7 +24,10 @@ class SetYSpeed extends Action {
     }
   }
 
-  toString(runArguments) {
+  toString(runArguments, appliesTo) {
+    if (appliesTo === 'other') {
+      return `Set other instance Y speed to ${runArguments[0]}`
+    }
     return `Set Y speed to ${runArguments[0]}`
   }
 }

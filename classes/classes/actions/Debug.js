@@ -12,7 +12,7 @@ class Debug extends Action {
     return []
   }
 
-  run(event, platform, space, instance, runArguments) {
+  run(event, platform, space, instance, runArguments, appliesTo) {
     switch(platform) {
     case 'html5':
       console.log(runArguments)
@@ -24,7 +24,7 @@ class Debug extends Action {
     }
   }
 
-  toString(runArguments) {
+  toString(runArguments, appliesTo) {
     const runArgumentsString = (() => {
       if (runArguments.length === 0) {
         return 'nothing'

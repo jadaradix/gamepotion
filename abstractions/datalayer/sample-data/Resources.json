@@ -26,7 +26,8 @@
       "create": [
         {
           "id": "Debug",
-          "runArguments": ["hello", "world"]
+          "runArguments": ["hello", "world"],
+          "appliesTo": "this"
         }
       ]
     }

@@ -131,7 +131,8 @@ class ResourceAtom extends PureComponent {
           ...this.state.resource.events[this.state.currentEvent],
           {
             id: actionClassInstance.id,
-            runArguments: actionClassInstance.getDefaultRunArguments()
+            runArguments: actionClassInstance.getDefaultRunArguments(),
+            appliesTo: 'this'
           }
         ]
       }
@@ -169,7 +170,7 @@ class ResourceAtom extends PureComponent {
         <List>
           {actions.map((a, i) => {
             const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === a.id)
-            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.id]} actions={['delete']} onAction={this.actOnAction}>{actionClassInstance.toString(a.runArguments)}</ListItem>)
+            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.id]} actions={['delete']} onAction={this.actOnAction}>{actionClassInstance.toString(a.runArguments, a.appliesTo)}</ListItem>)
           })}
         </List>
       )
@@ -207,6 +208,7 @@ class ResourceAtom extends PureComponent {
       null
     )
 
+    const currentEventName = events.find(e => e.id === this.state.currentEvent).name
     return (
       <StyledResource>
         <section className='image-events'>
@@ -227,7 +229,7 @@ class ResourceAtom extends PureComponent {
         </section>
         <section className='actions'>
           <Box className='actions'>
-            <Heading2>Event Actions</Heading2>
+            <Heading2>{currentEventName} event actions</Heading2>
             {this.getEventActions()}
           </Box>
           <Box className='add-action'>

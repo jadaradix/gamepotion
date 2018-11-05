@@ -21,47 +21,43 @@ class AtomInstance {
 
   onEvent(event, spaceWithExtras) {
     const instance = this
-    switch (event) {
-    case 'step':
-      return this.atomWithExtras.extras.events.get(event).map(a => {
-        return a.run(event, 'html5', spaceWithExtras.space, instance, a.runArguments)
-      })
-    default:
-      return this.atomWithExtras.extras.events.get(event).map(a => {
-        return a.run(event, 'html5', spaceWithExtras.space, instance, a.runArguments)
-      })
-    }
+    return this.atomWithExtras.extras.events.get(event).map(a => {
+      return a.run(event, 'html5', spaceWithExtras.space, instance, a.runArguments, a.appliesTo)
+    })
   }
 }
 
 const start = (spaceWithExtras, instanceClasses) => {
   // console.warn('[start] spaceWithExtras', spaceWithExtras)
   // console.warn('[start] instanceClasses', instanceClasses)
-  abstraction('create', spaceWithExtras, instanceClasses)
+  return abstractionClasses('create', spaceWithExtras, instanceClasses)
 }
 
 const step = (spaceWithExtras, instanceClasses) => {
   // console.warn('[step] spaceWithExtras', spaceWithExtras)
   // console.warn('[step] instanceClasses', instanceClasses)
-  abstraction('step', spaceWithExtras, instanceClasses)
   instanceClasses.forEach(i => {
     i.vcoords.forEach((vc, vci) => {
       i.coords[vci] += vc
     })
   })
+  return abstractionClasses('step', spaceWithExtras, instanceClasses)
 }
 
-const getInstancesAtCoords = (instanceClasses, coords) => {
+const getInstanceIndicesAtCoords = (instanceClasses, coords) => {
   const w = 64
   const h = 64
-  return instanceClasses.filter(i => {
-    return (
-      coords[0] >= i.coords[0] &&
-      coords[1] >= i.coords[1] &&
-      coords[0] < (i.coords[0] + w) &&
-      coords[1] < (i.coords[1] + h)
-    )
-  })
+  return instanceClasses
+    .map((i, index) => {
+      const isIntersecting = (
+        coords[0] >= i.coords[0] &&
+        coords[1] >= i.coords[1] &&
+        coords[0] < (i.coords[0] + w) &&
+        coords[1] < (i.coords[1] + h)
+      )
+      return (isIntersecting ? index : undefined)
+    })
+    .filter(index => index !== undefined)
 }
 
 const getInstanceClasses = (instances, resourcesWithExtras) => {
@@ -73,10 +69,46 @@ const getInstanceClasses = (instances, resourcesWithExtras) => {
   })
 }
 
-const abstraction = (event, spaceWithExtras, instanceClasses) => {
+const handleActionBack = (instanceClasses, actionBack) => {
+  switch(actionBack.actionBack) {
+  case 'INSTANCE_DESTROY':
+    console.warn('[handleActionBack] instanceClasses/actionBack', instanceClasses, actionBack)
+    return {
+      instanceIndicesToDelete: [instanceClasses.indexOf(actionBack.instance)]
+    }
+  }
+}
+
+const abstractionClasses = (event, spaceWithExtras, instanceClasses) => {
+  let instanceIndicesToDelete = []
   instanceClasses.forEach(i => {
-    i.onEvent(event, spaceWithExtras)
+    const actionBacks = i.onEvent(event, spaceWithExtras).filter(ab => ab !== null && typeof ab === 'object')
+    actionBacks.map(actionBack => {
+      const result = handleActionBack(instanceClasses, actionBack)
+      instanceIndicesToDelete = instanceIndicesToDelete.concat(result.instanceIndicesToDelete)
+    })
   })
+  // console.log('[abstractionClasses] instanceIndicesToDelete', instanceIndicesToDelete)
+  instanceClasses = instanceClasses.filter((i, index) => {
+    return (!instanceIndicesToDelete.includes(index))
+  })
+  return instanceClasses
+}
+
+const abstractionIndices = (event, spaceWithExtras, instanceClasses, instanceIndices) => {
+  let instanceIndicesToDelete = []
+  instanceIndices.forEach(index => {
+    const actionBacks = instanceClasses[index].onEvent(event, spaceWithExtras).filter(ab => ab !== null && typeof ab === 'object')
+    actionBacks.map(actionBack => {
+      const result = handleActionBack(instanceClasses, actionBack)
+      instanceIndicesToDelete = instanceIndicesToDelete.concat(result.instanceIndicesToDelete)
+    })
+  })
+  // console.log('[abstractionIndices] instanceIndicesToDelete', instanceIndicesToDelete)
+  instanceClasses = instanceClasses.filter((i, index) => {
+    return (!instanceIndicesToDelete.includes(index))
+  })
+  return instanceClasses
 }
 
 const draw = (ctx, spaceWithExtras, instanceClasses, designMode) => {
@@ -141,7 +173,9 @@ class SpaceCanvas extends PureComponent {
     }
     this.removeEventListeners()
 
-    const instanceClasses = getInstanceClasses(space.instances, resourcesWithExtras)
+    // let because it can be spliced
+    let instanceClasses = getInstanceClasses(space.instances, resourcesWithExtras)
+    console.error('delib here', instanceClasses)
 
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
     const getTouchData = (e) => {
@@ -163,8 +197,8 @@ class SpaceCanvas extends PureComponent {
       if (this.props.designMode === true) {
         this.props.onTouch(touchData)
       } else {
-        const instanceClassesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
-        abstraction('touch', spaceWithExtras, instanceClassesAtCoords)
+        const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, touchData)
+        instanceClasses = abstractionIndices('touch', spaceWithExtras, instanceClasses, instanceIndicesAtCoords)
       }
     })
     this.addEventListener(canvas, 'click', (e) => {
@@ -172,8 +206,8 @@ class SpaceCanvas extends PureComponent {
       if (this.props.designMode === true) {
         this.props.onTouch(touchData)
       } else {
-        const instanceClassesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
-        abstraction('touch', spaceWithExtras, instanceClassesAtCoords)
+        const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, touchData)
+        instanceClasses = abstractionIndices('touch', spaceWithExtras, instanceClasses, instanceIndicesAtCoords)
       }
     })
     this.addEventListener(canvas, 'touchmove', (e) => {
@@ -198,7 +232,7 @@ class SpaceCanvas extends PureComponent {
     const loadedGood = () => {
       console.warn('[SpaceCanvas] [renderCanvas] [loadedGood]')
       const runStepAndDrawLoop = () => {
-        step(spaceWithExtras, instanceClasses, this.props.designMode)
+        instanceClasses = step(spaceWithExtras, instanceClasses, this.props.designMode)
         draw(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
         window.requestAnimationFrame(runStepAndDrawLoop)
       }
@@ -208,7 +242,7 @@ class SpaceCanvas extends PureComponent {
       if (this.props.designMode === true) {
         runDraw()
       } else {
-        start(spaceWithExtras, instanceClasses, this.props.designMode)
+        instanceClasses = start(spaceWithExtras, instanceClasses, this.props.designMode)
         runStepAndDrawLoop()
       }
     }
@@ -244,7 +278,8 @@ class SpaceCanvas extends PureComponent {
             const actionClassRunLogic = actionClassInstances.get(a.id).run
             return {
               run: actionClassRunLogic,
-              runArguments: a.runArguments
+              runArguments: a.runArguments,
+              appliesTo: a.appliesTo
             }
           }))
         })
@@ -289,7 +324,7 @@ class SpaceCanvas extends PureComponent {
   }
 
   render() {
-    console.warn('[SpaceCanvas] render]')
+    console.warn('[SpaceCanvas] [render]')
     const canvasStyle = {
       width: this.props.space.width,
       height: this.props.space.height,

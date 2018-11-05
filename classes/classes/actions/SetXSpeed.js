@@ -12,7 +12,7 @@ class SetXSpeed extends Action {
     return [1]
   }
 
-  run(event, platform, space, instance, runArguments) {
+  run(event, platform, space, instance, runArguments, appliesTo) {
     switch(platform) {
     case 'html5':
       instance.vcoords[0] = runArguments[0]
@@ -24,7 +24,10 @@ class SetXSpeed extends Action {
     }
   }
 
-  toString(runArguments) {
+  toString(runArguments, appliesTo) {
+    if (appliesTo === 'other') {
+      return `Set other instance X speed to ${runArguments[0]}`
+    }
     return `Set X speed to ${runArguments[0]}`
   }
 }
