@@ -34,35 +34,20 @@ class AtomInstance {
   }
 }
 
-const start = (ctx, spaceWithExtras, instanceClasses, designMode) => {
-  console.warn('[start]', ctx, spaceWithExtras, instanceClasses, designMode)
-  if (designMode === false) {
-    abstraction('create', instanceClasses, spaceWithExtras)
-  }
+const start = (spaceWithExtras, instanceClasses) => {
+  console.warn('[start]', spaceWithExtras, instanceClasses)
+  abstraction('create', instanceClasses, spaceWithExtras)
 }
 
-const step = (ctx, spaceWithExtras, instanceClasses, designMode) => {
+const step = (spaceWithExtras, instanceClasses) => {
   // console.warn('[step] instanceClasses', instanceClasses)
-  // console.warn('[step] spaceWithExtras.extras', spaceWithExtras.extras)
+  // console.warn('[step] spaceWithExtras', spaceWithExtras)
   abstraction('step', instanceClasses, spaceWithExtras)
-  ctx.clearRect(0, 0, spaceWithExtras.resource.width, spaceWithExtras.resource.height)
-  if (spaceWithExtras.extras.backgroundImage !== null) {
-    ctx.drawImage(spaceWithExtras.extras.backgroundImage, 0, 0)
-  }
   instanceClasses.forEach(i => {
     i.vcoords.forEach((vc, vci) => {
       i.coords[vci] += vc
     })
-    ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
   })
-  if (spaceWithExtras.extras.foregroundImage !== null) {
-    ctx.drawImage(spaceWithExtras.extras.foregroundImage, 0, 0)
-  }
-  if (designMode === true) {
-    ctx.strokeStyle = '#ffffff'
-    ctx.rect(spaceWithExtras.resource.camera.x + 1, spaceWithExtras.resource.camera.y + 1, spaceWithExtras.resource.camera.width - 2, spaceWithExtras.resource.camera.height - 2)
-    ctx.stroke()
-  }
 }
 
 const getInstancesAtCoords = (instanceClasses, coords) => {
@@ -91,6 +76,24 @@ const abstraction = (event, instanceClasses, spaceWithExtras) => {
   instanceClasses.forEach(i => {
     i.onEvent(event, spaceWithExtras)
   })
+}
+
+const draw = (ctx, spaceWithExtras, instanceClasses, designMode) => {
+  ctx.clearRect(0, 0, spaceWithExtras.resource.width, spaceWithExtras.resource.height)
+  if (spaceWithExtras.extras.backgroundImage !== null) {
+    ctx.drawImage(spaceWithExtras.extras.backgroundImage, 0, 0)
+  }
+  instanceClasses.forEach(i => {
+    ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
+  })
+  if (spaceWithExtras.extras.foregroundImage !== null) {
+    ctx.drawImage(spaceWithExtras.extras.foregroundImage, 0, 0)
+  }
+  if (designMode === true) {
+    ctx.strokeStyle = '#ffffff'
+    ctx.rect(spaceWithExtras.resource.camera.x + 1, spaceWithExtras.resource.camera.y + 1, spaceWithExtras.resource.camera.width - 2, spaceWithExtras.resource.camera.height - 2)
+    ctx.stroke()
+  }
 }
 
 class SpaceCanvas extends PureComponent {
@@ -193,19 +196,19 @@ class SpaceCanvas extends PureComponent {
 
     const loadedGood = () => {
       console.warn('[SpaceCanvas] [renderCanvas] [loadedGood]')
-      const runStepLoop = () => {
-        step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
-        window.requestAnimationFrame(runStepLoop)
+      const runStepAndDrawLoop = () => {
+        step(spaceWithExtras, instanceClasses, this.props.designMode)
+        draw(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+        window.requestAnimationFrame(runStepAndDrawLoop)
       }
-      const runStepOnce = () => {
-        step(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+      const runDraw = () => {
+        draw(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
       }
       if (this.props.designMode === true) {
-        start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
-        runStepOnce() // call step once so we see something (draw call)
+        runDraw()
       } else {
-        start(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
-        runStepLoop()
+        start(spaceWithExtras, instanceClasses, this.props.designMode)
+        runStepAndDrawLoop()
       }
     }
     const loadedBad = () => {
