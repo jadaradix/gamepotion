@@ -23,20 +23,13 @@ class AtomInstance {
     const instance = this
     switch (event) {
     case 'step':
-      this.vcoords.forEach((vc, i) => {
-        this.coords[i] += vc
+      return this.atomWithExtras.extras.events.get(event).map(a => {
+        return a.run(event, 'html5', spaceWithExtras.space, instance, a.runArguments)
       })
-      this.atomWithExtras.extras.events.get('step').forEach(a => {
-        const r = a.run('step', 'html5', spaceWithExtras.space, instance, a.runArguments)
-        // console.warn('[AtomInstance] [step] r', r)
-      })
-      break
     default:
-      this.atomWithExtras.extras.events.get(event).forEach(a => {
-        const r = a.run(event, 'html5', spaceWithExtras.space, instance, a.runArguments)
-        // console.warn('[AtomInstance] [create] r', r)
+      return this.atomWithExtras.extras.events.get(event).map(a => {
+        return a.run(event, 'html5', spaceWithExtras.space, instance, a.runArguments)
       })
-      break
     }
   }
 }
@@ -44,23 +37,22 @@ class AtomInstance {
 const start = (ctx, spaceWithExtras, instanceClasses, designMode) => {
   console.warn('[start]', ctx, spaceWithExtras, instanceClasses, designMode)
   if (designMode === false) {
-    instanceClasses.forEach(i => {
-      i.onEvent('create', spaceWithExtras)
-    })
+    abstraction('create', instanceClasses, spaceWithExtras)
   }
 }
 
 const step = (ctx, spaceWithExtras, instanceClasses, designMode) => {
   // console.warn('[step] instanceClasses', instanceClasses)
   // console.warn('[step] spaceWithExtras.extras', spaceWithExtras.extras)
+  abstraction('step', instanceClasses, spaceWithExtras)
   ctx.clearRect(0, 0, spaceWithExtras.resource.width, spaceWithExtras.resource.height)
   if (spaceWithExtras.extras.backgroundImage !== null) {
     ctx.drawImage(spaceWithExtras.extras.backgroundImage, 0, 0)
   }
   instanceClasses.forEach(i => {
-    if (designMode === false) {
-      i.onEvent('step', spaceWithExtras)
-    }
+    i.vcoords.forEach((vc, vci) => {
+      i.coords[vci] += vc
+    })
     ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
   })
   if (spaceWithExtras.extras.foregroundImage !== null) {
@@ -92,6 +84,12 @@ const getInstanceClasses = (instances, resourcesWithExtras) => {
     const atomWithExtras = resourcesWithExtras.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
     const coords = [i.x, i.y, i.z]
     return new AtomInstance(atomWithExtras, coords)
+  })
+}
+
+const abstraction = (event, instanceClasses, spaceWithExtras) => {
+  instanceClasses.forEach(i => {
+    i.onEvent(event, spaceWithExtras)
   })
 }
 
@@ -161,11 +159,8 @@ class SpaceCanvas extends PureComponent {
       if (this.props.designMode === true) {
         this.props.onTouch(touchData)
       } else {
-        const instancesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
-        // console.warn('[touchstart] instancesAtCoords', instancesAtCoords)
-        instancesAtCoords.forEach(i => {
-          i.onEvent('touch', spaceWithExtras)
-        })
+        const instanceClassesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
+        abstraction('touch', instanceClassesAtCoords, spaceWithExtras)
       }
     })
     this.addEventListener(canvas, 'click', (e) => {
@@ -173,11 +168,8 @@ class SpaceCanvas extends PureComponent {
       if (this.props.designMode === true) {
         this.props.onTouch(touchData)
       } else {
-        const instancesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
-        // console.warn('[click] instancesAtCoords', instancesAtCoords)
-        instancesAtCoords.forEach(i => {
-          i.onEvent('touch', spaceWithExtras)
-        })
+        const instanceClassesAtCoords = getInstancesAtCoords(instanceClasses, touchData)
+        abstraction('touch', instanceClassesAtCoords, spaceWithExtras)
       }
     })
     this.addEventListener(canvas, 'touchmove', (e) => {
