@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
 import classes from '../classes'
@@ -13,42 +13,43 @@ import classes from '../classes'
 // }
 
 class AtomInstance {
-  constructor(atomWithExtras, coords) {
-    this.atomWithExtras = atomWithExtras
+  constructor(coords, atomContainer, imageContainer) {
     this.coords = coords
     this.vcoords = Array(coords.length).fill(0)
+    this.atomContainer = atomContainer
+    this.imageContainer = imageContainer
   }
 
-  onEvent(event, spaceWithExtras) {
+  onEvent(event, spaceContainer) {
     const instance = this
-    return this.atomWithExtras.extras.events.get(event).map(a => {
-      return a.run(event, 'html5', spaceWithExtras.space, instance, a.runArguments, a.appliesTo)
+    return this.atomContainer.extras.events.get(event).map(a => {
+      return a.run(event, 'html5', spaceContainer.space, instance, a.runArguments, a.appliesTo)
     })
   }
 }
 
-const start = (spaceWithExtras, instanceClasses) => {
-  // console.warn('[start] spaceWithExtras', spaceWithExtras)
+const start = (spaceContainer, instanceClasses) => {
+  // console.warn('[start] spaceContainer', spaceContainer)
   // console.warn('[start] instanceClasses', instanceClasses)
-  return abstractionClasses('create', spaceWithExtras, instanceClasses)
+  return handleEvent('create', spaceContainer, instanceClasses)
 }
 
-const step = (spaceWithExtras, instanceClasses) => {
-  // console.warn('[step] spaceWithExtras', spaceWithExtras)
+const step = (spaceContainer, instanceClasses) => {
+  // console.warn('[step] spaceContainer', spaceContainer)
   // console.warn('[step] instanceClasses', instanceClasses)
   instanceClasses.forEach(i => {
     i.vcoords.forEach((vc, vci) => {
       i.coords[vci] += vc
     })
   })
-  return abstractionClasses('step', spaceWithExtras, instanceClasses)
+  return handleEvent('step', spaceContainer, instanceClasses)
 }
 
 const getInstanceIndicesAtCoords = (instanceClasses, coords) => {
-  const w = 64
-  const h = 64
   return instanceClasses
     .map((i, index) => {
+      const w = (i.imageContainer && i.imageContainer.resource.frameWidth) || 0
+      const h = (i.imageContainer && i.imageContainer.resource.frameHeight) || 0
       const isIntersecting = (
         coords[0] >= i.coords[0] &&
         coords[1] >= i.coords[1] &&
@@ -60,12 +61,13 @@ const getInstanceIndicesAtCoords = (instanceClasses, coords) => {
     .filter(index => index !== undefined)
 }
 
-const getInstanceClasses = (instances, resourcesWithExtras) => {
-  console.warn('[SpaceCanvas] [renderCanvas] [getInstanceClasses] resourcesWithExtras', resourcesWithExtras)
+const getInstanceClasses = (instances, resourceContainers) => {
+  console.warn('[SpaceCanvas] [renderCanvas] [getInstanceClasses] resourceContainers', resourceContainers)
   return instances.map(i => {
-    const atomWithExtras = resourcesWithExtras.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
+    const atomContainer = resourceContainers.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
+    const imageContainer = resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === atomContainer.resource.imageId)
     const coords = [i.x, i.y, i.z]
-    return new AtomInstance(atomWithExtras, coords)
+    return new AtomInstance(coords, atomContainer, imageContainer)
   })
 }
 
@@ -79,52 +81,52 @@ const handleActionBack = (instanceClasses, actionBack) => {
   }
 }
 
-const abstractionClasses = (event, spaceWithExtras, instanceClasses) => {
+const handleEvent = (event, spaceContainer, instanceClasses) => {
   let instanceIndicesToDelete = []
   instanceClasses.forEach(i => {
-    const actionBacks = i.onEvent(event, spaceWithExtras).filter(ab => ab !== null && typeof ab === 'object')
+    const actionBacks = i.onEvent(event, spaceContainer).filter(ab => ab !== null && typeof ab === 'object')
     actionBacks.map(actionBack => {
       const result = handleActionBack(instanceClasses, actionBack)
       instanceIndicesToDelete = instanceIndicesToDelete.concat(result.instanceIndicesToDelete)
     })
   })
-  // console.log('[abstractionClasses] instanceIndicesToDelete', instanceIndicesToDelete)
+  // console.log('[handleEvent] instanceIndicesToDelete', instanceIndicesToDelete)
   instanceClasses = instanceClasses.filter((i, index) => {
     return (!instanceIndicesToDelete.includes(index))
   })
   return instanceClasses
 }
 
-const abstractionIndices = (event, spaceWithExtras, instanceClasses, instanceIndices) => {
+const handleEventByIndices = (event, spaceContainer, instanceClasses, instanceIndices) => {
   let instanceIndicesToDelete = []
   instanceIndices.forEach(index => {
-    const actionBacks = instanceClasses[index].onEvent(event, spaceWithExtras).filter(ab => ab !== null && typeof ab === 'object')
+    const actionBacks = instanceClasses[index].onEvent(event, spaceContainer).filter(ab => ab !== null && typeof ab === 'object')
     actionBacks.map(actionBack => {
       const result = handleActionBack(instanceClasses, actionBack)
       instanceIndicesToDelete = instanceIndicesToDelete.concat(result.instanceIndicesToDelete)
     })
   })
-  // console.log('[abstractionIndices] instanceIndicesToDelete', instanceIndicesToDelete)
+  // console.log('[handleEventByIndices] instanceIndicesToDelete', instanceIndicesToDelete)
   instanceClasses = instanceClasses.filter((i, index) => {
     return (!instanceIndicesToDelete.includes(index))
   })
   return instanceClasses
 }
 
-const draw = (ctx, spaceWithExtras, instanceClasses, designMode) => {
-  ctx.clearRect(0, 0, spaceWithExtras.resource.width, spaceWithExtras.resource.height)
-  if (spaceWithExtras.extras.backgroundImage !== null) {
-    ctx.drawImage(spaceWithExtras.extras.backgroundImage, 0, 0)
+const draw = (ctx, spaceContainer, instanceClasses, designMode) => {
+  ctx.clearRect(0, 0, spaceContainer.resource.width, spaceContainer.resource.height)
+  if (spaceContainer.extras.backgroundImage !== null) {
+    ctx.drawImage(spaceContainer.extras.backgroundImage, 0, 0)
   }
   instanceClasses.forEach(i => {
-    ctx.drawImage(i.atomWithExtras.extras.image, i.coords[0], i.coords[1])
+    i.imageContainer && ctx.drawImage(i.imageContainer.extras.image, i.coords[0], i.coords[1])
   })
-  if (spaceWithExtras.extras.foregroundImage !== null) {
-    ctx.drawImage(spaceWithExtras.extras.foregroundImage, 0, 0)
+  if (spaceContainer.extras.foregroundImage !== null) {
+    ctx.drawImage(spaceContainer.extras.foregroundImage, 0, 0)
   }
   if (designMode === true) {
     ctx.strokeStyle = '#ffffff'
-    ctx.rect(spaceWithExtras.resource.camera.x + 1, spaceWithExtras.resource.camera.y + 1, spaceWithExtras.resource.camera.width - 2, spaceWithExtras.resource.camera.height - 2)
+    ctx.rect(spaceContainer.resource.camera.x + 1, spaceContainer.resource.camera.y + 1, spaceContainer.resource.camera.width - 2, spaceContainer.resource.camera.height - 2)
     ctx.stroke()
   }
 }
@@ -158,13 +160,13 @@ class SpaceCanvas extends PureComponent {
   }
 
   renderCanvas(canvas, space, resources) {
-    const resourcesWithExtras = resources.map(resource => {
+    const resourceContainers = resources.map(resource => {
       return {
         resource,
         extras: {}
       }
     })
-    const spaceWithExtras = {
+    const spaceContainer = {
       resource: space,
       extras: {
         backgroundImage: null,
@@ -174,7 +176,7 @@ class SpaceCanvas extends PureComponent {
     this.removeEventListeners()
 
     // let because it can be spliced
-    let instanceClasses = getInstanceClasses(space.instances, resourcesWithExtras)
+    let instanceClasses = getInstanceClasses(space.instances, resourceContainers)
     console.error('delib here', instanceClasses)
 
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
@@ -183,14 +185,14 @@ class SpaceCanvas extends PureComponent {
       const x = e.touches[0].clientX - cDomBounds.x + window.scrollX
       const y = e.touches[0].clientY - cDomBounds.y + window.scrollY
       const z = 0
-      return [parseInt(x, 10), parseInt(y, 10), z]
+      return [parseInt(x, 10), parseInt(y, 10), parseInt(z, 10)]
     }
     const getMouseData = (e) => {
       e.preventDefault()
       const x = e.clientX - cDomBounds.x + window.scrollX
       const y = e.clientY - cDomBounds.y + window.scrollY
       const z = 0
-      return [parseInt(x, 10), parseInt(y, 10), z]
+      return [parseInt(x, 10), parseInt(y, 10), parseInt(z, 10)]
     }
     this.addEventListener(canvas, 'touchstart', (e) => {
       const touchData = getTouchData(e)
@@ -198,7 +200,7 @@ class SpaceCanvas extends PureComponent {
         this.props.onTouch(touchData)
       } else {
         const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, touchData)
-        instanceClasses = abstractionIndices('touch', spaceWithExtras, instanceClasses, instanceIndicesAtCoords)
+        instanceClasses = handleEventByIndices('touch', spaceContainer, instanceClasses, instanceIndicesAtCoords)
       }
     })
     this.addEventListener(canvas, 'click', (e) => {
@@ -207,7 +209,7 @@ class SpaceCanvas extends PureComponent {
         this.props.onTouch(touchData)
       } else {
         const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, touchData)
-        instanceClasses = abstractionIndices('touch', spaceWithExtras, instanceClasses, instanceIndicesAtCoords)
+        instanceClasses = handleEventByIndices('touch', spaceContainer, instanceClasses, instanceIndicesAtCoords)
       }
     })
     this.addEventListener(canvas, 'touchmove', (e) => {
@@ -216,8 +218,8 @@ class SpaceCanvas extends PureComponent {
     this.addEventListener(canvas, 'mousemove', (e) => {
       this.props.onTouchMove(getMouseData(e))
     })
-    let loadedSoFar = 0
-    const totalLoadableCount = resourcesWithExtras.filter(r => ['image', 'sound'].includes(r.resource.type)).length
+    let resourceContainersLoadedSoFar = 0
+    const totalResourceContainersToLoad = resourceContainers.filter(r => ['image', 'sound'].includes(r.resource.type)).length
     const startLoading = () => {
       console.warn('[SpaceCanvas] [renderCanvas] start loading!')
       c.width = space.width
@@ -232,17 +234,17 @@ class SpaceCanvas extends PureComponent {
     const loadedGood = () => {
       console.warn('[SpaceCanvas] [renderCanvas] [loadedGood]')
       const runStepAndDrawLoop = () => {
-        instanceClasses = step(spaceWithExtras, instanceClasses, this.props.designMode)
-        draw(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+        instanceClasses = step(spaceContainer, instanceClasses, this.props.designMode)
+        draw(ctx, spaceContainer, instanceClasses, this.props.designMode)
         window.requestAnimationFrame(runStepAndDrawLoop)
       }
       const runDraw = () => {
-        draw(ctx, spaceWithExtras, instanceClasses, this.props.designMode)
+        draw(ctx, spaceContainer, instanceClasses, this.props.designMode)
       }
       if (this.props.designMode === true) {
         runDraw()
       } else {
-        instanceClasses = start(spaceWithExtras, instanceClasses, this.props.designMode)
+        instanceClasses = start(spaceContainer, instanceClasses, this.props.designMode)
         runStepAndDrawLoop()
       }
     }
@@ -251,9 +253,9 @@ class SpaceCanvas extends PureComponent {
       this.removeEventListeners()
     }
     const loadGoodLogic = () => {
-      loadedSoFar += 1
-      console.warn(`[SpaceCanvas] [renderCanvas] [loadGoodLogic] done ${loadedSoFar}/${totalLoadableCount}`)
-      if (loadedSoFar === totalLoadableCount) {
+      resourceContainersLoadedSoFar += 1
+      console.warn(`[SpaceCanvas] [renderCanvas] [loadGoodLogic] done ${resourceContainersLoadedSoFar}/${totalResourceContainersToLoad}`)
+      if (resourceContainersLoadedSoFar === totalResourceContainersToLoad) {
         loadedGood()
       }
     }
@@ -269,7 +271,7 @@ class SpaceCanvas extends PureComponent {
     Object.keys(classes.actions).forEach(k => {
       actionClassInstances.set(k, new classes.actions[k]())
     })
-    resourcesWithExtras
+    resourceContainers
       .filter(r => r.resource.type === 'atom')
       .map(r => {
         r.extras.events = new Map()
@@ -289,38 +291,34 @@ class SpaceCanvas extends PureComponent {
     //
     // LOAD IMAGES
     //
-    const images = resourcesWithExtras.filter(r => r.resource.type === 'image')
-    images.forEach(resource => {
-      const element = new window.Image()
-      this.addEventListener(element, 'load', loadGoodLogic)
-      this.addEventListener(element, 'error', loadBadLogic)
-      resource.extras.element = element
-      element.src = resource.resource.getRemoteUrl()
-      if (spaceWithExtras.resource.backgroundImage === resource.resource.id) {
-        spaceWithExtras.extras.backgroundImage = element
-      }
-      if (spaceWithExtras.resource.foregroundImage === resource.resource.id) {
-        spaceWithExtras.extras.foregroundImage = element
-      }
-      resourcesWithExtras
-        .filter(r => r.resource.type === 'atom' && r.resource.imageId === resource.resource.id)
-        .map(r => {
-          console.error('wow hit here!')
-          r.extras.image = element
-          return r
-        })
-    })
+    resourceContainers
+      .filter(r => r.resource.type === 'image')
+      .forEach(resource => {
+        const element = new window.Image()
+        this.addEventListener(element, 'load', loadGoodLogic)
+        this.addEventListener(element, 'error', loadBadLogic)
+        resource.extras.element = element
+        element.src = resource.resource.getRemoteUrl()
+        if (spaceContainer.resource.backgroundImage === resource.resource.id) {
+          spaceContainer.extras.backgroundImage = element
+        }
+        if (spaceContainer.resource.foregroundImage === resource.resource.id) {
+          spaceContainer.extras.foregroundImage = element
+        }
+        resource.extras.image = element
+      })
 
     // LOAD SOUNDS
-    const sounds = resourcesWithExtras.filter(r => r.resource.type === 'sound')
-    sounds.forEach(resource => {
-      const element = new window.Audio()
-      this.addEventListener(element, 'loadedmetadata', loadGoodLogic)
-      this.addEventListener(element, 'error', loadBadLogic)
-      resource.extras.element = element
-      element.src = resource.resource.getRemoteUrl()
-      element.load()
-    })
+    resourceContainers
+      .filter(r => r.resource.type === 'sound')
+      .forEach(resource => {
+        const element = new window.Audio()
+        this.addEventListener(element, 'loadedmetadata', loadGoodLogic)
+        this.addEventListener(element, 'error', loadBadLogic)
+        resource.extras.element = element
+        element.src = resource.resource.getRemoteUrl()
+        element.load()
+      })
   }
 
   render() {
@@ -345,12 +343,18 @@ SpaceCanvas.propTypes = {
   designMode: PropTypes.bool,
   space: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired,
+  gridOn: PropTypes.bool,
+  gridWidth: PropTypes.number,
+  gridHeight: PropTypes.number,
   onTouch: PropTypes.func,
   onTouchMove: PropTypes.func
 }
 
 SpaceCanvas.defaultProps = {
   designMode: false,
+  gridOn: false,
+  gridWidth: 16,
+  gridHeight: 16,
   onTouch: () => {},
   onTouchMove: () => {}
 }

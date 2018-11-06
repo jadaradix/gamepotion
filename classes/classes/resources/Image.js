@@ -5,6 +5,8 @@ class ResourceImage extends Resource {
     super(json)
     this.type = 'image'
     this.fixed = ((typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : 'ball')
+    this.frameWidth = (typeof json.frameWidth === 'number' ? json.frameWidth : 64)
+    this.frameHeight = (typeof json.frameHeight === 'number' ? json.frameHeight : 64)
   }
 
   getDefaultName () {
@@ -27,7 +29,9 @@ class ResourceImage extends Resource {
     return {
       ...r,
       fixed: this.fixed,
-      remoteUrl: this.getRemoteUrl()
+      remoteUrl: this.getRemoteUrl(),
+      frameWidth: this.frameWidth,
+      frameHeight: this.frameHeight
     }
   }
 
@@ -35,7 +39,9 @@ class ResourceImage extends Resource {
     const r = super.toDatastore()
     return {
       ...r,
-      fixed: this.fixed
+      fixed: this.fixed,
+      frameWidth: this.frameWidth,
+      frameHeight: this.frameHeight
     }
   }
 
@@ -46,12 +52,15 @@ class ResourceImage extends Resource {
 
   fromApiPatch(json) {
     super.fromApiPatch(json)
-    this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
+    this.frameWidth = (typeof json.frameWidth === 'number' ? json.frameWidth : 64)
+    this.frameHeight = (typeof json.frameHeight === 'number' ? json.frameHeight : 64)
   }
 
   clientFromApiGet(json) {
     super.clientFromApiGet(json)
     this.fixed = json.fixed
+    this.frameWidth = json.frameWidth
+    this.frameHeight = json.frameHeight
   }
 }
 
