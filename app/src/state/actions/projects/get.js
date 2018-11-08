@@ -32,11 +32,4 @@ export default function (state) {
         currentProject
       }
     })
-    .catch(error => {
-      if (error.message === 'Network Error') {
-        throw new Error('Our API looks to be down. Are you connected to the Internet?')
-      } else {
-        throw new Error('That didn&rsquo;t work. Please try again.')
-      }
-    })
 }

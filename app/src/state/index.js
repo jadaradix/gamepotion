@@ -70,7 +70,16 @@ export function dispatch ({ name, data = {} }) {
     })
     .catch(error => {
       console.error('[state] action execution failed!', error)
-      notify.bad(error.message)
+      const errorMessage = (() => {
+        if (error.message === 'Network Error') {
+          return 'Our API looks to be down. Are you connected to the Internet?'
+        } else if (error.hasOwnProperty('response')) {
+          return `That didn&rsquo;t work (${error.response.data.message}). Please try again.`
+        } else {
+          return 'That didn&rsquo;t work. That&rsquo;s all we know. Please try again later.'
+        }
+      })()
+      notify.bad(errorMessage)
     })
 }
 
