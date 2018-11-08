@@ -62,7 +62,7 @@ const middleware = (publicRoutes, request, response, next) => {
                 request.authorization.method = 'basic'
                 request.authorization.isAdmin = getIsAdmin(user.email)
               } catch (error) {
-                console.error('[middleware-auth] (bad password)', error)
+                console.error('[middleware-auth] bad password', error)
                 if (skipPasswordCheck === true) {
                   allowContinue = true
                   request.authorization.user = user
@@ -70,7 +70,7 @@ const middleware = (publicRoutes, request, response, next) => {
                   request.authorization.isAdmin = getIsAdmin(user.email)
                 } else {
                   if (isThisRoutePublic === false) {
-                    response.send(new errors.UnauthorizedError('not authorized (bad password)'))
+                    response.send(new errors.UnauthorizedError('wrong password'))
                   }
                   allowContinue = false
                 }
@@ -84,7 +84,7 @@ const middleware = (publicRoutes, request, response, next) => {
           if (isThisRoutePublic) {
             return next()
           } else {
-            response.send(new errors.UnauthorizedError('not authorized (bad email)'))
+            response.send(new errors.UnauthorizedError('unknown e-mail address'))
             return next(false)
           }
         })

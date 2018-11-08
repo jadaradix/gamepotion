@@ -90,6 +90,43 @@ test('gets the user', (done) => {
     })
     .catch(done)
 })
+  
+test('doesnt get a user that has a bad email', (done) => {
+  axios({
+    method: 'get',
+    url: `${URL_API_CORE}/me`,
+    validateStatus: false,
+    auth: {
+      username: 'blah@blah',
+      password: 'blah blah'
+    }
+  })
+    .then(response => {
+      expect(response.status).toBe(401)
+      expect(response.data.message).toBe('unknown e-mail address')
+      return done()
+    })
+    .catch(done)
+})
+
+// middlware doesnt validate password in test mode (sorry)
+// test('doesnt get a user that has a bad password', (done) => {
+//   axios({
+//     method: 'get',
+//     url: `${URL_API_CORE}/me`,
+//     validateStatus: false,
+//     auth: {
+//       username: configs.auth.auth.username,
+//       password: 'blah blah'
+//     }
+//   })
+//     .then(response => {
+//       expect(response.status).toBe(401)
+//       expect(response.data.message).toBe('wrong password')
+//       return done()
+//     })
+//     .catch(done)
+// })
 
 test('updates the user', (done) => {
   axios({

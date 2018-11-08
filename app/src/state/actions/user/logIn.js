@@ -15,11 +15,11 @@ export default function (state, { email, password }) {
       }
     })
     .catch(error => {
-      console.error('[logIn action] caught', error)
+      console.error('[logIn action] caught', error.response)
       if (error.message === 'Network Error') {
         throw new Error('Our API looks to be down. Are you connected to the Internet?')
       } else {
-        throw new Error('That didn&rsquo;t work. Please try again.')
+        throw new Error(`That didn&rsquo;t work (${error.response.data.message}). Please try again.`)
       }
     })
 }
