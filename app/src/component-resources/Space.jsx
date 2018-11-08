@@ -3,9 +3,12 @@ import debounce from 'debounce'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+import { get, set } from '../localStorage'
+
 import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
+import Switch from '../components/Switch/Switch'
 import Image from '../components/Image/Image'
 import Button from '../components/Button/Button'
 
@@ -75,9 +78,15 @@ const StyledResource = styled.div`
     }
     .component--box.info {
       margin-bottom: 1rem;
-      display: grid;
-      grid-template-columns: 2fr 2fr;
-      grid-gap: 1rem;
+      .touches {
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+        grid-gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .component--switch:not(:last-child) {
+        margin-bottom: 1rem;
+      }
     }
   }
   section.canvas {
@@ -114,11 +123,12 @@ class ResourceSpace extends PureComponent {
     super(props)
     this.state = {
       resource: props.resource,
+      atomToPlot: getAtomToPlot(props.resources),
       touchCoords: {
         x: 0,
         y: 0
       },
-      atomToPlot: getAtomToPlot(props.resources),
+      gridOn: get('grid-on'),
       designMode: true
     }
     this.onUpdate = debounce((data) => {
@@ -129,6 +139,7 @@ class ResourceSpace extends PureComponent {
     this.onChooseAtomToPlot = this.onChooseAtomToPlot.bind(this)
     this.plotAtom = this.plotAtom.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
+    this.toggleGridOn = this.toggleGridOn.bind(this)
     this.toggleDesignMode = this.toggleDesignMode.bind(this)
   }
 
@@ -207,6 +218,15 @@ class ResourceSpace extends PureComponent {
     })
   }
 
+  toggleGridOn(gridOn) {
+    console.warn('gridOn', gridOn)
+    this.setState({
+      gridOn
+    }, () => {
+      set('grid-on', gridOn)
+    })
+  }
+
   toggleDesignMode() {
     this.setState({
       designMode: !this.state.designMode
@@ -253,8 +273,11 @@ class ResourceSpace extends PureComponent {
             <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={this.onChooseAtomToPlot} />
           </Box>
           <Box className='info'>
-            <Input label='Touch X' value={this.state.touchCoords.x} type='number' disabled />
-            <Input label='Touch Y' value={this.state.touchCoords.y} type='number' disabled />
+            <div className='touches'>
+              <Input label='Touch X' value={this.state.touchCoords.x} type='number' disabled />
+              <Input label='Touch Y' value={this.state.touchCoords.y} type='number' disabled />
+            </div>
+            <Switch checked={this.state.gridOn} onChange={this.toggleGridOn}>Grid</Switch>
           </Box>
         </section>
         <section className='canvas'>

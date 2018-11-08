@@ -77,5 +77,8 @@ function init (force) {
   if (get('credentials-password') === null || force) {
     set('credentials-password', '')
   }
+  if (get('grid-on') === null || force) {
+    set('grid-on', false)
+  }
 }
 init(false)
