@@ -13,6 +13,15 @@ const findResource = (resourceId, projectId) => {
   )
 }
 
+const storageResourceBin = (resourceClass, resourceRule, file) => {
+  const fileName = `${resourceClass.id}.${resourceRule.EXTENSION}`
+  return storage.file(file.path, fileName, resourceRule.MIMETYPE)
+}
+
+const writeResource = (resourceClass) => {
+  return datalayer.write('Resources', resourceClass.id, resourceClass.toDatastore())
+}
+
 const RESOURCES_RULES = {
   'image': {
     SUPPORTED_MIME_TYPES: [
@@ -67,8 +76,14 @@ const route = async (request, response, next) => {
     return next(false)
   }
 
-  const fileName = `${resourceClass.id}.${resourceRule.EXTENSION}`
-  storage.file(file.path, fileName, resourceRule.MIMETYPE)
+  resourceClass.frameWidth = 64
+  resourceClass.frameHeight = 64
+  resourceClass.fixed = null
+
+  Promise.all([
+    storageResourceBin(resourceClass, resourceRule, file),
+    writeResource(resourceClass)
+  ])
     .then(() => {
       response.send(resourceClass.toApi())
       return next()
