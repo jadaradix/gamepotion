@@ -43,9 +43,14 @@ class StateDashboard extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
+      // projects
       projects: null,
       currentProject: null,
       projectToLoadId: null,
+      // news
+      news: null,
+      newsToLoadId: null,
+      // etc
       loggedOut: false
     }
     dispatch({
@@ -86,10 +91,17 @@ class StateDashboard extends PureComponent {
     this.subscriptions.forEach(s => s.unsubscribe())
   }
 
-  loadProject (id) {
-    console.warn('[state-Dashboard] [loadProject]', id)
+  loadProject (projectToLoadId) {
+    console.warn('[state-Dashboard] [loadProject]', projectToLoadId)
     this.setState({
-      projectToLoadId: id
+      projectToLoadId
+    })
+  }
+
+  loadNews (newsToLoadId) {
+    console.warn('[state-Dashboard] [loadNews]', newsToLoadId)
+    this.setState({
+      newsToLoadId
     })
   }
 
@@ -183,7 +195,29 @@ class StateDashboard extends PureComponent {
                 }
               </Box>
               <Box>
-                <Heading1>News</Heading1>
+                {this.state.news === null ? 
+                  <Loading />
+                  :
+                  <Fragment>
+                    <Heading1>News</Heading1>
+                    {this.state.news.length > 0 ?
+                      <List>
+                        {this.state.news.map(n => (
+                          <ListItem
+                            key={n.id}
+                            id={n.id}
+                            icon={icons.generic.project.project}
+                            onChoose={(id) => this.loadNews(id)}
+                          >
+                            {n.headline}
+                          </ListItem>
+                        ))}
+                      </List>
+                      :
+                      <p>There&rsquo;s no news yet.</p>
+                    }
+                  </Fragment>
+                }
               </Box>
             </section>
             <section>

@@ -16,10 +16,10 @@ export default function (state, { email, password }) {
     })
     .catch(error => {
       console.error('[logIn action] caught', error)
-      return {
-        ...state,
-        user: null,
-        team: null
+      if (error.message === 'Network Error') {
+        throw new Error('Our API looks to be down. Are you connected to the Internet?')
+      } else {
+        throw new Error('That didn&rsquo;t work. Please try again.')
       }
     })
 }

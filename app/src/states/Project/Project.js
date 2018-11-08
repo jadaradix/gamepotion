@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import { dispatch, subscribe } from '../../state'
-import notify from '../../notify'
 
 import Box from '../../components/Box/Box'
 import Loading from '../../components/Loading/Loading'
@@ -57,7 +56,6 @@ class StateProjectProject extends Component {
     this.subscriptions = [
       subscribe('PROJECTS_LOAD', (state) => {
         if (state.currentProject === null) {
-          notify.bad('This project couldn&rsquo;t be loaded.')
           this.setState({
             currentProject: null,
             errored: true

@@ -1,3 +1,5 @@
+import notify from '../notify.js'
+
 import logIn from './actions/user/logIn'
 import logOut from './actions/user/logOut'
 import createProject from './actions/projects/create'
@@ -67,7 +69,8 @@ export function dispatch ({ name, data = {} }) {
       return state
     })
     .catch(error => {
-      throw new Error('[state] action execution failed!', error)
+      console.error('[state] action execution failed!', error)
+      notify.bad(error.message)
     })
 }
 

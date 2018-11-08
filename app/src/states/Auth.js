@@ -46,9 +46,6 @@ class StateDashboard extends PureComponent {
     this.subscriptions = [
       subscribe('USER_LOG_IN', (state) => {
         const authenticated = (state.user !== null)
-        // if (authenticated === false) {
-        //   notify.bad('That didn&rsquo;t work. Please try again.')
-        // }
         this.setState({
           authenticated
         })
