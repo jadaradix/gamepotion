@@ -56,6 +56,16 @@ class StateProjectProject extends Component {
   doLoadResource(projectId, resourceId) {
     this.props.history.replace(`/projects/${projectId}/resources/${resourceId}`, {resourceId})
   }
+  
+  tryLoadResource(props) {
+    const resourceId = props.match.params.resourceId
+    if (typeof resourceId === 'string') {
+      const foundResource = this.state.currentProject.resources.find(r => r.id === resourceId)
+      if (foundResource !== undefined) {
+        this.onLoadResource(foundResource)
+      }
+    }
+  }
 
   componentDidMount() {
     this.subscriptions = [
@@ -103,16 +113,6 @@ class StateProjectProject extends Component {
         id: this.props.match.params.id
       }
     })
-  }
-
-  tryLoadResource(props) {
-    const resourceId = props.match.params.resourceId
-    if (typeof resourceId === 'string') {
-      const foundResource = this.state.currentProject.resources.find(r => r.id === resourceId)
-      if (foundResource !== undefined) {
-        this.onLoadResource(foundResource)
-      }
-    }
   }
 
   componentWillReceiveProps(nextProps) {

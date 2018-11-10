@@ -9,7 +9,7 @@ const getResources = (projectId) => {
     })
 }
 
-export default async function (state, { id, resourceId }) {
+export default async function (state, { id }) {
   const { projects } = await getProjects(state)
   const currentProject = projects.find(project => project.project.id === id)
   if (currentProject === undefined) {
