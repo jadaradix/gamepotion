@@ -66,10 +66,9 @@ const StyledListItem = styled.button`
       height: 1.5rem;
       margin-top: 0.25rem;
       margin-left: 0.25rem;
-      background-color: transparent;
       opacity: 0.5;
       border-radius: 4px;
-      transition: opacity 0.1s ease-in-out;
+      transition: opacity 0.1s ease-in-out, background-color 0.1s ease-in-out;
       outline: 0;
       // background-color: blue;
       &:focus {
