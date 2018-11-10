@@ -2,6 +2,7 @@ import symbol from './files/symbol.png'
 import folder from './files/folder.svg'
 import preferences from './files/preferences.svg'
 import loading from './files/loading.svg'
+import modalClose from './files/modal-close.svg'
 
 import upload from './files/upload.svg'
 import uploadInProgress from './files/upload-in-progress.svg'
@@ -23,6 +24,7 @@ export default {
   folder,
   preferences,
   loading,
+  modalClose,
   upload,
   uploadInProgress,
   uploadDone,

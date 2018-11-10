@@ -16,9 +16,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "CI=true react-scripts test --env=jsdom"
+    "test": "react-scripts test --env=jsdom --setupFiles=$(pwd)/jest.setup.js --ci"
   },
   "devDependencies": {
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
     "jest-styled-components": "^6.2.2",
     "react-test-renderer": "^16.6.0"
   },

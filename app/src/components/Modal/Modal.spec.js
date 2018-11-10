@@ -1,15 +1,35 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
 import 'jest-styled-components'
+import { shallow } from 'enzyme'
 import Modal from './Modal'
 
-it('renders', () => {
-  const tree = renderer
-    .create(
-      <Modal>
-        Hello, World.
-      </Modal>
+describe('<Modal />', () => {
+  beforeEach(() => {
+    jest.resetAllMocks()
+  })
+
+  it('should render component', () => {
+    const wrapper = shallow(
+      <Modal />
     )
-    .toJSON()
-  expect(tree).toMatchSnapshot()
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  it('should trigger onClose with the close button', () => {
+    const close = jest.fn()
+    const wrapper = shallow(<Modal onClose={close} />)
+    wrapper
+      .find('.icon--close')
+      .at(0)
+      .simulate('click', {})
+    expect(close).toHaveBeenCalled()
+  })
+
+  it('should trigger onClose with the escape key', () => {
+    const close = jest.fn()
+    const wrapper = shallow(<Modal onClose={close} />)
+    const element = wrapper.find('[data-overlay]').at(0)
+    element.simulate('keyDown', { key: 'Escape', keyCode: 27, which: 27 })
+    expect(close).toHaveBeenCalled()
+  })
 })

@@ -1,47 +1,189 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { font, colours } from '../../styleAbstractions'
+import icons  from '../../icons'
+import { colours } from '../../styleAbstractions'
+
+const KEY_TAB = 9
+const KEY_ESC = 27
+
+const WIDTH = '60%'
+const MAX_WIDTH = '500px'
 
 const StyledModal = styled.div`
-  z-index: 1;
-  position: absolute;
+  z-index: 2;
+  position: fixed;
   top: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  section {
-    margin: 0 auto 1rem auto;
-    padding: 1rem;
-    max-width: 480px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  .component--modal {
+    width: ${WIDTH};
+    max-width: ${MAX_WIDTH};
+    z-index: 3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    padding: 4rem 2rem 2rem 2rem;
+    transform: translate(-50%, -50%);
     background-color: ${colours.back};
+    border-radius: 4px;
+    .icon--close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      cursor: pointer;
+      background-color: transparent;
+      transition: background-color 0.1s ease-in-out;
+      outline: 0;
+      border-radius: 4px;
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      &:focus {
+        background-color: ${colours.outline};
+      }
+    }
   }
 `
 
-class Modal extends Component {
+class Modal extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleMouseUp = this.handleMouseUp.bind(this)
+    this.handleMouseDown = this.handleMouseDown.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleClose = this.handleClose.bind(this)
+    this.shouldCloseOnMouseUp = false
+    this.references = {
+      dialog: React.createRef()
+    }
+  }
+
+  handleClose() {
+    this.props.onClose()
+  }
+
+  getFocusableElements() {
+    // this ref is null when when the component is shallow in enzyme
+    // using mount makes the snapshots very big as the whole document
+    // is snapshotted... the difference is an order of magnitude
+    if (this.references.dialog.current === null) {
+      return []
+    }
+    return Array.prototype.slice.call(
+      this.references.dialog.current.querySelectorAll(
+        'a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]):not(.icon--close), [tabindex="0"]'
+      )
+    )
+  }
+
+  componentDidMount() {
+    this.focusedElementBeforeOpening = document.activeElement
+    const focusableElements = this.getFocusableElements()
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus()
+    }
+  }
+
+  componentWillUnmount() {
+    this.focusedElementBeforeOpening.focus()
+  }
+
+  handleMouseUp() {
+    if (this.shouldCloseOnMouseUp) {
+      this.handleClose()
+    }
+  }
+
+  handleMouseDown(e) {
+    this.shouldCloseOnMouseUp = 'overlay' in e.target.dataset
+  }
+
+  handleKeyDown(e) {
+    const focusableElements = this.getFocusableElements()
+    const activeElementIndex = focusableElements.indexOf(document.activeElement)
+    const handleBackwardTab = () => {
+      e.preventDefault()
+      if (activeElementIndex > 0) {
+        focusableElements[activeElementIndex - 1].focus()
+      } else {
+        focusableElements[focusableElements.length - 1].focus()
+      }
+    }
+    const handleForwardTab = () => {
+      e.preventDefault()
+      if (activeElementIndex < focusableElements.length - 1) {
+        focusableElements[activeElementIndex + 1].focus()
+      } else {
+        focusableElements[0].focus()
+      }
+    }
+    switch (e.keyCode) {
+    case KEY_TAB:
+      if (activeElementIndex === -1 || focusableElements.length === 1) {
+        e.preventDefault()
+        return
+      }
+      if (e.shiftKey) {
+        handleBackwardTab()
+      } else {
+        handleForwardTab()
+      }
+      break
+    case KEY_ESC:
+      this.handleClose()
+      break
+    default:
+    }
+  }
+
   render() {
     return (
-      <StyledModal className='component--modal'>
-        <section>
+      <StyledModal
+        role="presentation"
+        data-overlay
+        onMouseUp={this.handleMouseUp}
+        onMouseDown={this.handleMouseDown}
+        onKeyDown={this.handleKeyDown}
+      >
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="component--modal"
+          ref={this.references.dialog}
+        >
           {this.props.children}
-        </section>
+          <button
+            onClick={this.handleClose}
+            title='Close'
+            className="icon--close"
+          >
+            <img src={icons.generic.modalClose} alt='' />
+          </button>
+        </div>
       </StyledModal>
     )
   }
 }
 
 Modal.propTypes = {
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
+  className: PropTypes.string
 }
 
 Modal.defaultProps = {
-  onClose: () => {}
+  onClose: () => {},
+  className: ''
 }
 
 export default Modal
-
-
