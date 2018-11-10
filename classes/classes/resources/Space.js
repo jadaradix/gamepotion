@@ -24,7 +24,7 @@ class ResourceSpace extends Resource {
   }
 
   getDefaultName () {
-    return 'New Space'
+    return 'New space'
   }
 
   toApi() {

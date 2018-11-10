@@ -13,7 +13,7 @@ class ResourceAtom extends Resource {
   }
 
   getDefaultName() {
-    return 'New Atom'
+    return 'New atom'
   }
 
   toApi() {

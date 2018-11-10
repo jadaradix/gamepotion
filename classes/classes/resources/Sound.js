@@ -8,7 +8,7 @@ class ResourceSound extends Resource {
   }
 
   getDefaultName () {
-    return 'New Sound'
+    return 'New sound'
   }
 
   getRemoteUrl() {

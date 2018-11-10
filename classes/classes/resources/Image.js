@@ -10,7 +10,7 @@ class ResourceImage extends Resource {
   }
 
   getDefaultName () {
-    return 'New Image'
+    return 'New image'
   }
 
   getRemoteUrl() {

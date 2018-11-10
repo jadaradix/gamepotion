@@ -82,11 +82,13 @@ const StyledResource = styled.div`
         grid-gap: 1rem;
         margin-bottom: 2rem;
       }
+      .component--switch {
+        margin-bottom: 1rem;
+      }
       .grid-properties {
         display: grid;
         grid-template-columns: 2fr 2fr;
         grid-gap: 1rem;
-        margin-bottom: 2rem;
       }
     }
   }
@@ -285,11 +287,11 @@ class ResourceSpace extends PureComponent {
               <Input label='Touch X' onRef={(r) => { this.thisRefs.touchCoordsY = r }} type='number' disabled />
               <Input label='Touch Y' onRef={(r) => { this.thisRefs.touchCoordsX = r }} type='number' disabled />
             </div>
+            <Switch checked={this.state.grid.on} onChange={(v) => this.updateGridProperty('on', v)}>Grid</Switch>
             <div className='grid-properties'>
               <Input label='Grid Width' value={this.state.grid.width} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('width', v)} />
               <Input label='Grid Height' value={this.state.grid.height} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('height', v)} />
             </div>
-            <Switch checked={this.state.grid.on} onChange={(v) => this.updateGridProperty('on', v)}>Grid</Switch>
           </Box>
         </section>
         <section className='canvas'>

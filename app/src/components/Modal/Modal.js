@@ -128,7 +128,7 @@ class Modal extends React.Component {
         focusableElements[0].focus()
       }
     }
-    switch (e.keyCode) {
+     switch (e.keyCode) {
     case KEY_TAB:
       if (activeElementIndex === -1 || focusableElements.length === 1) {
         e.preventDefault()
@@ -154,13 +154,13 @@ class Modal extends React.Component {
         data-overlay
         onMouseUp={this.handleMouseUp}
         onMouseDown={this.handleMouseDown}
-        onKeyDown={this.handleKeyDown}
       >
         <div
           role="dialog"
           aria-modal="true"
           className="component--modal"
           ref={this.references.dialog}
+          onKeyDown={this.handleKeyDown}
         >
           {this.props.children}
           <button

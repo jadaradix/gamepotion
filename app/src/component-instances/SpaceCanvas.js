@@ -298,7 +298,7 @@ class SpaceCanvas extends Component {
       ctx.clearRect(0, 0, space.width, space.height)
       ctx.fillStyle = '#ffffff'
       ctx.font = '16px Arial'
-      ctx.fillText('This game could not be loaded.', 16, 24)
+      ctx.fillText('This space could not be loaded.', 16, 24)
       this.removeEventListeners()
     }
     const loadGoodLogic = () => {
