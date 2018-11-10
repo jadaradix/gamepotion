@@ -27,7 +27,7 @@ const ActionModal = ({ actionClassInstance, onGood, onBad }) => {
           )
         })}
         <div className='decision'>
-          <Button onClick={onGood}>Add action</Button>
+          <Button onClick={() => onGood(actionClassInstance)}>Add action</Button>
         </div>
       </Modal>
     </StyledActionModal>

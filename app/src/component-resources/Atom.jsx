@@ -134,26 +134,32 @@ class ResourceAtom extends PureComponent {
 
   onChooseAddAction(id) {
     const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === id)
-    console.warn('[onChooseAddAction] actionClassInstance', actionClassInstance)
+    const argumentsCount = actionClassInstance.defaultRunArguments.size
+    if (argumentsCount === 0) {
+      return this.doAddAction(actionClassInstance)
+    }
     this.setState({
       actionToadd: actionClassInstance
     })
   }
 
-  doAddAction(id) {
-    const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === id)
-    this.onUpdate({
-      events: {
-        ...this.props.resource.events,
-        [this.state.currentEvent]: [
-          ...this.props.resource.events[this.state.currentEvent],
-          {
-            id: actionClassInstance.id,
-            runArguments: actionClassInstance.getDefaultRunArguments(),
-            appliesTo: 'this'
-          }
-        ]
-      }
+  doAddAction(actionClassInstance) {
+    this.setState({
+      actionToadd: null
+    }, () => {
+      this.onUpdate({
+        events: {
+          ...this.props.resource.events,
+          [this.state.currentEvent]: [
+            ...this.props.resource.events[this.state.currentEvent],
+            {
+              id: actionClassInstance.id,
+              runArguments: actionClassInstance.getDefaultRunArguments(),
+              appliesTo: 'this'
+            }
+          ]
+        }
+      })
     })
   }
 
