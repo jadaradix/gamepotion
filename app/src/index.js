@@ -28,9 +28,10 @@ const app = (
       <Switch>
         <Route path='/auth' exact strict component={Auth} />
         <PrivateRoute path='/dashboard' exact strict WhichComponent={Dashboard} />
-        <PrivateRoute path='/project/new' exact strict WhichComponent={ProjectNew} />
-        <PrivateRoute path='/project/:id/preferences' exact strict WhichComponent={ProjectPreferences} />
-        <PrivateRoute path='/project/:id' exact strict WhichComponent={ProjectProject} />
+        <PrivateRoute path='/projects/new' exact strict WhichComponent={ProjectNew} />
+        <PrivateRoute path='/projects/:id/preferences' exact strict WhichComponent={ProjectPreferences} />
+        <PrivateRoute path='/projects/:id' exact strict WhichComponent={ProjectProject} />
+        <PrivateRoute path='/projects/:id/resources/:resourceId' exact strict WhichComponent={ProjectProject} />
         <PrivateRoute WhichComponent={Dashboard} />
       </Switch>
     </Router>

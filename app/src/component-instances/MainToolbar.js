@@ -12,7 +12,7 @@ const getPreferencesRoute = (currentProject) => {
   if (currentProject === null) {
     return ''
   }
-  return `/project/${currentProject.project.id}/preferences`
+  return `/projects/${currentProject.project.id}/preferences`
 }
 
 const MainToolbar = ({ currentProject, onClick }) => {
@@ -21,7 +21,7 @@ const MainToolbar = ({ currentProject, onClick }) => {
     <Toolbar>
       <ToolbarButton route='/dashboard' icon={icons.generic.symbol} hint='Dashboard' significant />
       {currentProject !== null &&
-        <ToolbarButton fixedWidth='180' route={`/project/${currentProject.project.id}`} hint={currentProject.project.name}>
+        <ToolbarButton fixedWidth='180' route={`/projects/${currentProject.project.id}`} hint={currentProject.project.name}>
           {currentProject.project.name}
         </ToolbarButton>
       }

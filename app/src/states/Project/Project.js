@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { dispatch, subscribe } from '../../state'
@@ -48,23 +49,24 @@ class StateProjectProject extends Component {
     super(props)
     this.state = {
       currentProject: null,
-      errored: false
+      resourceToLoadId: null
     }
+  }
+
+  doLoadResource(projectId, resourceId) {
+    this.props.history.replace(`/projects/${projectId}/resources/${resourceId}`, {resourceId})
   }
 
   componentDidMount() {
     this.subscriptions = [
       subscribe('PROJECTS_LOAD', (state) => {
-        if (state.currentProject === null) {
-          this.setState({
-            currentProject: null,
-            errored: true
-          })
-          return
-        }
         this.setState({
           currentProject: state.currentProject
         })
+        if (this.props.match.params.resourceId === undefined && state.currentProject.resources.length > 0) {
+          return this.doLoadResource(state.currentProject.project.id, state.currentProject.resources[0].id)
+        }
+        this.tryLoadResource(this.props)
       }),
       subscribe('PROJECTS_RESOURCES_LOAD', (state) => {
         this.setState({
@@ -101,6 +103,20 @@ class StateProjectProject extends Component {
         id: this.props.match.params.id
       }
     })
+  }
+
+  tryLoadResource(props) {
+    const resourceId = props.match.params.resourceId
+    if (typeof resourceId === 'string') {
+      const foundResource = this.state.currentProject.resources.find(r => r.id === resourceId)
+      if (foundResource !== undefined) {
+        this.onLoadResource(foundResource)
+      }
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.tryLoadResource(nextProps)
   }
 
   componentWillUnmount() {
@@ -171,12 +187,12 @@ class StateProjectProject extends Component {
         <MainToolbarContainer />
         <StyledState>
           <aside>
-            {this.state.currentProject === null && this.state.errored === false &&
+            {this.state.currentProject === null &&
               <Loading />
             }
             {this.state.currentProject !== null &&
               <Box>
-                <ResourceList onAdd={this.onAddResource} onLoad={this.onLoadResource} onRename={this.onRenameResource} onDelete={this.onDeleteResource} resources={this.state.currentProject.resources} currentResource={this.state.currentProject.currentResource} />
+                <ResourceList onAdd={this.onAddResource} onLoad={(r) => this.doLoadResource(this.state.currentProject.project.id, r.id)} onRename={this.onRenameResource} onDelete={this.onDeleteResource} resources={this.state.currentProject.resources} currentResource={this.state.currentProject.currentResource} />
               </Box>
             }
           </aside>
@@ -191,4 +207,4 @@ class StateProjectProject extends Component {
   }
 }
 
-export default StateProjectProject
+export default withRouter(StateProjectProject)

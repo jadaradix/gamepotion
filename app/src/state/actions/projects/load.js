@@ -9,7 +9,7 @@ const getResources = (projectId) => {
     })
 }
 
-export default async function (state, { id }) {
+export default async function (state, { id, resourceId }) {
   const { projects } = await getProjects(state)
   const currentProject = projects.find(project => project.project.id === id)
   if (currentProject === undefined) {
@@ -18,7 +18,6 @@ export default async function (state, { id }) {
   if (currentProject.resources === null) {
     try {
       currentProject.resources = await getResources(id)
-      currentProject.currentResource = currentProject.resources[0]
     } catch (error) {
       throw new Error('This project&rsquo;s resources couldn&rsquo;t be loaded.')
     }

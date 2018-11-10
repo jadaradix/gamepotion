@@ -76,6 +76,7 @@ const handleActionBack = (instanceClasses, actionBack) => {
     return {
       instanceIndicesToDelete: [instanceClasses.indexOf(actionBack.instance)]
     }
+  default:
   }
 }
 
@@ -83,7 +84,7 @@ const handleEvent = (event, spaceContainer, instanceClasses) => {
   let instanceIndicesToDelete = []
   instanceClasses.forEach(i => {
     const actionBacks = i.onEvent(event, spaceContainer).filter(ab => ab !== null && typeof ab === 'object')
-    actionBacks.map(actionBack => {
+    actionBacks.forEach(actionBack => {
       const result = handleActionBack(instanceClasses, actionBack)
       instanceIndicesToDelete = instanceIndicesToDelete.concat(result.instanceIndicesToDelete)
     })
@@ -99,7 +100,7 @@ const handleEventByIndices = (event, spaceContainer, instanceClasses, instanceIn
   let instanceIndicesToDelete = []
   instanceIndices.forEach(index => {
     const actionBacks = instanceClasses[index].onEvent(event, spaceContainer).filter(ab => ab !== null && typeof ab === 'object')
-    actionBacks.map(actionBack => {
+    actionBacks.forEach(actionBack => {
       const result = handleActionBack(instanceClasses, actionBack)
       instanceIndicesToDelete = instanceIndicesToDelete.concat(result.instanceIndicesToDelete)
     })

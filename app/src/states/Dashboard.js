@@ -154,7 +154,7 @@ class StateDashboard extends PureComponent {
 
   render() {
     if (this.state.projectToLoadId !== null) {
-      return <Redirect to={`/project/${this.state.projectToLoadId}`} />
+      return <Redirect to={`/projects/${this.state.projectToLoadId}`} />
     }
     if (this.state.loggedOut === true) {
       return <Redirect to='/auth' />
@@ -190,7 +190,7 @@ class StateDashboard extends PureComponent {
                       :
                       <p>You didn&rsquo;t create any projects yet.</p>
                     }
-                    <Button hint='Create project' route='/project/new'>Create project</Button>
+                    <Button hint='Create project' route='/projects/new'>Create project</Button>
                   </Fragment>
                 }
               </Box>
