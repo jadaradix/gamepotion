@@ -9,7 +9,6 @@ import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 import Image from '../components/Image/Image'
-import Button from '../components/Button/Button'
 
 import SpaceCanvas from '../component-instances/SpaceCanvas'
 
@@ -95,7 +94,7 @@ const StyledResource = styled.div`
     margin-top: 1rem;
     overflow: scroll;
     // background-color: red;
-    .component--gmc-engine-space + .component--button {
+    .component--gmc-engine-space + .component--switch {
       margin-top: 1rem;
     }
   }
@@ -134,14 +133,14 @@ class ResourceSpace extends PureComponent {
         width: get('grid-width'),
         height: get('grid-height')
       },
-      designMode: true
+      isRunning: false
     }
     this.onChooseBackgroundImage = this.onChooseBackgroundImage.bind(this)
     this.onChooseForegroundImage = this.onChooseForegroundImage.bind(this)
     this.onChooseAtomToPlot = this.onChooseAtomToPlot.bind(this)
     this.plotAtom = this.plotAtom.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
-    this.toggleDesignMode = this.toggleDesignMode.bind(this)
+    this.updateRunning = this.updateRunning.bind(this)
   }
 
   onChangeMasterProp(prop, v) {
@@ -224,9 +223,9 @@ class ResourceSpace extends PureComponent {
     })
   }
 
-  toggleDesignMode() {
+  updateRunning(isRunning) {
     this.setState({
-      designMode: !this.state.designMode
+      isRunning
     })
   }
 
@@ -282,8 +281,8 @@ class ResourceSpace extends PureComponent {
           </Box>
         </section>
         <section className='canvas'>
-          <SpaceCanvas space={this.props.resource} resources={this.props.resources} designMode={this.state.designMode} onTouch={this.plotAtom} onTouchMove={this.updateTouchCoords} />
-          <Button onClick={this.toggleDesignMode}>Toggle design mode</Button>
+          <SpaceCanvas space={this.props.resource} resources={this.props.resources} designMode={!this.state.isRunning} onTouch={this.plotAtom} onTouchMove={this.updateTouchCoords} />
+          <Switch checked={this.state.isRunning} onChange={(v) => this.updateRunning(v)}>Run</Switch>
         </section>
       </StyledResource>
     )
