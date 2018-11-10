@@ -7,7 +7,7 @@ describe('Uploader', () => {
   it('renders', () => {
     const tree = renderer
       .create(
-        <Uploader />
+        <Uploader mimeTypes={['audio/wav']} route='xyz' />
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
@@ -16,7 +16,7 @@ describe('Uploader', () => {
   it('renders disabled', () => {
     const tree = renderer
       .create(
-        <Uploader disabled />
+        <Uploader disabled mimeTypes={['audio/wav']} route='xyz' />
       )
       .toJSON()
     expect(tree).toMatchSnapshot()
