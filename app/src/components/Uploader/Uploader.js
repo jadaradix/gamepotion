@@ -20,16 +20,12 @@ const StyledUploader = styled.div`
   &.component--uploader-done {
     cursor: default;
   }
-  img {
+  img.icon {
     display: block;
     width: 48px;
     height: 48px;
     margin: 1rem auto 0.25rem auto;
     // background-color: yellow;
-  }
-  img.icon--upload {
-  }
-  img.icon--upload-done {
   }
   img.icon--loading {
     animation: oscar-loading 4s linear infinite;
@@ -48,7 +44,8 @@ class Uploader extends PureComponent {
     super(props)
     this.state = {
       inProgress: false,
-      isDone: false
+      isDone: false,
+      hasErrored: false
     }
     this.onDropAccepted = this.onDropAccepted.bind(this)
     this.onFileDialogCancel = this.onFileDialogCancel.bind(this)
@@ -63,7 +60,8 @@ class Uploader extends PureComponent {
     if (files.length === 0) return
     this.setState({
       inProgress: true,
-      isDone: false
+      isDone: false,
+      hasErrored: false
     })
     const formData = new FormData()
     formData.append('bin', files[0])
@@ -71,22 +69,39 @@ class Uploader extends PureComponent {
       .then(() => {
         this.setState({
           inProgress: false,
-          isDone: true
+          isDone: true,
+          hasErrored: false
         })
         this.doneTimeout = window.setTimeout(() => {
           this.setState({
             inProgress: false,
-            isDone: false
+            isDone: false,
+            hasErrored: false
           })
-        }, 1000)
+        }, 1500)
         this.props.onDone()
+      })
+      .catch(() => {
+        this.setState({
+          inProgress: false,
+          isDone: false,
+          hasErrored: true
+        })
+        this.doneTimeout = window.setTimeout(() => {
+          this.setState({
+            inProgress: false,
+            isDone: false,
+            hasErrored: false
+          })
+        }, 1500)
       })
   }
 
   onFileDialogCancel() {
     this.setState({
       inProgress: false,
-      isDone: false
+      isDone: false,
+      hasErrored: false
     })
   }
 
@@ -98,22 +113,31 @@ class Uploader extends PureComponent {
       if (this.state.isDone) {
         return 'component--uploader-done'
       }
+      if (this.state.hasErrored) {
+        return 'component--uploader-errored'
+      }
     })()
     return (
       <StyledUploader className={`component--uploader ${className}`}>
-        {this.state.isDone === true &&
-          <Fragment>
-            <img src={icons.generic.uploadDone} className='icon--upload-done' alt='' />
-            <p>Done!</p>
-          </Fragment>
-        }
         {this.state.inProgress === true &&
           <Fragment>
-            <img src={icons.generic.uploadInProgress} className='icon--loading' alt='' />
+            <img src={icons.generic.uploadInProgress} className='icon icon--in-progress' alt='' />
             <p>Uploading...</p>
           </Fragment>
         }
-        {this.state.inProgress === false && this.state.isDone === false &&
+        {this.state.isDone === true &&
+          <Fragment>
+            <img src={icons.generic.uploadDone} className='icon icon--done' alt='' />
+            <p>Done!</p>
+          </Fragment>
+        }
+        {this.state.hasErrored === true &&
+          <Fragment>
+            <img src={icons.generic.uploadErrored} className='icon icon--errored' alt='' />
+            <p>Upload failed.</p>
+          </Fragment>
+        }
+        {this.state.inProgress === false && this.state.isDone === false && this.state.hasErrored === false &&
           <Dropzone
             accept={this.props.mimeTypes.join(', ')}
             onDropAccepted={this.onDropAccepted}
@@ -124,7 +148,7 @@ class Uploader extends PureComponent {
               if (isDragReject) {
                 return (
                   <Fragment>
-                    <img src={icons.generic.upload} className='icon--upload' alt='' />
+                    <img src={icons.generic.upload} className='icon' alt='' />
                     <p>You can&rsquo;t upload this file.</p>
                   </Fragment>
                 )
@@ -132,14 +156,14 @@ class Uploader extends PureComponent {
               if (isDragActive) {
                 return (
                   <Fragment>
-                    <img src={icons.generic.upload} className='icon--upload' alt='' />
+                    <img src={icons.generic.upload} className='icon' alt='' />
                     <p>You can upload this file.</p>
                   </Fragment>
                 )
               }
               return (
                 <Fragment>
-                  <img src={icons.generic.upload} className='icon--upload' alt='' />
+                  <img src={icons.generic.upload} className='icon' alt='' />
                   <p>Drop a file here or click to upload.</p>
                 </Fragment>
               )

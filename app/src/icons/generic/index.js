@@ -7,6 +7,7 @@ import modalClose from './files/modal-close.svg'
 import upload from './files/upload.svg'
 import uploadInProgress from './files/upload-in-progress.svg'
 import uploadDone from './files/upload-done.svg'
+import uploadErrored from './files/upload-errored.svg'
 
 import actionAdd from './files/action-add.svg'
 import actionEdit from './files/action-edit.svg'
@@ -28,6 +29,7 @@ export default {
   upload,
   uploadInProgress,
   uploadDone,
+  uploadErrored,
   actions: {
     add: actionAdd,
     edit: actionEdit,
