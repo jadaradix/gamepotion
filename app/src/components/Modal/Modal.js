@@ -128,7 +128,7 @@ class Modal extends React.Component {
         focusableElements[0].focus()
       }
     }
-     switch (e.keyCode) {
+    switch (e.keyCode) {
     case KEY_TAB:
       if (activeElementIndex === -1 || focusableElements.length === 1) {
         e.preventDefault()
@@ -158,7 +158,7 @@ class Modal extends React.Component {
         <div
           role="dialog"
           aria-modal="true"
-          className="component--modal"
+          className={`component--modal ${this.props.className}`}
           ref={this.references.dialog}
           onKeyDown={this.handleKeyDown}
         >

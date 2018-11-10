@@ -14,6 +14,8 @@ import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
 import Image from '../components/Image/Image'
 import Heading2 from '../components/Heading2/Heading2'
+import Modal from '../components/Modal/Modal'
+import Button from '../components/Button/Button'
 
 const StyledResource = styled.div`
   section.image-events {
@@ -63,6 +65,18 @@ const StyledResource = styled.div`
       }
     }
   }
+  .component--modal.add-action {
+    .component--heading2 {
+      margin-bottom: 1rem;
+    }
+    .argument {
+      margin-bottom: 1rem;
+      background-color: red;
+    }
+    .decision {
+      background-color: green;
+    }
+  }
   @media screen and (min-width: 960px) {
     section.image-events {
       float: left;
@@ -85,11 +99,14 @@ class ResourceAtom extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      currentEvent: 'create'
+      currentEvent: 'create',
+      actionToadd: null
     }
     this.onChooseImage = this.onChooseImage.bind(this)
     this.onChooseEvent = this.onChooseEvent.bind(this)
     this.onChooseAddAction = this.onChooseAddAction.bind(this)
+    this.doAddAction = this.doAddAction.bind(this)
+    this.dontAddAction = this.dontAddAction.bind(this)
     this.actOnAction = this.actOnAction.bind(this)
     this.actionClassInstances = Object.keys(classes.actions).map(k => {
       return new classes.actions[k]()
@@ -117,6 +134,14 @@ class ResourceAtom extends PureComponent {
 
   onChooseAddAction(id) {
     const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === id)
+    console.warn('actionClassInstance', actionClassInstance)
+    this.setState({
+      actionToadd: actionClassInstance
+    })
+  }
+
+  doAddAction(id) {
+    const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === id)
     this.onUpdate({
       events: {
         ...this.props.resource.events,
@@ -129,6 +154,12 @@ class ResourceAtom extends PureComponent {
           }
         ]
       }
+    })
+  }
+
+  dontAddAction() {
+    this.setState({
+      actionToadd: null
     })
   }
 
@@ -201,9 +232,33 @@ class ResourceAtom extends PureComponent {
       null
     )
 
+    if (this.state.actionToadd) {
+      console.warn('this.state.actionToadd.defaultRunArguments', this.state.actionToadd.defaultRunArguments)
+      console.warn('this.state.actionToadd.defaultRunArguments.keys()', this.state.actionToadd.defaultRunArguments.keys())
+    }
+
     const currentEventName = events.find(e => e.id === this.state.currentEvent).name
     return (
       <StyledResource>
+        {this.state.actionToadd &&
+          <Modal onClose={this.dontAddAction} className='add-action'>
+            <Heading2>{this.state.actionToadd.name}</Heading2>
+            {Array.from(this.state.actionToadd.defaultRunArguments.keys()).map(k => {
+              const {
+                type,
+                value
+              } = this.state.actionToadd.defaultRunArguments.get(k)
+              return (
+                <div className='argument' key={k}>
+                  {k} / type::{type} / value::{value}
+                </div>
+              )
+            })}
+            <div className='decision'>
+              <Button>Add action</Button>
+            </div>
+          </Modal>
+        }
         <section className='image-events'>
           <Box className='image'>
             <div className='image-container'>
