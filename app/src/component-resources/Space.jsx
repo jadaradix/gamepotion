@@ -94,7 +94,7 @@ const StyledResource = styled.div`
     margin-top: 1rem;
     overflow: scroll;
     // background-color: red;
-    .component--gmc-engine-space + .component--switch {
+    .component--oscar-engine-space + .component--switch {
       margin-top: 1rem;
     }
   }

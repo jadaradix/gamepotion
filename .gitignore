@@ -14,14 +14,12 @@ api-core/src/abstractions
 api-bin/src/abstractions
 app/src/abstractions
 
-platforms/html5/classes
 platforms/nds/classes
 app/src/classes
 api-core/src/classes
 api-bin/src/classes
 
 api-core/src/platforms
-platforms/html5/dist-lib
 
 app/build
 app/coverage

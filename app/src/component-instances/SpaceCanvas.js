@@ -343,7 +343,7 @@ class SpaceCanvas extends Component {
       lineHeight: `${this.props.space.height}px`
     }
     return (
-      <canvas style={canvasStyle} className='component--gmc-engine-space' ref={(element) => {
+      <canvas style={canvasStyle} className='component--oscar-engine-space' ref={(element) => {
         if (element === null) {
           return
         }

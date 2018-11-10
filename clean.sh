@@ -5,9 +5,6 @@ cd classes;
   rm -rf abstractions;
 cd ..;
 
-cd platforms/html5;
-  rm -rf classes;
-cd ../..;
 cd platforms/nds;
   rm -rf classes;
 cd ../..;

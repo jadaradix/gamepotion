@@ -8,7 +8,7 @@ import { font } from '../../styleAbstractions'
 import icons from '../../icons'
 
 const StyledUploader = styled.div`
-  @keyframes gmc-loading {
+  @keyframes oscar-loading {
     100% { transform: rotate(360deg); }
   }
   border: 2px dashed #dadfe1;
@@ -32,7 +32,7 @@ const StyledUploader = styled.div`
   img.icon--upload-done {
   }
   img.icon--loading {
-    animation: gmc-loading 4s linear infinite;
+    animation: oscar-loading 4s linear infinite;
   }
   p {
     padding-top: 0.75rem;

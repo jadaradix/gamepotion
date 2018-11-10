@@ -14,19 +14,19 @@ class Notify {
     this.elementTimeout = null
     this.elementFadeOutTimeout = null
     injectCss(`
-      @keyframes gmc-notification-fade-in {
+      @keyframes oscar-notification-fade-in {
         from { opacity: 0; }
         to { opacity: 1; }
       }
-      .gmc-notification-fade-in {
-        animation: gmc-notification-fade-in 1s;
+      .oscar-notification-fade-in {
+        animation: oscar-notification-fade-in 1s;
       }
-      @keyframes gmc-notification-fade-out {
+      @keyframes oscar-notification-fade-out {
         from { opacity: 1; }
         to { opacity: 0; }
       }
-      .gmc-notification-fade-out {
-        animation: gmc-notification-fade-out 1s;
+      .oscar-notification-fade-out {
+        animation: oscar-notification-fade-out 1s;
       }
       .notification {
         position: fixed;
@@ -64,7 +64,7 @@ class Notify {
     }
     this.element = document.createElement('div')
     this.element.classList.add('notification')
-    this.element.classList.add('gmc-notification-fade-in')
+    this.element.classList.add('oscar-notification-fade-in')
     this.element.classList.add(dClass)
     this.element.innerHTML = `<span>${message}</span>`
     document.body.appendChild(this.element)
@@ -86,7 +86,7 @@ class Notify {
 
   _removeElement () {
     if (this.element === null) return
-    this.element.classList.add('gmc-notification-fade-out')
+    this.element.classList.add('oscar-notification-fade-out')
     this.elementFadeOutTimeout = setTimeout(() => {
       this._removeElementByForce()
     }, 1000 * 0.9) // ???

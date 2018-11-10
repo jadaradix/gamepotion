@@ -26,10 +26,6 @@ cd classes;
   npm test;
 cd ..;
 
-cd platforms/html5;
-  npm test;
-cd ../..;
-
 cd platforms/nds;
   npm test;
 cd ../..;

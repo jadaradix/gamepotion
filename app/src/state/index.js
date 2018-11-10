@@ -83,7 +83,7 @@ export function dispatch ({ name, data = {} }) {
 
 export function publish (name, detail) {
   console.log('[state] [publish]', name)
-  element.dispatchEvent(new window.CustomEvent(`gmc-pub-sub-event-${name}`, { detail }))
+  element.dispatchEvent(new window.CustomEvent(`oscar-pub-sub-event-${name}`, { detail }))
 }
 
 export function getState () {
@@ -92,8 +92,8 @@ export function getState () {
 
 export function subscribe (name, handler) {
   const logic = e => handler(e.detail)
-  element.addEventListener(`gmc-pub-sub-event-${name}`, logic, false)
+  element.addEventListener(`oscar-pub-sub-event-${name}`, logic, false)
   return {
-    unsubscribe: () => element.removeEventListener(`gmc-pub-sub-event-${name}`, logic)
+    unsubscribe: () => element.removeEventListener(`oscar-pub-sub-event-${name}`, logic)
   }
 }
