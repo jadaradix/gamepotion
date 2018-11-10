@@ -65,18 +65,6 @@ const StyledResource = styled.div`
       }
     }
   }
-  .component--modal.add-action {
-    .component--heading2 {
-      margin-bottom: 1rem;
-    }
-    .argument {
-      margin-bottom: 1rem;
-      background-color: red;
-    }
-    .decision {
-      background-color: green;
-    }
-  }
   @media screen and (min-width: 960px) {
     section.image-events {
       float: left;

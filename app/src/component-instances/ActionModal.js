@@ -7,6 +7,18 @@ import Heading2 from '../components/Heading2/Heading2'
 import Button from '../components/Button/Button'
 
 const StyledActionModal = styled.div`
+  .component--modal {
+    .component--heading2 {
+      margin-bottom: 1rem;
+    }
+    .argument {
+      margin-bottom: 1rem;
+      background-color: red;
+    }
+    .decision {
+      background-color: green;
+    }
+  }
 `
 
 const ActionModal = ({ actionClassInstance, onGood, onBad }) => {
