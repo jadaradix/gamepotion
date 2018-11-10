@@ -111,7 +111,7 @@ const handleEventByIndices = (event, spaceContainer, instanceClasses, instanceIn
   return instanceClasses
 }
 
-const draw = (ctx, spaceContainer, instanceClasses, designMode) => {
+const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
   ctx.clearRect(0, 0, spaceContainer.resource.width, spaceContainer.resource.height)
   if (spaceContainer.extras.backgroundImage !== null) {
     ctx.drawImage(spaceContainer.extras.backgroundImage, 0, 0)
@@ -122,10 +122,40 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode) => {
   if (spaceContainer.extras.foregroundImage !== null) {
     ctx.drawImage(spaceContainer.extras.foregroundImage, 0, 0)
   }
+  const plotGrid = () => {
+    let w = parseInt(grid.width, 10)
+    let h = parseInt(grid.height, 10)
+    ctx.beginPath()
+    while (w < spaceContainer.resource.width) {
+      ctx.moveTo(w, 0)
+      ctx.lineTo(w, spaceContainer.resource.height)
+      w += parseInt(grid.width, 10)
+      while (h < spaceContainer.resource.height) {
+        ctx.moveTo(0, h)
+        ctx.lineTo(spaceContainer.resource.width, h)
+        h += parseInt(grid.height, 10)
+      }
+    }
+    ctx.closePath()
+  }
+  const plotCamera = () => {
+    ctx.beginPath()
+    ctx.rect(spaceContainer.resource.camera.x, spaceContainer.resource.camera.y, spaceContainer.resource.camera.width - 1, spaceContainer.resource.camera.height - 1)
+    ctx.closePath()
+  }
   if (designMode === true) {
-    ctx.strokeStyle = '#ffffff'
-    ctx.rect(spaceContainer.resource.camera.x + 1, spaceContainer.resource.camera.y + 1, spaceContainer.resource.camera.width - 2, spaceContainer.resource.camera.height - 2)
+    if (grid.on === true) {
+      ctx.globalAlpha = 0.5
+      plotGrid()
+      ctx.strokeStyle = '#ffffff'
+      ctx.stroke()
+      ctx.globalAlpha = 1
+    }
+    ctx.globalAlpha = 0.75
+    plotCamera()
+    ctx.strokeStyle = '#ff0000'
     ctx.stroke()
+    ctx.globalAlpha = 1
   }
 }
 
@@ -226,6 +256,10 @@ class SpaceCanvas extends Component {
       c.style.backgroundColor = 'black'
       c.style.width = space.width
       c.style.height = space.height
+      // stop blurred lines from https://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
+      ctx.imageSmoothingEnabled = false
+      ctx.translate(0.5, 0.5)
+      //
       ctx.clearRect(0, 0, space.width, space.height)
       ctx.fillStyle = '#ffffff'
       ctx.font = '16px Arial'
@@ -236,11 +270,11 @@ class SpaceCanvas extends Component {
       console.warn('[SpaceCanvas] [renderCanvas] [loadedGood]')
       const runStepAndDrawLoop = () => {
         instanceClasses = step(spaceContainer, instanceClasses, this.props.designMode)
-        draw(ctx, spaceContainer, instanceClasses, this.props.designMode)
+        draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
         window.requestAnimationFrame(runStepAndDrawLoop)
       }
       const runDraw = () => {
-        draw(ctx, spaceContainer, instanceClasses, this.props.designMode)
+        draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
       }
       if (this.props.designMode === true) {
         runDraw()
@@ -351,18 +385,13 @@ SpaceCanvas.propTypes = {
   designMode: PropTypes.bool,
   space: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired,
-  gridOn: PropTypes.bool,
-  gridWidth: PropTypes.number,
-  gridHeight: PropTypes.number,
+  grid: PropTypes.object.isRequired,
   onTouch: PropTypes.func,
   onTouchMove: PropTypes.func
 }
 
 SpaceCanvas.defaultProps = {
   designMode: false,
-  gridOn: false,
-  gridWidth: 16,
-  gridHeight: 16,
   onTouch: () => {},
   onTouchMove: () => {}
 }
