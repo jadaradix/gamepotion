@@ -6,10 +6,12 @@ class Debug extends Action {
     this.id = 'Debug'
     this.name = 'Debug'
     this.description = 'Prints arguments.'
-  }
-
-  getDefaultRunArguments() {
-    return []
+    this.defaultRunArguments = new Map([
+      ['Arguments', {
+        type: 'generic',
+        value: '"hello world"'
+      }]
+    ])
   }
 
   run(context, runArguments, appliesTo) {

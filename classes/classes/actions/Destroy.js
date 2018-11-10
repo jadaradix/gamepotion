@@ -6,10 +6,8 @@ class Destroy extends Action {
     this.id = 'Destroy'
     this.name = 'Destroy'
     this.description = 'Destroys an instance.'
-  }
-
-  getDefaultRunArguments() {
-    return []
+    this.defaultRunArguments = new Map([
+    ])
   }
 
   run(context, runArguments, appliesTo) {

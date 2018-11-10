@@ -5,13 +5,17 @@ class Action {
     this.id = 'AbstractActionIdBadNewsIfYouEverSeeThis'
     this.name = 'AbstractActionNameBadNewsIfYouEverSeeThis'
     this.description = 'AbstractActionDescriptionBadNewsIfYouEverSeeThis'
+    this.defaultRunArguments = new Map([
+    ])
+
+    this.runArguments = json.runArguments || [] // this should only be triggered in abstract contexts
     this.appliesTo = json.appliesTo || 'this'
-    this.runArguments = json.runArguments || this.getDefaultRunArguments()
   }
 
   getDefaultRunArguments() {
-    console.warn('abstract getDefaultRunArguments() method of Action class was called. Bad news.')
-    return []
+    return Array.from(this.defaultRunArguments).map(kv => {
+      return kv[1].value
+    })
   }
 
   run(event, platform, space, instance, runArguments) {

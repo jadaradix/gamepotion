@@ -6,10 +6,12 @@ class SetYSpeed extends Action {
     this.id = 'SetYSpeed'
     this.name = 'Set Y Speed'
     this.description = 'Sets the Y speed.'
-  }
-
-  getDefaultRunArguments() {
-    return [1]
+    this.defaultRunArguments = new Map([
+      ['Speed', {
+        type: 'number',
+        value: 1
+      }]
+    ])
   }
 
   run(context, runArguments, appliesTo) {
