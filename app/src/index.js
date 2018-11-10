@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import ReactDOM from 'react-dom'
 
 import api from './state/api.js'
+import CustomHelment from './component-instances/CustomHelmet.js'
 
 import Dashboard from './states/Dashboard.js'
 import ProjectNew from './states/Project/New.js'
@@ -20,17 +21,20 @@ const PrivateRoute = ({ WhichComponent, ...rest }) => (
   )} />
 )
 
-const router = (
-  <Router>
-    <Switch>
-      <Route path='/auth' exact strict component={Auth} />
-      <PrivateRoute path='/dashboard' exact strict WhichComponent={Dashboard} />
-      <PrivateRoute path='/project/new' exact strict WhichComponent={ProjectNew} />
-      <PrivateRoute path='/project/:id/preferences' exact strict WhichComponent={ProjectPreferences} />
-      <PrivateRoute path='/project/:id' exact strict WhichComponent={ProjectProject} />
-      <PrivateRoute WhichComponent={Dashboard} />
-    </Switch>
-  </Router>
+const app = (
+  <Fragment>
+    <CustomHelment />
+    <Router>
+      <Switch>
+        <Route path='/auth' exact strict component={Auth} />
+        <PrivateRoute path='/dashboard' exact strict WhichComponent={Dashboard} />
+        <PrivateRoute path='/project/new' exact strict WhichComponent={ProjectNew} />
+        <PrivateRoute path='/project/:id/preferences' exact strict WhichComponent={ProjectPreferences} />
+        <PrivateRoute path='/project/:id' exact strict WhichComponent={ProjectProject} />
+        <PrivateRoute WhichComponent={Dashboard} />
+      </Switch>
+    </Router>
+  </Fragment>
 )
 
-ReactDOM.render(router, document.getElementById('root'))
+ReactDOM.render(app, document.getElementById('root'))

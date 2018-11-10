@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import icons from '../icons'
 import resourceTypes from '../resourceTypes'
 
+import CustomHelmet from '../component-instances/CustomHelmet'
 import Heading1 from '../components/Heading1/Heading1'
 
 const StyledResource = styled.div`
@@ -39,6 +40,9 @@ const Resource = ({ project, resources, resource, onUpdate }) => {
   // console.warn('[component-Resource] resource', resource)
   return (
     <StyledResource className='component--resource'>
+      <CustomHelmet
+        title={`${resource.name} - ${project.name}`}
+      />
       <div className='heading'>
         <img src={icons.resources[resource.type]} alt={'nice'} />
         <Heading1>{resource.name}</Heading1>
