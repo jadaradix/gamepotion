@@ -20,22 +20,20 @@ let state = {
   currentProject: null
 }
 
-const actions = (() => {
-  const actions = new Map()
-  actions.set('USER_LOG_IN', logIn)
-  actions.set('USER_LOG_OUT', logOut)
-  actions.set('PROJECTS_CREATE', createProject)
-  actions.set('PROJECTS_GET', getProjects)
-  actions.set('PROJECTS_UPDATE', updateProject)
-  actions.set('PROJECTS_DELETE', deleteProject)
-  actions.set('PROJECTS_START_LOAD', startLoadProject)
-  actions.set('PROJECTS_LOAD', loadProject)
-  actions.set('PROJECTS_RESOURCES_CREATE', createProjectResource)
-  actions.set('PROJECTS_RESOURCES_LOAD', loadProjectResource)
-  actions.set('PROJECTS_RESOURCES_UPDATE', updateProjectResource)
-  actions.set('PROJECTS_RESOURCES_DELETE', deleteProjectResource)
-  return actions
-})()
+const actions = new Map([
+  ['USER_LOG_IN', logIn],
+  ['USER_LOG_OUT', logOut],
+  ['PROJECTS_CREATE', createProject],
+  ['PROJECTS_GET', getProjects],
+  ['PROJECTS_UPDATE', updateProject],
+  ['PROJECTS_DELETE', deleteProject],
+  ['PROJECTS_START_LOAD', startLoadProject],
+  ['PROJECTS_LOAD', loadProject],
+  ['PROJECTS_RESOURCES_CREATE', createProjectResource],
+  ['PROJECTS_RESOURCES_LOAD', loadProjectResource],
+  ['PROJECTS_RESOURCES_UPDATE', updateProjectResource],
+  ['PROJECTS_RESOURCES_DELETE', deleteProjectResource]
+])
 
 const element = document.createElement('SPAN')
 // (() => {

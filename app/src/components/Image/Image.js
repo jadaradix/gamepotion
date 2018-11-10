@@ -55,12 +55,13 @@ class Image extends Component {
 
   doLoad(src) {
     this.image = new window.Image()
-    this.eventListeners = new Map()
     const onLoad = () => this.onLoad()
-    this.eventListeners.set('load', onLoad)
-    this.image.addEventListener('load', onLoad)
     const onError = () => this.onError()
-    this.eventListeners.set('error', onError)
+    this.eventListeners = new Map([
+      ['load', onLoad],
+      ['error', onError]
+    ])
+    this.image.addEventListener('load', onLoad)
     this.image.addEventListener('error', onError)
     this.image.src = src
     this.ifOnLoadFiresNoCacheSrc = getNoCacheSrc(src)

@@ -12,6 +12,8 @@ import classes from '../classes'
 //   color: 'white'
 // }
 
+const variables = new Map()
+
 class AtomInstance {
   constructor(coords, atomContainer, imageContainer) {
     this.coords = coords
@@ -267,24 +269,29 @@ class SpaceCanvas extends PureComponent {
     //
     // GET READY FOR EVENTS
     //
-    const actionClassInstances = new Map()
-    Object.keys(classes.actions).forEach(k => {
-      actionClassInstances.set(k, new classes.actions[k]())
-    })
+    const actionClassInstances = new Map(
+      Object.keys(classes.actions).map(k => {
+        return [k, new classes.actions[k]()]
+      })
+    )
     resourceContainers
       .filter(r => r.resource.type === 'atom')
       .map(r => {
-        r.extras.events = new Map()
-        Object.keys(r.resource.events).forEach(k => {
-          r.extras.events.set(k, r.resource.events[k].map(a => {
-            const actionClassRunLogic = actionClassInstances.get(a.id).run
-            return {
-              run: actionClassRunLogic,
-              runArguments: a.runArguments,
-              appliesTo: a.appliesTo
-            }
-          }))
-        })
+        r.extras.events = new Map(
+          Object.keys(r.resource.events).map(k => {
+            return [
+              k,
+              r.resource.events[k].map(a => {
+                const actionClassRunLogic = actionClassInstances.get(a.id).run
+                return {
+                  run: actionClassRunLogic,
+                  runArguments: a.runArguments,
+                  appliesTo: a.appliesTo
+                }
+              })
+            ]
+          })
+        )
         return r
       })
 
