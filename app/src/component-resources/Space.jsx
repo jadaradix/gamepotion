@@ -124,16 +124,16 @@ class ResourceSpace extends PureComponent {
     super(props)
     this.state = {
       atomToPlot: getAtomToPlot(props.resources),
-      touchCoords: {
-        x: 0,
-        y: 0
-      },
       grid: {
         on: get('grid-on'),
         width: get('grid-width'),
         height: get('grid-height')
       },
       isRunning: false
+    }
+    this.thisRefs = {
+      touchCoordsX: null,
+      touchCoordsY: null
     }
     this.onChooseBackgroundImage = this.onChooseBackgroundImage.bind(this)
     this.onChooseForegroundImage = this.onChooseForegroundImage.bind(this)
@@ -202,14 +202,9 @@ class ResourceSpace extends PureComponent {
   }
 
   updateTouchCoords(coords) {
-    // console.warn('[updateTouchCoords] coords', coords)
-    this.setState({
-      touchCoords: {
-        x: coords[0],
-        y: coords[1],
-        z: coords[2]
-      }
-    })
+    // console.warn('[updateTouchCoords] coords', coords, this.thisRefs.touchCoordsX)
+    this.thisRefs.touchCoordsX.value = coords[0]
+    this.thisRefs.touchCoordsY.value = coords[1]
   }
 
   updateGridProperty(property, value) {
@@ -270,8 +265,8 @@ class ResourceSpace extends PureComponent {
           </Box>
           <Box className='info'>
             <div className='touches'>
-              <Input label='Touch X' value={this.state.touchCoords.x} type='number' disabled />
-              <Input label='Touch Y' value={this.state.touchCoords.y} type='number' disabled />
+              <Input label='Touch X' onRef={(r) => { this.thisRefs.touchCoordsY = r }} type='number' disabled />
+              <Input label='Touch Y' onRef={(r) => { this.thisRefs.touchCoordsX = r }} type='number' disabled />
             </div>
             <div className='grid-properties'>
               <Input label='Grid Width' value={this.state.grid.width} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('width', v)} />

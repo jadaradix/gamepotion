@@ -86,6 +86,7 @@ class Input extends PureComponent {
         // this.setState({value: ''})
       }
     }
+    this.inputRef = React.createRef()
   }
 
   componentWillReceiveProps (nextProps) {
@@ -110,6 +111,10 @@ class Input extends PureComponent {
           placeholder={this.state.placeholder}
           onChange={this.handleOnChange}
           onKeyDown={this.handleOnDone}
+          ref={(inputRef) => {
+            this.inputRef = inputRef
+            this.props.onRef(inputRef)
+          }}
         />
       </StyledInput>
     )
@@ -117,10 +122,12 @@ class Input extends PureComponent {
 }
 
 Input.propTypes = {
-  label: PropTypes.string
+  label: PropTypes.string,
+  onRef: PropTypes.func
 }
 
 Input.defaultProps = {
+  onRef: () => {}
 }
 
 export default Input
