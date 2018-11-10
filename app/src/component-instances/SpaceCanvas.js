@@ -3,15 +3,6 @@ import PropTypes from 'prop-types'
 
 import classes from '../classes'
 
-// const LOADING_STYLE = {
-//   font: '16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-//   fontWeight: '400',
-//   textSizeAdjust: '100%',
-//   textAlign: 'center',
-//   backgroundColor: 'black',
-//   color: 'white'
-// }
-
 const variables = new Map()
 
 class AtomInstance {
@@ -236,6 +227,9 @@ class SpaceCanvas extends Component {
       c.style.width = space.width
       c.style.height = space.height
       ctx.clearRect(0, 0, space.width, space.height)
+      ctx.fillStyle = '#ffffff'
+      ctx.font = '16px Arial'
+      ctx.fillText('Loading...', 16, 24)
     }
 
     const loadedGood = () => {
