@@ -14,8 +14,8 @@ import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
 import Image from '../components/Image/Image'
 import Heading2 from '../components/Heading2/Heading2'
-import Modal from '../components/Modal/Modal'
-import Button from '../components/Button/Button'
+
+import ActionModal from '../component-instances/ActionModal'
 
 const StyledResource = styled.div`
   section.image-events {
@@ -134,7 +134,7 @@ class ResourceAtom extends PureComponent {
 
   onChooseAddAction(id) {
     const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === id)
-    console.warn('actionClassInstance', actionClassInstance)
+    console.warn('[onChooseAddAction] actionClassInstance', actionClassInstance)
     this.setState({
       actionToadd: actionClassInstance
     })
@@ -241,23 +241,7 @@ class ResourceAtom extends PureComponent {
     return (
       <StyledResource>
         {this.state.actionToadd &&
-          <Modal onClose={this.dontAddAction} className='add-action'>
-            <Heading2>{this.state.actionToadd.name}</Heading2>
-            {Array.from(this.state.actionToadd.defaultRunArguments.keys()).map(k => {
-              const {
-                type,
-                value
-              } = this.state.actionToadd.defaultRunArguments.get(k)
-              return (
-                <div className='argument' key={k}>
-                  {k} / type::{type} / value::{value}
-                </div>
-              )
-            })}
-            <div className='decision'>
-              <Button>Add action</Button>
-            </div>
-          </Modal>
+          <ActionModal actionClassInstance={this.state.actionToadd} onGood={this.doAddAction} onBad={this.dontAddAction} />
         }
         <section className='image-events'>
           <Box className='image'>
