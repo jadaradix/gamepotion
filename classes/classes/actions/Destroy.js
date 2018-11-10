@@ -5,20 +5,20 @@ class Destroy extends Action {
     super(json)
     this.id = 'Destroy'
     this.name = 'Destroy'
-    this.description = 'Destroy an instance.'
+    this.description = 'Destroys an instance.'
   }
 
   getDefaultRunArguments() {
     return []
   }
 
-  run(event, platform, space, instance, runArguments, appliesTo) {
-    switch(platform) {
+  run(context, runArguments, appliesTo) {
+    switch(context.platform) {
     case 'html5':
       return {
         actionBack: 'INSTANCE_DESTROY',
         actionBackArguments: [],
-        instance,
+        instance: context.instance,
         appliesTo
       }
     case 'nds':

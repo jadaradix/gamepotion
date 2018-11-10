@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import debounce from 'debounce'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -58,7 +57,7 @@ const StyledResource = styled.div`
         display: grid;
         grid-template-columns: 2fr 2fr;
         grid-gap: 1rem;
-        margin-bottom: 2rem;
+        margin-top: 2rem;
       }
       .component--dropper:not(:last-child) {
         margin-bottom: 1rem;
@@ -84,8 +83,11 @@ const StyledResource = styled.div`
         grid-gap: 1rem;
         margin-bottom: 2rem;
       }
-      .component--switch:not(:last-child) {
-        margin-bottom: 1rem;
+      .grid-properties {
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+        grid-gap: 1rem;
+        margin-bottom: 2rem;
       }
     }
   }
@@ -122,43 +124,36 @@ class ResourceSpace extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      resource: props.resource,
       atomToPlot: getAtomToPlot(props.resources),
       touchCoords: {
         x: 0,
         y: 0
       },
-      gridOn: get('grid-on'),
+      grid: {
+        on: get('grid-on'),
+        width: get('grid-width'),
+        height: get('grid-height')
+      },
       designMode: true
     }
-    this.onUpdate = debounce((data) => {
-      this.props.onUpdate(data)
-    }, 500)
     this.onChooseBackgroundImage = this.onChooseBackgroundImage.bind(this)
     this.onChooseForegroundImage = this.onChooseForegroundImage.bind(this)
     this.onChooseAtomToPlot = this.onChooseAtomToPlot.bind(this)
     this.plotAtom = this.plotAtom.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
-    this.toggleGridOn = this.toggleGridOn.bind(this)
     this.toggleDesignMode = this.toggleDesignMode.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      resource: nextProps.resource
-    })
-  }
-
   onChangeMasterProp(prop, v) {
-    this.onUpdate({
+    this.props.onUpdate({
       [prop]: parseInt(v, 10)
     })
   }
 
   onChangeCameraProp(prop, v) {
-    this.onUpdate({
+    this.props.onUpdate({
       camera: {
-        ...this.state.resource.camera,
+        ...this.props.resource.camera,
         [prop]: parseInt(v, 10)
       }
     })
@@ -168,7 +163,7 @@ class ResourceSpace extends PureComponent {
     if (backgroundImage === 'none') {
       backgroundImage = null
     }
-    this.onUpdate({
+    this.props.onUpdate({
       backgroundImage
     })
   }
@@ -177,7 +172,7 @@ class ResourceSpace extends PureComponent {
     if (foregroundImage === 'none') {
       foregroundImage = null
     }
-    this.onUpdate({
+    this.props.onUpdate({
       foregroundImage
     })
   }
@@ -194,9 +189,9 @@ class ResourceSpace extends PureComponent {
       return
     }
     const [x, y, z] = coords
-    this.onUpdate({
+    this.props.onUpdate({
       instances: [
-        ...this.state.resource.instances,
+        ...this.props.resource.instances,
         {
           atomId: this.state.atomToPlot,
           x,
@@ -218,12 +213,14 @@ class ResourceSpace extends PureComponent {
     })
   }
 
-  toggleGridOn(gridOn) {
-    console.warn('gridOn', gridOn)
+  updateGridProperty(property, value) {
     this.setState({
-      gridOn
+      grid: {
+        ...this.state.grid,
+        [property]: value
+      }
     }, () => {
-      set('grid-on', gridOn)
+      set(`grid-${property}`, value)
     })
   }
 
@@ -234,13 +231,13 @@ class ResourceSpace extends PureComponent {
   }
 
   render() {
-    // console.warn('[component-resource-Space] [render]')
+    console.warn('[component-resource-Space] [render]')
 
     const atomDropperResources = getAtomDropperResources(this.props.resources)
     const imageDropperResources = getImageDropperResources(this.props.resources)
 
-    const backgroundImage = (this.state.resource.backgroundImage === null ? 'none' : this.state.resource.backgroundImage)
-    const foregroundImage = (this.state.resource.foregroundImage === null ? 'none' : this.state.resource.foregroundImage)
+    const backgroundImage = (this.props.resource.backgroundImage === null ? 'none' : this.props.resource.backgroundImage)
+    const foregroundImage = (this.props.resource.foregroundImage === null ? 'none' : this.props.resource.foregroundImage)
 
     const atomToPlot = this.state.atomToPlot
     const foundAtomResource = this.props.resources.find(r => r.id === atomToPlot)
@@ -254,34 +251,38 @@ class ResourceSpace extends PureComponent {
     return (
       <StyledResource>
         <section className='settings-plot-info'>
-          <Box className='settings'>
-            <div className='coords'>
-              <Input label='Width' type='number' value={this.state.resource.width} onChange={(v) => this.onChangeMasterProp('width', v)} min='0' max='4096' />
-              <Input label='Height' type='number' value={this.state.resource.height} onChange={(v) => this.onChangeMasterProp('height', v)} min='0' max='4096' />
-              <Input label='Cam Width' type='number' value={this.state.resource.camera.width} onChange={(v) => this.onChangeCameraProp('width', v)} min='0' max='4096' />
-              <Input label='Cam Height' type='number' value={this.state.resource.camera.height} onChange={(v) => this.onChangeCameraProp('height', v)} min='0' max='4096' />
-              <Input label='Cam X' type='number' value={this.state.resource.camera.x} min='0' onChange={(v) => this.onChangeCameraProp('x', v)} max='4096' />
-              <Input label='Cam Y' type='number' value={this.state.resource.camera.y} min='0' onChange={(v) => this.onChangeCameraProp('y', v)} max='4096' />
-            </div>
-            <Dropper options={imageDropperResources} value={backgroundImage} onChoose={this.onChooseBackgroundImage} label='Background image' />
-            <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
-          </Box>
           <Box className='plot'>
             <div className='image-container'>
               <Image src={imageSrc} />
             </div>
             <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={this.onChooseAtomToPlot} />
           </Box>
+          <Box className='settings'>
+            <Dropper options={imageDropperResources} value={backgroundImage} onChoose={this.onChooseBackgroundImage} label='Background image' />
+            <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
+            <div className='coords'>
+              <Input label='Width' type='number' value={this.props.resource.width} onChange={(v) => this.onChangeMasterProp('width', v)} min='0' max='4096' />
+              <Input label='Height' type='number' value={this.props.resource.height} onChange={(v) => this.onChangeMasterProp('height', v)} min='0' max='4096' />
+              <Input label='Cam Width' type='number' value={this.props.resource.camera.width} onChange={(v) => this.onChangeCameraProp('width', v)} min='0' max='4096' />
+              <Input label='Cam Height' type='number' value={this.props.resource.camera.height} onChange={(v) => this.onChangeCameraProp('height', v)} min='0' max='4096' />
+              <Input label='Cam X' type='number' value={this.props.resource.camera.x} min='0' onChange={(v) => this.onChangeCameraProp('x', v)} max='4096' />
+              <Input label='Cam Y' type='number' value={this.props.resource.camera.y} min='0' onChange={(v) => this.onChangeCameraProp('y', v)} max='4096' />
+            </div>
+          </Box>
           <Box className='info'>
             <div className='touches'>
               <Input label='Touch X' value={this.state.touchCoords.x} type='number' disabled />
               <Input label='Touch Y' value={this.state.touchCoords.y} type='number' disabled />
             </div>
-            <Switch checked={this.state.gridOn} onChange={this.toggleGridOn}>Grid</Switch>
+            <div className='grid-properties'>
+              <Input label='Grid Width' value={this.state.grid.width} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('width', v)} />
+              <Input label='Grid Height' value={this.state.grid.height} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('height', v)} />
+            </div>
+            <Switch checked={this.state.grid.on} onChange={(v) => this.updateGridProperty('on', v)}>Grid</Switch>
           </Box>
         </section>
         <section className='canvas'>
-          <SpaceCanvas space={this.state.resource} resources={this.props.resources} designMode={this.state.designMode} onTouch={this.plotAtom} onTouchMove={this.updateTouchCoords} />
+          <SpaceCanvas space={this.props.resource} resources={this.props.resources} designMode={this.state.designMode} onTouch={this.plotAtom} onTouchMove={this.updateTouchCoords} />
           <Button onClick={this.toggleDesignMode}>Toggle design mode</Button>
         </section>
       </StyledResource>

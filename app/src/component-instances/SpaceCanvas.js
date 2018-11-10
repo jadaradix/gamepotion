@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import classes from '../classes'
@@ -25,7 +25,12 @@ class AtomInstance {
   onEvent(event, spaceContainer) {
     const instance = this
     return this.atomContainer.extras.events.get(event).map(a => {
-      return a.run(event, 'html5', spaceContainer.space, instance, a.runArguments, a.appliesTo)
+      const context = {
+        platform: 'html5',
+        space: spaceContainer.space,
+        instance
+      }
+      return a.run(context, a.runArguments, a.appliesTo)
     })
   }
 }
@@ -133,7 +138,7 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode) => {
   }
 }
 
-class SpaceCanvas extends PureComponent {
+class SpaceCanvas extends Component {
   constructor() {
     super()
     this.canvasRef = React.createRef()
@@ -315,7 +320,9 @@ class SpaceCanvas extends PureComponent {
         resource.extras.image = element
       })
 
+    //
     // LOAD SOUNDS
+    //
     resourceContainers
       .filter(r => r.resource.type === 'sound')
       .forEach(resource => {

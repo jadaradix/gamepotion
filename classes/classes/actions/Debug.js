@@ -5,15 +5,15 @@ class Debug extends Action {
     super(json)
     this.id = 'Debug'
     this.name = 'Debug'
-    this.description = 'Print arguments.'
+    this.description = 'Prints arguments.'
   }
 
   getDefaultRunArguments() {
     return []
   }
 
-  run(event, platform, space, instance, runArguments, appliesTo) {
-    switch(platform) {
+  run(context, runArguments, appliesTo) {
+    switch(context.platform) {
     case 'html5':
       console.log(runArguments)
       return null

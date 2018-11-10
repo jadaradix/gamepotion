@@ -1,24 +1,17 @@
+import debounce from 'debounce'
 import api from '../../../api.js'
-import classFactory from '../../../../classes/factory'
+
+const patch = debounce((projectId, data) => {
+  api.patch('api-core', `me/team/projects/${projectId}/resources/${data.id}`, data)
+}, 500)
 
 export default async function (state, data) {
-  return api.patch('api-core', `me/team/projects/${state.currentProject.project.id}/resources/${data.id}`, data)
-    .then(resource => {
-      const resourceClass = classFactory.resource(resource)
-      resourceClass.clientFromApiGet(resource)
-      const currentProject = state.currentProject
-      currentProject.resources = currentProject.resources.map(resource => {
-        if (resource.id === data.id) {
-          resource = resourceClass
-        }
-        return resource
-      })
-      if (currentProject.currentResource.id === data.id) {
-        currentProject.currentResource = resourceClass
-      }
-      return {
-        ...state,
-        currentProject
-      }
-    })
+  patch(state.currentProject.project.id, data)
+  const currentProject = state.currentProject
+  const resourceClass = currentProject.resources.find(r => r.id === data.id)
+  resourceClass.fromApiPatch(data)
+  return Promise.resolve({
+    ...state,
+    currentProject
+  })
 }

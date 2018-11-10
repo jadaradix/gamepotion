@@ -36,16 +36,7 @@ const StyledResource = styled.div`
 class ResourceSound extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {
-      resource: props.resource
-    }
     this.onChooseFixed = this.onChooseFixed.bind(this)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.resource.fixed !== this.state.resource.fixed) {
-      this.setState({ resource: nextProps.resource })
-    }
   }
 
   onUpdate(data) {
@@ -74,11 +65,8 @@ class ResourceSound extends PureComponent {
         }
       })
     ]
-    const fixedValue = (this.state.resource.fixed === null ? 'none' : this.state.resource.fixed)
-    const remoteUrl = this.state.resource.getRemoteUrl()
-
-    // console.warn('[resource-Sound] render', this.state.resource)
-    // console.warn('[resource-Sound] remoteUrl', remoteUrl)
+    const fixedValue = (this.props.resource.fixed === null ? 'none' : this.props.resource.fixed)
+    const remoteUrl = this.props.resource.getRemoteUrl()
 
     return (
       <StyledResource>
@@ -87,7 +75,7 @@ class ResourceSound extends PureComponent {
         </section>
         <section className='split-two'>
           <Box>
-            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.state.resource.id}`} mimeTypes={['audio/wav']} onDone={() => this.onUpdate({ fixed: null })} />
+            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['audio/wav']} onDone={() => this.onUpdate({ fixed: null })} />
           </Box>
           <Box>
             <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />

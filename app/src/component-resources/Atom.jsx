@@ -85,7 +85,6 @@ class ResourceAtom extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      resource: props.resource,
       currentEvent: 'create'
     }
     this.onChooseImage = this.onChooseImage.bind(this)
@@ -94,12 +93,6 @@ class ResourceAtom extends PureComponent {
     this.actOnAction = this.actOnAction.bind(this)
     this.actionClassInstances = Object.keys(classes.actions).map(k => {
       return new classes.actions[k]()
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      resource: nextProps.resource
     })
   }
 
@@ -126,9 +119,9 @@ class ResourceAtom extends PureComponent {
     const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === id)
     this.onUpdate({
       events: {
-        ...this.state.resource.events,
+        ...this.props.resource.events,
         [this.state.currentEvent]: [
-          ...this.state.resource.events[this.state.currentEvent],
+          ...this.props.resource.events[this.state.currentEvent],
           {
             id: actionClassInstance.id,
             runArguments: actionClassInstance.getDefaultRunArguments(),
@@ -145,8 +138,8 @@ class ResourceAtom extends PureComponent {
       'delete': () => {
         this.onUpdate({
           events: {
-            ...this.state.resource.events,
-            [this.state.currentEvent]: this.state.resource.events[this.state.currentEvent].filter((a, i) => {
+            ...this.props.resource.events,
+            [this.state.currentEvent]: this.props.resource.events[this.state.currentEvent].filter((a, i) => {
               return (i !== id)
             })
           }
@@ -175,8 +168,8 @@ class ResourceAtom extends PureComponent {
         </List>
       )
     }
-    if (this.state.resource.events[this.state.currentEvent].length > 0) {
-      return getList(this.state.resource.events[this.state.currentEvent])
+    if (this.props.resource.events[this.state.currentEvent].length > 0) {
+      return getList(this.props.resource.events[this.state.currentEvent])
     } else {
       return getEmpty()
     }
@@ -199,8 +192,8 @@ class ResourceAtom extends PureComponent {
       }
     ]
 
-    const imageId = (this.state.resource.imageId === null ? 'none' : this.state.resource.imageId)
-    const foundImageResource = this.props.resources.find(r => r.id === this.state.resource.imageId)
+    const imageId = (this.props.resource.imageId === null ? 'none' : this.props.resource.imageId)
+    const foundImageResource = this.props.resources.find(r => r.id === this.props.resource.imageId)
 
     const imageSrc = (foundImageResource !== undefined ?
       foundImageResource.getRemoteUrl()
