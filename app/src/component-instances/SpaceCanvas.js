@@ -295,6 +295,10 @@ class SpaceCanvas extends Component {
     }
     const loadedBad = () => {
       console.warn('[SpaceCanvas] [renderCanvas] [loadedBad]')
+      ctx.clearRect(0, 0, space.width, space.height)
+      ctx.fillStyle = '#ffffff'
+      ctx.font = '16px Arial'
+      ctx.fillText('This game could not be loaded.', 16, 24)
       this.removeEventListeners()
     }
     const loadGoodLogic = () => {
@@ -305,6 +309,7 @@ class SpaceCanvas extends Component {
       }
     }
     const loadBadLogic = () => {
+      console.warn('[SpaceCanvas] [renderCanvas] [loadBadLogic]')
       loadedBad()
     }
     startLoading()
@@ -397,12 +402,14 @@ SpaceCanvas.propTypes = {
   resources: PropTypes.array.isRequired,
   grid: PropTypes.object.isRequired,
   onTouch: PropTypes.func,
+  onTouchSecondary: PropTypes.func,
   onTouchMove: PropTypes.func
 }
 
 SpaceCanvas.defaultProps = {
   designMode: false,
   onTouch: () => {},
+  onTouchSecondary: () => {},
   onTouchMove: () => {}
 }
 
