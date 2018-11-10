@@ -54,6 +54,14 @@ const StyledInput = styled.div`
   }
 `
 
+const getDefaultValue = (props) => {
+  if (props.value !== undefined) {
+    return props.value
+  }
+  // hack - touch x/y refs
+  return (props.type === 'number' ? undefined : '')
+}
+
 class Input extends PureComponent {
   constructor (props) {
     super(props)
@@ -63,7 +71,7 @@ class Input extends PureComponent {
       type: props.type || 'text',
       checked: props.checked || false,
       label: props.label || '',
-      value: props.value || (props.type === 'number' ? 0 : ''),
+      value: getDefaultValue(props),
       placeholder: props.placeholder || '',
       required: (typeof props.required === 'boolean' ? props.required : false),
       patten: (props.type === 'password' ? '.{6,128}' : undefined),
@@ -83,7 +91,6 @@ class Input extends PureComponent {
       if (event.which === 13) {
         event.preventDefault()
         this.onDone(this.state.value)
-        // this.setState({value: ''})
       }
     }
     this.inputRef = React.createRef()

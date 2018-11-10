@@ -210,33 +210,42 @@ class SpaceCanvas extends Component {
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
     const getTouchData = (e) => {
       e.preventDefault()
-      const x = e.touches[0].clientX - cDomBounds.x + window.scrollX
-      const y = e.touches[0].clientY - cDomBounds.y + window.scrollY
-      const z = 0
-      return [parseInt(x, 10), parseInt(y, 10), parseInt(z, 10)]
+      const x = parseInt(e.touches[0].clientX - cDomBounds.x + window.scrollX, 10)
+      const y = parseInt(e.touches[0].clientY - cDomBounds.y + window.scrollY, 10)
+      const z = parseInt(0, 10)
+      const coords = [x, y, z]
+      return coords
     }
     const getMouseData = (e) => {
       e.preventDefault()
-      const x = e.clientX - cDomBounds.x + window.scrollX
-      const y = e.clientY - cDomBounds.y + window.scrollY
-      const z = 0
-      return [parseInt(x, 10), parseInt(y, 10), parseInt(z, 10)]
+      const x = parseInt(e.clientX - cDomBounds.x + window.scrollX, 10)
+      const y = parseInt(e.clientY - cDomBounds.y + window.scrollY, 10)
+      const z = parseInt(0, 10)
+      const coords = [x, y, z]
+      return coords
+    }
+    const onTouch = (coords) => {
+      if (this.props.grid.on === true) {
+        coords[0] = coords[0] - (coords[0] % this.props.grid.width)
+        coords[1] = coords[1] - (coords[1] % this.props.grid.width)
+      }
+      this.props.onTouch(coords)
     }
     this.addEventListener(canvas, 'touchstart', (e) => {
-      const touchData = getTouchData(e)
+      const coords = getTouchData(e)
       if (this.props.designMode === true) {
-        this.props.onTouch(touchData)
+        onTouch(coords)
       } else {
-        const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, touchData)
+        const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, coords)
         instanceClasses = handleEventByIndices('touch', spaceContainer, instanceClasses, instanceIndicesAtCoords)
       }
     })
     this.addEventListener(canvas, 'click', (e) => {
-      const touchData = getMouseData(e)
+      const coords = getMouseData(e)
       if (this.props.designMode === true) {
-        this.props.onTouch(touchData)
+        onTouch(coords)
       } else {
-        const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, touchData)
+        const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, coords)
         instanceClasses = handleEventByIndices('touch', spaceContainer, instanceClasses, instanceIndicesAtCoords)
       }
     })
