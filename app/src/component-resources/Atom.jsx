@@ -89,13 +89,14 @@ class ResourceAtom extends PureComponent {
     super(props)
     this.state = {
       currentEvent: 'create',
-      actionClassInstance: null
+      actionClassInstance: null,
+      actionClassInstanceIsAdding: false
     }
     this.onChooseImage = this.onChooseImage.bind(this)
     this.onChooseEvent = this.onChooseEvent.bind(this)
     this.onChooseAddAction = this.onChooseAddAction.bind(this)
-    this.doAddAction = this.doAddAction.bind(this)
-    this.dontAddAction = this.dontAddAction.bind(this)
+    this.onActionModalGood = this.onActionModalGood.bind(this)
+    this.onActionModalBad = this.onActionModalBad.bind(this)
     this.actOnAction = this.actOnAction.bind(this)
     this.actionClassInstances = Object.keys(classes.actions).map(k => {
       return new classes.actions[k]()
@@ -129,16 +130,23 @@ class ResourceAtom extends PureComponent {
       actionClassInstance.runArguments.push(v.value)
     })
     if (argumentsCount === 0) {
-      return this.doAddAction(actionClassInstance)
+      return this.setState({
+        actionClassInstanceIsAdding: true
+      }, () => {
+        this.onActionModalGood(actionClassInstance)
+      })
     }
     this.setState({
-      actionClassInstance
+      actionClassInstance,
+      actionClassInstanceIsAdding: true
     })
   }
 
-  doAddAction(actionClassInstance) {
-    this.onUpdate({
-      events: {
+  onActionModalGood(actionClassInstance) {
+    const isAdding = this.state.actionClassInstanceIsAdding
+    let events = {}
+    if (isAdding === true) {
+      events = {
         ...this.props.resource.events,
         [this.state.currentEvent]: [
           ...this.props.resource.events[this.state.currentEvent],
@@ -149,13 +157,29 @@ class ResourceAtom extends PureComponent {
           }
         ]
       }
+    } else {
+      events = this.props.resource.events
+      // events = {
+      //   ...this.props.resource.events,
+      //   [this.state.currentEvent]: [
+      //     ...this.props.resource.events[this.state.currentEvent],
+      //     {
+      //       id: actionClassInstance.id,
+      //       runArguments: actionClassInstance.runArguments,
+      //       appliesTo: 'this'
+      //     }
+      //   ]
+      // }
+    }
+    this.onUpdate({
+      events
     })
     this.setState({
       actionClassInstance: null
     })
   }
 
-  dontAddAction() {
+  onActionModalBad() {
     this.setState({
       actionClassInstance: null
     })
@@ -166,14 +190,14 @@ class ResourceAtom extends PureComponent {
     const actions = {
       'edit': () => {
         console.warn('[component-resource-Atom] [actOnAction] id, action', id, action)
-        // this.onUpdate({
-        //   events: {
-        //     ...this.props.resource.events,
-        //     [this.state.currentEvent]: this.props.resource.events[this.state.currentEvent].filter((a, i) => {
-        //       return (i !== id)
-        //     })
-        //   }
-        // })
+        const actualAction = this.props.resource.events[this.state.currentEvent][id]
+        const actionClassInstance = new classes.actions[actualAction.id]()
+        actionClassInstance.runArguments = actualAction.runArguments
+        console.log('[component-resource-Atom] [actOnAction] actionClassInstance', actionClassInstance)
+        this.setState({
+          actionClassInstance,
+          actionClassInstanceIsAdding: false
+        })
       },
       'delete': () => {
         this.onUpdate({
@@ -226,7 +250,7 @@ class ResourceAtom extends PureComponent {
     return (
       <StyledResource>
         {this.state.actionClassInstance !== null &&
-          <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.doAddAction} onBad={this.dontAddAction} />
+          <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.onActionModalGood} onBad={this.onActionModalBad} />
         }
         <section className='image-events'>
           <Box className='image'>
