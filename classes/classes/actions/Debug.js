@@ -20,7 +20,7 @@ class Debug extends Action {
       console.log(runArguments)
       return null
     case 'nds':
-      return `printf(${runArguments.join(', ')})`
+      return `printf(${runArguments.join(', ')});`
     default:
       return null
     }

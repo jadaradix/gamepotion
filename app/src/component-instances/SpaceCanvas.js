@@ -5,6 +5,19 @@ import classes from '../classes'
 
 const variables = new Map()
 
+const getRunArguments = (runArguments) => {
+  return runArguments.map(r => {
+    if (r.indexOf('"') === 0) {
+      return r.substring(1, r.length - 1)
+    }
+    const foundVariable = variables.get(r)
+    if (foundVariable !== undefined) {
+      return foundVariable
+    }
+    return r
+  })
+}
+
 class AtomInstance {
   constructor(coords, atomContainer, imageContainer) {
     this.coords = coords
@@ -19,9 +32,10 @@ class AtomInstance {
       const context = {
         platform: 'html5',
         space: spaceContainer.space,
-        instance
+        instance,
+        variables
       }
-      return a.run(context, a.runArguments, a.appliesTo)
+      return a.run(context, getRunArguments(a.runArguments), a.appliesTo)
     })
   }
 }
