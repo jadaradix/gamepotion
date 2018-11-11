@@ -43,20 +43,20 @@ const step = (spaceContainer, instanceClasses) => {
   return handleEvent('step', spaceContainer, instanceClasses)
 }
 
-const getInstanceIndicesAtCoords = (instanceClasses, coords) => {
+const getInstancesAtCoords = (instanceClasses, coords) => {
   return instanceClasses
-    .map((i, index) => {
-      const w = (i.imageContainer && i.imageContainer.resource.frameWidth) || 0
-      const h = (i.imageContainer && i.imageContainer.resource.frameHeight) || 0
+    .map(ic => {
+      const w = (ic.imageContainer && ic.imageContainer.resource.frameWidth) || 0
+      const h = (ic.imageContainer && ic.imageContainer.resource.frameHeight) || 0
       const isIntersecting = (
-        coords[0] >= i.coords[0] &&
-        coords[1] >= i.coords[1] &&
-        coords[0] < (i.coords[0] + w) &&
-        coords[1] < (i.coords[1] + h)
+        coords[0] >= ic.coords[0] &&
+        coords[1] >= ic.coords[1] &&
+        coords[0] < (ic.coords[0] + w) &&
+        coords[1] < (ic.coords[1] + h)
       )
-      return (isIntersecting ? index : undefined)
+      return (isIntersecting ? ic : undefined)
     })
-    .filter(index => index !== undefined)
+    .filter(ic => ic !== undefined)
 }
 
 const getInstanceClasses = (instances, resourceContainers) => {
@@ -74,40 +74,28 @@ const handleActionBack = (instanceClasses, actionBack) => {
   case 'INSTANCE_DESTROY':
     console.warn('[handleActionBack] instanceClasses/actionBack', instanceClasses, actionBack)
     return {
-      instanceIndicesToDelete: [instanceClasses.indexOf(actionBack.instance)]
+      instanceClassesToDestroy: [actionBack.instance]
     }
   default:
   }
 }
 
 const handleEvent = (event, spaceContainer, instanceClasses) => {
-  let instanceIndicesToDelete = []
+  let instanceClassesToDestroy = []
   instanceClasses.forEach(i => {
     const actionBacks = i.onEvent(event, spaceContainer).filter(ab => ab !== null && typeof ab === 'object')
     actionBacks.forEach(actionBack => {
       const result = handleActionBack(instanceClasses, actionBack)
-      instanceIndicesToDelete = instanceIndicesToDelete.concat(result.instanceIndicesToDelete)
+      instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
     })
   })
-  // console.log('[handleEvent] instanceIndicesToDelete', instanceIndicesToDelete)
-  instanceClasses = instanceClasses.filter((i, index) => {
-    return (!instanceIndicesToDelete.includes(index))
-  })
-  return instanceClasses
-}
-
-const handleEventByIndices = (event, spaceContainer, instanceClasses, instanceIndices) => {
-  let instanceIndicesToDelete = []
-  instanceIndices.forEach(index => {
-    const actionBacks = instanceClasses[index].onEvent(event, spaceContainer).filter(ab => ab !== null && typeof ab === 'object')
-    actionBacks.forEach(actionBack => {
-      const result = handleActionBack(instanceClasses, actionBack)
-      instanceIndicesToDelete = instanceIndicesToDelete.concat(result.instanceIndicesToDelete)
-    })
-  })
-  // console.log('[handleEventByIndices] instanceIndicesToDelete', instanceIndicesToDelete)
-  instanceClasses = instanceClasses.filter((i, index) => {
-    return (!instanceIndicesToDelete.includes(index))
+  // console.log('[handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
+  if (instanceClassesToDestroy.length > 0) {
+    instanceClasses = handleEvent('destroy', spaceContainer, instanceClassesToDestroy)
+  }
+  instanceClasses = instanceClasses.filter(ic => {
+    const willDestroy = instanceClassesToDestroy.includes(ic)
+    return (!willDestroy)
   })
   return instanceClasses
 }
@@ -237,8 +225,8 @@ class SpaceCanvas extends Component {
       if (this.props.designMode === true) {
         onTouch(coords)
       } else {
-        const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, coords)
-        instanceClasses = handleEventByIndices('touch', spaceContainer, instanceClasses, instanceIndicesAtCoords)
+        const instancesAtCoords = getInstancesAtCoords(instanceClasses, coords)
+        instanceClasses = handleEvent('touch', spaceContainer, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'click', (e) => {
@@ -246,8 +234,8 @@ class SpaceCanvas extends Component {
       if (this.props.designMode === true) {
         onTouch(coords)
       } else {
-        const instanceIndicesAtCoords = getInstanceIndicesAtCoords(instanceClasses, coords)
-        instanceClasses = handleEventByIndices('touch', spaceContainer, instanceClasses, instanceIndicesAtCoords)
+        const instancesAtCoords = getInstancesAtCoords(instanceClasses, coords)
+        instanceClasses = handleEvent('touch', spaceContainer, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'touchmove', (e) => {

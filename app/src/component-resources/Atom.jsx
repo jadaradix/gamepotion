@@ -124,7 +124,7 @@ class ResourceAtom extends PureComponent {
     const actionClassInstance = new classes.actions[id]()
     // console.log('[component-resource-Atom] [onChooseAddAction] actionClassInstance', actionClassInstance)
     const argumentsCount = actionClassInstance.defaultRunArguments.size
-    actionClassInstance.defaultRunArguments.forEach((v, k) => {
+    actionClassInstance.defaultRunArguments.forEach((v) => {
       actionClassInstance.runArguments.push(v.value)
     })
     if (argumentsCount === 0) {
@@ -135,8 +135,7 @@ class ResourceAtom extends PureComponent {
     })
   }
 
-  doAddAction() {
-    const actionClassInstance = this.state.actionClassInstance
+  doAddAction(actionClassInstance) {
     this.onUpdate({
       events: {
         ...this.props.resource.events,
