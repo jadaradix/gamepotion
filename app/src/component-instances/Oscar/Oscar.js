@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import classes from '../classes'
+import classes from '../../classes'
 
 const variables = new Map()
 
@@ -74,7 +74,7 @@ const getInstancesAtCoords = (instanceClasses, coords) => {
 }
 
 const getInstanceClasses = (instances, resourceContainers) => {
-  console.warn('[SpaceCanvas] [renderCanvas] [getInstanceClasses] resourceContainers', resourceContainers)
+  console.warn('[Oscar] [renderCanvas] [getInstanceClasses] resourceContainers', resourceContainers)
   return instances.map(i => {
     const atomContainer = resourceContainers.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
     const imageContainer = resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === atomContainer.resource.imageId)
@@ -162,7 +162,7 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
   }
 }
 
-class SpaceCanvas extends Component {
+class Oscar extends Component {
   constructor() {
     super()
     this.canvasRef = React.createRef()
@@ -290,7 +290,7 @@ class SpaceCanvas extends Component {
     let resourceContainersLoadedSoFar = 0
     const totalResourceContainersToLoad = resourceContainers.filter(r => ['image', 'sound'].includes(r.resource.type)).length
     const startLoading = () => {
-      console.warn('[SpaceCanvas] [renderCanvas] start loading!')
+      console.warn('[Oscar] [renderCanvas] start loading!')
       c.width = space.width
       c.height = space.height
       c.style.display = 'block'
@@ -308,7 +308,7 @@ class SpaceCanvas extends Component {
     }
 
     const loadedGood = () => {
-      console.warn('[SpaceCanvas] [renderCanvas] [loadedGood]')
+      console.warn('[Oscar] [renderCanvas] [loadedGood]')
       const runStepAndDrawLoop = () => {
         instanceClasses = step(spaceContainer, instanceClasses, this.props.designMode)
         draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
@@ -325,7 +325,7 @@ class SpaceCanvas extends Component {
       }
     }
     const loadedBad = () => {
-      console.warn('[SpaceCanvas] [renderCanvas] [loadedBad]')
+      console.warn('[Oscar] [renderCanvas] [loadedBad]')
       ctx.clearRect(0, 0, space.width, space.height)
       ctx.fillStyle = '#ffffff'
       ctx.font = '16px Arial'
@@ -334,13 +334,13 @@ class SpaceCanvas extends Component {
     }
     const loadGoodLogic = () => {
       resourceContainersLoadedSoFar += 1
-      console.warn(`[SpaceCanvas] [renderCanvas] [loadGoodLogic] done ${resourceContainersLoadedSoFar}/${totalResourceContainersToLoad}`)
+      console.warn(`[Oscar] [renderCanvas] [loadGoodLogic] done ${resourceContainersLoadedSoFar}/${totalResourceContainersToLoad}`)
       if (resourceContainersLoadedSoFar === totalResourceContainersToLoad) {
         loadedGood()
       }
     }
     const loadBadLogic = () => {
-      console.warn('[SpaceCanvas] [renderCanvas] [loadBadLogic]')
+      console.warn('[Oscar] [renderCanvas] [loadBadLogic]')
       loadedBad()
     }
     startLoading()
@@ -410,7 +410,7 @@ class SpaceCanvas extends Component {
   }
 
   render() {
-    console.warn('[SpaceCanvas] [render]')
+    console.warn('[Oscar] [render]')
     const canvasStyle = {
       width: this.props.space.width,
       height: this.props.space.height,
@@ -427,7 +427,7 @@ class SpaceCanvas extends Component {
   }
 }
 
-SpaceCanvas.propTypes = {
+Oscar.propTypes = {
   designMode: PropTypes.bool,
   space: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired,
@@ -437,11 +437,11 @@ SpaceCanvas.propTypes = {
   onTouchMove: PropTypes.func
 }
 
-SpaceCanvas.defaultProps = {
+Oscar.defaultProps = {
   designMode: false,
   onTouch: () => {},
   onTouchSecondary: () => {},
   onTouchMove: () => {}
 }
 
-export default SpaceCanvas
+export default Oscar
