@@ -4,8 +4,8 @@ class Destroy extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'Destroy'
-    this.name = 'Destroy'
-    this.description = 'Destroys an instance.'
+    this.name = 'Destroy Atom'
+    this.description = 'Destroys an atom.'
     this.defaultRunArguments = new Map([
     ])
   }
@@ -15,8 +15,7 @@ class Destroy extends Action {
     case 'html5':
       return {
         actionBack: 'INSTANCE_DESTROY',
-        actionBackArguments: [],
-        instance: context.instance,
+        actionBackArguments: [context.instance],
         appliesTo
       }
     case 'nds':

@@ -25,7 +25,6 @@ class If extends Action {
       return {
         actionBack: 'IF',
         actionBackArguments: [true],
-        instance: context.instance,
         appliesTo
       }
     case 'nds':

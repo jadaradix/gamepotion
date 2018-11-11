@@ -247,7 +247,7 @@ class ResourceAtom extends PureComponent {
     return (
       <StyledResource>
         {this.state.actionClassInstance !== null &&
-          <ActionModal actionClassInstance={this.state.actionClassInstance} onGood={this.doAddAction} onBad={this.dontAddAction} />
+          <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.doAddAction} onBad={this.dontAddAction} />
         }
         <section className='image-events'>
           <Box className='image'>

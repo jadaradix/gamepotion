@@ -88,7 +88,7 @@ const handleActionBack = (instanceClasses, actionBack) => {
   case 'INSTANCE_DESTROY':
     console.warn('[handleActionBack] instanceClasses/actionBack', instanceClasses, actionBack)
     return {
-      instanceClassesToDestroy: [actionBack.instance]
+      instanceClassesToDestroy: [actionBack.actionBackArguments[0]]
     }
   default:
   }

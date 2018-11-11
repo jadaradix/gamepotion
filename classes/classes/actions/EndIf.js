@@ -17,7 +17,6 @@ class EndIf extends Action {
       return {
         actionBack: 'END_IF',
         actionBackArguments: [],
-        instance: context.instance,
         appliesTo
       }
     case 'nds':

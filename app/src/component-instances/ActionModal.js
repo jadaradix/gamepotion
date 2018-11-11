@@ -5,8 +5,8 @@ import PropTypes from 'prop-types'
 import Modal from '../components/Modal/Modal'
 import Heading2 from '../components/Heading2/Heading2'
 import Button from '../components/Button/Button'
-
 import Input from '../components/Input/Input'
+import Dropper from '../components/Dropper/Dropper'
 
 const StyledActionModal = styled.div`
   .component--modal {
@@ -23,12 +23,36 @@ const StyledActionModal = styled.div`
   }
 `
 
-const ActionModal = ({ actionClassInstance, onGood, onBad }) => {
+const ActionModal = ({ actionClassInstance, resources, onGood, onBad }) => {
+
+  const atomResources = resources
+    .filter(r => r.type === 'atom')
+    .map(r => {
+      return {
+        id: r.id,
+        name: r.name
+      }
+    })
+
+  const imageResources = resources
+    .filter(r => r.type === 'image')
+    .map(r => {
+      return {
+        id: r.id,
+        name: r.name
+      }
+    })
 
   const getArgumentValue = (type, v) => {
     switch (type) {
+    case 'atom':
+      return v
+    case 'image':
+      return v
+    case 'generic':
+      return v
     case 'number':
-      return parseInt(v, 10) || 0 // NaN
+      return parseInt(v, 10) || 0 // e.g. NaN
     default:
       return v
     }
@@ -38,9 +62,29 @@ const ActionModal = ({ actionClassInstance, onGood, onBad }) => {
     const onUpdateArgument = (v) => {
       actionClassInstance.runArguments[index] = getArgumentValue(type, v)
     }
+    if (type === 'atom' && value === '') {
+      if (atomResources.length > 0) {
+        actionClassInstance.runArguments[index] = getArgumentValue(type, atomResources[0].id)
+      } else {
+        actionClassInstance.runArguments[index] = getArgumentValue(type, '?')
+      }
+    }
+    if (type === 'image' && value === '') {
+      if (imageResources.length > 0) {
+        actionClassInstance.runArguments[index] = getArgumentValue(type, imageResources[0].id)
+      } else {
+        actionClassInstance.runArguments[index] = getArgumentValue(type, '?')
+      }
+    }
     switch (type) {
+    case 'atom':
+      return <Dropper onChoose={onUpdateArgument} label={name} value={value} options={atomResources} />
+    case 'image':
+      return <Dropper onChoose={onUpdateArgument} label={name} value={value} options={imageResources} />
+    case 'generic':
+    case 'number':
     default:
-      return <Input label={name} value={value} onChange={onUpdateArgument} onDone={() => onGood(actionClassInstance)} />
+      return <Input onChange={onUpdateArgument} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
     }
   }
 
@@ -68,6 +112,8 @@ const ActionModal = ({ actionClassInstance, onGood, onBad }) => {
 }
 
 ActionModal.propTypes = {
+  actionClassInstance: PropTypes.any.isRequired,
+  resources: PropTypes.array.isRequired,
   onGood: PropTypes.func,
   onBad: PropTypes.func
 }
