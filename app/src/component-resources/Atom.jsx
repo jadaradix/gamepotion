@@ -238,7 +238,7 @@ class ResourceAtom extends PureComponent {
         <section className='actions'>
           <Box className='actions'>
             <Heading2>{currentEventName} event actions</Heading2>
-            <ActionsList currentEvent={this.props.resource.events[this.state.currentEvent]} actionClassInstances={this.actionClassInstances} onAction={this.actOnAction} />
+            <ActionsList resources={this.props.resources} actions={this.props.resource.events[this.state.currentEvent]} actionClassInstances={this.actionClassInstances} onAction={this.actOnAction} />
           </Box>
           <Box className='add-action'>
             <Heading2>Add an action</Heading2>
