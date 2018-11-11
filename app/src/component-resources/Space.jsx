@@ -141,7 +141,7 @@ class ResourceSpace extends PureComponent {
     this.onChooseForegroundImage = this.onChooseForegroundImage.bind(this)
     this.onChooseAtomToPlot = this.onChooseAtomToPlot.bind(this)
     this.plotAtom = this.plotAtom.bind(this)
-    this.unplotAtom = this.unplotAtom.bind(this)
+    this.unplotAtoms = this.unplotAtoms.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
     this.updateRunning = this.updateRunning.bind(this)
   }
@@ -204,20 +204,14 @@ class ResourceSpace extends PureComponent {
     })
   }
 
-  unplotAtom(coords) {
-    console.warn('[unplotAtom]', 'at', coords)
-    // const [x, y, z] = coords
-    // this.props.onUpdate({
-    //   instances: [
-    //     ...this.props.resource.instances,
-    //     {
-    //       atomId: this.state.atomToPlot,
-    //       x,
-    //       y,
-    //       z
-    //     }
-    //   ]
-    // })
+  unplotAtoms(indicesAtCoords) {
+    // console.warn('[unplotAtoms]', 'of', indicesAtCoords)
+    const instances = this.props.resource.instances.filter((ic, i) => {
+      return (!indicesAtCoords.includes(i))
+    })
+    this.props.onUpdate({
+      instances
+    })
   }
 
   updateTouchCoords(coords) {
@@ -295,7 +289,7 @@ class ResourceSpace extends PureComponent {
           </Box>
         </section>
         <section className='canvas'>
-          <SpaceCanvas space={this.props.resource} resources={this.props.resources} designMode={!this.state.isRunning} onTouch={this.plotAtom} onTouchSecondary={this.unplotAtam} onTouchMove={this.updateTouchCoords} grid={this.state.grid} />
+          <SpaceCanvas space={this.props.resource} resources={this.props.resources} designMode={!this.state.isRunning} onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords} grid={this.state.grid} />
           <Switch checked={this.state.isRunning} onChange={(v) => this.updateRunning(v)}>Run</Switch>
         </section>
       </StyledResource>

@@ -229,14 +229,26 @@ class SpaceCanvas extends Component {
         instanceClasses = handleEvent('touch', spaceContainer, instanceClasses, instancesAtCoords)
       }
     })
-    this.addEventListener(canvas, 'click', (e) => {
+    this.addEventListener(canvas, 'mousedown', (e) => {
+      e.preventDefault()
       const coords = getMouseData(e)
+      const instancesAtCoords = getInstancesAtCoords(instanceClasses, coords)
       if (this.props.designMode === true) {
-        onTouch(coords)
+        if (e.which === 1) {
+          onTouch(coords)
+        } else {
+          const indicesAtCoords = instancesAtCoords.map(ic => {
+            return instanceClasses.indexOf(ic)
+          })
+          this.props.onTouchSecondary(indicesAtCoords)
+        }
       } else {
-        const instancesAtCoords = getInstancesAtCoords(instanceClasses, coords)
         instanceClasses = handleEvent('touch', spaceContainer, instanceClasses, instancesAtCoords)
       }
+    })
+    this.addEventListener(canvas, 'contextmenu', (e) => {
+      e.preventDefault()
+      return false
     })
     this.addEventListener(canvas, 'touchmove', (e) => {
       this.props.onTouchMove(getTouchData(e))
