@@ -25,7 +25,7 @@ test('creates an atom resource with events/actions (one action doesnt exist)', (
       'create': [
         {
           name: 'Debug',
-          runArguments: ['hello world']
+          runArguments: ['"hello world"']
         },
         {
           name: 'Qwe Qwe Qwe',
@@ -39,7 +39,7 @@ test('creates an atom resource with events/actions (one action doesnt exist)', (
     'create': [
       {
         name: 'Debug',
-        runArguments: ['hello world']
+        runArguments: ['"hello world"']
       }
     ]
   })

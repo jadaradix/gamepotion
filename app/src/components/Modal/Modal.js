@@ -8,8 +8,8 @@ import { colours } from '../../styleAbstractions'
 const KEY_TAB = 9
 const KEY_ESC = 27
 
-const WIDTH = '60%'
-const MAX_WIDTH = '500px'
+const WIDTH = '50%'
+const MAX_WIDTH = '320px'
 
 const StyledModal = styled.div`
   z-index: 2;
