@@ -41,9 +41,9 @@ class Image extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.src !== this.props.src) {
-      this.doLoad(nextProps.src)
-    }
+    this.doLoad(nextProps.src)
+    // if (nextProps.src !== this.props.src) {
+    // }
   }
 
   componentWillUnmount() {

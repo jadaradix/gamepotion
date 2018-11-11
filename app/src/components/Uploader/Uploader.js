@@ -8,7 +8,7 @@ import { font } from '../../styleAbstractions'
 import icons from '../../icons'
 
 const StyledUploader = styled.div`
-  @keyframes oscar-loading {
+  @keyframes oscar-in-progress {
     100% { transform: rotate(360deg); }
   }
   border: 2px dashed #dadfe1;
@@ -27,8 +27,8 @@ const StyledUploader = styled.div`
     margin: 1rem auto 0.25rem auto;
     // background-color: yellow;
   }
-  img.icon--loading {
-    animation: oscar-loading 4s linear infinite;
+  img.icon--in-progress {
+    animation: oscar-in-progress 4s linear infinite;
   }
   p {
     padding-top: 0.75rem;
