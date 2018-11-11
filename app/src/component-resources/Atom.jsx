@@ -16,6 +16,7 @@ import Image from '../components/Image/Image'
 import Heading2 from '../components/Heading2/Heading2'
 
 import ActionModal from '../component-instances/ActionModal'
+import ActionsList from '../component-instances/ActionsList'
 
 const StyledResource = styled.div`
   section.image-events {
@@ -180,38 +181,7 @@ class ResourceAtom extends PureComponent {
     }
   }
 
-  getEventActions() {
-    const getEmpty = () => {
-      return (
-        <p className='no-actions'>There aren&rsquo;t any actions for this event.</p>
-      )
-    }
-    const getList = (actions) => {
-      let indent = 0
-      return (
-        <List>
-          {actions.map((a, i) => {
-            const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === a.id)
-            if (actionClassInstance.dedent === true && indent > 0) {
-              indent -= 1
-            }
-            const style = {
-              'marginLeft': `${indent * 32}px`
-            }
-            if (actionClassInstance.indent === true) {
-              indent += 1
-            }
-            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.id]} actions={['delete']} onAction={this.actOnAction} style={style}>{actionClassInstance.toString(a.runArguments, a.appliesTo)}</ListItem>)
-          })}
-        </List>
-      )
-    }
-    if (this.props.resource.events[this.state.currentEvent].length > 0) {
-      return getList(this.props.resource.events[this.state.currentEvent])
-    } else {
-      return getEmpty()
-    }
-  }
+
 
   render() {
     const imageResources = [
@@ -268,7 +238,7 @@ class ResourceAtom extends PureComponent {
         <section className='actions'>
           <Box className='actions'>
             <Heading2>{currentEventName} event actions</Heading2>
-            {this.getEventActions()}
+            <ActionsList currentEvent={this.props.resource.events[this.state.currentEvent]} actionClassInstances={this.actionClassInstances} onAction={this.actOnAction} />
           </Box>
           <Box className='add-action'>
             <Heading2>Add an action</Heading2>
