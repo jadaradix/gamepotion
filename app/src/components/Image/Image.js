@@ -37,7 +37,10 @@ class Image extends Component {
       hasLoaded: false,
       hasErrored: false
     }
-    this.doLoad(props.src)
+  }
+
+  componentDidMount() {
+    this.doLoad(this.props.src)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -53,6 +56,10 @@ class Image extends Component {
 
   doLoad(src) {
     if (src === null) {
+      this.setState({
+        hasLoaded: false,
+        hasErrored: true
+      })
       return
     }
     this.image = new window.Image()
@@ -83,7 +90,7 @@ class Image extends Component {
   }
 
   render() {
-    // console.warn('[component-Image] this.props.src', this.props.src)
+    console.warn('[component-Image] this.props.src', this.props.src)
     return (
       <StyledImage className='component--image'>
         {(this.state.hasErrored || this.props.src === null) && <p>No image.</p>}
