@@ -25,14 +25,14 @@ class AtomInstance {
         instance,
         variables
       }
-      const runArguments = (a.requiresRuntimeRunArgumentParsing === true ? parseRunArguments(variables, a.runArguments) : a.runArguments)
+      const runArguments = (a.requiresRuntimeRunArgumentParsing === true ? parseRunArguments(a.runArguments, variables).runArguments : a.runArguments)
       return a.run(context, runArguments, a.appliesTo)
     })
   }
 }
 
 const getInstanceClasses = (instances, resourceContainers) => {
-  console.warn('[Oscar] [renderCanvas] [getInstanceClasses] resourceContainers', resourceContainers)
+  console.warn('[Oscar] [getInstanceClasses] resourceContainers', resourceContainers)
   return instances.map(i => {
     const atomContainer = resourceContainers.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
     const imageContainer = resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === atomContainer.resource.imageId)
@@ -41,18 +41,18 @@ const getInstanceClasses = (instances, resourceContainers) => {
   })
 }
 
-const handleEvent = (event, spaceContainer, instanceClasses) => {
+const handleEvent = (event, spaceContainer, instanceClasses, appliesToInstanceClasses) => {
   let instanceClassesToDestroy = []
-  instanceClasses.forEach(i => {
-    const actionBacks = i.onEvent(event, spaceContainer).filter(ab => ab !== null && typeof ab === 'object')
+  appliesToInstanceClasses.forEach(i => {
+    const actionBacks = i.onEvent(event, spaceContainer).filter(ab => typeof ab === 'object' && ab !== null)
     actionBacks.forEach(actionBack => {
-      const result = handleActionBack(instanceClasses, actionBack)
+      const result = handleActionBack(appliesToInstanceClasses, actionBack)
       instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
     })
   })
-  // console.log('[handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
+  // console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
   if (instanceClassesToDestroy.length > 0) {
-    instanceClasses = handleEvent('destroy', spaceContainer, instanceClassesToDestroy)
+    instanceClasses = handleEvent('destroy', spaceContainer, instanceClasses, instanceClassesToDestroy)
   }
   instanceClasses = instanceClasses.filter(ic => {
     const willDestroy = instanceClassesToDestroy.includes(ic)
@@ -61,10 +61,10 @@ const handleEvent = (event, spaceContainer, instanceClasses) => {
   return instanceClasses
 }
 
-const handleActionBack = (instanceClasses, actionBack) => {
+const handleActionBack = (appliesToInstanceClasses, actionBack) => {
   switch(actionBack.actionBack) {
   case 'INSTANCE_DESTROY':
-    console.warn('[handleActionBack] instanceClasses/actionBack', instanceClasses, actionBack)
+    console.warn('[handleActionBack] appliesToInstanceClasses/actionBack', appliesToInstanceClasses, actionBack)
     return {
       instanceClassesToDestroy: [actionBack.actionBackArguments[0]]
     }
@@ -75,7 +75,7 @@ const handleActionBack = (instanceClasses, actionBack) => {
 const start = (spaceContainer, instanceClasses) => {
   // console.warn('[start] spaceContainer', spaceContainer)
   // console.warn('[start] instanceClasses', instanceClasses)
-  return handleEvent('create', spaceContainer, instanceClasses)
+  return handleEvent('create', spaceContainer, instanceClasses, instanceClasses)
 }
 
 const step = (spaceContainer, instanceClasses) => {
@@ -86,7 +86,7 @@ const step = (spaceContainer, instanceClasses) => {
       i.coords[vci] += vc
     })
   })
-  return handleEvent('step', spaceContainer, instanceClasses)
+  return handleEvent('step', spaceContainer, instanceClasses, instanceClasses)
 }
 
 const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
@@ -336,12 +336,12 @@ class Oscar extends Component {
             return [
               k,
               r.resource.events[k].map(a => {
-                const actionClassRunLogic = actionClassInstances.get(a.id).run
+                const requiresRuntimeRunArgumentParsing = parseRunArguments(a.runArguments).requiresRuntimeRunArgumentParsing
                 return {
-                  run: actionClassRunLogic,
+                  run: actionClassInstances.get(a.id).run,
                   runArguments: a.runArguments,
                   appliesTo: a.appliesTo,
-                  requiresRuntimeRunArgumentParsing: true
+                  requiresRuntimeRunArgumentParsing
                 }
               })
             ]
