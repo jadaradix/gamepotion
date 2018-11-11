@@ -52,7 +52,7 @@ const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => 
             indent += 1
           }
           const label = getLabel(resources, actionClassInstance, action)
-          return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={['delete']} onAction={onAction} style={style}>{label}</ListItem>)
+          return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={['edit', 'delete']} onChoose={() => onAction(i, 'edit')} onAction={onAction} style={style}>{label}</ListItem>)
         })}
       </List>
     )

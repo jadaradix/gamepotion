@@ -164,6 +164,17 @@ class ResourceAtom extends PureComponent {
   actOnAction(id, action) {
     id = parseInt(id, 10)
     const actions = {
+      'edit': () => {
+        console.warn('[component-resource-Atom] [actOnAction] id, action', id, action)
+        // this.onUpdate({
+        //   events: {
+        //     ...this.props.resource.events,
+        //     [this.state.currentEvent]: this.props.resource.events[this.state.currentEvent].filter((a, i) => {
+        //       return (i !== id)
+        //     })
+        //   }
+        // })
+      },
       'delete': () => {
         this.onUpdate({
           events: {
@@ -180,8 +191,6 @@ class ResourceAtom extends PureComponent {
       actions[action]()
     }
   }
-
-
 
   render() {
     const imageResources = [
@@ -244,7 +253,7 @@ class ResourceAtom extends PureComponent {
             <Heading2>Add an action</Heading2>
             <List>
               {this.actionClassInstances.map(a => {
-                return <ListItem id={a.id} key={a.id} icon={icons.actions[a.id]} onChoose={this.onChooseAddAction}>{a.name}</ListItem>
+                return <ListItem id={a.id} key={a.id} actions={['add']} onAction={(id, action) => this.onChooseAddAction(id)} icon={icons.actions[a.id]} onChoose={this.onChooseAddAction}>{a.name}</ListItem>
               })}
             </List>
           </Box>
