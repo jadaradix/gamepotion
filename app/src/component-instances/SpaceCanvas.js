@@ -220,12 +220,29 @@ class SpaceCanvas extends Component {
       }
       this.props.onTouch(coords)
     }
+    let touchStartTime = 0
+    let touchStartCoords = null
     this.addEventListener(canvas, 'touchstart', (e) => {
-      const coords = getTouchData(e)
+      touchStartTime = Date.now()
+      touchStartCoords = getTouchData(e)
+    })
+    this.addEventListener(canvas, 'touchend', () => {
+      const instancesAtCoords = getInstancesAtCoords(instanceClasses, touchStartCoords)
+      const touchEndTime = Date.now()
+      const timeDifference = touchEndTime - touchStartTime
+      // console.warn('touchEndTime', touchEndTime)
+      // console.warn('touchStartTime', touchStartTime)
+      // console.warn('timeDifference', timeDifference)
       if (this.props.designMode === true) {
-        onTouch(coords)
+        if (timeDifference <= 1000) {
+          onTouch(touchStartCoords)
+        } else {
+          const indicesAtCoords = instancesAtCoords.map(ic => {
+            return instanceClasses.indexOf(ic)
+          })
+          this.props.onTouchSecondary(indicesAtCoords)
+        }
       } else {
-        const instancesAtCoords = getInstancesAtCoords(instanceClasses, coords)
         instanceClasses = handleEvent('touch', spaceContainer, instanceClasses, instancesAtCoords)
       }
     })
