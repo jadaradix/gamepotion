@@ -31,23 +31,6 @@ class AtomInstance {
   }
 }
 
-const start = (spaceContainer, instanceClasses) => {
-  // console.warn('[start] spaceContainer', spaceContainer)
-  // console.warn('[start] instanceClasses', instanceClasses)
-  return handleEvent('create', spaceContainer, instanceClasses)
-}
-
-const step = (spaceContainer, instanceClasses) => {
-  // console.warn('[step] spaceContainer', spaceContainer)
-  // console.warn('[step] instanceClasses', instanceClasses)
-  instanceClasses.forEach(i => {
-    i.vcoords.forEach((vc, vci) => {
-      i.coords[vci] += vc
-    })
-  })
-  return handleEvent('step', spaceContainer, instanceClasses)
-}
-
 const getInstanceClasses = (instances, resourceContainers) => {
   console.warn('[Oscar] [renderCanvas] [getInstanceClasses] resourceContainers', resourceContainers)
   return instances.map(i => {
@@ -56,17 +39,6 @@ const getInstanceClasses = (instances, resourceContainers) => {
     const coords = [i.x, i.y, i.z]
     return new AtomInstance(coords, atomContainer, imageContainer)
   })
-}
-
-const handleActionBack = (instanceClasses, actionBack) => {
-  switch(actionBack.actionBack) {
-  case 'INSTANCE_DESTROY':
-    console.warn('[handleActionBack] instanceClasses/actionBack', instanceClasses, actionBack)
-    return {
-      instanceClassesToDestroy: [actionBack.actionBackArguments[0]]
-    }
-  default:
-  }
 }
 
 const handleEvent = (event, spaceContainer, instanceClasses) => {
@@ -87,6 +59,34 @@ const handleEvent = (event, spaceContainer, instanceClasses) => {
     return (!willDestroy)
   })
   return instanceClasses
+}
+
+const handleActionBack = (instanceClasses, actionBack) => {
+  switch(actionBack.actionBack) {
+  case 'INSTANCE_DESTROY':
+    console.warn('[handleActionBack] instanceClasses/actionBack', instanceClasses, actionBack)
+    return {
+      instanceClassesToDestroy: [actionBack.actionBackArguments[0]]
+    }
+  default:
+  }
+}
+
+const start = (spaceContainer, instanceClasses) => {
+  // console.warn('[start] spaceContainer', spaceContainer)
+  // console.warn('[start] instanceClasses', instanceClasses)
+  return handleEvent('create', spaceContainer, instanceClasses)
+}
+
+const step = (spaceContainer, instanceClasses) => {
+  // console.warn('[step] spaceContainer', spaceContainer)
+  // console.warn('[step] instanceClasses', instanceClasses)
+  instanceClasses.forEach(i => {
+    i.vcoords.forEach((vc, vci) => {
+      i.coords[vci] += vc
+    })
+  })
+  return handleEvent('step', spaceContainer, instanceClasses)
 }
 
 const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {

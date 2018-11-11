@@ -42,18 +42,19 @@ class Image extends Component {
 
   componentWillReceiveProps (nextProps) {
     this.doLoad(nextProps.src)
-    // if (nextProps.src !== this.props.src) {
-    // }
   }
 
   componentWillUnmount() {
-    if (this.image !== null) {
+    if (this.image !== undefined) {
       this.image.removeEventListener('load', this.eventListeners.get('load'))
       this.image.removeEventListener('error', this.eventListeners.get('error'))
     }
   }
 
   doLoad(src) {
+    if (src === null) {
+      return
+    }
     this.image = new window.Image()
     const onLoad = () => this.onLoad()
     const onError = () => this.onError()
