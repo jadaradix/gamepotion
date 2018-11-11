@@ -40,7 +40,7 @@ const ActionModal = ({ actionClassInstance, onGood, onBad }) => {
     }
     switch (type) {
     default:
-      return <Input label={name} value={value} onChange={onUpdateArgument} onDone={onGood} />
+      return <Input label={name} value={value} onChange={onUpdateArgument} onDone={() => onGood(actionClassInstance)} />
     }
   }
 

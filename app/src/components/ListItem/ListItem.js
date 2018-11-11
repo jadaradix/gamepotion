@@ -97,13 +97,13 @@ const getAction = (onAction, id, name) => {
   return null
 }
 
-const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction }) => {
+const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, style }) => {
   const handleOnAction = (e, id, action) => {
     e.stopPropagation()
     onAction(id, action)
   }
   return (
-    <StyledListItem onClick={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})}>
+    <StyledListItem onClick={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})} style={style}>
       <img src={icon} alt='' />
       <span>{children}</span>
       <div className='actions'>
@@ -119,7 +119,8 @@ ListItem.propTypes = {
   selected: PropTypes.bool,
   actions: PropTypes.array,
   onChoose: PropTypes.func,
-  onAction: PropTypes.func
+  onAction: PropTypes.func,
+  style: PropTypes.object
 }
 
 ListItem.defaultProps = {
@@ -127,7 +128,8 @@ ListItem.defaultProps = {
   selected: false,
   actions: [],
   onChoose: () => {},
-  onAction: () => {}
+  onAction: () => {},
+  style: {}
 }
 
 export default ListItem

@@ -7,7 +7,7 @@ const variables = new Map()
 
 const getRunArguments = (runArguments) => {
   return runArguments.map(r => {
-    if (r.indexOf('"') === 0) {
+    if (r[0] === '"') {
       return r.substring(1, r.length - 1)
     }
     const foundVariable = variables.get(r)

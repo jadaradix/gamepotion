@@ -187,11 +187,21 @@ class ResourceAtom extends PureComponent {
       )
     }
     const getList = (actions) => {
+      let indent = 0
       return (
         <List>
           {actions.map((a, i) => {
             const actionClassInstance = this.actionClassInstances.find(actionClassInstance => actionClassInstance.id === a.id)
-            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.id]} actions={['delete']} onAction={this.actOnAction}>{actionClassInstance.toString(a.runArguments, a.appliesTo)}</ListItem>)
+            if (actionClassInstance.dedent === true && indent > 0) {
+              indent -= 1
+            }
+            const style = {
+              'marginLeft': `${indent * 32}px`
+            }
+            if (actionClassInstance.indent === true) {
+              indent += 1
+            }
+            return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[a.id]} actions={['delete']} onAction={this.actOnAction} style={style}>{actionClassInstance.toString(a.runArguments, a.appliesTo)}</ListItem>)
           })}
         </List>
       )

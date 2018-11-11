@@ -7,6 +7,8 @@ class Action {
     this.description = 'AbstractActionDescriptionBadNewsIfYouEverSeeThis'
     this.defaultRunArguments = new Map([
     ])
+    this.indent = false
+    this.dedent = false
 
     this.runArguments = json.runArguments || [] // this should only be triggered in abstract contexts
     this.appliesTo = json.appliesTo || 'this'
