@@ -3,20 +3,10 @@ import PropTypes from 'prop-types'
 
 import classes from '../../classes'
 
-const variables = new Map()
+import parseRunArguments from './parseRunArguments'
+import getInstanceClassesAtCoords from './getInstanceClassesAtCoords'
 
-const getRunArguments = (runArguments) => {
-  return runArguments.map(r => {
-    if (r[0] === '"') {
-      return r.substring(1, r.length - 1)
-    }
-    const foundVariable = variables.get(r)
-    if (foundVariable !== undefined) {
-      return foundVariable
-    }
-    return r
-  })
-}
+const variables = new Map()
 
 class AtomInstance {
   constructor(coords, atomContainer, imageContainer) {
@@ -35,7 +25,8 @@ class AtomInstance {
         instance,
         variables
       }
-      return a.run(context, getRunArguments(a.runArguments), a.appliesTo)
+      const runArguments = (a.requiresRuntimeRunArgumentParsing === true ? parseRunArguments(variables, a.runArguments) : a.runArguments)
+      return a.run(context, runArguments, a.appliesTo)
     })
   }
 }
@@ -55,22 +46,6 @@ const step = (spaceContainer, instanceClasses) => {
     })
   })
   return handleEvent('step', spaceContainer, instanceClasses)
-}
-
-const getInstancesAtCoords = (instanceClasses, coords) => {
-  return instanceClasses
-    .map(ic => {
-      const w = (ic.imageContainer && ic.imageContainer.resource.frameWidth) || 0
-      const h = (ic.imageContainer && ic.imageContainer.resource.frameHeight) || 0
-      const isIntersecting = (
-        coords[0] >= ic.coords[0] &&
-        coords[1] >= ic.coords[1] &&
-        coords[0] < (ic.coords[0] + w) &&
-        coords[1] < (ic.coords[1] + h)
-      )
-      return (isIntersecting ? ic : undefined)
-    })
-    .filter(ic => ic !== undefined)
 }
 
 const getInstanceClasses = (instances, resourceContainers) => {
@@ -241,7 +216,7 @@ class Oscar extends Component {
       touchStartCoords = getTouchData(e)
     })
     this.addEventListener(canvas, 'touchend', () => {
-      const instancesAtCoords = getInstancesAtCoords(instanceClasses, touchStartCoords)
+      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, touchStartCoords)
       const touchEndTime = Date.now()
       const timeDifference = touchEndTime - touchStartTime
       // console.warn('touchEndTime', touchEndTime)
@@ -263,7 +238,7 @@ class Oscar extends Component {
     this.addEventListener(canvas, 'mousedown', (e) => {
       e.preventDefault()
       const coords = getMouseData(e)
-      const instancesAtCoords = getInstancesAtCoords(instanceClasses, coords)
+      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, coords)
       if (this.props.designMode === true) {
         if (e.which === 1) {
           onTouch(coords)
@@ -365,7 +340,8 @@ class Oscar extends Component {
                 return {
                   run: actionClassRunLogic,
                   runArguments: a.runArguments,
-                  appliesTo: a.appliesTo
+                  appliesTo: a.appliesTo,
+                  requiresRuntimeRunArgumentParsing: true
                 }
               })
             ]
