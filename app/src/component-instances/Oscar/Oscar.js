@@ -377,36 +377,42 @@ class Oscar extends Component {
     //
     // LOAD IMAGES
     //
-    resourceContainers
-      .filter(r => r.resource.type === 'image')
-      .forEach(resource => {
-        const element = new window.Image()
-        this.addEventListener(element, 'load', loadGoodLogic)
-        this.addEventListener(element, 'error', loadBadLogic)
-        resource.extras.element = element
-        element.src = resource.resource.getRemoteUrl()
-        if (spaceContainer.resource.backgroundImage === resource.resource.id) {
-          spaceContainer.extras.backgroundImage = element
-        }
-        if (spaceContainer.resource.foregroundImage === resource.resource.id) {
-          spaceContainer.extras.foregroundImage = element
-        }
-        resource.extras.image = element
-      })
+    const resourcesImages = resourceContainers.filter(r => r.resource.type === 'image')
+    resourcesImages.forEach(resource => {
+      const element = new window.Image()
+      this.addEventListener(element, 'load', loadGoodLogic)
+      this.addEventListener(element, 'error', loadBadLogic)
+      resource.extras.element = element
+      element.src = resource.resource.getRemoteUrl()
+      if (spaceContainer.resource.backgroundImage === resource.resource.id) {
+        spaceContainer.extras.backgroundImage = element
+      }
+      if (spaceContainer.resource.foregroundImage === resource.resource.id) {
+        spaceContainer.extras.foregroundImage = element
+      }
+      resource.extras.image = element
+    })
 
     //
     // LOAD SOUNDS
     //
-    resourceContainers
-      .filter(r => r.resource.type === 'sound')
-      .forEach(resource => {
-        const element = new window.Audio()
-        this.addEventListener(element, 'loadedmetadata', loadGoodLogic)
-        this.addEventListener(element, 'error', loadBadLogic)
-        resource.extras.element = element
-        element.src = resource.resource.getRemoteUrl()
-        element.load()
-      })
+    const resourcesSounds = resourceContainers.filter(r => r.resource.type === 'sound')
+    resourcesSounds.forEach(resource => {
+      const element = new window.Audio()
+      this.addEventListener(element, 'loadedmetadata', loadGoodLogic)
+      this.addEventListener(element, 'error', loadBadLogic)
+      resource.extras.element = element
+      element.src = resource.resource.getRemoteUrl()
+      element.load()
+    })
+
+    //
+    // NO IMAGES OR SOUNDS
+    //
+    if (resourcesImages.length === 0 && resourcesSounds.length === 0) {
+      loadedGood()
+    }
+
   }
 
   render() {
