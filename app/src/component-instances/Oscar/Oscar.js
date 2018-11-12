@@ -92,13 +92,21 @@ const step = (spaceContainer, instanceClasses) => {
 const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
   ctx.clearRect(0, 0, spaceContainer.resource.width, spaceContainer.resource.height)
   if (spaceContainer.extras.backgroundImage !== null) {
-    ctx.drawImage(spaceContainer.extras.backgroundImage, 0, 0)
+    const imageWidth = spaceContainer.extras.backgroundImage.resource.frameWidth
+    const imageHeight = spaceContainer.extras.backgroundImage.resource.frameHeight
+    const xCount = (spaceContainer.resource.width + (spaceContainer.resource.width % imageWidth)) / imageWidth
+    const yCount = (spaceContainer.resource.height + (spaceContainer.resource.height % imageHeight)) / imageHeight
+    for (let x = 0; x < xCount; x++) {
+      for (let y = 0; y < yCount; y++) {
+        ctx.drawImage(spaceContainer.extras.backgroundImage.extras.element, x * imageWidth, y * imageHeight)
+      }
+    }    
   }
   instanceClasses.forEach(i => {
     i.imageContainer && ctx.drawImage(i.imageContainer.extras.image, i.coords[0], i.coords[1])
   })
   if (spaceContainer.extras.foregroundImage !== null) {
-    ctx.drawImage(spaceContainer.extras.foregroundImage, 0, 0)
+    ctx.drawImage(spaceContainer.extras.foregroundImage.extras.element, 0, 0)
   }
   const plotGrid = () => {
     let w = parseInt(grid.width, 10)
@@ -361,10 +369,10 @@ class Oscar extends Component {
       resource.extras.element = element
       element.src = resource.resource.getRemoteUrl()
       if (spaceContainer.resource.backgroundImage === resource.resource.id) {
-        spaceContainer.extras.backgroundImage = element
+        spaceContainer.extras.backgroundImage = resource
       }
       if (spaceContainer.resource.foregroundImage === resource.resource.id) {
-        spaceContainer.extras.foregroundImage = element
+        spaceContainer.extras.foregroundImage = resource
       }
       resource.extras.image = element
     })
