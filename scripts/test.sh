@@ -1,11 +1,14 @@
+# ...
+
+cd abstractions/api;
+# ...
+cd ../..;
 cd abstractions/datalayer;
   npm test;
 cd ../..;
-
 cd abstractions/storage;
   npm test;
 cd ../..;
-
 cd abstractions/uuid;
   npm test;
 cd ../..;
@@ -13,7 +16,6 @@ cd ../..;
 cd api-core/src;
   npm test;
 cd ../..;
-
 cd api-bin/src;
   npm test;
 cd ../..;

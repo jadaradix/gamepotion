@@ -60,25 +60,36 @@ exports[`renders 1`] = `
 }
 
 .c0 button.significant {
+  background-color: white;
+}
+
+.c0 button.fixed-width {
+  width: 100%;
+  text-align: left;
+}
+
+.c0 button.selected:not(.significant) {
   background-color: #6c7a89;
 }
 
 .c0 button[disabled] {
   opacity: 0.25;
+}
+
+.c0 button[disabled]:not(.fixed-width) {
   cursor: not-allowed;
 }
 
-.c0 button:not([disabled]):hover {
+.c0 button:hover:not([disabled]):not(.significant) {
   background-color: #6c7a89;
 }
 
 <li
   className="c0"
-  style={Object {}}
   title="Qwe"
 >
   <button
-    className=""
+    className="selected"
     disabled={false}
     onClick={[Function]}
     style={Object {}}

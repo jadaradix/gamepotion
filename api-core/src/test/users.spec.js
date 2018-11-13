@@ -3,10 +3,9 @@ const createRandomString = require('../abstractions/createRandomString.js')
 
 const URL_API_CORE = 'http://localhost:1025/v1'
 
+const id = createRandomString()
 const user = {
-  name: 'James',
-  email: `${createRandomString()}@gamemaker.club`,
-  password: createRandomString()
+  email: `xxx${id}@gamemaker.club`
 }
 
 const configs = {
@@ -14,7 +13,7 @@ const configs = {
     validateStatus: false,
     auth: {
       username: user.email,
-      password: user.password
+      password: '???'
     }
   },
   noAuth: {
@@ -22,39 +21,18 @@ const configs = {
   }
 }
 
-test('doesnt create a user with a bad name (class testing)', (done) => {
+test('doesnt create a user with a bad email (class testing)', (done) => {
   axios({
     method: 'post',
     url: `${URL_API_CORE}/users`,
     data: {
-      name: '',
-      email: 'j@jada.io',
-      password: 'qweqweqwe'
+      email: 'qweqweqwe'
     },
     ...configs.noAuth
   })
     .then(response => {
       expect(response.status).toBe(400)
-      expect(response.data.message).toBe('this would not get created (name is not valid)')
-      return done()
-    })
-    .catch(done)
-})
-
-test('doesnt create a user with a bad password (route testing)', (done) => {
-  axios({
-    method: 'post',
-    url: `${URL_API_CORE}/users`,
-    data: {
-      name: 'james',
-      email: 'j@jada.io',
-      password: ''
-    },
-    ...configs.noAuth
-  })
-    .then(response => {
-      expect(response.status).toBe(400)
-      expect(response.data.message).toBe('password does not conform')
+      expect(response.data.message).toBe('this would not get created (email is not valid)')
       return done()
     })
     .catch(done)
@@ -70,7 +48,8 @@ test('creates a user', (done) => {
     .then(response => {
       expect(response.status).toBe(201)
       expect(response.data.teamId).toBe(null)
-      expect(response.data.name).toBe('James')
+      expect(response.data.name).toBe(`Xxx${id}`)
+      configs.auth.auth.password = response.data.password
       return done()
     })
     .catch(done)
@@ -85,13 +64,13 @@ test('gets the user', (done) => {
     .then(response => {
       expect(response.status).toBe(200)
       expect(response.data.teamId).toBe(null)
-      expect(response.data.name).toBe('James')
+      expect(response.data.name).toBe(`Xxx${id}`)
       return done()
     })
     .catch(done)
 })
   
-test('doesnt get a user that has a bad email', (done) => {
+test('doesnt get a user that doesnt exist', (done) => {
   axios({
     method: 'get',
     url: `${URL_API_CORE}/me`,

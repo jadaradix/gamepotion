@@ -1,2 +1,9 @@
 # Game Maker Club
-Game Maker Club Description.
+Be the game boss.
+
+## Install
+
+```
+  . scripts/install.sh
+  . scripts/build.sh
+```

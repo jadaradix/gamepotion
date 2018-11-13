@@ -48,42 +48,38 @@ const middleware = (publicRoutes, request, response, next) => {
       let password = request.authorization.basic.password
       datalayer.readOne('Users', {email})
         .then(object => {
-          const user = new classes.User(object)
-          if (user.isActivated() === false) {
-            response.send(new errors.ForbiddenError('please activate your account'))
-            return next(false)
-          } else {
-            // http://stackoverflow.com/a/43479920
-            (async () => {
-              let allowContinue = true
-              try {
-                await comparePasswordAndPasswordHash(password, object.passwordHash)
+          const user = new classes.User(object);
+          // http://stackoverflow.com/a/43479920
+          (async () => {
+            let allowContinue = true
+            try {
+              await comparePasswordAndPasswordHash(password, object.passwordHash)
+              request.authorization.user = user
+              request.authorization.method = 'basic'
+              request.authorization.isAdmin = getIsAdmin(user.email)
+            } catch (error) {
+              console.error('[middleware-auth] bad password', error)
+              if (skipPasswordCheck === true) {
+                allowContinue = true
                 request.authorization.user = user
                 request.authorization.method = 'basic'
                 request.authorization.isAdmin = getIsAdmin(user.email)
-              } catch (error) {
-                console.error('[middleware-auth] bad password', error)
-                if (skipPasswordCheck === true) {
-                  allowContinue = true
-                  request.authorization.user = user
-                  request.authorization.method = 'basic'
-                  request.authorization.isAdmin = getIsAdmin(user.email)
-                } else {
-                  if (isThisRoutePublic === false) {
-                    response.send(new errors.UnauthorizedError('wrong password'))
-                  }
-                  allowContinue = false
+              } else {
+                if (isThisRoutePublic === false) {
+                  response.send(new errors.UnauthorizedError('wrong password'))
                 }
-              } finally {
-                next(allowContinue)
+                allowContinue = false
               }
-            })()
-          }
+            } finally {
+              next(allowContinue)
+            }
+          })()
         })
-        .catch(() => {
+        .catch((error) => {
           if (isThisRoutePublic) {
             return next()
           } else {
+            console.error('[middleware-auth] potentially major catch', error)
             response.send(new errors.UnauthorizedError('unknown e-mail address'))
             return next(false)
           }

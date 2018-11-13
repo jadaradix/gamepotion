@@ -1,30 +1,26 @@
 const bcrypt = require('bcrypt-nodejs')
 const errors = require('restify-errors')
 const datalayer = require('../../abstractions/datalayer')
+const uuid = require('../../abstractions/uuid/index.dist.js')
 const classes = require('../../classes/dist.js')
 
 const getExistingUser = (email) => {
   return datalayer.readOne('Users', { email })
 }
 
-// const getExistingTeam = (id) => {
-//   return datalayer.readOne('Teams', { id })
-// }
+const createRandomPassword = () => {
+  return uuid()
+}
 
 const getPasswordHash = (password, callback) => {
   return bcrypt.hash(password, null, null, callback)
 }
 
 const route = async (request, response, next) => {
-  if (typeof request.body.password !== 'string' || request.body.password.length < 6 || request.body.password.length > 128) {
-    response.send(new errors.BadRequestError('password does not conform'))
-    return next(false)
-  }
   let userClass
   try {
     userClass = new classes.User()
     userClass.fromApiPost(request.body)
-    // await getExistingTeam(userClass.teamId)
   } catch (error) {
     response.send(new errors.BadRequestError(`this would not get created (${error.message})`))
     return next(false)
@@ -35,17 +31,21 @@ const route = async (request, response, next) => {
       return next(false)
     })
     .catch(() => {
-      getPasswordHash(request.body.password, (error, result) => {
+      const password = createRandomPassword()
+      getPasswordHash(password, (error, passwordHash) => {
         if (error) {
           console.error('[route users create] bcrypt errback', error)
           response.send(new errors.InternalServerError('couldnt create user (bcrypt.hash)'))
           return next(false)
         }
-        userClass.activate()
-        userClass.passwordHash = result
+        userClass.passwordHash = passwordHash
         datalayer.write('Users', userClass.id, userClass.toDatastore())
           .then(() => {
-            response.send(201, userClass.toApi())
+            const toApi = userClass.toApi()
+            response.send(201, {
+              ...toApi,
+              password
+            })
             return next()
           })
           .catch(error => {
