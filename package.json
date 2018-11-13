@@ -4,13 +4,13 @@
   "description": "Game Maker Club",
   "dependencies": {},
   "devDependencies": {
-    "eslint": "^5.7.0",
-    "eslint-plugin-jest": "^21.25.0",
+    "eslint": "^5.9.0",
+    "eslint-plugin-jest": "^22.0.0",
     "eslint-plugin-react": "^7.11.1"
   },
   "scripts": {
-    "build": ". build.sh",
-    "clean": ". clean.sh"
+    "build": ". scripts/build.sh",
+    "clean": ". scripts/clean.sh"
   },
   "repository": {
     "type": "git",

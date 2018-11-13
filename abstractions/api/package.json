@@ -8,8 +8,6 @@
     "restify-cors-middleware": "^1.1.1",
     "restify-errors": "5.0.0"
   },
-  "scripts": {
-  },
-  "devDependencies": {
-  }
+  "scripts": {},
+  "devDependencies": {}
 }
