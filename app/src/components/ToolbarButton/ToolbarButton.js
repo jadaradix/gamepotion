@@ -11,6 +11,9 @@ const StyledToolbarButton = styled.li`
   flex-shrink: 0;
   height: calc(3rem + 4px);
   background-color: #2e3131;
+  &.fixed-width {
+
+  }
   button {
     display: block;
     padding: 0.75rem;
@@ -49,14 +52,20 @@ const StyledToolbarButton = styled.li`
     &.significant {
       background-color: white;
     }
-    &:not(.significant).selected {
+    &.fixed-width {
+      width: 100%;
+      text-align: left;
+    }
+    &.selected:not(.significant) {
       background-color: #6c7a89;
     }
     &[disabled] {
       opacity: 0.25;
+    }
+    &[disabled]:not(.fixed-width) {
       cursor: not-allowed;
     }
-    &:not([disabled]):not(.significant):hover {
+    &:hover:not([disabled]):not(.significant) {
       background-color: #6c7a89;
     }
   }
@@ -71,22 +80,16 @@ const handleOnClick = (history, route, onClick) => {
 }
 
 const ToolbarButton = ({ match, history, route, onClick, icon, hint, significant, disabled, fixedWidth, children }) => {
-  const style = {
-    main: {},
-    button: {},
-    span: {}
-  }
+  const fixedWithStyle = {}
   if (typeof fixedWidth === 'string') {
-    style.main.width = `${fixedWidth}px`
-    style.button.width = '100%'
-    style.button.textAlign = 'left'
+    fixedWithStyle.width = `${fixedWidth}px`
   }
-  const className = classnames({'significant': significant, 'selected': (match.url === route), 'disabled': disabled})
+  const buttonClassName = classnames({'significant': significant, 'selected': (match.url === route), 'disabled': disabled, 'fixed-width': fixedWidth})
   return (
-    <StyledToolbarButton title={hint} style={style.main}>
-      <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={className} style={style.button}>
+    <StyledToolbarButton title={hint}>
+      <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={buttonClassName} style={fixedWithStyle}>
         {icon && <img src={icon} alt={hint} className={`icon-${icon}`} />}
-        {children && <span style={style.span}>{children}</span>}
+        {children && <span>{children}</span>}
       </button>
     </StyledToolbarButton>
   )
