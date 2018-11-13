@@ -5,7 +5,7 @@ test('creates a resource based on type (image; no name)', () => {
     type: 'image'
   })
   expect(resource.type).toBe('image')
-  expect(resource.name).toBe('New Image')
+  expect(resource.name).toBe('New image')
 })
 
 test('creates a resource based on type (sound; provided name)', () => {
@@ -24,25 +24,26 @@ test('creates an atom resource with events/actions (one action doesnt exist)', (
     events: {
       'create': [
         {
-          name: 'Debug',
-          runArguments: ['"hello world"']
+          id: 'Debug',
+          runArguments: ['"hello world"'],
+          appliesTo: "this"
         },
         {
-          name: 'Qwe Qwe Qwe',
-          runArguments: ['one', 'two', ' three']
+          id: 'Qwe Qwe Qwe',
+          runArguments: ['one', 'two', ' three'],
+          appliesTo: "this"
         }
       ]
     }
   })
   expect(resource.type).toBe('atom')
-  expect(resource.events).toEqual({
-    'create': [
-      {
-        name: 'Debug',
-        runArguments: ['"hello world"']
-      }
-    ]
-  })
+  expect(resource.events.create).toEqual([
+    {
+      id: 'Debug',
+      runArguments: ['"hello world"'],
+      appliesTo: 'this'
+    }
+  ])
 })
 
 test('doesnt create a resource when the type is stupid', () => {

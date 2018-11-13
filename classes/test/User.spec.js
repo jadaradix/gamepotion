@@ -1,47 +1,34 @@
 const User = require('../dist/User.js').default
 
-test('is not activated when it is created', () => {
+test('can be created (and has no passwordHash)', () => {
   const user = new User()
   expect(typeof user.id).toBe('string')
-  expect(user.activationCode.indexOf('todo-')).toBe(0)
-  expect(user.isActivated()).toBe(false)
-})
-
-test('can be activated', () => {
-  const user = new User()
-  expect(user.isActivated()).toBe(false)
-  expect(user.activationCode.indexOf('todo-')).toBe(0)
-  user.activate()
-  expect(user.activationCode.indexOf('done-')).toBe(0)
-  expect(user.isActivated()).toBe(true)
+  expect(user.passwordHash).toBeNull()
 })
 
 test('can be created from an API call', () => {
   const user = new User()
   const body = {
     teamId: 'team-id',
-    name: 'James',
-    email: 'j@jada.io'
+    email: 'james@gamemaker.club'
   }
   user.fromApiPost(body)
   expect(user.name).toBe('James')
-  expect(user.email).toBe('j@jada.io')
+  expect(user.email).toBe('james@gamemaker.club')
 })
 
-test('throws an error when being created from an API call if there is no name', () => {
+test('throws an error when being created from an API call if there is no email', () => {
   const user = new User()
   const body = {
-    teamId: 'team-id',
-    email: 'j@jada.io'
+    teamId: 'team-id'
   }
-  expect(() => user.fromApiPost(body)).toThrow('name is not valid')
+  expect(() => user.fromApiPost(body)).toThrow('email is not valid')
 })
 
 test('throws an error when being created from an API call if there is a bad email', () => {
   const user = new User()
   const body = {
     teamId: 'team-id',
-    name: 'James',
     email: 'xyz'
   }
   expect(() => user.fromApiPost(body)).toThrow('email is not valid')
@@ -50,16 +37,16 @@ test('throws an error when being created from an API call if there is a bad emai
 test('can be updated from an API call', () => {
   const user = new User()
   user.name = 'James'
-  user.email = 'j@jada.io'
+  user.email = 'james@gamemaker.club'
   const body = {
+    teamId: 'should-be-persisted',
     name: 'Robert',
-    email: 'r@jada.io',
-    teamId: 'team-id',
-    id: 'xyz'
+    email: 'fatquack@gamemaker.club',
+    id: 'should-not-be-persisted'
   }
   user.fromApiPatch(body)
   expect(user.name).toBe('Robert')
-  expect(user.email).toBe('r@jada.io')
-  expect(user.teamId).toBe('team-id')
-  expect(user.id).not.toBe('xyz')
+  expect(user.email).toBe('fatquack@gamemaker.club')
+  expect(user.teamId).toBe('should-be-persisted')
+  expect(user.id).not.toBe('should-not-be-persisted')
 })
