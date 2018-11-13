@@ -9,6 +9,7 @@ const parseRunArguments = (oldRunArguments, variables) => {
       requiresRuntimeRunArgumentParsing = true
       return foundVariable
     }
+    return r
   })
   return {
     requiresRuntimeRunArgumentParsing,
