@@ -1,5 +1,5 @@
 # Game Maker Club
-Game Maker Club Description.
+Be the game boss.
 
 ## Install
 
