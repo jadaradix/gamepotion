@@ -18,8 +18,8 @@ class ResourceSpace extends Resource {
         y: 0
       }
     )
-    this.backgroundImage = (typeof json.backgroundImage === 'string' ? json.backgroundImage : null)
-    this.foregroundImage = (typeof json.foregroundImage === 'string' ? json.foregroundImage : null)
+    this.backgroundImage = ((typeof json.backgroundImage === 'string' || json.backgroundImage === null) ? json.backgroundImage : null)
+    this.foregroundImage = ((typeof json.foregroundImage === 'string' || json.backgroundImage === null) ? json.foregroundImage : null)
     this.instances = json.instances || []
   }
 
@@ -58,8 +58,8 @@ class ResourceSpace extends Resource {
     this.width = (typeof json.width === 'number') ? json.width : this.width
     this.height = (typeof json.height === 'number') ? json.height : this.height
     this.camera = (typeof json.camera === 'object') ? json.camera : this.camera
-    this.backgroundImage = (typeof json.backgroundImage === 'string' ? json.backgroundImage : this.backgroundImage)
-    this.foregroundImage = (typeof json.foregroundImage === 'string' ? json.foregroundImage : this.foregroundImage)
+    this.backgroundImage = ((typeof json.backgroundImage === 'string' || json.backgroundImage === null) ? json.backgroundImage : this.backgroundImage)
+    this.foregroundImage = ((typeof json.foregroundImage === 'string' || json.backgroundImage === null) ? json.foregroundImage : this.foregroundImage)
     this.instances = Array.isArray(json.instances) ? json.instances : this.instances
   }
 
@@ -68,8 +68,8 @@ class ResourceSpace extends Resource {
     this.width = (typeof json.width === 'number') ? json.width : this.width
     this.height = (typeof json.height === 'number') ? json.height : this.height
     this.camera = (typeof json.camera === 'object') ? json.camera : this.camera
-    this.backgroundImage = (typeof json.backgroundImage === 'string' ? json.backgroundImage : this.backgroundImage)
-    this.foregroundImage = (typeof json.foregroundImage === 'string' ? json.foregroundImage : this.foregroundImage)
+    this.backgroundImage = ((typeof json.backgroundImage === 'string' || json.backgroundImage === null) ? json.backgroundImage : this.backgroundImage)
+    this.foregroundImage = ((typeof json.foregroundImage === 'string' || json.backgroundImage === null) ? json.foregroundImage : this.foregroundImage)
     this.instances = Array.isArray(json.instances) ? json.instances : this.instances
   }
 
