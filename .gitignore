@@ -24,3 +24,5 @@ api-core/src/platforms
 
 app/src/build
 app/src/coverage
+
+api-core/files
