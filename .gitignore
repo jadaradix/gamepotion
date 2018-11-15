@@ -16,11 +16,11 @@ api-bin/src/abstractions
 app/src/abstractions
 
 platforms/nds/classes
-app/src/classes
+app/src/src/classes
 api-core/src/classes
 api-bin/src/classes
 
 api-core/src/platforms
 
-app/build
-app/coverage
+app/src/build
+app/src/coverage
