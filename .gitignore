@@ -26,3 +26,5 @@ app/src/build
 app/src/coverage
 
 api-core/files
+
+api-bin/files

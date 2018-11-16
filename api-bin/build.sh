@@ -1,6 +1,6 @@
 cd ..;
   . scripts/build.sh;
-cd api-core;
+cd api-bin;
 
 rm -rf files;
 cp -R src files;
@@ -18,16 +18,12 @@ rm files/classes;
 cp -R ../classes files;
 rm -rf files/classes/node_modules;
 
-rm files/platforms;
-cp -R ../platforms files;
-rm -rf files/platforms/nds/node_modules;
-
 rm files/config-gcp.json;
 cp ../config-gcp.json files/config-gcp.json;
 
-docker stop oscar-production-api-core;
-docker rm oscar-production-api-core;
-docker build -t oscar-production-api-core .;
+docker stop oscar-production-api-bin;
+docker rm oscar-production-api-bin;
+docker build -t oscar-production-api-bin .;
 
-docker tag oscar-production-api-core eu.gcr.io/thegmc-219013/oscar-production-api-core:latest;
-docker push eu.gcr.io/thegmc-219013/oscar-production-api-core:latest;
+docker tag oscar-production-api-bin eu.gcr.io/thegmc-219013/oscar-production-api-bin:latest;
+docker push eu.gcr.io/thegmc-219013/oscar-production-api-bin:latest;
