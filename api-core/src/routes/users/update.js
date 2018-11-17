@@ -1,11 +1,27 @@
+const bcrypt = require('bcrypt-nodejs')
 const errors = require('restify-errors')
 const datalayer = require('../../abstractions/datalayer')
 const classFactory = require('../../classes/factory-commonjs.js')
 
+const getPasswordHash = (password) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, null, null, (error, passwordHash) => {
+      if (error) {
+        return reject(new Error('bcrypt errback'))
+      } else {
+        return resolve(passwordHash)
+      }
+    })
+  })
+}
+
 const route = (request, response, next) => {
-  const updateUser = (userClass) => {
+  const updateUser = async (userClass) => {
     try {
       userClass.fromApiPatch(request.body)
+      if (typeof request.body.password === 'string') {
+        userClass.passwordHash = await getPasswordHash(request.body.password)
+      }
     } catch (error) {
       response.send(new errors.BadRequestError(`this would not get updated (${error.message})`))
       return next(false)

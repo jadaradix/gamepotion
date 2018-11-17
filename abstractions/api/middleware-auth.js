@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt-nodejs')
 const classes = require('../../classes/dist.js')
 const datalayer = require('../datalayer')
 
-const skipPasswordCheck = true // (process.env.NODE_ENV === 'local')
+const skipPasswordCheck = false // (process.env.NODE_ENV === 'local')
 console.log('[middleware-auth] skipPasswordCheck', skipPasswordCheck)
 
 async function comparePasswordAndPasswordHash (password, hash) {
@@ -34,11 +34,6 @@ const middleware = (publicRoutes, request, response, next) => {
     }
   })
 
-  const getIsAdmin = (email) => {
-    const isAdmin = ['j@jada.io', 'test@gamemaker.club'].includes(email)
-    return isAdmin
-  }
-
   if (request.authorization.hasOwnProperty('scheme') && request.authorization.scheme === 'Basic') {
     if (request.authorization.basic.username === null || request.authorization.basic.password === null) {
       response.send(new errors.UnauthorizedError('basic auth does not support empty values (probably a zero length password)'))
@@ -49,22 +44,20 @@ const middleware = (publicRoutes, request, response, next) => {
       datalayer.readOne('Users', {email})
         .then(object => {
           const user = new classes.User(object);
-          // http://stackoverflow.com/a/43479920
           (async () => {
             let allowContinue = true
             try {
               await comparePasswordAndPasswordHash(password, object.passwordHash)
               request.authorization.user = user
               request.authorization.method = 'basic'
-              request.authorization.isAdmin = getIsAdmin(user.email)
             } catch (error) {
-              console.error('[middleware-auth] bad password', error)
               if (skipPasswordCheck === true) {
+                console.error('[middleware-auth] skipPasswordCheck is true')
                 allowContinue = true
                 request.authorization.user = user
                 request.authorization.method = 'basic'
-                request.authorization.isAdmin = getIsAdmin(user.email)
               } else {
+                console.error('[middleware-auth] bad password', error)
                 if (isThisRoutePublic === false) {
                   response.send(new errors.UnauthorizedError('wrong password'))
                 }
