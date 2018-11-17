@@ -84,7 +84,7 @@ class MainToolbarContainer extends Component {
 
   render() {
     return (
-      <MainToolbar currentProject={this.state.currentProject} onClick={this.handleOnClick} />
+      <MainToolbar currentProject={this.state.currentProject} onClick={this.handleOnClick} disabled={this.props.disabled} />
     )
   }
 }

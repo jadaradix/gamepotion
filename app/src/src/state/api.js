@@ -23,23 +23,39 @@ const auth = {
   password: get('credentials-password')
 }
 
+const getUser = (username, password) => {
+  return axios.request({
+    method: 'GET',
+    url: '/me',
+    baseURL: apis['api-core'],
+    auth: {
+      username,
+      password
+    },
+    responseType: 'json'
+  })
+    .then(response => response.data)
+}
+
+const getTeam = (username, password) => {
+  console.log('[api] [getTeam]', username, password)
+  return axios.request({
+    method: 'GET',
+    url: '/me/team',
+    baseURL: apis['api-core'],
+    auth: {
+      username,
+      password
+    },
+    responseType: 'json'
+  })
+    .then(response => response.data)
+}
+
 function logIn (username, password) {
   console.log('[api] [logIn]', username, password)
-  const getUser = () => {
-    return axios.request({
-      method: 'GET',
-      url: '/me',
-      baseURL: apis['api-core'],
-      auth: {
-        username,
-        password
-      },
-      responseType: 'json'
-    })
-      .then(response => response.data)
-  }
   return Promise.all([
-    getUser(),
+    getUser(username, password),
     getTeam(username, password),
   ])
     .then(([user, team]) => {
@@ -66,20 +82,6 @@ function isLoggedIn () {
   //     .then(() => resolve(true))
   //     .catch(() => resolve(false))
   // })
-}
-
-function getTeam (username, password) {
-  return axios.request({
-    method: 'GET',
-    url: '/me/team',
-    baseURL: apis['api-core'],
-    auth: {
-      username,
-      password
-    },
-    responseType: 'json'
-  })
-    .then(response => response.data)
 }
 
 function dGet (whichApi, url, publicContext = false) {

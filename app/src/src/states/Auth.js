@@ -23,20 +23,53 @@ const StyledState = styled.div`
 `
 
 const stages = new Map([
+
   ['email',
     {
       'init': (state) => {
         return {
-          autofocusEmail: (state.email.length > 0)
+          autoFocus: true // (state.email.length > 0)
         }
       },
       'render': (state, setStateCallback) => {
         const canGoNext = () => {
           const isEmailValid = (state.email.indexOf('@') > 0 && state.email.length > state.email.indexOf('@') + 1)
-          const isPasswordValid = (state.password.length > 0)
-          return (isEmailValid && isPasswordValid)
+          return isEmailValid
         }
+        const goNext = (e) => {
+          e.preventDefault()
+          setStateCallback({
+            stage: 'password',
+            ...stages.get('password').init(state)
+          })
+        }
+        const update = (prop, value) => {
+          setStateCallback({
+            [prop]: value
+          })
+        }
+        return (
+          <form onSubmit={goNext}>
+            <Input type='email' label='E-mail' placeholder='james@gamemaker.club' required autoFocus={state.autoFocus} value={state.email} onChange={(v) => update('email', v)} />
+            <Button disabled={!canGoNext()}>Next</Button>
+          </form>
+        )
+      }
+    }
+  ],
 
+  ['password',
+    {
+      'init': (state) => {
+        return {
+          autoFocus: true // (state.password.length > 0)
+        }
+      },
+      'render': (state, setStateCallback) => {
+        const canGoNext = () => {
+          const isPasswordValid = (state.password.length > 0)
+          return isPasswordValid
+        }
         const goNext = (e) => {
           e.preventDefault()
           dispatch({
@@ -47,23 +80,21 @@ const stages = new Map([
             }
           })
         }
-
         const update = (prop, value) => {
           setStateCallback({
             [prop]: value
           })
         }
-
         return (
           <form onSubmit={goNext}>
-            <Input label='E-mail' placeholder='james@gamemaker.club' required autoFocus={state.autofocusEmail} value={state.email} onChange={(v) => update('email', v)} />
-            <Input label='Password' placeholder='' type='password' required autoFocus={state.autofocusPassword} value={state.password} onChange={(v) => update('password', v)} />
+            <Input type='password' label='Password' placeholder='' required autoFocus={state.autoFocus} value={state.password} onChange={(v) => update('password', v)} />
             <Button disabled={!canGoNext()}>Next</Button>
           </form>
         )
       }
     }
   ]
+
 ])
 
 class StateDashboard extends PureComponent {
@@ -79,6 +110,7 @@ class StateDashboard extends PureComponent {
       ...this.state,
       ...stages.get(this.state.stage).init(this.state)
     }
+    console.warn('this.state', this.state)
   }
 
   componentDidMount () {
@@ -108,7 +140,7 @@ class StateDashboard extends PureComponent {
     }
     return (
       <Fragment>
-        <MainToolbarContainer />
+        <MainToolbarContainer disabled />
         <ResponsiveContainer>
           <StyledState>
             <Box>

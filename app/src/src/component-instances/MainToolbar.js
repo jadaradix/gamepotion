@@ -15,11 +15,11 @@ const getPreferencesRoute = (currentProject) => {
   return `/projects/${currentProject.project.id}/preferences`
 }
 
-const MainToolbar = ({ currentProject, onClick }) => {
-  // console.warn('[MainToolbar] currentProject', currentProject)
+const MainToolbar = ({ currentProject, onClick, disabled }) => {
+  // console.warn('[MainToolbar] currentProject/disabled', currentProject, disabled)
   return (
     <Toolbar>
-      <ToolbarButton route='/dashboard' icon={icons.generic.symbol} hint='Dashboard' significant />
+      <ToolbarButton route='/dashboard' disabled={disabled} icon={icons.generic.symbol} hint='Dashboard' significant />
       {currentProject !== null &&
         <ToolbarButton fixedWidth='180' route={`/projects/${currentProject.project.id}`} hint={currentProject.project.name}>
           {currentProject.project.name}
@@ -29,27 +29,29 @@ const MainToolbar = ({ currentProject, onClick }) => {
         <ToolbarButton fixedWidth='180' disabled hint='Loading...' />
       }
       <ToolbarGap />
-      <ToolbarButton onClick={() => onClick('project-run')} disabled={currentProject === null} icon={icons.generic.project.run} hint='Run project' />
-      <ToolbarButton onClick={() => onClick('project-share')} disabled={currentProject === null} icon={icons.generic.project.share} hint='Share project' />
+      <ToolbarButton onClick={() => onClick('project-run')} disabled={disabled || currentProject === null} icon={icons.generic.project.run} hint='Run project' />
+      <ToolbarButton onClick={() => onClick('project-share')} disabled={disabled || currentProject === null} icon={icons.generic.project.share} hint='Share project' />
       <ToolbarGap />
       {resourceTypes.map(rt => (
-        <ToolbarButton key={rt.type} onClick={() => onClick(`add-resource-${rt.type}`)} disabled={currentProject === null} icon={icons.resources[rt.type]} hint={`Add ${rt.nameSingular}`} />
+        <ToolbarButton key={rt.type} onClick={() => onClick(`add-resource-${rt.type}`)} disabled={disabled || currentProject === null} icon={icons.resources[rt.type]} hint={`Add ${rt.nameSingular}`} />
       ))
       }
       <ToolbarGap />
-      <ToolbarButton route={getPreferencesRoute(currentProject)} disabled={currentProject === null} icon={icons.generic.preferences} hint='Project preferences' />
+      <ToolbarButton route={getPreferencesRoute(currentProject)} disabled={disabled || currentProject === null} icon={icons.generic.preferences} hint='Project preferences' />
     </Toolbar>
   )
 }
 
 MainToolbar.propTypes = {
   currentProject: PropTypes.object,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool
 }
 
 MainToolbar.defaultProps = {
   currentProject: null,
-  onClick: () => {}
+  onClick: () => {},
+  disabled: false
 }
 
 export default MainToolbar

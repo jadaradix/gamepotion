@@ -11,8 +11,8 @@ const StyledToolbar = styled.ul`
   // box-shadow: 0 2px 4px red;
 `
 
-const Toolbar = ({ children, href }) => (
-  <StyledToolbar href={href}>
+const Toolbar = ({ children }) => (
+  <StyledToolbar>
     {children}
   </StyledToolbar>
 )

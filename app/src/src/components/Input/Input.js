@@ -62,63 +62,67 @@ const getDefaultValue = (props) => {
   return (props.type === 'number' ? undefined : '')
 }
 
+const getMin = (props) => {
+  return (typeof props.min === 'string' ? props.min : undefined)
+}
+
+const getMax = (props) => {
+  return (typeof props.max === 'string' ? props.max : undefined)
+}
+
 class Input extends PureComponent {
   constructor (props) {
     super(props)
     this.state = {
       id: uuid(),
-      autoFocus: props.autoFocus || false,
-      type: props.type || 'text',
       checked: props.checked || false,
-      label: props.label || '',
       value: getDefaultValue(props),
-      placeholder: props.placeholder || '',
       required: (typeof props.required === 'boolean' ? props.required : false),
       patten: (props.type === 'password' ? '.{6,128}' : undefined),
-      title: (props.type === 'password' ? '8 to 128 characters' : undefined),
-      disabled: props.disabled || false,
-      min: (typeof props.min === 'string' ? props.min : '0'),
-      max: (typeof props.max === 'string' ? props.max : '0')
+      title: (props.type === 'password' ? '8 to 128 characters' : undefined)
     }
-    this.onChange = props.onChange ? props.onChange.bind(this) : () => {}
-    this.onDone = props.onDone ? props.onDone.bind(this) : null
     this.handleOnChange = (event) => {
       this.setState({value: event.target.value, checked: event.target.checked})
-      this.onChange(event.target.value) // which is useful?
+      this.props.onChange(event.target.value) // which is useful?
     }
     this.handleOnDone = (event) => {
-      if (this.onDone === null) return
+      if (this.props.onDone === null) return
       if (event.which === 13) {
         event.preventDefault()
-        this.onDone(this.state.value)
+        this.props.onDone(this.state.value)
       }
     }
     this.inputRef = React.createRef()
   }
-
+  
   componentWillReceiveProps (nextProps) {
-    this.setState({ value: nextProps.value, disabled: nextProps.disabled, placeholder: nextProps.placeholder, label: nextProps.label })
+    this.setState({ value: nextProps.value })
   }
 
   render () {
     return (
       <StyledInput className='component--input'>
-        {this.state.label && <label htmlFor={`component-Input-${this.state.id}`} aria-disabled={this.state.disabled}>{this.state.label}</label>}
+        {this.props.label && <label htmlFor={`component-Input-${this.state.id}`} aria-disabled={this.props.disabled}>{this.props.label}</label>}
         <input
           id={`component-Input-${this.state.id}`}
-          disabled={this.state.disabled}
-          autoFocus={this.state.autoFocus}
-          type={this.state.type}
+          type={this.props.type}
+          placeholder={this.props.placeholder}
+          disabled={this.props.disabled}
           required={this.state.required}
           pattern={this.state.patten}
           title={this.state.title}
           value={this.state.value}
-          min={this.state.min}
-          max={this.state.max}
-          placeholder={this.state.placeholder}
+          min={getMin(this.props)}
+          max={getMax(this.props)}
           onChange={this.handleOnChange}
           onKeyDown={this.handleOnDone}
           ref={(inputRef) => {
+            if (inputRef === null) {
+              return
+            }
+            if (this.props.autoFocus === true) {
+              inputRef.focus()
+            }
             this.inputRef = inputRef
             this.props.onRef(inputRef)
           }}
@@ -129,12 +133,22 @@ class Input extends PureComponent {
 }
 
 Input.propTypes = {
+  type: PropTypes.string,
   label: PropTypes.string,
-  onRef: PropTypes.func
+  placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
+  autoFocus: PropTypes.bool,
+  onRef: PropTypes.func,
+  onChange: PropTypes.func,
+  onDone: PropTypes.func
 }
 
 Input.defaultProps = {
-  onRef: () => {}
+  type: 'text',
+  disabled: false,
+  onRef: () => {},
+  onChange: () => {},
+  onDone: null
 }
 
 export default Input

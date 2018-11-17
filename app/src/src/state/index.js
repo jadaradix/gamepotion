@@ -71,6 +71,8 @@ export function dispatch ({ name, data = {} }) {
       const errorMessage = (() => {
         if (error.message === 'Network Error') {
           return 'Our API looks to be down. Are you connected to the Internet?'
+        } else if (name !== 'USER_LOG_IN' && error.hasOwnProperty('response') && error.response.data.message === 'wrong password') {
+          window.location = '/auth'
         } else if (error.hasOwnProperty('response')) {
           return `That didn&rsquo;t work (${error.response.data.message}). Please try again.`
         } else {
