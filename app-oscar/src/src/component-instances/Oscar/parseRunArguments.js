@@ -27,6 +27,9 @@ const RESOURCE_TYPES = [
 ]
 
 const parseToken = (token, typeHint, variables) => {
+  if (typeof token === 'number') {
+    return token
+  }
   if (RESOURCE_TYPES.includes(typeHint)) {
     return token
   }

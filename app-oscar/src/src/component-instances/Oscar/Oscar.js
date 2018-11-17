@@ -56,19 +56,14 @@ const handleEvent = (event, spaceContainer, instanceClasses, appliesToInstanceCl
     console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
     instanceClasses = handleEvent('destroy', spaceContainer, instanceClasses, instanceClassesToDestroy)
   }
-  // const createdInstances = instancesToCreate.map(itc => {
-  //   return null
-  // })
-  // instanceClasses = instanceClasses.concat(createdInstances)
-  // if (createdInstances.length > 0) {
-  //   console.log('[Oscar] [handleEvent] createdInstances', createdInstances)
-  //   // instanceClasses = handleEvent('create', spaceContainer, instanceClasses, createdInstances)
-  // }
+  const createdInstances = getInstanceClasses(instancesToCreate)
+  instanceClasses = instanceClasses.concat(createdInstances)
+  if (createdInstances.length > 0) {
+    console.log('[Oscar] [handleEvent] createdInstances', createdInstances)
+    instanceClasses = handleEvent('create', spaceContainer, instanceClasses, createdInstances)
+  }
   instanceClasses = instanceClasses.filter(ic => {
     const willDestroy = instanceClassesToDestroy.includes(ic)
-    if (willDestroy === true) {
-      console.error('willDestroy', willDestroy)
-    }
     return (!willDestroy)
   })
   return instanceClasses
@@ -84,14 +79,12 @@ const handleActionBack = (instanceClasses, appliesToInstanceClasses, actionBack)
       }
     },
     'INSTANCE_CREATE': () => {
-      const getAtomById = (id) => {
-        return resourceContainers.find(rc => rc.resource.id === id).resource
-      }
       const instancesToCreate = [
         {
-          atom: getAtomById(actionBack.actionBackArguments[0]),
+          atomId: actionBack.actionBackArguments[0],
           x: actionBack.actionBackArguments[1],
-          y: actionBack.actionBackArguments[2]
+          y: actionBack.actionBackArguments[2],
+          z: 0
         }
       ]
       return {
