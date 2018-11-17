@@ -1,8 +1,11 @@
+import { get } from '../localStorage'
+
 import notify from '../notify.js'
 
 import logIn from './actions/user/logIn'
 import logOut from './actions/user/logOut'
 import createUser from './actions/user/create'
+import updateUser from './actions/user/update'
 import createProject from './actions/projects/create'
 import getProjects from './actions/projects/get'
 import updateProject from './actions/projects/update'
@@ -13,18 +16,25 @@ import loadProjectResource from './actions/projects/resources/load'
 import createProjectResource from './actions/projects/resources/create'
 import updateProjectResource from './actions/projects/resources/update'
 import deleteProjectResource from './actions/projects/resources/delete'
+import getFeed from './actions/feeds/get'
 
 let state = {
+  credentials: {
+    email: get('credentials-email'),
+    password: get('credentials-password')
+  },
   user: null,
   team: null,
   projects: null,
-  currentProject: null
+  currentProject: null,
+  feeds: new Map()
 }
 
 const actions = new Map([
   ['USER_LOG_IN', logIn],
   ['USER_LOG_OUT', logOut],
   ['USER_CREATE', createUser],
+  ['USER_UPDATE', updateUser],
   ['PROJECTS_CREATE', createProject],
   ['PROJECTS_GET', getProjects],
   ['PROJECTS_UPDATE', updateProject],
@@ -34,7 +44,8 @@ const actions = new Map([
   ['PROJECTS_RESOURCES_CREATE', createProjectResource],
   ['PROJECTS_RESOURCES_LOAD', loadProjectResource],
   ['PROJECTS_RESOURCES_UPDATE', updateProjectResource],
-  ['PROJECTS_RESOURCES_DELETE', deleteProjectResource]
+  ['PROJECTS_RESOURCES_DELETE', deleteProjectResource],
+  ['FEEDS_GET', getFeed]
 ])
 
 const element = document.createElement('SPAN')

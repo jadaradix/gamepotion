@@ -45,26 +45,25 @@ const middleware = (publicRoutes, request, response, next) => {
         .then(object => {
           const user = new classes.User(object);
           (async () => {
-            let allowContinue = true
             try {
               await comparePasswordAndPasswordHash(password, object.passwordHash)
               request.authorization.user = user
               request.authorization.method = 'basic'
+              return next()
             } catch (error) {
               if (skipPasswordCheck === true) {
                 console.error('[middleware-auth] skipPasswordCheck is true')
-                allowContinue = true
                 request.authorization.user = user
                 request.authorization.method = 'basic'
               } else {
                 console.error('[middleware-auth] bad password', error)
                 if (isThisRoutePublic === false) {
                   response.send(new errors.UnauthorizedError('wrong password'))
+                  return next(false)
+                } else {
+                  return next()
                 }
-                allowContinue = false
               }
-            } finally {
-              next(allowContinue)
             }
           })()
         })

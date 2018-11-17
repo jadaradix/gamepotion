@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { get, set } from '../localStorage'
+import { getState } from './index.js'
 
 const env = (window.location.protocol === 'http:' ? 'local' : 'production')
 const envs = {
@@ -19,8 +19,8 @@ const envs = {
 const apis = envs[env].apis
 
 const auth = {
-  username: get('credentials-email'),
-  password: get('credentials-password')
+  username: getState().credentials.email,
+  password: getState().credentials.password
 }
 
 const getUser = (username, password) => {
@@ -61,8 +61,6 @@ function logIn (username, password) {
     .then(([user, team]) => {
       auth.username = username
       auth.password = password
-      set('credentials-email', username)
-      set('credentials-password', password)
       return {user, team}
     })
 }
@@ -71,7 +69,6 @@ function logOut () {
   console.log('[api] [logOut]')
   auth.username = ''
   auth.password = ''
-  set('credentials-password', '')
 }
 
 function isLoggedIn () {
@@ -166,8 +163,6 @@ export default {
       .then(response => {
         auth.username = response.data.email
         auth.password = response.data.password
-        set('credentials-email', response.data.email)
-        set('credentials-password', response.data.password)
         return response.data
       })
   },
@@ -183,7 +178,7 @@ export default {
     })
       .then(response => {
         auth.username = payload.email
-        set('credentials-email', payload.email)
+        auth.password = payload.password
         return response.data
       })
   },

@@ -33,5 +33,6 @@ test('can be updated from an API call', () => {
   }
   team.fromApiPatch(body)
   expect(team.id).not.toBe('xyz')
+  expect(team.name).not.toBe('Invisionsoft')
   expect(team.name).toBe('FatQuack')
 })

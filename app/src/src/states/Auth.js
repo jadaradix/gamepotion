@@ -1,7 +1,6 @@
 import React, { PureComponent, Fragment } from 'react'
 import { Redirect } from 'react-router'
 import styled from 'styled-components'
-import { get, set } from '../localStorage'
 
 import { font, colours } from '../styleAbstractions'
 
@@ -13,7 +12,7 @@ import Heading1 from '../components/Heading1/Heading1'
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
 
-import { dispatch } from '../state'
+import { getState, dispatch } from '../state'
 
 const StyledState = styled.div`
   .component--box {
@@ -34,6 +33,9 @@ const StyledState = styled.div`
     margin-bottom: 1rem;
     ${font}
     color: ${colours.fore};
+  }
+  p:last-of-type {
+    margin-bottom: 1.5rem;
   }
 `
 
@@ -82,8 +84,12 @@ const stages = new Map([
         }
         return (
           <Fragment>
+            <Heading1>Welcome to Game Maker Club</Heading1>
+            <p>
+              Enter your e-mail to get started!
+            </p>
             <form onSubmit={goNext}>
-              <Input type='email' label='E-mail' placeholder='james@gamemaker.club' required autoFocus={state.autoFocus} value={state.email} onChange={(v) => update('email', v)} />
+              <Input type='email' placeholder='james@gamemaker.club' required autoFocus={state.autoFocus} value={state.email} onChange={(v) => update('email', v)} />
               <Button disabled={!canGoNext()}>Next</Button>
             </form>
           </Fragment>
@@ -195,8 +201,8 @@ class StateDashboard extends PureComponent {
     super(props)
     this.state = {
       stage: 'email',
-      email: get('credentials-email'),
-      password: '',
+      email: getState().credentials.email,
+      password: getState().credentials.password,
       authenticated: false
     }
     this.state = {
@@ -208,13 +214,7 @@ class StateDashboard extends PureComponent {
 
   render() {
     if (this.state.authenticated === true) {
-      const hash = get('log-in-redirect-hash')
-      if (hash === null) {
-        return <Redirect to={'/dashboard'} />
-      } else {
-        set('log-in-redirect-hash', null)
-        return <Redirect to={hash} />
-      }
+      return <Redirect to={'/dashboard'} />
     }
     return (
       <Fragment>

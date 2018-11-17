@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Redirect } from 'react-router'
 import styled from 'styled-components'
 
@@ -15,7 +15,7 @@ import Box from '../components/Box/Box'
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
 
-import { dispatch, subscribe } from '../state'
+import { getState, dispatch, subscribe } from '../state'
 
 const StyledState = styled.div`
   section.split-two {
@@ -38,7 +38,7 @@ const StyledState = styled.div`
   }
 `
 
-class StateDashboard extends PureComponent {
+class StateDashboard extends Component {
 
   constructor(props) {
     super(props)
@@ -47,14 +47,20 @@ class StateDashboard extends PureComponent {
       projects: null,
       currentProject: null,
       projectToLoadId: null,
-      // news
-      news: null,
-      newsToLoadId: null,
+      // feeds
+      feeds: getState().feeds,
+      // feedItemToLoadId: null,
       // etc
       loggedOut: false
     }
     dispatch({
       name: 'PROJECTS_GET'
+    })
+    dispatch({
+      name: 'FEEDS_GET',
+      data: {
+        id: 'news'
+      }
     })
     this.actOnProject = this.actOnProject.bind(this)
   }
@@ -79,6 +85,12 @@ class StateDashboard extends PureComponent {
           currentProject: state.currentProject
         })
       }),
+      subscribe('FEEDS_GET', (state) => {
+        console.warn('FEEDS_GET', state)
+        this.setState({
+          feeds: state.feeds
+        })
+      }),
       subscribe('USER_LOG_OUT', () => {
         this.setState({
           loggedOut: true
@@ -98,11 +110,11 @@ class StateDashboard extends PureComponent {
     })
   }
 
-  loadNews (newsToLoadId) {
-    console.warn('[state-Dashboard] [loadNews]', newsToLoadId)
-    this.setState({
-      newsToLoadId
-    })
+  loadFeedItem (feedId, feedItemToLoadId) {
+    console.warn('[state-Dashboard] [loadFeedItem] feedId/feedItemToLoadId', feedId, feedItemToLoadId)
+    // this.setState({
+    //   feedItemToLoadId
+    // })
   }
 
   actOnProject(id, action) {
@@ -159,6 +171,7 @@ class StateDashboard extends PureComponent {
     if (this.state.loggedOut === true) {
       return <Redirect to='/auth' />
     }
+    const newsFeed = this.state.feeds.get('news')
     return (
       <Fragment>
         <MainToolbarContainer />
@@ -195,21 +208,21 @@ class StateDashboard extends PureComponent {
                 }
               </Box>
               <Box>
-                {this.state.news === null ? 
+                {newsFeed === undefined ? 
                   <Loading />
                   :
                   <Fragment>
                     <Heading1>News</Heading1>
-                    {this.state.news.length > 0 ?
+                    {newsFeed.length > 0 ?
                       <List>
-                        {this.state.news.map(n => (
+                        {newsFeed.map(n => (
                           <ListItem
                             key={n.id}
                             id={n.id}
                             icon={icons.generic.project.project}
-                            onChoose={(id) => this.loadNews(id)}
+                            onChoose={(id) => this.loadFeedItem('news', id)}
                           >
-                            {n.headline}
+                            {n.title}
                           </ListItem>
                         ))}
                       </List>
