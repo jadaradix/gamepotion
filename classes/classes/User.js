@@ -1,8 +1,14 @@
 import uuid from '../abstractions/uuid/index.dist.js'
 
 const guessNameFromEmail = (email) => {
-  const firstPartOfEmail = email.split('@').shift()
-  return firstPartOfEmail[0].toUpperCase() + firstPartOfEmail.substring(1)
+  return email
+    .split('@')
+    .shift()
+    .split('.')
+    .map(n => {
+      return `${n[0].toUpperCase()}${n.substring(1)}`
+    })
+    .join(' ')
 }
 
 class User {

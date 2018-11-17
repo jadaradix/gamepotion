@@ -2,6 +2,7 @@ import notify from '../notify.js'
 
 import logIn from './actions/user/logIn'
 import logOut from './actions/user/logOut'
+import createUser from './actions/user/create'
 import createProject from './actions/projects/create'
 import getProjects from './actions/projects/get'
 import updateProject from './actions/projects/update'
@@ -23,6 +24,7 @@ let state = {
 const actions = new Map([
   ['USER_LOG_IN', logIn],
   ['USER_LOG_OUT', logOut],
+  ['USER_CREATE', createUser],
   ['PROJECTS_CREATE', createProject],
   ['PROJECTS_GET', getProjects],
   ['PROJECTS_UPDATE', updateProject],
@@ -52,14 +54,11 @@ const element = document.createElement('SPAN')
 //   // ...
 // })()
 
-const dispatched = []
-
 export function dispatch ({ name, data = {} }) {
   const foundAction = actions.get(name)
   if (foundAction === undefined) {
     return Promise.reject(`[state] action ${name} is not understood!`)
   }
-  dispatched.push(dispatched)
   return foundAction(state, data)
     .then(newState => {
       state = newState
@@ -68,11 +67,16 @@ export function dispatch ({ name, data = {} }) {
     })
     .catch(error => {
       console.error('[state] action execution failed!', error)
+      if (name !== 'USER_LOG_IN' && error.hasOwnProperty('response') && error.response.data.message === 'wrong password') {
+        window.location = '/auth'
+        return false
+      }
+      if (name === 'USER_LOG_IN' && data.password === 'dummy-password') {
+        throw error
+      }
       const errorMessage = (() => {
         if (error.message === 'Network Error') {
           return 'Our API looks to be down. Are you connected to the Internet?'
-        } else if (name !== 'USER_LOG_IN' && error.hasOwnProperty('response') && error.response.data.message === 'wrong password') {
-          window.location = '/auth'
         } else if (error.hasOwnProperty('response')) {
           return `That didn&rsquo;t work (${error.response.data.message}). Please try again.`
         } else {
@@ -80,6 +84,7 @@ export function dispatch ({ name, data = {} }) {
         }
       })()
       notify.bad(errorMessage)
+      throw error
     })
 }
 

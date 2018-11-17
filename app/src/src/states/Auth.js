@@ -3,22 +3,37 @@ import { Redirect } from 'react-router'
 import styled from 'styled-components'
 import { get, set } from '../localStorage'
 
+import { font, colours } from '../styleAbstractions'
+
 import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
 import Button from '../components/Button/Button'
+import Heading1 from '../components/Heading1/Heading1'
 
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
 
-import { dispatch, subscribe } from '../state'
+import { dispatch } from '../state'
 
 const StyledState = styled.div`
   .component--box {
     max-width: 480px;
     margin: 4rem auto 0 auto;
   }
-  .component--heading1 + form {
+  .component--heading1 + * {
     margin-top: 1.5rem;
+  }
+  .component--button {
+    display: inline-block;
+  }
+  .component--button + .component--button {
+    margin-left: 0.5rem;
+  }
+  p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    ${font}
+    color: ${colours.fore};
   }
 `
 
@@ -38,10 +53,27 @@ const stages = new Map([
         }
         const goNext = (e) => {
           e.preventDefault()
-          setStateCallback({
-            stage: 'password',
-            ...stages.get('password').init(state)
+          dispatch({
+            name: 'USER_LOG_IN',
+            data: {
+              email: state.email,
+              password: 'dummy-password'
+            }
           })
+            .catch(error => {
+              if (error.response.data.message === 'unknown e-mail address') {
+                return setStateCallback({
+                  stage: 'create-decision',
+                  ...stages.get('create-decision').init(state)
+                })
+              }
+              if (error.response.data.message === 'wrong password') {
+                return setStateCallback({
+                  stage: 'log-in',
+                  ...stages.get('log-in').init(state)
+                })
+              }
+            })
         }
         const update = (prop, value) => {
           setStateCallback({
@@ -49,16 +81,18 @@ const stages = new Map([
           })
         }
         return (
-          <form onSubmit={goNext}>
-            <Input type='email' label='E-mail' placeholder='james@gamemaker.club' required autoFocus={state.autoFocus} value={state.email} onChange={(v) => update('email', v)} />
-            <Button disabled={!canGoNext()}>Next</Button>
-          </form>
+          <Fragment>
+            <form onSubmit={goNext}>
+              <Input type='email' label='E-mail' placeholder='james@gamemaker.club' required autoFocus={state.autoFocus} value={state.email} onChange={(v) => update('email', v)} />
+              <Button disabled={!canGoNext()}>Next</Button>
+            </form>
+          </Fragment>
         )
       }
     }
   ],
 
-  ['password',
+  ['log-in',
     {
       'init': (state) => {
         return {
@@ -79,6 +113,18 @@ const stages = new Map([
               password: state.password
             }
           })
+            .then(() => {
+              setStateCallback({
+                authenticated: true
+              })
+            })
+        }
+        const goPrevious = (e) => {
+          e.preventDefault()
+          return setStateCallback({
+            stage: 'email',
+            ...stages.get('email').init(state)
+          })
         }
         const update = (prop, value) => {
           setStateCallback({
@@ -86,10 +132,62 @@ const stages = new Map([
           })
         }
         return (
-          <form onSubmit={goNext}>
-            <Input type='password' label='Password' placeholder='' required autoFocus={state.autoFocus} value={state.password} onChange={(v) => update('password', v)} />
-            <Button disabled={!canGoNext()}>Next</Button>
-          </form>
+          <Fragment>
+            <Heading1>Welcome back!</Heading1>
+            <div>
+              <Input type='password' label='Password' placeholder='' required autoFocus={state.autoFocus} value={state.password} onChange={(v) => update('password', v)} />
+              <Button onClick={goNext} disabled={!canGoNext()}>Log in</Button>
+              <Button onClick={goPrevious} flavour='weak'>Go back</Button>
+            </div>
+          </Fragment>
+        )
+      }
+    }
+  ],
+
+  ['create-decision',
+    {
+      'init': (state) => {
+        return {}
+      },
+      'render': (state, setStateCallback) => {
+        const goNext = (e) => {
+          e.preventDefault()
+          console.warn('create account here!')
+          dispatch({
+            name: 'USER_CREATE',
+            data: {
+              email: state.email,
+              password: state.password
+            }
+          })
+            .then(() => {
+              setStateCallback({
+                authenticated: true
+              })
+            })
+        }
+        const goPrevious = (e) => {
+          e.preventDefault()
+          return setStateCallback({
+            stage: 'email',
+            ...stages.get('email').init(state)
+          })
+        }
+        return (
+          <Fragment>
+            <Heading1>Hey there</Heading1>
+            <div>
+              <p>
+                We couldn&rsquo;t find an account for <strong>{state.email}</strong>.
+              </p>
+              <p>
+                Would you like to create one?
+              </p>
+              <Button onClick={goNext}>Yes, create an account</Button>
+              <Button onClick={goPrevious} flavour='weak'>No</Button>
+            </div>
+          </Fragment>
         )
       }
     }
@@ -110,22 +208,7 @@ class StateDashboard extends PureComponent {
       ...this.state,
       ...stages.get(this.state.stage).init(this.state)
     }
-    console.warn('this.state', this.state)
-  }
-
-  componentDidMount () {
-    this.subscriptions = [
-      subscribe('USER_LOG_IN', (state) => {
-        const authenticated = (state.user !== null)
-        this.setState({
-          authenticated
-        })
-      })
-    ]
-  }
-
-  componentWillUnmount () {
-    this.subscriptions.forEach(s => s.unsubscribe())
+    // console.warn('[StateDashboard] [constructor] this.state', this.state)
   }
 
   render() {

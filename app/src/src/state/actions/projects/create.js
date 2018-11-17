@@ -1,10 +1,11 @@
 import api from '../../api.js'
 import classes from '../../../classes'
+
 import getProjects from './get'
 import createResource from './resources/create'
 
-const doCreateResource = async (state) => {
-  return await createResource(state, { type: 'space' })
+const doCreateResource = async (state, type) => {
+  return await createResource(state, { type })
 }
 
 const doCreateProject = async (state, name) => {
@@ -28,7 +29,8 @@ const doCreateProject = async (state, name) => {
 export default async function (state, { name }) {
   let newState = await getProjects(state) // do not remove this!!!
   newState = {...await doCreateProject(newState, name)}
-  newState = {...await doCreateResource(newState)}
+  newState = {...await doCreateResource(newState, 'atom')}
+  newState = {...await doCreateResource(newState, 'space')}
   return {
     ...newState
   }

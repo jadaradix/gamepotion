@@ -5,7 +5,7 @@ const URL_API_BIN = 'http://localhost:1026/v1'
 
 const user = {
   email: 'j@jada.io',
-  password: 'random password'
+  password: 'letmein'
 }
 
 const project = {

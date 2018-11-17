@@ -4,9 +4,7 @@ const createRandomString = require('../abstractions/createRandomString.js')
 const URL_API_CORE = 'http://localhost:1025/v1'
 
 const user = {
-  name: 'James',
-  email: `${createRandomString()}@gamemaker.club`,
-  password: createRandomString()
+  email: `${createRandomString()}@gamemaker.club`
 }
 
 const team = {
@@ -17,8 +15,7 @@ const configs = {
   auth: {
     validateStatus: false,
     auth: {
-      username: user.email,
-      password: user.password
+      username: user.email
     }
   },
   noAuth: {
@@ -36,6 +33,7 @@ test('creates a user', (done) => {
     .then(response => {
       expect(response.status).toBe(201)
       user.id = response.data.id
+      configs.auth.auth.password = response.data.password
       return done()
     })
     .catch(done)
@@ -69,6 +67,20 @@ test('creates a team', (done) => {
       expect(response.status).toBe(201)
       expect(response.data.name).toBe(team.name)
       team.id = response.data.id
+      return done()
+    })
+    .catch(done)
+})
+
+test('doesnt get the team', (done) => {
+  axios({
+    method: 'get',
+    url: `${URL_API_CORE}/me/team`,
+    ...configs.auth
+  })
+    .then(response => {
+      expect(response.status).toBe(404)
+      expect(response.data.message).toBe('not part of a team')
       return done()
     })
     .catch(done)

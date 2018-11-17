@@ -54,13 +54,13 @@ const StyledInput = styled.div`
   }
 `
 
-const getDefaultValue = (props) => {
-  if (props.value !== undefined) {
-    return props.value
-  }
-  // hack - touch x/y refs
-  return (props.type === 'number' ? undefined : '')
-}
+// const getDefaultValue = (props) => {
+//   if (props.value !== undefined) {
+//     return props.value
+//   }
+//   // hack - touch x/y refs
+//   return (props.type === 'number' ? undefined : '')
+// }
 
 const getMin = (props) => {
   return (typeof props.min === 'string' ? props.min : undefined)
@@ -70,33 +70,31 @@ const getMax = (props) => {
   return (typeof props.max === 'string' ? props.max : undefined)
 }
 
+const getTitle = (props) => {
+  return (props.type === 'password' ? '8 to 128 characters' : undefined)
+}
+
+const getPattern = (props) => {
+  return (props.type === 'password' ? '.{6,128}' : undefined)
+}
+
 class Input extends PureComponent {
   constructor (props) {
     super(props)
     this.state = {
-      id: uuid(),
-      checked: props.checked || false,
-      value: getDefaultValue(props),
-      required: (typeof props.required === 'boolean' ? props.required : false),
-      patten: (props.type === 'password' ? '.{6,128}' : undefined),
-      title: (props.type === 'password' ? '8 to 128 characters' : undefined)
+      id: uuid()
     }
     this.handleOnChange = (event) => {
-      this.setState({value: event.target.value, checked: event.target.checked})
       this.props.onChange(event.target.value) // which is useful?
     }
     this.handleOnDone = (event) => {
       if (this.props.onDone === null) return
       if (event.which === 13) {
         event.preventDefault()
-        this.props.onDone(this.state.value)
+        this.props.onDone(this.props.value)
       }
     }
     this.inputRef = React.createRef()
-  }
-  
-  componentWillReceiveProps (nextProps) {
-    this.setState({ value: nextProps.value })
   }
 
   render () {
@@ -108,10 +106,10 @@ class Input extends PureComponent {
           type={this.props.type}
           placeholder={this.props.placeholder}
           disabled={this.props.disabled}
-          required={this.state.required}
-          pattern={this.state.patten}
-          title={this.state.title}
-          value={this.state.value}
+          required={this.props.required}
+          pattern={getPattern(this.props)}
+          title={getTitle(this.props)}
+          value={this.props.value}
           min={getMin(this.props)}
           max={getMax(this.props)}
           onChange={this.handleOnChange}
@@ -137,6 +135,8 @@ Input.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
+  required: PropTypes.bool,
+  checked: PropTypes.bool,
   autoFocus: PropTypes.bool,
   onRef: PropTypes.func,
   onChange: PropTypes.func,
@@ -146,6 +146,8 @@ Input.propTypes = {
 Input.defaultProps = {
   type: 'text',
   disabled: false,
+  required: false,
+  checked: false,
   onRef: () => {},
   onChange: () => {},
   onDone: null

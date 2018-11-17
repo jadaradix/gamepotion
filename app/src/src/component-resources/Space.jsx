@@ -278,8 +278,8 @@ class ResourceSpace extends PureComponent {
           </Box>
           <Box className='info'>
             <div className='touches'>
-              <Input label='Touch X' onRef={(r) => { this.thisRefs.touchCoordsY = r }} type='number' disabled />
-              <Input label='Touch Y' onRef={(r) => { this.thisRefs.touchCoordsX = r }} type='number' disabled />
+              <Input label='Touch X' onRef={(r) => { this.thisRefs.touchCoordsX = r; this.thisRefs.touchCoordsX.value = 0 }} type='number' disabled />
+              <Input label='Touch Y' onRef={(r) => { this.thisRefs.touchCoordsY = r; this.thisRefs.touchCoordsY.value = 0 }} type='number' disabled />
             </div>
             <Switch checked={this.state.grid.on} onChange={(v) => this.updateGridProperty('on', v)}>Grid</Switch>
             <div className='grid-properties'>

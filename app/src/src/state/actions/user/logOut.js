@@ -5,6 +5,8 @@ export default function (state, { email, password }) {
   return Promise.resolve({
     ...state,
     user: null,
-    team: null
+    team: null,
+    projects: null,
+    currentProject: null
   })
 }

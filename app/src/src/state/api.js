@@ -101,7 +101,8 @@ function dGet (whichApi, url, publicContext = false) {
 }
 
 function post (whichApi, url, data) {
-  console.log('[api] [post]', whichApi, url)
+  console.log('[api] [post] whichApi/url', whichApi, url)
+  console.log('[api] [post] auth', auth)
   return axios.request({
     method: 'POST',
     url,
@@ -153,39 +154,22 @@ function uploadBin (url, formData) {
 }
 
 export default {
-  public: {
-    createUser: (payload) => {
-      console.log('[api] [public] [createUser]', payload)
-      const createUser = () => {
-        return axios.request({
-          method: 'POST',
-          url: '/users',
-          data: payload,
-          baseURL: apis['api-core'],
-          responseType: 'json'
-        })
-          .then(response => {
-            return new Promise((resolve) => {
-              setTimeout(() => {
-                return resolve(response.data)
-              }, 500) // we dont actually need this; it was because Promise.all runs in parallel :-)
-            })
-          })
-      }
-      return createUser()
-        .then(user => {
-          return Promise.all([
-            getTeam(payload.email, payload.password),
-          ])
-            .then(([team]) => {
-              auth.username = payload.email
-              auth.password = payload.password
-              set('credentials-email', payload.email)
-              set('credentials-password', payload.password)
-              return {user, team}
-            })
-        })
-    }
+  createUser: (payload) => {
+    console.log('[api] [public] [createUser]', payload)
+    return axios.request({
+      method: 'POST',
+      url: '/users',
+      data: payload,
+      baseURL: apis['api-core'],
+      responseType: 'json'
+    })
+      .then(response => {
+        auth.username = response.data.email
+        auth.password = response.data.password
+        set('credentials-email', response.data.email)
+        set('credentials-password', response.data.password)
+        return response.data
+      })
   },
   updateUser: (payload) => {
     console.log('[api] [updateUser]', payload)

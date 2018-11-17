@@ -4,9 +4,7 @@ const createRandomString = require('../abstractions/createRandomString.js')
 const URL_API_CORE = 'http://localhost:1025/v1'
 
 const user = {
-  name: 'James',
-  email: `${createRandomString()}@gamemaker.club`,
-  password: createRandomString()
+  email: `${createRandomString()}@gamemaker.club`
 }
 
 const team = {
@@ -21,8 +19,7 @@ const configs = {
   auth: {
     validateStatus: false,
     auth: {
-      username: user.email,
-      password: user.password
+      username: user.email
     }
   },
   noAuth: {
@@ -40,6 +37,7 @@ test('creates a user', (done) => {
     .then(response => {
       expect(response.status).toBe(201)
       user.id = response.data.id
+      configs.auth.auth.password = response.data.password
       return done()
     })
     .catch(done)

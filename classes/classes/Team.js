@@ -4,7 +4,7 @@ class Team {
   constructor (json = {}) {
     this.id = json.id || uuid()
     this.createdAt = json.createdAt || Math.floor(new Date() / 1000)
-    this.name = json.name || 'New Team'
+    this.name = json.name || 'My Team'
   }
 
   toApi () {
@@ -26,10 +26,13 @@ class Team {
   }
 
   fromApiPost (json) {
-    if (typeof json.name !== 'string' || json.name.length === 0) {
-      throw new Error('name is not valid')
+    if (typeof json.name === 'string') {
+      if (json.name.length === 0) {
+        throw new Error('name is not valid')
+      } else {
+        this.name = json.name
+      }
     }
-    this.name = json.name
   }
 
   fromApiPatch (json) {

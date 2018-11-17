@@ -10,22 +10,29 @@ const StyledButton = styled.button`
   padding: 0.4rem 0.8rem 0.4rem 0.8rem;
   transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
   ${font}
-  background-color: #2e3131;
-  color: ${colours.foreNegative};
   border-radius: 4px;
   border-width: 2px;
   border-style: solid;
-  border-color: #2e3131;
   outline: 0;
+  &.flavour-strong {
+    background-color: #2e3131;
+    color: ${colours.foreNegative};
+    border-color: #2e3131;
+  }
+  &.flavour-strong:not([disabled]):hover {
+    background-color: #6c7a89;
+    border-color: #6c7a89;
+  }
+  &.flavour-weak {
+    background-color: transparent;
+    color: ${colours.fore};
+    border-color: transparent;
+  }
   &[disabled] {
     opacity: 0.5;
   }
   :focus {
     border-color: ${colours.outline};
-  }
-  &:not([disabled]):hover {
-    background-color: #6c7a89;
-    border-color: #6c7a89;
   }
   > img {
     display: block;
@@ -45,17 +52,17 @@ const StyledButton = styled.button`
   }
 `
 
-const handleOnClick = (history, route, onClick) => {
+const handleOnClick = (history, route, e, onClick) => {
   if (typeof route === 'string') {
     history.push(route)
   } else if (typeof onClick === 'function') {
-    return onClick()
+    return onClick(e)
   }
 }
 
-const Button = ({ history, route, onClick, icon, hint, disabled, children }) => {
+const Button = ({ history, flavour, route, onClick, icon, hint, disabled, children }) => {
   return (
-    <StyledButton disabled={disabled} title={hint} onClick={() => handleOnClick(history, route, onClick)} className='component--button'>
+    <StyledButton disabled={disabled} title={hint} onClick={(e) => handleOnClick(history, route, e, onClick)} className={`component--button flavour-${flavour}`}>
       {icon && <img src={icon} alt={hint} />}
       {children && <span>{children}</span>}
     </StyledButton>
@@ -63,6 +70,7 @@ const Button = ({ history, route, onClick, icon, hint, disabled, children }) => 
 }
 
 Button.propTypes = {
+  flavour: PropTypes.string,
   route: PropTypes.string,
   onClick: PropTypes.func,
   icon: PropTypes.string,
@@ -71,6 +79,7 @@ Button.propTypes = {
 }
 
 Button.defaultProps = {
+  flavour: 'strong',
   onClick: null,
   hint: '',
   disabled: false
