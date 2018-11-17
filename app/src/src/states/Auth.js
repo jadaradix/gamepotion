@@ -22,24 +22,63 @@ const StyledState = styled.div`
   }
 `
 
+const stages = new Map([
+  ['email',
+    {
+      'init': (state) => {
+        return {
+          autofocusEmail: (state.email.length > 0)
+        }
+      },
+      'render': (state, setStateCallback) => {
+        const canGoNext = () => {
+          const isEmailValid = (state.email.indexOf('@') > 0 && state.email.length > state.email.indexOf('@') + 1)
+          const isPasswordValid = (state.password.length > 0)
+          return (isEmailValid && isPasswordValid)
+        }
+
+        const goNext = (e) => {
+          e.preventDefault()
+          dispatch({
+            name: 'USER_LOG_IN',
+            data: {
+              email: state.email,
+              password: state.password
+            }
+          })
+        }
+
+        const update = (prop, value) => {
+          setStateCallback({
+            [prop]: value
+          })
+        }
+
+        return (
+          <form onSubmit={goNext}>
+            <Input label='E-mail' placeholder='james@gamemaker.club' required autoFocus={state.autofocusEmail} value={state.email} onChange={(v) => update('email', v)} />
+            <Input label='Password' placeholder='' type='password' required autoFocus={state.autofocusPassword} value={state.password} onChange={(v) => update('password', v)} />
+            <Button disabled={!canGoNext()}>Next</Button>
+          </form>
+        )
+      }
+    }
+  ]
+])
+
 class StateDashboard extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
+      stage: 'email',
       email: get('credentials-email'),
       password: '',
       authenticated: false
     }
-    if (this.state.email.length > 0) {
-      this.autofocusEmail = false
-      this.autofocusPassword = true
-    } else {
-      this.autofocusEmail = true
-      this.autofocusPassword = false
+    this.state = {
+      ...this.state,
+      ...stages.get(this.state.stage).init(this.state)
     }
-    this.update = this.update.bind(this)
-    this.submit = this.submit.bind(this)
-    this.canSubmit = this.canSubmit.bind(this)
   }
 
   componentDidMount () {
@@ -55,29 +94,6 @@ class StateDashboard extends PureComponent {
 
   componentWillUnmount () {
     this.subscriptions.forEach(s => s.unsubscribe())
-  }
-
-  update(prop, value) {
-    this.setState({
-      [prop]: value
-    })
-  }
-
-  submit (e) {
-    e.preventDefault()
-    dispatch({
-      name: 'USER_LOG_IN',
-      data: {
-        email: this.state.email,
-        password: this.state.password
-      }
-    })
-  }
-
-  canSubmit () {
-    const isEmailValid = (this.state.email.indexOf('@') > 0 && this.state.email.length > this.state.email.indexOf('@') + 1)
-    const isPasswordValid = (this.state.password.length > 0)
-    return (isEmailValid && isPasswordValid)
   }
 
   render() {
@@ -96,11 +112,10 @@ class StateDashboard extends PureComponent {
         <ResponsiveContainer>
           <StyledState>
             <Box>
-              <form onSubmit={this.submit}>
-                <Input label='E-mail' placeholder='james@gamemaker.club' required autoFocus={this.autofocusEmail} value={this.state.email} onChange={(v) => this.update('email', v)} />
-                <Input label='Password' placeholder='' type='password' required autoFocus={this.autofocusPassword} value={this.state.password} onChange={(v) => this.update('password', v)} />
-                <Button disabled={!this.canSubmit()} hint='Log In'>Log In</Button>
-              </form>
+              {stages.get(this.state.stage).render(
+                this.state,
+                this.setState.bind(this)
+              )}
             </Box>
           </StyledState>
         </ResponsiveContainer>

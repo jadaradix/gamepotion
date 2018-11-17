@@ -13,7 +13,7 @@ const StyledInput = styled.div`
     font-size: 80%;
     color: #bdc3c7;
   }
-  label[aria-disabled] {
+  label[aria-disabled="true"] {
     color: ${colours.fore};
     opacity: 0.5;
   }

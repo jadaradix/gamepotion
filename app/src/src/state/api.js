@@ -53,12 +53,9 @@ function logIn (username, password) {
 
 function logOut () {
   console.log('[api] [logOut]')
-  const username = ''
-  const password = ''
-  auth.username = username
-  auth.password = password
-  set('credentials-email', username)
-  set('credentials-password', password)
+  auth.username = ''
+  auth.password = ''
+  set('credentials-password', '')
 }
 
 function isLoggedIn () {

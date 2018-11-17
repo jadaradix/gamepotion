@@ -283,8 +283,8 @@ class ResourceSpace extends PureComponent {
             </div>
             <Switch checked={this.state.grid.on} onChange={(v) => this.updateGridProperty('on', v)}>Grid</Switch>
             <div className='grid-properties'>
-              <Input label='Grid Width' value={this.state.grid.width} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('width', v)} />
-              <Input label='Grid Height' value={this.state.grid.height} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('height', v)} />
+              <Input label='Grid Width' value={this.state.grid.width} disabled={!this.state.grid.on} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('width', v)} />
+              <Input label='Grid Height' value={this.state.grid.height} disabled={!this.state.grid.on} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('height', v)} />
             </div>
           </Box>
         </section>
