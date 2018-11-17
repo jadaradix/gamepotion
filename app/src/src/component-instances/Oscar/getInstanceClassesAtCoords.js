@@ -1,6 +1,6 @@
 const getInstanceClassesAtCoords = (instanceClasses, coords) => {
   return instanceClasses
-    .map(ic => {
+    .filter(ic => {
       const w = (ic.imageContainer && ic.imageContainer.resource.frameWidth) || 0
       const h = (ic.imageContainer && ic.imageContainer.resource.frameHeight) || 0
       const isIntersecting = (
@@ -9,9 +9,8 @@ const getInstanceClassesAtCoords = (instanceClasses, coords) => {
         coords[0] < (ic.coords[0] + w) &&
         coords[1] < (ic.coords[1] + h)
       )
-      return (isIntersecting ? ic : undefined)
+      return isIntersecting
     })
-    .filter(ic => ic !== undefined)
 }
 
 export default getInstanceClassesAtCoords

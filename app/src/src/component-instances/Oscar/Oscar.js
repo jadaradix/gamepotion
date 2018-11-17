@@ -292,19 +292,18 @@ class Oscar extends Component {
 
     const loadedGood = () => {
       console.warn('[Oscar] [renderCanvas] [loadedGood]')
-      const runStepAndDrawLoop = () => {
-        instanceClasses = step(spaceContainer, instanceClasses, this.props.designMode)
-        draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
-        window.requestAnimationFrame(runStepAndDrawLoop)
-      }
-      const runDraw = () => {
-        draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
-      }
       if (this.props.designMode === true) {
-        runDraw()
+        draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
       } else {
-        instanceClasses = start(spaceContainer, instanceClasses, this.props.designMode)
-        runStepAndDrawLoop()
+        const logic = () => {
+          instanceClasses = start(spaceContainer, instanceClasses, this.props.designMode)
+          instanceClasses = step(spaceContainer, instanceClasses, this.props.designMode)
+          draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
+          if (this.props.designMode === false) {
+            window.requestAnimationFrame(logic)
+          }
+        }
+        logic()
       }
     }
     const loadedBad = () => {
@@ -344,7 +343,7 @@ class Oscar extends Component {
             return [
               k,
               r.resource.events[k].map(a => {
-                const requiresRuntimeRunArgumentParsing = parseRunArguments(a.runArguments).requiresRuntimeRunArgumentParsing
+                const requiresRuntimeRunArgumentParsing = parseRunArguments(a.runArguments, variables).requiresRuntimeRunArgumentParsing
                 return {
                   run: actionClassInstances.get(a.id).run,
                   runArguments: a.runArguments,
