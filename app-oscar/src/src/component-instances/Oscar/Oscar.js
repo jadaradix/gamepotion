@@ -7,6 +7,7 @@ import parseRunArguments from './parseRunArguments'
 import getInstanceClassesAtCoords from './getInstanceClassesAtCoords'
 
 const variables = new Map()
+let resourceContainers = []
 
 class AtomInstance {
   constructor(coords, atomContainer, imageContainer) {
@@ -25,14 +26,13 @@ class AtomInstance {
         instance,
         variables
       }
-      const runArguments = (a.requiresRuntimeRunArgumentParsing === true ? parseRunArguments(a.runArguments, variables).runArguments : a.runArguments)
+      const runArguments = (a.requiresRuntimeRunArgumentParsing === true ? parseRunArguments(a.argumentTypes, a.runArguments, variables).runArguments : a.runArguments)
       return a.run(context, runArguments, a.appliesTo)
     })
   }
 }
 
-const getInstanceClasses = (instances, resourceContainers) => {
-  console.warn('[Oscar] [getInstanceClasses] resourceContainers', resourceContainers)
+const getInstanceClasses = (instances) => {
   return instances.map(i => {
     const atomContainer = resourceContainers.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
     const imageContainer = resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === atomContainer.resource.imageId)
@@ -43,33 +43,68 @@ const getInstanceClasses = (instances, resourceContainers) => {
 
 const handleEvent = (event, spaceContainer, instanceClasses, appliesToInstanceClasses) => {
   let instanceClassesToDestroy = []
+  let instancesToCreate = []
   appliesToInstanceClasses.forEach(i => {
     const actionBacks = i.onEvent(event, spaceContainer).filter(ab => typeof ab === 'object' && ab !== null)
     actionBacks.forEach(actionBack => {
-      const result = handleActionBack(appliesToInstanceClasses, actionBack)
+      const result = handleActionBack(instanceClasses, appliesToInstanceClasses, actionBack)
       instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
+      instancesToCreate = instancesToCreate.concat(result.instancesToCreate)
     })
   })
-  // console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
   if (instanceClassesToDestroy.length > 0) {
+    console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
     instanceClasses = handleEvent('destroy', spaceContainer, instanceClasses, instanceClassesToDestroy)
   }
+  // const createdInstances = instancesToCreate.map(itc => {
+  //   return null
+  // })
+  // instanceClasses = instanceClasses.concat(createdInstances)
+  // if (createdInstances.length > 0) {
+  //   console.log('[Oscar] [handleEvent] createdInstances', createdInstances)
+  //   // instanceClasses = handleEvent('create', spaceContainer, instanceClasses, createdInstances)
+  // }
   instanceClasses = instanceClasses.filter(ic => {
     const willDestroy = instanceClassesToDestroy.includes(ic)
+    if (willDestroy === true) {
+      console.error('willDestroy', willDestroy)
+    }
     return (!willDestroy)
   })
   return instanceClasses
 }
 
-const handleActionBack = (appliesToInstanceClasses, actionBack) => {
-  switch(actionBack.actionBack) {
-  case 'INSTANCE_DESTROY':
-    console.warn('[handleActionBack] appliesToInstanceClasses/actionBack', appliesToInstanceClasses, actionBack)
-    return {
-      instanceClassesToDestroy: [actionBack.actionBackArguments[0]]
+const handleActionBack = (instanceClasses, appliesToInstanceClasses, actionBack) => {
+  // console.warn('[handleActionBack] instanceClasses/appliesToInstanceClasses/actionBack', instanceClasses, appliesToInstanceClasses, actionBack)
+  const actionBackLogics = {
+    'INSTANCE_DESTROY': () => {
+      return {
+        instanceClassesToDestroy: actionBack.actionBackArguments,
+        instancesToCreate: []
+      }
+    },
+    'INSTANCE_CREATE': () => {
+      const getAtomById = (id) => {
+        return resourceContainers.find(rc => rc.resource.id === id).resource
+      }
+      const instancesToCreate = [
+        {
+          atom: getAtomById(actionBack.actionBackArguments[0]),
+          x: actionBack.actionBackArguments[1],
+          y: actionBack.actionBackArguments[2]
+        }
+      ]
+      return {
+        instanceClassesToDestroy: [],
+        instancesToCreate
+      }
     }
-  default:
   }
+  const actionBackLogic = actionBackLogics[actionBack.actionBack]
+  if (typeof actionBackLogic !== 'function') {
+    throw new Error('unsupported actionBack type; this is quite bad')
+  }
+  return actionBackLogic()
 }
 
 const start = (spaceContainer, instanceClasses) => {
@@ -174,7 +209,7 @@ class Oscar extends Component {
   }
 
   renderCanvas(canvas, space, resources) {
-    const resourceContainers = resources.map(resource => {
+    resourceContainers = resources.map(resource => {
       return {
         resource,
         extras: {}
@@ -190,7 +225,7 @@ class Oscar extends Component {
     this.removeEventListeners()
 
     // let because it can be spliced
-    let instanceClasses = getInstanceClasses(space.instances, resourceContainers)
+    let instanceClasses = getInstanceClasses(space.instances)
     console.error('delib here', instanceClasses)
 
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
@@ -335,17 +370,21 @@ class Oscar extends Component {
         return [k, new classes.actions[k]()]
       })
     )
-    resourceContainers
-      .filter(r => r.resource.type === 'atom')
-      .map(r => {
+    const resourcesAtoms = resourceContainers.filter(r => r.resource.type === 'atom')
+    resourcesAtoms
+      .forEach(r => {
         r.extras.events = new Map(
           Object.keys(r.resource.events).map(k => {
             return [
               k,
               r.resource.events[k].map(a => {
-                const requiresRuntimeRunArgumentParsing = parseRunArguments(a.runArguments, variables).requiresRuntimeRunArgumentParsing
+                const actionClassInstance = actionClassInstances.get(a.id)
+                const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
+                const requiresRuntimeRunArgumentParsing = parseRunArguments(argumentTypes, a.runArguments, variables).requiresRuntimeRunArgumentParsing
                 return {
-                  run: actionClassInstances.get(a.id).run,
+                  resourceContainers,
+                  argumentTypes,
+                  run: actionClassInstance.run,
                   runArguments: a.runArguments,
                   appliesTo: a.appliesTo,
                   requiresRuntimeRunArgumentParsing
@@ -354,7 +393,6 @@ class Oscar extends Component {
             ]
           })
         )
-        return r
       })
 
     //

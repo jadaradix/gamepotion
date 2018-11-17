@@ -27,7 +27,11 @@ class Create extends Action {
     case 'html5':
       return {
         actionBack: 'INSTANCE_CREATE',
-        actionBackArguments: [context.instance],
+        actionBackArguments: [
+          runArguments[0],
+          runArguments[1],
+          runArguments[2]
+        ],
         appliesTo
       }
     case 'nds':

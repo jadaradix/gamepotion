@@ -43,38 +43,22 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
       }
     })
 
-  const getArgumentValue = (type, v) => {
-    switch (type) {
-    case 'atom':
-      return v
-    case 'image':
-      return v
-    case 'generic':
-      return v
-    case 'number':
-      return v
-      // return parseInt(v, 10) || 0 // e.g. NaN
-    default:
-      return v
-    }
-  }
-
   const getArgument = (index, name, type, value) => {
     const handleOnUpdateArgument = (v) => {
-      return onUpdateArgument(index, getArgumentValue(type, v))
+      return onUpdateArgument(index, v)
     }
     if (type === 'atom' && value === '') {
       if (atomResources.length > 0) {
-        actionClassInstance.runArguments[index] = getArgumentValue(type, atomResources[0].id)
+        actionClassInstance.runArguments[index] = atomResources[0].id
       } else {
-        actionClassInstance.runArguments[index] = getArgumentValue(type, '?')
+        actionClassInstance.runArguments[index] = '?'
       }
     }
     if (type === 'image' && value === '') {
       if (imageResources.length > 0) {
-        actionClassInstance.runArguments[index] = getArgumentValue(type, imageResources[0].id)
+        actionClassInstance.runArguments[index] = imageResources[0].id
       } else {
-        actionClassInstance.runArguments[index] = getArgumentValue(type, '?')
+        actionClassInstance.runArguments[index] = '?'
       }
     }
     switch (type) {

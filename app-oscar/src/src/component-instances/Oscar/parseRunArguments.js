@@ -13,54 +13,66 @@ const functions = new Map([
   ]
 ])
 
-const parseFunctionArgumentsString = (argumentsString, variables) => {
+const parseFunctionArgumentsString = (argumentsString, typeHint, variables) => {
   return argumentsString.split(',').map(p => {
-    return parseToken(p.trim(), variables)
+    return parseToken(p.trim(), typeHint, variables)
   })
 }
 
-const parseToken = (r, variables) => {
-  if (r[0] === '"' && r[r.length - 1] === '"') {
-    return r.substring(1, r.length - 1)
+const RESOURCE_TYPES = [
+  'image',
+  'sound',
+  'atom',
+  'space'
+]
+
+const parseToken = (token, typeHint, variables) => {
+  if (RESOURCE_TYPES.includes(typeHint)) {
+    return token
   }
-  const foundVariable = variables.get(r)
+  if (token[0] === '"' && token[token.length - 1] === '"') {
+    return token.substring(1, token.length - 1)
+  }
+  const foundVariable = variables.get(token)
   if (foundVariable !== undefined) {
     return foundVariable
   }
-  const indexOfFirstBracket = r.indexOf('(')
-  const indexOfLastBracket = r.indexOf(')')
-  if (indexOfFirstBracket > 0 && indexOfLastBracket === r.length - 1) {
-    const functionName = r.substring(0, indexOfFirstBracket)
+  const indexOfFirstBracket = token.indexOf('(')
+  const indexOfLastBracket = token.indexOf(')')
+  if (indexOfFirstBracket > 0 && indexOfLastBracket === token.length - 1) {
+    const functionName = token.substring(0, indexOfFirstBracket)
     const foundFunction = functions.get(functionName)
     if (foundFunction === undefined) {
       throw new Error(`you tried to call function ${functionName} which doesnt exist!`)
     }
-    const functionArguments = r.substring(indexOfFirstBracket + 1, indexOfLastBracket)
-    const functionRunArguments = parseFunctionArgumentsString(functionArguments, variables)
+    const functionArguments = token.substring(indexOfFirstBracket + 1, indexOfLastBracket)
+    const functionRunArguments = parseFunctionArgumentsString(functionArguments, 'generic', variables)
     if (foundFunction.argumentsNeeded !== functionRunArguments.length) {
       throw new Error(`you tried to call function with ${functionRunArguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
     }
     return foundFunction.logic(functionRunArguments)
   }
-  const asInteger = parseInt(r, 10)
+  const asInteger = parseInt(token, 10)
   if (isNaN(asInteger)) {
-    throw new Error(`could not parse ${r}`)
+    throw new Error(`could not parse ${token}`)
   }
   return asInteger
 }
 
-const parseRunArguments = (oldRunArguments, variables) => {
+const parseRunArguments = (argumentTypes, runArguments, variables) => {
+  // console.warn('[parseRunArguments] argumentTypes', argumentTypes)
   let requiresRuntimeRunArgumentParsing = false
-  const runArguments = oldRunArguments.map(r => {
-    const newR = parseToken(r, variables)
-    if (newR !== r) {
+  const newRunArguments = runArguments.map((runArgument, i) => {
+    const runArgumentType = argumentTypes[i]
+    const newR = parseToken(runArgument, runArgumentType, variables)
+    if (newR !== runArgument) {
       requiresRuntimeRunArgumentParsing = true
     }
     return newR
   })
   return {
     requiresRuntimeRunArgumentParsing,
-    runArguments
+    runArguments: newRunArguments
   }
 }
 

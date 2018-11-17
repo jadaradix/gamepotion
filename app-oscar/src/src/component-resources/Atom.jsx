@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -84,7 +84,7 @@ const StyledResource = styled.div`
   }
 `
 
-class ResourceAtom extends PureComponent {
+class ResourceAtom extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -97,6 +97,7 @@ class ResourceAtom extends PureComponent {
     this.onChooseAddAction = this.onChooseAddAction.bind(this)
     this.onActionModalGood = this.onActionModalGood.bind(this)
     this.onActionModalBad = this.onActionModalBad.bind(this)
+    this.onActionModalUpdateArgument = this.onActionModalUpdateArgument.bind(this)
     this.actOnAction = this.actOnAction.bind(this)
     this.actionClassInstances = Object.keys(classes.actions).map(k => {
       return new classes.actions[k]()
@@ -185,6 +186,14 @@ class ResourceAtom extends PureComponent {
     })
   }
 
+  onActionModalUpdateArgument(index, value) {
+    const { actionClassInstance } = this.state
+    actionClassInstance.runArguments[index] = value
+    this.setState({
+      actionClassInstance
+    })
+  }
+
   actOnAction(id, action) {
     id = parseInt(id, 10)
     const actions = {
@@ -250,7 +259,7 @@ class ResourceAtom extends PureComponent {
     return (
       <StyledResource>
         {this.state.actionClassInstance !== null &&
-          <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.onActionModalGood} onBad={this.onActionModalBad} />
+          <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.onActionModalGood} onBad={this.onActionModalBad} onUpdateArgument={this.onActionModalUpdateArgument} />
         }
         <section className='image-events'>
           <Box className='image'>
