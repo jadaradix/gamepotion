@@ -29,15 +29,15 @@ const MainToolbar = ({ currentProject, onClick, disabled }) => {
         <ToolbarButton fixedWidth='180' disabled hint='Loading...' />
       }
       <ToolbarGap />
-      <ToolbarButton onClick={() => onClick('project-run')} disabled={disabled || currentProject === null} icon={icons.generic.project.run} hint='Run project' />
-      <ToolbarButton onClick={() => onClick('project-share')} disabled={disabled || currentProject === null} icon={icons.generic.project.share} hint='Share project' />
+      <ToolbarButton onClick={() => onClick('project-run')} disabled={disabled || currentProject === null} icon={icons.generic.project.run} hint='Play game' />
+      <ToolbarButton onClick={() => onClick('project-share')} disabled={disabled || currentProject === null} icon={icons.generic.project.share} hint='Share game' />
       <ToolbarGap />
       {resourceTypes.map(rt => (
         <ToolbarButton key={rt.type} onClick={() => onClick(`add-resource-${rt.type}`)} disabled={disabled || currentProject === null} icon={icons.resources[rt.type]} hint={`Add ${rt.nameSingular}`} />
       ))
       }
       <ToolbarGap />
-      <ToolbarButton route={getPreferencesRoute(currentProject)} disabled={disabled || currentProject === null} icon={icons.generic.preferences} hint='Project preferences' />
+      <ToolbarButton route={getPreferencesRoute(currentProject)} disabled={disabled || currentProject === null} icon={icons.generic.preferences} hint='Game settings' />
     </Toolbar>
   )
 }

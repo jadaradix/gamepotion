@@ -23,7 +23,7 @@ const StyledActionModal = styled.div`
   }
 `
 
-const ActionModal = ({ actionClassInstance, resources, onGood, onBad }) => {
+const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateArgument }) => {
 
   const atomResources = resources
     .filter(r => r.type === 'atom')
@@ -52,15 +52,16 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad }) => {
     case 'generic':
       return v
     case 'number':
-      return parseInt(v, 10) || 0 // e.g. NaN
+      return v
+      // return parseInt(v, 10) || 0 // e.g. NaN
     default:
       return v
     }
   }
 
   const getArgument = (index, name, type, value) => {
-    const onUpdateArgument = (v) => {
-      actionClassInstance.runArguments[index] = getArgumentValue(type, v)
+    const handleOnUpdateArgument = (v) => {
+      return onUpdateArgument(index, getArgumentValue(type, v))
     }
     if (type === 'atom' && value === '') {
       if (atomResources.length > 0) {
@@ -78,13 +79,13 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad }) => {
     }
     switch (type) {
     case 'atom':
-      return <Dropper onChoose={onUpdateArgument} label={name} value={value} options={atomResources} />
+      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={atomResources} />
     case 'image':
-      return <Dropper onChoose={onUpdateArgument} label={name} value={value} options={imageResources} />
+      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={imageResources} />
     case 'generic':
     case 'number':
     default:
-      return <Input onChange={onUpdateArgument} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
+      return <Input onChange={handleOnUpdateArgument} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
     }
   }
 
@@ -115,12 +116,14 @@ ActionModal.propTypes = {
   actionClassInstance: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired,
   onGood: PropTypes.func,
-  onBad: PropTypes.func
+  onBad: PropTypes.func,
+  onUpdateArgument: PropTypes.func
 }
 
 ActionModal.defaultProps = {
   onGood: () => {},
-  onBad: () => {}
+  onBad: () => {},
+  onUpdateArgument: () => {}
 }
 
 export default ActionModal
