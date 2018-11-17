@@ -105,7 +105,6 @@ const stages = new Map([
           return isPasswordValid
         }
         const goNext = (e) => {
-          e.preventDefault()
           dispatch({
             name: 'USER_LOG_IN',
             data: {
@@ -120,7 +119,6 @@ const stages = new Map([
             })
         }
         const goPrevious = (e) => {
-          e.preventDefault()
           return setStateCallback({
             stage: 'email',
             ...stages.get('email').init(state)
@@ -152,8 +150,6 @@ const stages = new Map([
       },
       'render': (state, setStateCallback) => {
         const goNext = (e) => {
-          e.preventDefault()
-          console.warn('create account here!')
           dispatch({
             name: 'USER_CREATE',
             data: {
@@ -168,7 +164,6 @@ const stages = new Map([
             })
         }
         const goPrevious = (e) => {
-          e.preventDefault()
           return setStateCallback({
             stage: 'email',
             ...stages.get('email').init(state)
@@ -185,7 +180,7 @@ const stages = new Map([
                 Would you like to create one?
               </p>
               <Button onClick={goNext}>Yes, create an account</Button>
-              <Button onClick={goPrevious} flavour='weak'>No</Button>
+              <Button onClick={goPrevious} flavour='weak'>No...</Button>
             </div>
           </Fragment>
         )

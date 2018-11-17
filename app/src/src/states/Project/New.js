@@ -4,6 +4,7 @@ import { Redirect } from 'react-router'
 
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../../component-instances/ResponsiveContainer'
+import CustomHelmet from '../../component-instances/CustomHelmet'
 
 import Box from '../../components/Box/Box'
 import Heading1 from '../../components/Heading1/Heading1'
@@ -17,6 +18,12 @@ const StyledState = styled.div`
     max-width: 480px;
     margin: 4rem auto 0 auto;
   }
+  .component--button {
+    display: inline-block;
+  }
+  .component--button + .component--button {
+    margin-left: 0.5rem;
+  }
 `
 
 class StateProjectNew extends PureComponent {
@@ -25,13 +32,13 @@ class StateProjectNew extends PureComponent {
     this.state = {
       currentProject: {
         project: {
-          name: ''
+          name: 'My game'
         }
       }
     }
     this.update = this.update.bind(this)
-    this.submit = this.submit.bind(this)
-    this.canSubmit = this.canSubmit.bind(this)
+    this.createProject = this.createProject.bind(this)
+    this.canCreateProject = this.canCreateProject.bind(this)
   }
 
   componentDidMount () {
@@ -60,8 +67,7 @@ class StateProjectNew extends PureComponent {
     })
   }
 
-  submit(e) {
-    e.preventDefault()
+  createProject() {
     dispatch({
       name: 'PROJECTS_CREATE',
       data: {
@@ -70,7 +76,7 @@ class StateProjectNew extends PureComponent {
     })
   }
 
-  canSubmit () {
+  canCreateProject () {
     const isNameValid = (this.state.currentProject.project.name.length > 0)
     return (isNameValid)
   }
@@ -81,15 +87,17 @@ class StateProjectNew extends PureComponent {
     }
     return (
       <Fragment>
+        <CustomHelmet
+          title='Create game'
+        />
         <MainToolbarContainer />
         <ResponsiveContainer>
           <StyledState>
             <Box>
-              <form onSubmit={this.submit}>
-                <Heading1>Create project</Heading1>
-                <Input label='Name' autoFocus value={this.state.currentProject.project.name} onChange={(v) => this.update('name', v)} onDone={this.createProject} />
-                <Button disabled={!this.canSubmit()} onClick={this.createProject}>Create</Button>
-              </form>
+              <Heading1>Create a game</Heading1>
+              <Input label='What would you like to call your game?' autoFocus value={this.state.currentProject.project.name} onChange={(v) => this.update('name', v)} onDone={this.createProject} />
+              <Button disabled={!this.canCreateProject()} onClick={this.createProject}>Create</Button>
+              <Button onClick={this.createProject} route='/dashboard' flavour='weak'>Cancel</Button>
             </Box>
           </StyledState>
         </ResponsiveContainer>

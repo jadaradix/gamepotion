@@ -170,7 +170,7 @@ class StateDashboard extends PureComponent {
                   <Loading />
                   :
                   <Fragment>
-                    <Heading1>Projects</Heading1>
+                    <Heading1>Games</Heading1>
                     {this.state.projects.length > 0 ?
                       <List>
                         {this.state.projects.map(p => (
@@ -188,9 +188,9 @@ class StateDashboard extends PureComponent {
                         ))}
                       </List>
                       :
-                      <p>You didn&rsquo;t create any projects yet.</p>
+                      <p>You haven&rsquo;t created any games yet.</p>
                     }
-                    <Button hint='Create project' route='/projects/new'>Create project</Button>
+                    <Button route='/projects/new'>Create a game</Button>
                   </Fragment>
                 }
               </Box>
@@ -221,7 +221,7 @@ class StateDashboard extends PureComponent {
               </Box>
             </section>
             <section>
-              <Button onClick={this.logOut}>Log out</Button>
+              <Button onClick={this.logOut} flavour='weak'>Log out</Button>
             </section>
           </StyledState>
         </ResponsiveContainer>
