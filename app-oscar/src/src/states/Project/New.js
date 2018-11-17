@@ -88,7 +88,7 @@ class StateProjectNew extends PureComponent {
     return (
       <Fragment>
         <CustomHelmet
-          title='Create game'
+          title='Create a game'
         />
         <MainToolbarContainer />
         <ResponsiveContainer>

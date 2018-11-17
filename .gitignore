@@ -13,17 +13,17 @@ classes/abstractions
 
 api-core/src/abstractions
 api-bin/src/abstractions
-app/src/abstractions
+app-oscar/src/abstractions
 
 platforms/nds/classes
-app/src/src/classes
+app-oscar/src/src/classes
 api-core/src/classes
 api-bin/src/classes
 
 api-core/src/platforms
 
-app/src/build
-app/src/coverage
+app-oscar/src/build
+app-oscar/src/coverage
 
 api-core/files
 

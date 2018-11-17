@@ -25,7 +25,7 @@ cd api-bin/src;
   rm -rf classes; ln -s ../../classes classes;
 cd ../..;
 
-cd app/src;
+cd app-oscar/src;
   rm -rf abstractions;
   mkdir abstractions;
   # ln -s ../../../abstractions/events.json abstractions/events.json;

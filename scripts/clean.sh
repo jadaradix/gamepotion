@@ -20,7 +20,7 @@ cd api-bin/src;
   rm -rf classes;
 cd ../..;
 
-cd app/src/src;
+cd app-oscar/src/src;
   rm -rf abstractions;
   rm -rf classes;
 cd ../../..;

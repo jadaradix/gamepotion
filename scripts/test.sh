@@ -20,7 +20,7 @@ cd api-bin/src;
   npm test;
 cd ../..;
 
-cd app;
+cd app-oscar;
   npm test;
 cd ..;
 
