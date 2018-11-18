@@ -7,9 +7,12 @@ const handleEvent = (event, spaceContainer, resourceContainers, variables, insta
   appliesToInstanceClasses.forEach(i => {
     const actionBacks = i.onEvent(event, spaceContainer, variables).filter(ab => typeof ab === 'object' && ab !== null)
     actionBacks.forEach(actionBack => {
-      const result = handleActionBack(instanceClasses, appliesToInstanceClasses, actionBack)
+      const result = handleActionBack(actionBack)
       instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
       instancesToCreate = instancesToCreate.concat(result.instancesToCreate)
+      if (typeof result.setImage === 'string') {
+        i.imageContainer = resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === result.setImage)
+      }
     })
   })
   if (instanceClassesToDestroy.length > 0) {

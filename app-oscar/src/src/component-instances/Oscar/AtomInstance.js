@@ -14,6 +14,7 @@ class AtomInstance {
         platform: 'html5',
         space: spaceContainer.space,
         instance,
+        otherInstance: null,
         variables
       }
       const runArguments = parseRunArguments(a.argumentTypes, a.runArguments, variables, this)

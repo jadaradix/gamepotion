@@ -1,10 +1,11 @@
-const handleActionBack = (instanceClasses, appliesToInstanceClasses, actionBack) => {
-  // console.warn('[handleActionBack] instanceClasses/appliesToInstanceClasses/actionBack', instanceClasses, appliesToInstanceClasses, actionBack)
+const handleActionBack = (actionBack) => {
+  // console.warn('[handleActionBack] actionBack', actionBack)
   const actionBackLogics = {
     'INSTANCE_DESTROY': () => {
       return {
         instanceClassesToDestroy: actionBack.actionBackArguments,
-        instancesToCreate: []
+        instancesToCreate: [],
+        setImage: null
       }
     },
     'INSTANCE_CREATE': () => {
@@ -18,7 +19,15 @@ const handleActionBack = (instanceClasses, appliesToInstanceClasses, actionBack)
       ]
       return {
         instanceClassesToDestroy: [],
-        instancesToCreate
+        instancesToCreate,
+        setImage: null
+      }
+    },
+    'INSTANCE_SET_IMAGE': () => {
+      return {
+        instanceClassesToDestroy: [],
+        instancesToCreate: [],
+        setImage: actionBack.actionBackArguments[0]
       }
     }
   }

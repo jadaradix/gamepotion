@@ -3,6 +3,7 @@ import Move from './Move.js'
 import Destroy from './Destroy.js'
 import SetXSpeed from './SetXSpeed.js'
 import SetYSpeed from './SetYSpeed.js'
+import SetImage from './SetImage.js'
 
 import If from './If.js'
 import EndIf from './EndIf.js'
@@ -15,6 +16,7 @@ export default {
   Destroy,
   SetXSpeed,
   SetYSpeed,
+  SetImage,
 
   If,
   EndIf,

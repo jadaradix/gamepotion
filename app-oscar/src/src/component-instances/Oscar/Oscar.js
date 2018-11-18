@@ -174,8 +174,8 @@ class Oscar extends Component {
       if (this.props.designMode === true) {
         draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
       } else {
+        instanceClasses = start(spaceContainer, resourceContainers, this.props.variables, instanceClasses, this.props.designMode)
         const logic = () => {
-          instanceClasses = start(spaceContainer, resourceContainers, this.props.variables, instanceClasses, this.props.designMode)
           instanceClasses = step(spaceContainer, resourceContainers, this.props.variables, instanceClasses, this.props.designMode)
           draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
           if (this.props.designMode === false) {
