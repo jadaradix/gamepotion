@@ -1,3 +1,10 @@
+const RESOURCE_TYPES = [
+  'image',
+  'sound',
+  'atom',
+  'space'
+]
+
 const functions = new Map([
   [
     'random',
@@ -19,16 +26,13 @@ const parseFunctionArgumentsString = (argumentsString, typeHint, variables) => {
   })
 }
 
-const RESOURCE_TYPES = [
-  'image',
-  'sound',
-  'atom',
-  'space'
-]
-
-const parseToken = (token, typeHint, variables) => {
+const parseToken = (token, typeHint, variables, instanceClass) => {
   if (typeof token === 'number') {
     return token
+  }
+  if (token.indexOf('instance.') === 0) {
+    const prop = token.substring('instance.'.length)
+    return instanceClass.props[prop]
   }
   if (RESOURCE_TYPES.includes(typeHint)) {
     return token
@@ -62,22 +66,13 @@ const parseToken = (token, typeHint, variables) => {
   return asInteger
 }
 
-const parseRunArguments = (argumentTypes, runArguments, variables) => {
+const parseRunArguments = (argumentTypes, runArguments, variables, instanceClass) => {
   // console.warn('[parseRunArguments] argumentTypes', argumentTypes)
-  // let requiresRuntimeRunArgumentParsing = false
   const newRunArguments = runArguments.map((runArgument, i) => {
     const runArgumentType = argumentTypes[i]
-    const newR = parseToken(runArgument, runArgumentType, variables)
-    // if (newR !== runArgument) {
-    //   requiresRuntimeRunArgumentParsing = true
-    // }
-    return newR
+    return parseToken(runArgument, runArgumentType, variables, instanceClass)
   })
   return newRunArguments
-  // return {
-  //   requiresRuntimeRunArgumentParsing,
-  //   runArguments: newRunArguments
-  // }
 }
 
 export default parseRunArguments

@@ -17,7 +17,7 @@ class SetXSpeed extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      context.instance.vcoords[0] = runArguments[0]
+      context.instance.props.vx = runArguments[0]
       return null
     case 'nds':
       return ''

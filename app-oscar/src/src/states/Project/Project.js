@@ -39,7 +39,7 @@ const StyledState = styled.div`
     }
     > main {
       margin-left: calc(256px + 2rem);
-      padding: 3rem 1rem 1rem 1rem;
+      padding: 3rem 2rem 1rem 1rem;
     }
   }
 `

@@ -19,9 +19,9 @@ const step = (spaceContainer, resourceContainers, variables, instanceClasses) =>
   // console.warn('[step] spaceContainer', spaceContainer)
   // console.warn('[step] instanceClasses', instanceClasses)
   instanceClasses.forEach(i => {
-    i.vcoords.forEach((vc, vci) => {
-      i.coords[vci] += vc
-    })
+    i.props.x += i.props.vx
+    i.props.y += i.props.vy
+    i.props.z += i.props.vz
   })
   return handleEvent('step', spaceContainer, resourceContainers, variables, instanceClasses, instanceClasses)
 }
@@ -80,21 +80,19 @@ class Oscar extends Component {
       const x = parseInt(e.touches[0].clientX - cDomBounds.x + window.scrollX, 10)
       const y = parseInt(e.touches[0].clientY - cDomBounds.y + window.scrollY, 10)
       const z = parseInt(0, 10)
-      const coords = [x, y, z]
-      return coords
+      return { x, y, z }
     }
     const getMouseData = (e) => {
       e.preventDefault()
       const x = parseInt(e.clientX - cDomBounds.x + window.scrollX, 10)
       const y = parseInt(e.clientY - cDomBounds.y + window.scrollY, 10)
       const z = parseInt(0, 10)
-      const coords = [x, y, z]
-      return coords
+      return { x, y, z }
     }
     const onTouch = (coords) => {
       if (this.props.grid.on === true) {
-        coords[0] = coords[0] - (coords[0] % this.props.grid.width)
-        coords[1] = coords[1] - (coords[1] % this.props.grid.width)
+        coords.x = coords.x - (coords.x % this.props.grid.width)
+        coords.y = coords.y - (coords.y % this.props.grid.width)
       }
       this.props.onTouch(coords)
     }
@@ -226,14 +224,12 @@ class Oscar extends Component {
               r.resource.events[k].map(a => {
                 const actionClassInstance = actionClassInstances.get(a.id)
                 const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
-                // const requiresRuntimeRunArgumentParsing = parseRunArguments(argumentTypes, a.runArguments, this.props.variables).requiresRuntimeRunArgumentParsing
                 return {
-                  resourceContainers,
-                  argumentTypes,
                   run: actionClassInstance.run,
                   runArguments: a.runArguments,
                   appliesTo: a.appliesTo,
-                  // requiresRuntimeRunArgumentParsing
+                  resourceContainers,
+                  argumentTypes
                 }
               })
             ]

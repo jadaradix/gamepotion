@@ -4,8 +4,8 @@ class Destroy extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'Destroy'
-    this.name = 'Destroy Atom'
-    this.description = 'Destroys an atom.'
+    this.name = 'Destroy'
+    this.description = 'Destroys an instance.'
     this.defaultRunArguments = new Map([
     ])
   }

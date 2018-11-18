@@ -1,9 +1,8 @@
 import parseRunArguments from './parseRunArguments'
 
 class AtomInstance {
-  constructor(coords, atomContainer, imageContainer) {
-    this.coords = coords
-    this.vcoords = Array(coords.length).fill(0)
+  constructor(props, atomContainer, imageContainer) {
+    this.props = props
     this.atomContainer = atomContainer
     this.imageContainer = imageContainer
   }
@@ -17,8 +16,7 @@ class AtomInstance {
         instance,
         variables
       }
-      const runArguments = parseRunArguments(a.argumentTypes, a.runArguments, variables)
-      // (a.requiresRuntimeRunArgumentParsing === true ? parseRunArguments(a.argumentTypes, a.runArguments, variables).runArguments : a.runArguments)
+      const runArguments = parseRunArguments(a.argumentTypes, a.runArguments, variables, this)
       return a.run(context, runArguments, a.appliesTo)
     })
   }

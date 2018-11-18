@@ -4,8 +4,8 @@ class Create extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'Create'
-    this.name = 'Create Atom'
-    this.description = 'Creates an atom.'
+    this.name = 'Create'
+    this.description = 'Creates an instance.'
     this.defaultRunArguments = new Map([
       ['Atom', {
         type: 'atom',

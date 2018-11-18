@@ -190,15 +190,12 @@ class ResourceSpace extends PureComponent {
     if (this.state.atomToPlot === 'none') {
       return
     }
-    const [x, y, z] = coords
     this.props.onUpdate({
       instances: [
         ...this.props.resource.instances,
         {
           atomId: this.state.atomToPlot,
-          x,
-          y,
-          z
+          ...coords
         }
       ]
     })
@@ -216,8 +213,8 @@ class ResourceSpace extends PureComponent {
 
   updateTouchCoords(coords) {
     // console.warn('[updateTouchCoords] coords', coords, this.thisRefs.touchCoordsX)
-    this.thisRefs.touchCoordsX.value = coords[0]
-    this.thisRefs.touchCoordsY.value = coords[1]
+    this.thisRefs.touchCoordsX.value = coords.x
+    this.thisRefs.touchCoordsY.value = coords.y
   }
 
   updateGridProperty(property, value) {

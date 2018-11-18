@@ -65,6 +65,11 @@ const element = document.createElement('SPAN')
 //   // ...
 // })()
 
+const AUTH_FAILED_MESSAGES = [
+  'unknown e-mail address',
+  'wrong password'
+]
+
 export function dispatch ({ name, data = {} }) {
   const foundAction = actions.get(name)
   if (foundAction === undefined) {
@@ -78,7 +83,7 @@ export function dispatch ({ name, data = {} }) {
     })
     .catch(error => {
       console.error('[state] action execution failed!', error)
-      if (name !== 'USER_LOG_IN' && error.hasOwnProperty('response') && error.response.data.message === 'wrong password') {
+      if (name !== 'USER_LOG_IN' && error.hasOwnProperty('response') && AUTH_FAILED_MESSAGES.includes(error.response.data.message)) {
         window.location = '/auth'
         return false
       }

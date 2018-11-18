@@ -33,6 +33,7 @@ const StyledResource = styled.div`
     }
     .component--box.events {
       margin-top: 1rem;
+      margin-bottom: 2rem;
       padding: 1rem;
       .component--heading2 {
         margin-bottom: 1rem;

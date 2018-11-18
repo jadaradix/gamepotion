@@ -4,10 +4,10 @@ const getInstanceClassesAtCoords = (instanceClasses, coords) => {
       const w = (ic.imageContainer && ic.imageContainer.resource.frameWidth) || 0
       const h = (ic.imageContainer && ic.imageContainer.resource.frameHeight) || 0
       const isIntersecting = (
-        coords[0] >= ic.coords[0] &&
-        coords[1] >= ic.coords[1] &&
-        coords[0] < (ic.coords[0] + w) &&
-        coords[1] < (ic.coords[1] + h)
+        coords.x >= ic.props.x &&
+        coords.y >= ic.props.y &&
+        coords.x < (ic.props.x + w) &&
+        coords.y < (ic.props.y + h)
       )
       return isIntersecting
     })

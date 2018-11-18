@@ -17,7 +17,7 @@ class SetYSpeed extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      context.instance.vcoords[1] = runArguments[0]
+      context.instance.props.vy = runArguments[0]
       return null
     case 'nds':
       return ''

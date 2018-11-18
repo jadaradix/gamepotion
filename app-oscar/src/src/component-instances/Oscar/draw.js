@@ -12,7 +12,7 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
     }    
   }
   instanceClasses.forEach(i => {
-    i.imageContainer && ctx.drawImage(i.imageContainer.extras.image, i.coords[0], i.coords[1])
+    i.imageContainer && ctx.drawImage(i.imageContainer.extras.image, i.props.x, i.props.y)
   })
   if (spaceContainer.extras.foregroundImage !== null) {
     ctx.drawImage(spaceContainer.extras.foregroundImage.extras.element, 0, 0)
