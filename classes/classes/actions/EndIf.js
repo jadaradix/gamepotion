@@ -14,11 +14,7 @@ class EndIf extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      return {
-        actionBack: 'END_IF',
-        actionBackArguments: [],
-        appliesTo
-      }
+      return null
     case 'nds':
       return '}'
     default:

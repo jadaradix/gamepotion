@@ -22,11 +22,7 @@ class If extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      return {
-        actionBack: 'IF',
-        actionBackArguments: [true],
-        appliesTo
-      }
+      return null
     case 'nds':
       return `if(${runArguments[0]} == ${runArguments[1]}) {`
     default:
