@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import classes from '../../classes'
 
-// import parseRunArguments from './parseRunArguments'
 import getInstanceClassesAtCoords from './getInstanceClassesAtCoords'
 import draw from './draw'
 import instanceDefinitionsToInstanceClasses from './instanceDefinitionsToInstanceClasses'
@@ -26,7 +25,7 @@ const step = (spaceContainer, resourceContainers, variables, instanceClasses) =>
   return handleEvent('step', spaceContainer, resourceContainers, variables, instanceClasses, instanceClasses)
 }
 
-class Oscar extends Component {
+class Space extends Component {
   constructor() {
     super()
     this.canvasRef = React.createRef()
@@ -152,7 +151,7 @@ class Oscar extends Component {
     let resourceContainersLoadedSoFar = 0
     const totalResourceContainersToLoad = resourceContainers.filter(r => ['image', 'sound'].includes(r.resource.type)).length
     const startLoading = () => {
-      console.warn('[Oscar] [renderCanvas] start loading!')
+      console.warn('[Oscar] [Space] [renderCanvas] start loading!')
       c.width = space.width
       c.height = space.height
       c.style.display = 'block'
@@ -170,7 +169,7 @@ class Oscar extends Component {
     }
 
     const loadedGood = () => {
-      console.warn('[Oscar] [renderCanvas] [loadedGood]')
+      console.warn('[Oscar] [Space] [renderCanvas] [loadedGood]')
       if (this.props.designMode === true) {
         draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
       } else {
@@ -186,7 +185,7 @@ class Oscar extends Component {
       }
     }
     const loadedBad = () => {
-      console.warn('[Oscar] [renderCanvas] [loadedBad]')
+      console.warn('[Oscar] [Space] [renderCanvas] [loadedBad]')
       ctx.clearRect(0, 0, space.width, space.height)
       ctx.fillStyle = '#ffffff'
       ctx.font = '16px Arial'
@@ -195,13 +194,13 @@ class Oscar extends Component {
     }
     const loadGoodLogic = () => {
       resourceContainersLoadedSoFar += 1
-      console.warn(`[Oscar] [renderCanvas] [loadGoodLogic] done ${resourceContainersLoadedSoFar}/${totalResourceContainersToLoad}`)
+      console.warn(`[Oscar] [Space] [renderCanvas] [loadGoodLogic] done ${resourceContainersLoadedSoFar}/${totalResourceContainersToLoad}`)
       if (resourceContainersLoadedSoFar === totalResourceContainersToLoad) {
         loadedGood()
       }
     }
     const loadBadLogic = () => {
-      console.warn('[Oscar] [renderCanvas] [loadBadLogic]')
+      console.warn('[Oscar] [Space] [renderCanvas] [loadBadLogic]')
       loadedBad()
     }
     startLoading()
@@ -279,7 +278,7 @@ class Oscar extends Component {
   }
 
   render() {
-    console.warn('[Oscar] [render]')
+    console.warn('[Oscar] [Space] [render]')
     const canvasStyle = {
       width: this.props.space.width,
       height: this.props.space.height,
@@ -296,7 +295,7 @@ class Oscar extends Component {
   }
 }
 
-Oscar.propTypes = {
+Space.propTypes = {
   designMode: PropTypes.bool,
   space: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired,
@@ -307,7 +306,7 @@ Oscar.propTypes = {
   variables: PropTypes.any
 }
 
-Oscar.defaultProps = {
+Space.defaultProps = {
   designMode: false,
   onTouch: () => {},
   onTouchSecondary: () => {},
@@ -315,4 +314,4 @@ Oscar.defaultProps = {
   variables: new Map()
 }
 
-export default Oscar
+export default Space
