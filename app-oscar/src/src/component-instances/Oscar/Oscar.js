@@ -3,110 +3,19 @@ import PropTypes from 'prop-types'
 
 import classes from '../../classes'
 
-import parseRunArguments from './parseRunArguments'
+// import parseRunArguments from './parseRunArguments'
 import getInstanceClassesAtCoords from './getInstanceClassesAtCoords'
+import draw from './draw'
+import instanceDefinitionsToInstanceClasses from './instanceDefinitionsToInstanceClasses'
+import handleEvent from './handleEvent'
 
-const variables = new Map()
-let resourceContainers = []
-
-class AtomInstance {
-  constructor(coords, atomContainer, imageContainer) {
-    this.coords = coords
-    this.vcoords = Array(coords.length).fill(0)
-    this.atomContainer = atomContainer
-    this.imageContainer = imageContainer
-  }
-
-  onEvent(event, spaceContainer) {
-    const instance = this
-    return this.atomContainer.extras.events.get(event).map(a => {
-      const context = {
-        platform: 'html5',
-        space: spaceContainer.space,
-        instance,
-        variables
-      }
-      const runArguments = (a.requiresRuntimeRunArgumentParsing === true ? parseRunArguments(a.argumentTypes, a.runArguments, variables).runArguments : a.runArguments)
-      return a.run(context, runArguments, a.appliesTo)
-    })
-  }
-}
-
-const getInstanceClasses = (instances) => {
-  return instances.map(i => {
-    const atomContainer = resourceContainers.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
-    const imageContainer = resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === atomContainer.resource.imageId)
-    const coords = [i.x, i.y, i.z]
-    return new AtomInstance(coords, atomContainer, imageContainer)
-  })
-}
-
-const handleEvent = (event, spaceContainer, instanceClasses, appliesToInstanceClasses) => {
-  let instanceClassesToDestroy = []
-  let instancesToCreate = []
-  appliesToInstanceClasses.forEach(i => {
-    const actionBacks = i.onEvent(event, spaceContainer).filter(ab => typeof ab === 'object' && ab !== null)
-    actionBacks.forEach(actionBack => {
-      const result = handleActionBack(instanceClasses, appliesToInstanceClasses, actionBack)
-      instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
-      instancesToCreate = instancesToCreate.concat(result.instancesToCreate)
-    })
-  })
-  if (instanceClassesToDestroy.length > 0) {
-    console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
-    instanceClasses = handleEvent('destroy', spaceContainer, instanceClasses, instanceClassesToDestroy)
-  }
-  const createdInstances = getInstanceClasses(instancesToCreate)
-  instanceClasses = instanceClasses.concat(createdInstances)
-  if (createdInstances.length > 0) {
-    console.log('[Oscar] [handleEvent] createdInstances', createdInstances)
-    instanceClasses = handleEvent('create', spaceContainer, instanceClasses, createdInstances)
-  }
-  instanceClasses = instanceClasses.filter(ic => {
-    const willDestroy = instanceClassesToDestroy.includes(ic)
-    return (!willDestroy)
-  })
-  return instanceClasses
-}
-
-const handleActionBack = (instanceClasses, appliesToInstanceClasses, actionBack) => {
-  // console.warn('[handleActionBack] instanceClasses/appliesToInstanceClasses/actionBack', instanceClasses, appliesToInstanceClasses, actionBack)
-  const actionBackLogics = {
-    'INSTANCE_DESTROY': () => {
-      return {
-        instanceClassesToDestroy: actionBack.actionBackArguments,
-        instancesToCreate: []
-      }
-    },
-    'INSTANCE_CREATE': () => {
-      const instancesToCreate = [
-        {
-          atomId: actionBack.actionBackArguments[0],
-          x: actionBack.actionBackArguments[1],
-          y: actionBack.actionBackArguments[2],
-          z: 0
-        }
-      ]
-      return {
-        instanceClassesToDestroy: [],
-        instancesToCreate
-      }
-    }
-  }
-  const actionBackLogic = actionBackLogics[actionBack.actionBack]
-  if (typeof actionBackLogic !== 'function') {
-    throw new Error('unsupported actionBack type; this is quite bad')
-  }
-  return actionBackLogic()
-}
-
-const start = (spaceContainer, instanceClasses) => {
+const start = (spaceContainer, resourceContainers, variables, instanceClasses) => {
   // console.warn('[start] spaceContainer', spaceContainer)
   // console.warn('[start] instanceClasses', instanceClasses)
-  return handleEvent('create', spaceContainer, instanceClasses, instanceClasses)
+  return handleEvent('create', spaceContainer, resourceContainers, variables, instanceClasses, instanceClasses)
 }
 
-const step = (spaceContainer, instanceClasses) => {
+const step = (spaceContainer, resourceContainers, variables, instanceClasses) => {
   // console.warn('[step] spaceContainer', spaceContainer)
   // console.warn('[step] instanceClasses', instanceClasses)
   instanceClasses.forEach(i => {
@@ -114,63 +23,7 @@ const step = (spaceContainer, instanceClasses) => {
       i.coords[vci] += vc
     })
   })
-  return handleEvent('step', spaceContainer, instanceClasses, instanceClasses)
-}
-
-const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
-  ctx.clearRect(0, 0, spaceContainer.resource.width, spaceContainer.resource.height)
-  if (spaceContainer.extras.backgroundImage !== null) {
-    const imageWidth = spaceContainer.extras.backgroundImage.resource.frameWidth
-    const imageHeight = spaceContainer.extras.backgroundImage.resource.frameHeight
-    const xCount = (spaceContainer.resource.width + (spaceContainer.resource.width % imageWidth)) / imageWidth
-    const yCount = (spaceContainer.resource.height + (spaceContainer.resource.height % imageHeight)) / imageHeight
-    for (let x = 0; x < xCount; x++) {
-      for (let y = 0; y < yCount; y++) {
-        ctx.drawImage(spaceContainer.extras.backgroundImage.extras.element, x * imageWidth, y * imageHeight)
-      }
-    }    
-  }
-  instanceClasses.forEach(i => {
-    i.imageContainer && ctx.drawImage(i.imageContainer.extras.image, i.coords[0], i.coords[1])
-  })
-  if (spaceContainer.extras.foregroundImage !== null) {
-    ctx.drawImage(spaceContainer.extras.foregroundImage.extras.element, 0, 0)
-  }
-  const plotGrid = () => {
-    let w = parseInt(grid.width, 10)
-    let h = parseInt(grid.height, 10)
-    ctx.beginPath()
-    while (w < spaceContainer.resource.width) {
-      ctx.moveTo(w, 0)
-      ctx.lineTo(w, spaceContainer.resource.height)
-      w += parseInt(grid.width, 10)
-      while (h < spaceContainer.resource.height) {
-        ctx.moveTo(0, h)
-        ctx.lineTo(spaceContainer.resource.width, h)
-        h += parseInt(grid.height, 10)
-      }
-    }
-    ctx.closePath()
-  }
-  const plotCamera = () => {
-    ctx.beginPath()
-    ctx.rect(spaceContainer.resource.camera.x, spaceContainer.resource.camera.y, spaceContainer.resource.camera.width - 1, spaceContainer.resource.camera.height - 1)
-    ctx.closePath()
-  }
-  if (designMode === true) {
-    if (grid.on === true) {
-      ctx.globalAlpha = 0.5
-      plotGrid()
-      ctx.strokeStyle = '#ffffff'
-      ctx.stroke()
-      ctx.globalAlpha = 1
-    }
-    ctx.globalAlpha = 0.75
-    plotCamera()
-    ctx.strokeStyle = '#ff0000'
-    ctx.stroke()
-    ctx.globalAlpha = 1
-  }
+  return handleEvent('step', spaceContainer, resourceContainers, variables, instanceClasses, instanceClasses)
 }
 
 class Oscar extends Component {
@@ -202,7 +55,7 @@ class Oscar extends Component {
   }
 
   renderCanvas(canvas, space, resources) {
-    resourceContainers = resources.map(resource => {
+    const resourceContainers = resources.map(resource => {
       return {
         resource,
         extras: {}
@@ -218,8 +71,8 @@ class Oscar extends Component {
     this.removeEventListeners()
 
     // let because it can be spliced
-    let instanceClasses = getInstanceClasses(space.instances)
-    console.error('delib here', instanceClasses)
+    let instanceClasses = instanceDefinitionsToInstanceClasses(resourceContainers, space.instances)
+    // console.warn('[renderCanvas] instanceClasses', instanceClasses)
 
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
     const getTouchData = (e) => {
@@ -268,7 +121,7 @@ class Oscar extends Component {
           this.props.onTouchSecondary(indicesAtCoords)
         }
       } else {
-        instanceClasses = handleEvent('touch', spaceContainer, instanceClasses, instancesAtCoords)
+        instanceClasses = handleEvent('touch', spaceContainer, resourceContainers, this.props.variables, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'mousedown', (e) => {
@@ -285,7 +138,7 @@ class Oscar extends Component {
           this.props.onTouchSecondary(indicesAtCoords)
         }
       } else {
-        instanceClasses = handleEvent('touch', spaceContainer, instanceClasses, instancesAtCoords)
+        instanceClasses = handleEvent('touch', spaceContainer, resourceContainers, this.props.variables, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'contextmenu', (e) => {
@@ -324,8 +177,8 @@ class Oscar extends Component {
         draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
       } else {
         const logic = () => {
-          instanceClasses = start(spaceContainer, instanceClasses, this.props.designMode)
-          instanceClasses = step(spaceContainer, instanceClasses, this.props.designMode)
+          instanceClasses = start(spaceContainer, resourceContainers, this.props.variables, instanceClasses, this.props.designMode)
+          instanceClasses = step(spaceContainer, resourceContainers, this.props.variables, instanceClasses, this.props.designMode)
           draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
           if (this.props.designMode === false) {
             window.requestAnimationFrame(logic)
@@ -373,14 +226,14 @@ class Oscar extends Component {
               r.resource.events[k].map(a => {
                 const actionClassInstance = actionClassInstances.get(a.id)
                 const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
-                const requiresRuntimeRunArgumentParsing = parseRunArguments(argumentTypes, a.runArguments, variables).requiresRuntimeRunArgumentParsing
+                // const requiresRuntimeRunArgumentParsing = parseRunArguments(argumentTypes, a.runArguments, this.props.variables).requiresRuntimeRunArgumentParsing
                 return {
                   resourceContainers,
                   argumentTypes,
                   run: actionClassInstance.run,
                   runArguments: a.runArguments,
                   appliesTo: a.appliesTo,
-                  requiresRuntimeRunArgumentParsing
+                  // requiresRuntimeRunArgumentParsing
                 }
               })
             ]
@@ -454,14 +307,16 @@ Oscar.propTypes = {
   grid: PropTypes.object.isRequired,
   onTouch: PropTypes.func,
   onTouchSecondary: PropTypes.func,
-  onTouchMove: PropTypes.func
+  onTouchMove: PropTypes.func,
+  variables: PropTypes.any
 }
 
 Oscar.defaultProps = {
   designMode: false,
   onTouch: () => {},
   onTouchSecondary: () => {},
-  onTouchMove: () => {}
+  onTouchMove: () => {},
+  variables: new Map()
 }
 
 export default Oscar

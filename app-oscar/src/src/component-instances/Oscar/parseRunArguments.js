@@ -64,19 +64,20 @@ const parseToken = (token, typeHint, variables) => {
 
 const parseRunArguments = (argumentTypes, runArguments, variables) => {
   // console.warn('[parseRunArguments] argumentTypes', argumentTypes)
-  let requiresRuntimeRunArgumentParsing = false
+  // let requiresRuntimeRunArgumentParsing = false
   const newRunArguments = runArguments.map((runArgument, i) => {
     const runArgumentType = argumentTypes[i]
     const newR = parseToken(runArgument, runArgumentType, variables)
-    if (newR !== runArgument) {
-      requiresRuntimeRunArgumentParsing = true
-    }
+    // if (newR !== runArgument) {
+    //   requiresRuntimeRunArgumentParsing = true
+    // }
     return newR
   })
-  return {
-    requiresRuntimeRunArgumentParsing,
-    runArguments: newRunArguments
-  }
+  return newRunArguments
+  // return {
+  //   requiresRuntimeRunArgumentParsing,
+  //   runArguments: newRunArguments
+  // }
 }
 
 export default parseRunArguments
