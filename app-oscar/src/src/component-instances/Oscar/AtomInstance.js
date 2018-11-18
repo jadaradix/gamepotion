@@ -7,6 +7,14 @@ class AtomInstance {
     this.imageContainer = imageContainer
   }
 
+  getWidth() {
+    return (this.imageContainer && this.imageContainer.resource.frameWidth) || 0
+  }
+
+  getHeight() {
+    return (this.imageContainer && this.imageContainer.resource.frameHeight) || 0
+  }
+
   onEvent(event, spaceContainer, variables) {
     const instance = this
     return this.atomContainer.extras.events.get(event).map(a => {

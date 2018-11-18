@@ -63,7 +63,7 @@ exports[`Uploader renders 1`] = `
       src="upload.svg"
     />
     <p>
-      Drop a file here or click to upload.
+      Drop a file here or touch to upload.
     </p>
     <input
       accept="audio/wav"
@@ -151,7 +151,7 @@ exports[`Uploader renders disabled 1`] = `
       src="upload.svg"
     />
     <p>
-      Drop a file here or click to upload.
+      Drop a file here or touch to upload.
     </p>
     <input
       accept="audio/wav"

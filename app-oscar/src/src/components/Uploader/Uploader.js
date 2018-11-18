@@ -164,7 +164,7 @@ class Uploader extends PureComponent {
               return (
                 <Fragment>
                   <img src={icons.generic.upload} className='icon' alt='' />
-                  <p>Drop a file here or click to upload.</p>
+                  <p>Drop a file here or touch to upload.</p>
                 </Fragment>
               )
             }}

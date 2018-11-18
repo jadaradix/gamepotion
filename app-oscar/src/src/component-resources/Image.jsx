@@ -6,6 +6,7 @@ import resourceTypes from '../resourceTypes'
 import { font } from '../styleAbstractions'
 
 import Box from '../components/Box/Box'
+import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Uploader from '../components/Uploader/Uploader'
 import Image from '../components/Image/Image'
@@ -29,12 +30,18 @@ const StyledResource = styled.div`
   section + section {
     margin-top: 2rem;
   }
-  .component--box > p {
+  .component--box .frame-width-height {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    grid-gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .component--box .file p {
     ${font}
     font-size: 80%;
     color: #bdc3c7;
   }
-  .component--box > .component--dropper + p {
+  .component--box .file .component--dropper + p {
     margin-top: 1rem;
   }
 `
@@ -42,11 +49,18 @@ const StyledResource = styled.div`
 class ResourceImage extends PureComponent {
   constructor(props) {
     super(props)
+    this.onUpdateProp = this.onUpdateProp.bind(this)
     this.onChooseFixed = this.onChooseFixed.bind(this)
   }
 
   onUpdate(data) {
     this.props.onUpdate(data)
+  }
+
+  onUpdateProp (prop, value) {
+    this.onUpdate({
+      [prop]: parseInt(value, 10)
+    })
   }
 
   onChooseFixed(fixed) {
@@ -84,8 +98,14 @@ class ResourceImage extends PureComponent {
             <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['image/png']} onDone={() => this.onUpdate({ fixed: null })} />
           </Box>
           <Box>
-            <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
-            <p>Choosing a Game Maker Club file won&rsquo;t erase a file you have uploaded.</p>
+            <div className='frame-width-height'>
+              <Input label='Frame Width' value={this.props.resource.frameWidth} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameWidth', v)} />
+              <Input label='Frame Height' value={this.props.resource.frameHeight} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameHeight', v)} />
+            </div>
+            <div className='file'>
+              <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+              <p>Choosing a Game Maker Club file won&rsquo;t erase a file you have uploaded.</p>
+            </div>
           </Box>
         </section>
       </StyledResource>

@@ -25,7 +25,7 @@ const step = (spaceContainer, resourceContainers, variables, instanceClasses) =>
   return handleEvent('step', spaceContainer, resourceContainers, variables, instanceClasses, instanceClasses)
 }
 
-class Space extends Component {
+class GameSpace extends Component {
   constructor() {
     super()
     this.canvasRef = React.createRef()
@@ -295,7 +295,7 @@ class Space extends Component {
   }
 }
 
-Space.propTypes = {
+GameSpace.propTypes = {
   designMode: PropTypes.bool,
   space: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired,
@@ -306,7 +306,7 @@ Space.propTypes = {
   variables: PropTypes.any
 }
 
-Space.defaultProps = {
+GameSpace.defaultProps = {
   designMode: false,
   onTouch: () => {},
   onTouchSecondary: () => {},
@@ -314,4 +314,4 @@ Space.defaultProps = {
   variables: new Map()
 }
 
-export default Space
+export default GameSpace

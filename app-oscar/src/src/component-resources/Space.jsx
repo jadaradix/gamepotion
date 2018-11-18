@@ -10,7 +10,7 @@ import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 import Image from '../components/Image/Image'
 
-import Oscar from '../component-instances/Oscar/Oscar'
+import GameSpace from '../component-instances/Oscar/GameSpace'
 
 const getAtomDropperResources = (resources) => {
   return resources
@@ -286,7 +286,7 @@ class ResourceSpace extends PureComponent {
           </Box>
         </section>
         <section className='canvas'>
-          <Oscar space={this.props.resource} resources={this.props.resources} designMode={!this.state.isRunning} onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords} grid={this.state.grid} />
+          <GameSpace space={this.props.resource} resources={this.props.resources} designMode={!this.state.isRunning} onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords} grid={this.state.grid} />
           <Switch checked={this.state.isRunning} onChange={(v) => this.updateRunning(v)}>Run</Switch>
         </section>
       </StyledResource>

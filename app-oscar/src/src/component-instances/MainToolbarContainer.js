@@ -11,8 +11,6 @@ class MainToolbarContainer extends Component {
       currentProject: getState().currentProject
     }
     this.handleOnClick = this.handleOnClick.bind(this)
-    this.runProject = this.runProject.bind(this)
-    this.shareProject = this.shareProject.bind(this)
     this.addResource = this.addResource.bind(this)
   }
 
@@ -52,25 +50,11 @@ class MainToolbarContainer extends Component {
       return this.addResource(resourceType)
     }
     const actions = {
-      'project-run': () => {
-        this.runProject()
-      },
-      'project-share': () => {
-        this.shareProject()
-      }
     }
     const foundAction = actions[action]
     if (typeof foundAction === 'function') {
       actions[action]()
     }
-  }
-
-  runProject() {
-    console.warn('[MainToolbarContainer] [runProject]')
-  }
-
-  shareProject() {
-    console.warn('[MainToolbarContainer] [shareProject]')
   }
 
   addResource(type) {

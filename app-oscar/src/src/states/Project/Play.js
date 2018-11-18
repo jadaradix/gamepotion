@@ -9,6 +9,7 @@ import Heading1 from '../../components/Heading1/Heading1'
 
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../../component-instances/ResponsiveContainer'
+import Game from '../../component-instances/Oscar/Game'
 
 const StyledState = styled.div`
   .component--box {
@@ -17,7 +18,7 @@ const StyledState = styled.div`
   }
 `
 
-class StateProjectPreferences extends PureComponent {
+class StateProjectPlay extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -55,9 +56,11 @@ class StateProjectPreferences extends PureComponent {
           <StyledState>
             <Box>
               {this.state.currentProject === null && <Loading />}
-              {this.state.currentProject !== null && <Fragment>
-                <Heading1>{this.state.currentProject.project.name}</Heading1>
-              </Fragment>}
+              {this.state.currentProject !== null &&
+              <Fragment>
+                <Game project={this.state.currentProject.project} resources={this.state.currentProject.resources} />
+              </Fragment>
+              }
             </Box>
           </StyledState>
         </ResponsiveContainer>
@@ -66,4 +69,4 @@ class StateProjectPreferences extends PureComponent {
   }
 }
 
-export default StateProjectPreferences
+export default StateProjectPlay
