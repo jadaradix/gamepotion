@@ -2,9 +2,12 @@ import api from '../../api.js'
 import classes from '../../../classes'
 import getProjects from './get'
 
-export default async function (state, { id, name }) {
+export default async function (state, payload) {
+  const {
+    id
+  } = payload
   let { projects } = await getProjects(state)
-  return api.patch('api-core', `me/team/projects/${id}`, { name })
+  return api.patch('api-core', `me/team/projects/${id}`, payload)
     .then(project => {
       const projectClass = new classes.Project()
       projectClass.clientFromApiGet(project)

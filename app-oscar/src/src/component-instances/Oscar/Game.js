@@ -11,7 +11,11 @@ class Game extends Component {
   render() {
     console.warn('[Oscar] [Game] [render]')
     return (
-      <div />
+      <div style={{
+        width: '256px',
+        height: '192px',
+        backgroundColor: 'black'
+      }} />
     )
   }
 }

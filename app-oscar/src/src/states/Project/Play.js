@@ -12,10 +12,8 @@ import ResponsiveContainer from '../../component-instances/ResponsiveContainer'
 import Game from '../../component-instances/Oscar/Game'
 
 const StyledState = styled.div`
-  .component--box {
-    max-width: 640px;
-    margin: 4rem auto 0 auto;
-  }
+  padding-top: 1rem;
+  padding-left: 1rem;
 `
 
 class StateProjectPlay extends PureComponent {
@@ -52,18 +50,13 @@ class StateProjectPlay extends PureComponent {
     return (
       <Fragment>
         <MainToolbarContainer />
-        <ResponsiveContainer>
-          <StyledState>
-            <Box>
-              {this.state.currentProject === null && <Loading />}
-              {this.state.currentProject !== null &&
-              <Fragment>
-                <Game project={this.state.currentProject.project} resources={this.state.currentProject.resources} />
-              </Fragment>
-              }
-            </Box>
-          </StyledState>
-        </ResponsiveContainer>
+        <StyledState>
+          {this.state.currentProject !== null &&
+            <Fragment>
+              <Game project={this.state.currentProject.project} resources={this.state.currentProject.resources} />
+            </Fragment>
+          }
+        </StyledState>
       </Fragment>
     )
   }

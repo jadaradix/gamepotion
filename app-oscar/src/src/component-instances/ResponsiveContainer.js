@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const StyledResponsiveContainer = styled.div`
-  .inner {
+  > div {
     padding: 1rem;
   }
   .component--list + .component--button {
@@ -27,7 +27,7 @@ const StyledResponsiveContainer = styled.div`
   @media screen and (min-width: 720px) {
     max-width: 960px;
     margin: 2rem auto 0 auto;
-    .inner {
+    > div {
       margin: 0 2rem 0 2rem;
       padding: 0;
       // background-color: green;
@@ -37,8 +37,8 @@ const StyledResponsiveContainer = styled.div`
 
 const ResponsiveContainer = ({ children }) => {
   return (
-    <StyledResponsiveContainer>
-      <div className='inner'>
+    <StyledResponsiveContainer className='component--responsive-container'>
+      <div>
         {children}
       </div>
     </StyledResponsiveContainer>

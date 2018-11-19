@@ -2,6 +2,7 @@ import api from '../../api.js'
 import classes from '../../../classes'
 
 import getProjects from './get'
+import updateProject from './update'
 import createResource from './resources/create'
 
 const doCreateResource = async (state, type) => {
@@ -31,6 +32,8 @@ export default async function (state, { name }) {
   newState = {...await doCreateProject(newState, name)}
   newState = {...await doCreateResource(newState, 'atom')}
   newState = {...await doCreateResource(newState, 'space')}
+  const foundNewSpace = newState.currentProject.resources.find(r => r.type === 'space')
+  newState = {...await updateProject(newState, { id: state.currentProject.project.id, startSpace: foundNewSpace.id })}
   return {
     ...newState
   }
