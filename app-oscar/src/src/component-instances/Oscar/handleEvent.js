@@ -1,11 +1,11 @@
 import instanceDefinitionsToInstanceClasses from './instanceDefinitionsToInstanceClasses'
 import handleActionBack from './handleActionBack'
 
-const handleEvent = (event, spaceContainer, resourceContainers, eventContext, instanceClasses, appliesToInstanceClasses) => {
+const handleEvent = (event, eventContext, resourceContainers, instanceClasses, appliesToInstanceClasses) => {
   let instanceClassesToDestroy = []
   let instancesToCreate = []
   appliesToInstanceClasses.forEach(i => {
-    const actionBacks = i.onEvent(event, spaceContainer, eventContext.variables).filter(ab => typeof ab === 'object' && ab !== null)
+    const actionBacks = i.onEvent(event, eventContext).filter(ab => typeof ab === 'object' && ab !== null)
     actionBacks.forEach(actionBack => {
       const result = handleActionBack(actionBack)
       instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
@@ -20,13 +20,13 @@ const handleEvent = (event, spaceContainer, resourceContainers, eventContext, in
   })
   if (instanceClassesToDestroy.length > 0) {
     console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
-    instanceClasses = handleEvent('destroy', spaceContainer, resourceContainers, eventContext, instanceClasses, instanceClassesToDestroy)
+    instanceClasses = handleEvent('destroy', eventContext, resourceContainers, instanceClasses, instanceClassesToDestroy)
   }
   const createdInstances = instanceDefinitionsToInstanceClasses(resourceContainers, instancesToCreate)
   instanceClasses = instanceClasses.concat(createdInstances)
   if (createdInstances.length > 0) {
     console.log('[Oscar] [handleEvent] createdInstances', createdInstances)
-    instanceClasses = handleEvent('create', spaceContainer, resourceContainers, eventContext, instanceClasses, createdInstances)
+    instanceClasses = handleEvent('create', eventContext, resourceContainers, instanceClasses, createdInstances)
   }
   instanceClasses = instanceClasses.filter(ic => {
     const willDestroy = instanceClassesToDestroy.includes(ic)

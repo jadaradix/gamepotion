@@ -8,32 +8,34 @@ import draw from './draw'
 import instanceDefinitionsToInstanceClasses from './instanceDefinitionsToInstanceClasses'
 import handleEvent from './handleEvent'
 
-const start = (spaceContainer, resourceContainers, variables, instanceClasses) => {
-  // console.warn('[start] spaceContainer', spaceContainer)
-  // console.warn('[start] instanceClasses', instanceClasses)
-  const eventContext = {
-    variables
-  }
-  return handleEvent('create', spaceContainer, resourceContainers, eventContext, instanceClasses, instanceClasses)
-}
-
-const step = (spaceContainer, resourceContainers, variables, instanceClasses) => {
-  // console.warn('[step] spaceContainer', spaceContainer)
-  // console.warn('[step] instanceClasses', instanceClasses)
-  instanceClasses.forEach(i => {
-    i.onStep()
-  })
-  const eventContext = {
-    variables
-  }
-  return handleEvent('step', spaceContainer, resourceContainers, eventContext, instanceClasses, instanceClasses)
-}
-
 class GameSpace extends Component {
   constructor() {
     super()
     this.canvasRef = React.createRef()
     this.eventListeners = new Map()
+  }
+
+  eventStart(instanceClasses, resourceContainers, spaceContainer) {
+    // console.warn('[eventStart] instanceClasses', instanceClasses)
+    // console.warn('[eventStart] resourceContainers/spaceContainer', resourceContainers, spaceContainer)
+    const eventContext = {
+      spaceContainer,
+      variables: this.props.variables
+    }
+    return handleEvent('create', eventContext, resourceContainers, instanceClasses, instanceClasses)
+  }
+
+  eventStep(instanceClasses, resourceContainers, spaceContainer) {
+    // console.warn('[eventStep] instanceClasses', instanceClasses)
+    // console.warn('[eventStep] resourceContainers/spaceContainer', resourceContainers, spaceContainer)
+    instanceClasses.forEach(i => {
+      i.onStep()
+    })
+    const eventContext = {
+      spaceContainer,
+      variables: this.props.variables
+    }
+    return handleEvent('step', eventContext, resourceContainers, instanceClasses, instanceClasses)
   }
 
   componentWillUnmount() {
@@ -122,7 +124,11 @@ class GameSpace extends Component {
           this.props.onTouchSecondary(indicesAtCoords)
         }
       } else {
-        instanceClasses = handleEvent('touch', spaceContainer, resourceContainers, this.props.variables, instanceClasses, instancesAtCoords)
+        const eventContext = {
+          spaceContainer,
+          variables: this.props.variables
+        }
+        instanceClasses = handleEvent('touch', eventContext, resourceContainers, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'mousedown', (e) => {
@@ -139,7 +145,11 @@ class GameSpace extends Component {
           this.props.onTouchSecondary(indicesAtCoords)
         }
       } else {
-        instanceClasses = handleEvent('touch', spaceContainer, resourceContainers, this.props.variables, instanceClasses, instancesAtCoords)
+        const eventContext = {
+          spaceContainer,
+          variables: this.props.variables
+        }
+        instanceClasses = handleEvent('touch', eventContext, resourceContainers, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'contextmenu', (e) => {
@@ -184,9 +194,9 @@ class GameSpace extends Component {
       if (this.props.designMode === true) {
         draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
       } else {
-        instanceClasses = start(spaceContainer, resourceContainers, this.props.variables, instanceClasses, this.props.designMode)
+        instanceClasses = this.eventStart(instanceClasses, resourceContainers, spaceContainer)
         const logic = () => {
-          instanceClasses = step(spaceContainer, resourceContainers, this.props.variables, instanceClasses, this.props.designMode)
+          instanceClasses = this.eventStep(instanceClasses, resourceContainers, spaceContainer)
           draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
           if (this.props.designMode === false) {
             window.requestAnimationFrame(logic)
