@@ -1,7 +1,7 @@
 import instanceDefinitionsToInstanceClasses from './instanceDefinitionsToInstanceClasses'
 import handleActionBack from './handleActionBack'
 
-const handleEvent = (event, eventContext, resourceContainers, instanceClasses, appliesToInstanceClasses) => {
+const handleEvent = (event, eventContext, instanceClasses, appliesToInstanceClasses) => {
   let instanceClassesToDestroy = []
   let instancesToCreate = []
   appliesToInstanceClasses.forEach(i => {
@@ -11,7 +11,7 @@ const handleEvent = (event, eventContext, resourceContainers, instanceClasses, a
       instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
       instancesToCreate = instancesToCreate.concat(result.instancesToCreate)
       if (typeof result.setImage === 'string') {
-        i.imageContainer = resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === result.setImage)
+        i.imageContainer = eventContext.resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === result.setImage)
       }
       if (typeof result.goToSpace === 'string') {
         console.warn('[Oscar] [handleEvent] result.goToSpace', result.goToSpace)
@@ -20,13 +20,13 @@ const handleEvent = (event, eventContext, resourceContainers, instanceClasses, a
   })
   if (instanceClassesToDestroy.length > 0) {
     console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
-    instanceClasses = handleEvent('destroy', eventContext, resourceContainers, instanceClasses, instanceClassesToDestroy)
+    instanceClasses = handleEvent('destroy', eventContext, instanceClasses, instanceClassesToDestroy)
   }
-  const createdInstances = instanceDefinitionsToInstanceClasses(resourceContainers, instancesToCreate)
+  const createdInstances = instanceDefinitionsToInstanceClasses(eventContext.resourceContainers, instancesToCreate)
   instanceClasses = instanceClasses.concat(createdInstances)
   if (createdInstances.length > 0) {
     console.log('[Oscar] [handleEvent] createdInstances', createdInstances)
-    instanceClasses = handleEvent('create', eventContext, resourceContainers, instanceClasses, createdInstances)
+    instanceClasses = handleEvent('create', eventContext, instanceClasses, createdInstances)
   }
   instanceClasses = instanceClasses.filter(ic => {
     const willDestroy = instanceClassesToDestroy.includes(ic)

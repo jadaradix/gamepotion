@@ -8,34 +8,42 @@ import draw from './draw'
 import instanceDefinitionsToInstanceClasses from './instanceDefinitionsToInstanceClasses'
 import handleEvent from './handleEvent'
 
+const actionClassInstances = new Map(
+  Object.keys(classes.actions).map(k => {
+    return [k, new classes.actions[k]()]
+  })
+)
+
 class GameSpace extends Component {
   constructor() {
     super()
     this.canvasRef = React.createRef()
     this.eventListeners = new Map()
+    this.resourceContainers = []
+    this.spaceContainer = null
   }
 
-  eventStart(instanceClasses, resourceContainers, spaceContainer) {
+  eventStart(instanceClasses) {
     // console.warn('[eventStart] instanceClasses', instanceClasses)
-    // console.warn('[eventStart] resourceContainers/spaceContainer', resourceContainers, spaceContainer)
     const eventContext = {
-      spaceContainer,
+      spaceContainer: this.spaceContainer,
+      resourceContainers: this.resourceContainers,
       variables: this.props.variables
     }
-    return handleEvent('create', eventContext, resourceContainers, instanceClasses, instanceClasses)
+    return handleEvent('create', eventContext, instanceClasses, instanceClasses)
   }
 
-  eventStep(instanceClasses, resourceContainers, spaceContainer) {
+  eventStep(instanceClasses) {
     // console.warn('[eventStep] instanceClasses', instanceClasses)
-    // console.warn('[eventStep] resourceContainers/spaceContainer', resourceContainers, spaceContainer)
     instanceClasses.forEach(i => {
       i.onStep()
     })
     const eventContext = {
-      spaceContainer,
+      spaceContainer: this.spaceContainer,
+      resourceContainers: this.resourceContainers,
       variables: this.props.variables
     }
-    return handleEvent('step', eventContext, resourceContainers, instanceClasses, instanceClasses)
+    return handleEvent('step', eventContext, instanceClasses, instanceClasses)
   }
 
   componentWillUnmount() {
@@ -60,23 +68,24 @@ class GameSpace extends Component {
   }
 
   renderCanvas(canvas, space, resources) {
-    const resourceContainers = resources.map(resource => {
+    this.resourceContainers = resources.map(resource => {
       return {
         resource,
         extras: {}
       }
     })
-    const spaceContainer = {
+    this.spaceContainer = {
       resource: space,
       extras: {
         backgroundImage: null,
         foregroundImage: null
       }
     }
+  
     this.removeEventListeners()
 
     // let because it can be spliced
-    let instanceClasses = instanceDefinitionsToInstanceClasses(resourceContainers, space.instances)
+    let instanceClasses = instanceDefinitionsToInstanceClasses(this.resourceContainers, space.instances)
     // console.warn('[renderCanvas] instanceClasses', instanceClasses)
 
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
@@ -125,10 +134,11 @@ class GameSpace extends Component {
         }
       } else {
         const eventContext = {
-          spaceContainer,
+          spaceContainer: this.spaceContainer,
+          resourceContainers: this.resourceContainers,
           variables: this.props.variables
         }
-        instanceClasses = handleEvent('touch', eventContext, resourceContainers, instanceClasses, instancesAtCoords)
+        instanceClasses = handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'mousedown', (e) => {
@@ -146,10 +156,11 @@ class GameSpace extends Component {
         }
       } else {
         const eventContext = {
-          spaceContainer,
+          spaceContainer: this.spaceContainer,
+          resourceContainers: this.resourceContainers,
           variables: this.props.variables
         }
-        instanceClasses = handleEvent('touch', eventContext, resourceContainers, instanceClasses, instancesAtCoords)
+        instanceClasses = handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'contextmenu', (e) => {
@@ -163,7 +174,7 @@ class GameSpace extends Component {
       this.props.onTouchMove(getMouseData(e))
     })
     let resourceContainersLoadedSoFar = 0
-    const totalResourceContainersToLoad = resourceContainers.filter(r => ['image', 'sound'].includes(r.resource.type)).length
+    const totalResourceContainersToLoad = this.resourceContainers.filter(r => ['image', 'sound'].includes(r.resource.type)).length
     const startLoading = () => {
       console.warn('[Oscar] [Space] [renderCanvas] start loading!')
       c.width = space.width
@@ -192,12 +203,12 @@ class GameSpace extends Component {
     const loadedGood = () => {
       console.warn('[Oscar] [Space] [renderCanvas] [loadedGood]')
       if (this.props.designMode === true) {
-        draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
+        draw(ctx, this.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
       } else {
-        instanceClasses = this.eventStart(instanceClasses, resourceContainers, spaceContainer)
-        const logic = () => {
-          instanceClasses = this.eventStep(instanceClasses, resourceContainers, spaceContainer)
-          draw(ctx, spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
+        instanceClasses = this.eventStart(instanceClasses)
+        const logic = () => { 
+          instanceClasses = this.eventStep(instanceClasses)
+          draw(ctx, this.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
           if (this.props.designMode === false) {
             window.requestAnimationFrame(logic)
           }
@@ -219,12 +230,7 @@ class GameSpace extends Component {
     //
     // GET READY FOR EVENTS
     //
-    const actionClassInstances = new Map(
-      Object.keys(classes.actions).map(k => {
-        return [k, new classes.actions[k]()]
-      })
-    )
-    const resourcesAtoms = resourceContainers.filter(r => r.resource.type === 'atom')
+    const resourcesAtoms = this.resourceContainers.filter(r => r.resource.type === 'atom')
     resourcesAtoms
       .forEach(r => {
         r.extras.events = new Map(
@@ -238,7 +244,6 @@ class GameSpace extends Component {
                   run: actionClassInstance.run,
                   runArguments: a.runArguments,
                   appliesTo: a.appliesTo,
-                  resourceContainers,
                   argumentTypes
                 }
               })
@@ -250,7 +255,7 @@ class GameSpace extends Component {
     //
     // LOAD IMAGES
     //
-    const resourcesImages = resourceContainers.filter(r => r.resource.type === 'image')
+    const resourcesImages = this.resourceContainers.filter(r => r.resource.type === 'image')
     resourcesImages.forEach(resource => {
       const element = new window.Image()
       this.addEventListener(element, 'load', loadGoodLogic)
@@ -260,11 +265,11 @@ class GameSpace extends Component {
       })
       resource.extras.element = element
       element.src = resource.resource.getRemoteUrl()
-      if (spaceContainer.resource.backgroundImage === resource.resource.id) {
-        spaceContainer.extras.backgroundImage = resource
+      if (this.spaceContainer.resource.backgroundImage === resource.resource.id) {
+        this.spaceContainer.extras.backgroundImage = resource
       }
-      if (spaceContainer.resource.foregroundImage === resource.resource.id) {
-        spaceContainer.extras.foregroundImage = resource
+      if (this.spaceContainer.resource.foregroundImage === resource.resource.id) {
+        this.spaceContainer.extras.foregroundImage = resource
       }
       resource.extras.image = element
     })
@@ -272,7 +277,7 @@ class GameSpace extends Component {
     //
     // LOAD SOUNDS
     //
-    const resourcesSounds = resourceContainers.filter(r => r.resource.type === 'sound')
+    const resourcesSounds = this.resourceContainers.filter(r => r.resource.type === 'sound')
     resourcesSounds.forEach(resource => {
       const element = new window.Audio()
       this.addEventListener(element, 'loadedmetadata', loadGoodLogic)
