@@ -3,12 +3,7 @@ import styled from 'styled-components'
 
 import { getState, dispatch, subscribe } from '../../state'
 
-import Loading from '../../components/Loading/Loading'
-import Box from '../../components/Box/Box'
-import Heading1 from '../../components/Heading1/Heading1'
-
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
-import ResponsiveContainer from '../../component-instances/ResponsiveContainer'
 import Game from '../../component-instances/Oscar/Game'
 
 const StyledState = styled.div`

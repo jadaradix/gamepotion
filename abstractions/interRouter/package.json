@@ -1,0 +1,19 @@
+{
+  "name": "gmc-inter-router",
+  "version": "1.0.0",
+  "description": "gmc-inter-router",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "jest": "^23.6.0"
+  },
+  "scripts": {
+    "build": "babel index.js -d index.dist.js",
+    "test": "jest"
+  }
+}

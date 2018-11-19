@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { font, colours } from '../../styleAbstractions'
 
 const StyledHeading1 = styled.h1`
-  display: block;
   ${font}
   font-size: 200%;
   font-weight: 800;

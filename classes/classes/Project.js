@@ -6,7 +6,7 @@ class Project {
     this.teamId = json.teamId || null
     this.createdAt = json.createdAt || Math.floor(new Date() / 1000)
     this.name = json.name || 'New Project'
-    this.startSpace = (typeof json.startSpace === 'string') ? json.startSpace : null
+    this.startSpace = (typeof json.startSpace === 'string' || json.startSpace === null) ? json.startSpace : null
   }
 
   toApi () {
@@ -39,6 +39,9 @@ class Project {
         this.name = json.name
       }
     }
+    if (json.startSpace === null) {
+      this.startSpace = json.startSpace
+    }
     if (typeof json.startSpace === 'string') {
       if (json.startSpace.length === 0) {
         throw new Error('startSpace is not valid')
@@ -55,6 +58,9 @@ class Project {
       } else {
         this.name = json.name
       }
+    }
+    if (json.startSpace === null) {
+      this.startSpace = json.startSpace
     }
     if (typeof json.startSpace === 'string') {
       if (json.startSpace.length === 0) {

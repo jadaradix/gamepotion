@@ -6,6 +6,7 @@ import { getState, dispatch, subscribe } from '../../state'
 import Loading from '../../components/Loading/Loading'
 import Box from '../../components/Box/Box'
 import Heading1 from '../../components/Heading1/Heading1'
+import Input from '../../components/Input/Input'
 import Dropper from '../../components/Dropper/Dropper'
 
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
@@ -16,8 +17,8 @@ const StyledState = styled.div`
     max-width: 360px;
     margin: 4rem auto 0 auto;
   }
-  .component--dropper {
-    margin-top: 2rem;
+  .component--dropper, .component--input {
+    margin-top: 1.5rem;
   }
 `
 
@@ -62,7 +63,13 @@ class StateProjectPreferences extends Component {
   }
 
   onUpdateProp(prop, value) {
-    console.warn(prop, value)
+    dispatch({
+      name: 'PROJECTS_UPDATE',
+      data: {
+        id: this.props.match.params.id,
+        [prop]: value
+      }
+    })
   }
 
   render() {
@@ -98,7 +105,8 @@ class StateProjectPreferences extends Component {
             <Box>
               <Fragment>
                 <Heading1>{this.state.currentProject.project.name}</Heading1>
-                <Dropper label='Start Space' options={spaceResources} onChoose={(v) => this.onUpdateProp('startSpace', v)} />
+                <Input label='Name' value={this.state.currentProject.project.name} onChange={(v) => this.onUpdateProp('name', v)} />
+                <Dropper label='Start Space' options={spaceResources} onChoose={(v) => this.onUpdateProp('startSpace', v)} value={this.state.currentProject.project.startSpace} />
               </Fragment>
             </Box>
           </StyledState>

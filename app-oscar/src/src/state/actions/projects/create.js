@@ -33,7 +33,7 @@ export default async function (state, { name }) {
   newState = {...await doCreateResource(newState, 'atom')}
   newState = {...await doCreateResource(newState, 'space')}
   const foundNewSpace = newState.currentProject.resources.find(r => r.type === 'space')
-  newState = {...await updateProject(newState, { id: state.currentProject.project.id, startSpace: foundNewSpace.id })}
+  newState = {...await updateProject(newState, { id: newState.currentProject.project.id, startSpace: foundNewSpace.id })}
   return {
     ...newState
   }
