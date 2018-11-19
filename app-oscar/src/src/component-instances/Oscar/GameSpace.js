@@ -6,7 +6,7 @@ import classes from '../../classes'
 import getInstanceClassesAtCoords from './getInstanceClassesAtCoords'
 import draw from './draw'
 import instanceDefinitionsToInstanceClasses from './instanceDefinitionsToInstanceClasses'
-import handleEvent from './handleEvent'
+import handleActionBack from './handleActionBack'
 
 const actionClassInstances = new Map(
   Object.keys(classes.actions).map(k => {
@@ -23,17 +23,51 @@ class GameSpace extends Component {
     this.spaceContainer = null
   }
 
-  eventStart(instanceClasses) {
+  handleEvent (event, eventContext, instanceClasses, appliesToInstanceClasses) {
+    let instanceClassesToDestroy = []
+    let instancesToCreate = []
+    appliesToInstanceClasses.forEach(i => {
+      const actionBacks = i.onEvent(event, eventContext).filter(ab => typeof ab === 'object' && ab !== null)
+      actionBacks.forEach(actionBack => {
+        const result = handleActionBack(actionBack)
+        instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
+        instancesToCreate = instancesToCreate.concat(result.instancesToCreate)
+        if (typeof result.setImage === 'string') {
+          i.imageContainer = eventContext.resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === result.setImage)
+        }
+        if (typeof result.goToSpace === 'string') {
+          this.props.onSwitchSpace(result.goToSpace)
+        }
+      })
+    })
+    if (instanceClassesToDestroy.length > 0) {
+      console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
+      instanceClasses = this.handleEvent('destroy', eventContext, instanceClasses, instanceClassesToDestroy)
+    }
+    const createdInstances = instanceDefinitionsToInstanceClasses(eventContext.resourceContainers, instancesToCreate)
+    instanceClasses = instanceClasses.concat(createdInstances)
+    if (createdInstances.length > 0) {
+      console.log('[Oscar] [handleEvent] createdInstances', createdInstances)
+      instanceClasses = this.handleEvent('create', eventContext, instanceClasses, createdInstances)
+    }
+    instanceClasses = instanceClasses.filter(ic => {
+      const willDestroy = instanceClassesToDestroy.includes(ic)
+      return (!willDestroy)
+    })
+    return instanceClasses
+  }
+
+  eventEventStart(instanceClasses) {
     // console.warn('[eventStart] instanceClasses', instanceClasses)
     const eventContext = {
       spaceContainer: this.spaceContainer,
       resourceContainers: this.resourceContainers,
       variables: this.props.variables
     }
-    return handleEvent('create', eventContext, instanceClasses, instanceClasses)
+    return this.handleEvent('create', eventContext, instanceClasses, instanceClasses)
   }
 
-  eventStep(instanceClasses) {
+  handleEventStep(instanceClasses) {
     // console.warn('[eventStep] instanceClasses', instanceClasses)
     instanceClasses.forEach(i => {
       i.onStep()
@@ -43,7 +77,7 @@ class GameSpace extends Component {
       resourceContainers: this.resourceContainers,
       variables: this.props.variables
     }
-    return handleEvent('step', eventContext, instanceClasses, instanceClasses)
+    return this.handleEvent('step', eventContext, instanceClasses, instanceClasses)
   }
 
   componentWillUnmount() {
@@ -138,7 +172,7 @@ class GameSpace extends Component {
           resourceContainers: this.resourceContainers,
           variables: this.props.variables
         }
-        instanceClasses = handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
+        instanceClasses = this.handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'mousedown', (e) => {
@@ -160,7 +194,7 @@ class GameSpace extends Component {
           resourceContainers: this.resourceContainers,
           variables: this.props.variables
         }
-        instanceClasses = handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
+        instanceClasses = this.handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'contextmenu', (e) => {
@@ -205,9 +239,9 @@ class GameSpace extends Component {
       if (this.props.designMode === true) {
         draw(ctx, this.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
       } else {
-        instanceClasses = this.eventStart(instanceClasses)
+        instanceClasses = this.eventEventStart(instanceClasses)
         const logic = () => { 
-          instanceClasses = this.eventStep(instanceClasses)
+          instanceClasses = this.handleEventStep(instanceClasses)
           draw(ctx, this.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
           if (this.props.designMode === false) {
             window.requestAnimationFrame(logic)
@@ -325,6 +359,7 @@ GameSpace.propTypes = {
   onTouch: PropTypes.func,
   onTouchSecondary: PropTypes.func,
   onTouchMove: PropTypes.func,
+  onSwitchSpace: PropTypes.func,
   variables: PropTypes.any
 }
 
@@ -333,6 +368,7 @@ GameSpace.defaultProps = {
   onTouch: () => {},
   onTouchSecondary: () => {},
   onTouchMove: () => {},
+  onSwitchSpace: () => {},
   variables: new Map()
 }
 
