@@ -25,6 +25,22 @@ const StyledActionModal = styled.div`
 
 const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateArgument }) => {
 
+  const imageResources = resources
+    .filter(r => r.type === 'image')
+    .map(r => {
+      return {
+        id: r.id,
+        name: r.name
+      }
+    })
+  const soundResources = resources
+    .filter(r => r.type === 'sound')
+    .map(r => {
+      return {
+        id: r.id,
+        name: r.name
+      }
+    })
   const atomResources = resources
     .filter(r => r.type === 'atom')
     .map(r => {
@@ -33,9 +49,8 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
         name: r.name
       }
     })
-
-  const imageResources = resources
-    .filter(r => r.type === 'image')
+  const spaceResources = resources
+    .filter(r => r.type === 'space')
     .map(r => {
       return {
         id: r.id,
@@ -47,13 +62,6 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
     const handleOnUpdateArgument = (v) => {
       return onUpdateArgument(index, v)
     }
-    if (type === 'atom' && value === '') {
-      if (atomResources.length > 0) {
-        actionClassInstance.runArguments[index] = atomResources[0].id
-      } else {
-        actionClassInstance.runArguments[index] = '?'
-      }
-    }
     if (type === 'image' && value === '') {
       if (imageResources.length > 0) {
         actionClassInstance.runArguments[index] = imageResources[0].id
@@ -61,11 +69,36 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
         actionClassInstance.runArguments[index] = '?'
       }
     }
+    if (type === 'sound' && value === '') {
+      if (soundResources.length > 0) {
+        actionClassInstance.runArguments[index] = soundResources[0].id
+      } else {
+        actionClassInstance.runArguments[index] = '?'
+      }
+    }
+    if (type === 'atom' && value === '') {
+      if (atomResources.length > 0) {
+        actionClassInstance.runArguments[index] = atomResources[0].id
+      } else {
+        actionClassInstance.runArguments[index] = '?'
+      }
+    }
+    if (type === 'space' && value === '') {
+      if (spaceResources.length > 0) {
+        actionClassInstance.runArguments[index] = spaceResources[0].id
+      } else {
+        actionClassInstance.runArguments[index] = '?'
+      }
+    }
     switch (type) {
-    case 'atom':
-      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={atomResources} />
     case 'image':
       return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={imageResources} />
+    case 'sound':
+      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={soundResources} />
+    case 'atom':
+      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={atomResources} />
+    case 'space':
+      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={spaceResources} />
     case 'generic':
     case 'number':
     default:

@@ -44,7 +44,7 @@ const parseToken = (token, typeHint, parseContext) => {
   if (token[0] === '"' && token[token.length - 1] === '"') {
     return token.substring(1, token.length - 1)
   }
-  const foundVariable = parseContext.variables.get(token)
+  const foundVariable = parseContext.eventContext.variables.get(token)
   if (foundVariable !== undefined) {
     return foundVariable
   }
@@ -57,7 +57,7 @@ const parseToken = (token, typeHint, parseContext) => {
       throw new Error(`you tried to call function ${functionName} which doesnt exist!`)
     }
     const functionArguments = token.substring(indexOfFirstBracket + 1, indexOfLastBracket)
-    const functionRunArguments = parseFunctionArgumentsString(functionArguments, 'generic', parseContext.variables)
+    const functionRunArguments = parseFunctionArgumentsString(functionArguments, 'generic', parseContext.eventContext.variables)
     if (foundFunction.argumentsNeeded !== functionRunArguments.length) {
       throw new Error(`you tried to call function with ${functionRunArguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
     }

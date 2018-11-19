@@ -5,6 +5,7 @@ import SetXSpeed from './files/SetXSpeed.svg'
 import SetYSpeed from './files/SetYSpeed.svg'
 import SetImage from './files/SetImage.svg'
 
+import GoToSpace from './files/GoToSpace.svg'
 import If from './files/If.svg'
 import EndIf from './files/EndIf.svg'
 import SetVariable from './files/SetVariable.svg'
@@ -18,6 +19,7 @@ export default {
   SetYSpeed,
   SetImage,
 
+  GoToSpace,
   If,
   EndIf,
   SetVariable,

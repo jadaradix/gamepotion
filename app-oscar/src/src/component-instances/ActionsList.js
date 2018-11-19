@@ -7,12 +7,20 @@ import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
 
 const argumentTypesToRunArgument = new Map([
-  ['atom', (resources, runArgument) => {
-    const foundResource = resources.find(r => r.id === runArgument && r.type === 'atom')
+  ['image', (resources, runArgument) => {
+    const foundResource = resources.find(r => r.id === runArgument)
     return (foundResource !== undefined ? foundResource.name : '?')
   }],
-  ['image', (resources, runArgument) => {
-    const foundResource = resources.find(r => r.id === runArgument && r.type === 'image')
+  ['sound', (resources, runArgument) => {
+    const foundResource = resources.find(r => r.id === runArgument)
+    return (foundResource !== undefined ? foundResource.name : '?')
+  }],
+  ['atom', (resources, runArgument) => {
+    const foundResource = resources.find(r => r.id === runArgument)
+    return (foundResource !== undefined ? foundResource.name : '?')
+  }],
+  ['space', (resources, runArgument) => {
+    const foundResource = resources.find(r => r.id === runArgument)
     return (foundResource !== undefined ? foundResource.name : '?')
   }]
 ])

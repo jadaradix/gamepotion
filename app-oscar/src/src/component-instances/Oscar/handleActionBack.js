@@ -1,11 +1,17 @@
+const baseReturn = {
+  instanceClassesToDestroy: [],
+  instancesToCreate: [],
+  setImage: null,
+  goToSpace: null
+}
+
 const handleActionBack = (actionBack) => {
   // console.warn('[handleActionBack] actionBack', actionBack)
   const actionBackLogics = {
     'INSTANCE_DESTROY': () => {
       return {
-        instanceClassesToDestroy: actionBack.actionBackArguments,
-        instancesToCreate: [],
-        setImage: null
+        ...baseReturn,
+        instanceClassesToDestroy: actionBack.actionBackArguments
       }
     },
     'INSTANCE_CREATE': () => {
@@ -18,16 +24,20 @@ const handleActionBack = (actionBack) => {
         }
       ]
       return {
-        instanceClassesToDestroy: [],
+        ...baseReturn,
         instancesToCreate,
-        setImage: null
       }
     },
     'INSTANCE_SET_IMAGE': () => {
       return {
-        instanceClassesToDestroy: [],
-        instancesToCreate: [],
+        ...baseReturn,
         setImage: actionBack.actionBackArguments[0]
+      }
+    },
+    'SPACE_GO': () => {
+      return {
+        ...baseReturn,
+        goToSpace: actionBack.actionBackArguments[0]
       }
     }
   }

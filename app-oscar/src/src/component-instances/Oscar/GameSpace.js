@@ -11,7 +11,10 @@ import handleEvent from './handleEvent'
 const start = (spaceContainer, resourceContainers, variables, instanceClasses) => {
   // console.warn('[start] spaceContainer', spaceContainer)
   // console.warn('[start] instanceClasses', instanceClasses)
-  return handleEvent('create', spaceContainer, resourceContainers, variables, instanceClasses, instanceClasses)
+  const eventContext = {
+    variables
+  }
+  return handleEvent('create', spaceContainer, resourceContainers, eventContext, instanceClasses, instanceClasses)
 }
 
 const step = (spaceContainer, resourceContainers, variables, instanceClasses) => {
@@ -20,7 +23,10 @@ const step = (spaceContainer, resourceContainers, variables, instanceClasses) =>
   instanceClasses.forEach(i => {
     i.onStep()
   })
-  return handleEvent('step', spaceContainer, resourceContainers, variables, instanceClasses, instanceClasses)
+  const eventContext = {
+    variables
+  }
+  return handleEvent('step', spaceContainer, resourceContainers, eventContext, instanceClasses, instanceClasses)
 }
 
 class GameSpace extends Component {

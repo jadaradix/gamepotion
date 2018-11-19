@@ -54,7 +54,7 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
     ctx.closePath()
   }
   if (designMode === true) {
-    if (grid.on === true) {
+    if (grid && grid.on === true) {
       ctx.globalAlpha = 0.5
       plotGrid()
       ctx.strokeStyle = '#ffffff'

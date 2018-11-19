@@ -31,18 +31,18 @@ class Instance {
     this.props.z += this.props.vz
   }
 
-  onEvent(event, spaceContainer, variables) {
+  onEvent(event, spaceContainer, eventContext) {
     const instance = this
     return this.atomContainer.extras.events.get(event).map(a => {
       const runContext = {
+        eventContext,
         platform: 'html5',
         space: spaceContainer.space,
         instance,
-        otherInstance: null,
-        variables
+        otherInstance: null
       }
       const parseContext = {
-        variables,
+        eventContext,
         instanceClass: this,
         camera: spaceContainer.resource.camera
       }
