@@ -1,4 +1,4 @@
-import AtomInstance from './AtomInstance'
+import Instance from './Instance'
 
 const instanceDefinitionsToInstanceClasses = (resourceContainers, instances) => {
   return instances.map(i => {
@@ -13,7 +13,7 @@ const instanceDefinitionsToInstanceClasses = (resourceContainers, instances) => 
       vz: 0,
       frame: 0
     }
-    return new AtomInstance(props, atomContainer, imageContainer)
+    return new Instance(props, atomContainer, imageContainer)
   })
 }
 

@@ -1,6 +1,6 @@
 import parseRunArguments from './parseRunArguments'
 
-class AtomInstance {
+class Instance {
   constructor(props, atomContainer, imageContainer) {
     this.props = props
     this.atomContainer = atomContainer
@@ -34,17 +34,22 @@ class AtomInstance {
   onEvent(event, spaceContainer, variables) {
     const instance = this
     return this.atomContainer.extras.events.get(event).map(a => {
-      const context = {
+      const runContext = {
         platform: 'html5',
         space: spaceContainer.space,
         instance,
         otherInstance: null,
         variables
       }
-      const runArguments = parseRunArguments(a.argumentTypes, a.runArguments, variables, this)
-      return a.run(context, runArguments, a.appliesTo)
+      const parseContext = {
+        variables,
+        instanceClass: this,
+        camera: spaceContainer.space.camera
+      }
+      const runArguments = parseRunArguments(a.argumentTypes, a.runArguments, parseContext)
+      return a.run(runContext, runArguments, a.appliesTo)
     })
   }
 }
 
-export default AtomInstance
+export default Instance
