@@ -87,7 +87,7 @@ class GameSpace extends Component {
       return { x, y, z }
     }
     const onTouch = (coords) => {
-      if (this.props.grid.on === true) {
+      if (this.props.grid && this.props.grid.on === true) {
         coords.x = coords.x - (coords.x % this.props.grid.width)
         coords.y = coords.y - (coords.y % this.props.grid.width)
       }
@@ -300,7 +300,7 @@ GameSpace.propTypes = {
   designMode: PropTypes.bool,
   space: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired,
-  grid: PropTypes.object.isRequired,
+  grid: PropTypes.object,
   onTouch: PropTypes.func,
   onTouchSecondary: PropTypes.func,
   onTouchMove: PropTypes.func,

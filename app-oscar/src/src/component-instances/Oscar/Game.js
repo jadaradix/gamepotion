@@ -10,12 +10,15 @@ class Game extends Component {
 
   render() {
     console.warn('[Oscar] [Game] [render]')
+    const foundStartSpace = this.props.resources.find(r => {
+      return (r.type === 'space' && r.id === this.props.project.startSpace)
+    })
+    if (foundStartSpace === undefined) {
+      console.error('[Oscar] [Game] [render] foundStartSpace is undefined; returning!')
+      return
+    }
     return (
-      <div style={{
-        width: '256px',
-        height: '192px',
-        backgroundColor: 'black'
-      }} />
+      <GameSpace space={foundStartSpace} resources={this.props.resources} designMode={false} />
     )
   }
 }

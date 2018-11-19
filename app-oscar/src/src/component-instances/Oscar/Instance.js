@@ -44,7 +44,7 @@ class Instance {
       const parseContext = {
         variables,
         instanceClass: this,
-        camera: spaceContainer.space.camera
+        camera: spaceContainer.resource.camera
       }
       const runArguments = parseRunArguments(a.argumentTypes, a.runArguments, parseContext)
       return a.run(runContext, runArguments, a.appliesTo)
