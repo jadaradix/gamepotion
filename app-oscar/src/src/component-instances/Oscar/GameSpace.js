@@ -18,9 +18,7 @@ const step = (spaceContainer, resourceContainers, variables, instanceClasses) =>
   // console.warn('[step] spaceContainer', spaceContainer)
   // console.warn('[step] instanceClasses', instanceClasses)
   instanceClasses.forEach(i => {
-    i.props.x += i.props.vx
-    i.props.y += i.props.vy
-    i.props.z += i.props.vz
+    i.onStep()
   })
   return handleEvent('step', spaceContainer, resourceContainers, variables, instanceClasses, instanceClasses)
 }
@@ -168,6 +166,13 @@ class GameSpace extends Component {
       ctx.fillText('Loading...', 16, 24)
     }
 
+    const loadGoodLogic = () => {
+      resourceContainersLoadedSoFar += 1
+      console.warn(`[Oscar] [Space] [renderCanvas] [loadGoodLogic] done ${resourceContainersLoadedSoFar}/${totalResourceContainersToLoad}`)
+      if (resourceContainersLoadedSoFar === totalResourceContainersToLoad) {
+        loadedGood()
+      }
+    }
     const loadedGood = () => {
       console.warn('[Oscar] [Space] [renderCanvas] [loadedGood]')
       if (this.props.designMode === true) {
@@ -184,25 +189,15 @@ class GameSpace extends Component {
         logic()
       }
     }
-    const loadedBad = () => {
-      console.warn('[Oscar] [Space] [renderCanvas] [loadedBad]')
-      ctx.clearRect(0, 0, space.width, space.height)
-      ctx.fillStyle = '#ffffff'
-      ctx.font = '16px Arial'
-      ctx.fillText('This space could not be loaded.', 16, 24)
-      this.removeEventListeners()
-    }
-    const loadGoodLogic = () => {
-      resourceContainersLoadedSoFar += 1
-      console.warn(`[Oscar] [Space] [renderCanvas] [loadGoodLogic] done ${resourceContainersLoadedSoFar}/${totalResourceContainersToLoad}`)
-      if (resourceContainersLoadedSoFar === totalResourceContainersToLoad) {
-        loadedGood()
-      }
-    }
-    const loadBadLogic = () => {
-      console.warn('[Oscar] [Space] [renderCanvas] [loadBadLogic]')
-      loadedBad()
-    }
+    // const loadedBad = () => {
+    //   console.warn('[Oscar] [Space] [renderCanvas] [loadedBad]')
+    //   ctx.clearRect(0, 0, space.width, space.height)
+    //   ctx.fillStyle = '#ffffff'
+    //   ctx.font = '16px Arial'
+    //   ctx.fillText('This space could not be loaded.', 16, 24)
+    //   this.removeEventListeners()
+    // }
+
     startLoading()
 
     //
@@ -243,7 +238,10 @@ class GameSpace extends Component {
     resourcesImages.forEach(resource => {
       const element = new window.Image()
       this.addEventListener(element, 'load', loadGoodLogic)
-      this.addEventListener(element, 'error', loadBadLogic)
+      this.addEventListener(element, 'error', () => {
+        element.dataset.oscarErrored = true
+        loadGoodLogic()
+      })
       resource.extras.element = element
       element.src = resource.resource.getRemoteUrl()
       if (spaceContainer.resource.backgroundImage === resource.resource.id) {
@@ -262,7 +260,10 @@ class GameSpace extends Component {
     resourcesSounds.forEach(resource => {
       const element = new window.Audio()
       this.addEventListener(element, 'loadedmetadata', loadGoodLogic)
-      this.addEventListener(element, 'error', loadBadLogic)
+      this.addEventListener(element, 'error', () => {
+        element.dataset.oscarErrored = true
+        loadGoodLogic()
+      })
       resource.extras.element = element
       element.src = resource.resource.getRemoteUrl()
       element.load()

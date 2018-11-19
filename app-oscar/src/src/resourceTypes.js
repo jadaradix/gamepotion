@@ -10,10 +10,26 @@ export default [
     namePlural: 'Images',
     component: Image,
     fixed: [
-      'ball',
-      'block',
-      'puck',
-      'wood'
+      {
+        id: 'ball',
+        width: 64,
+        height: 64
+      },
+      {
+        id: 'block',
+        width: 32,
+        height: 32
+      },
+      {
+        id: 'puck',
+        width: 16,
+        height: 16
+      },
+      {
+        id: 'wood',
+        width: 320,
+        height: 240
+      }
     ]
   },
   {
@@ -22,10 +38,18 @@ export default [
     namePlural: 'Sounds',
     component: Sound,
     fixed: [
-      'click',
-      'explosion',
-      'gun',
-      'zap'
+      {
+        id: 'click'
+      },
+      {
+        id: 'explosion'
+      },
+      {
+        id: 'gun'
+      },
+      {
+        id: 'zap'
+      }
     ]
   },
   {

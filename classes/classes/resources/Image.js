@@ -7,6 +7,7 @@ class ResourceImage extends Resource {
     this.fixed = ((typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : 'ball')
     this.frameWidth = (typeof json.frameWidth === 'number' ? json.frameWidth : 64)
     this.frameHeight = (typeof json.frameHeight === 'number' ? json.frameHeight : 64)
+    this.frameSpeed = (typeof json.frameSpeed === 'number' ? json.frameSpeed : 0)
   }
 
   getDefaultName () {
@@ -31,7 +32,8 @@ class ResourceImage extends Resource {
       fixed: this.fixed,
       remoteUrl: this.getRemoteUrl(),
       frameWidth: this.frameWidth,
-      frameHeight: this.frameHeight
+      frameHeight: this.frameHeight,
+      frameSpeed: this.frameSpeed
     }
   }
 
@@ -41,7 +43,8 @@ class ResourceImage extends Resource {
       ...r,
       fixed: this.fixed,
       frameWidth: this.frameWidth,
-      frameHeight: this.frameHeight
+      frameHeight: this.frameHeight,
+      frameSpeed: this.frameSpeed
     }
   }
 
@@ -55,6 +58,7 @@ class ResourceImage extends Resource {
     this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
     this.frameWidth = (typeof json.frameWidth === 'number' ? json.frameWidth : this.frameWidth)
     this.frameHeight = (typeof json.frameHeight === 'number' ? json.frameHeight : this.frameHeight)
+    this.frameSpeed = (typeof json.frameSpeed === 'number' ? json.frameSpeed : this.frameSpeed)
   }
 
   clientFromApiGet(json) {
@@ -62,6 +66,7 @@ class ResourceImage extends Resource {
     this.fixed = json.fixed
     this.frameWidth = json.frameWidth
     this.frameHeight = json.frameHeight
+    this.frameSpeed = json.frameSpeed
   }
 }
 

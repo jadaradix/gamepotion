@@ -76,8 +76,11 @@ const route = async (request, response, next) => {
     return next(false)
   }
 
-  resourceClass.frameWidth = 64
-  resourceClass.frameHeight = 64
+  const imageWidth = 64
+  const imageHeight = 64
+
+  resourceClass.frameWidth = imageWidth
+  resourceClass.frameHeight = imageHeight
   resourceClass.fixed = null
 
   Promise.all([

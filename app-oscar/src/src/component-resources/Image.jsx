@@ -32,7 +32,7 @@ const StyledResource = styled.div`
   }
   .component--box .frame-width-height {
     display: grid;
-    grid-template-columns: 2fr 2fr;
+    grid-template-columns: 3fr 3fr 3fr;
     grid-gap: 1rem;
     margin-bottom: 2rem;
   }
@@ -65,11 +65,20 @@ class ResourceImage extends PureComponent {
 
   onChooseFixed(fixed) {
     if (fixed === 'none') {
-      fixed = null
+      this.onUpdate({
+        fixed: null
+      })
+    } else {
+      const {
+        width,
+        height
+      } = resourceTypes.find(rt => rt.type === 'image').fixed.find(o => o.id === fixed)
+      this.onUpdate({
+        fixed,
+        frameWidth: width,
+        frameHeight: height
+      })
     }
-    this.onUpdate({
-      fixed
-    })
   }
 
   render() {
@@ -80,8 +89,8 @@ class ResourceImage extends PureComponent {
       },
       ...resourceTypes.find(rt => rt.type === 'image').fixed.map(o => {
         return {
-          id: o,
-          name: o
+          id: o.id,
+          name: o.id
         }
       })
     ]
@@ -101,6 +110,7 @@ class ResourceImage extends PureComponent {
             <div className='frame-width-height'>
               <Input label='Frame Width' value={this.props.resource.frameWidth} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameWidth', v)} />
               <Input label='Frame Height' value={this.props.resource.frameHeight} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameHeight', v)} />
+              <Input label='Frame Speed' value={this.props.resource.frameSpeed} type='number' min='0' max='24' onChange={(v) => this.onUpdateProp('frameSpeed', v)} />
             </div>
             <div className='file'>
               <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />

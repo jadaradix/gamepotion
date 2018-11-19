@@ -60,8 +60,8 @@ class ResourceSound extends PureComponent {
       },
       ...resourceTypes.find(rt => rt.type === 'sound').fixed.map(o => {
         return {
-          id: o,
-          name: o
+          id: o.id,
+          name: o.id
         }
       })
     ]
