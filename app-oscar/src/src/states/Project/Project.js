@@ -170,12 +170,13 @@ class StateProjectProject extends Component {
     if (confirmation === false) {
       return
     }
-    return dispatch({
+    dispatch({
       name: 'PROJECTS_RESOURCES_DELETE',
       data: {
         id: resource.id
       }
     })
+      .catch(() => {})
   }
 
   render() {

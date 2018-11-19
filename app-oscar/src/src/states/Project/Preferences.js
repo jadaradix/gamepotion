@@ -7,6 +7,7 @@ import Loading from '../../components/Loading/Loading'
 import Box from '../../components/Box/Box'
 import Heading1 from '../../components/Heading1/Heading1'
 import Input from '../../components/Input/Input'
+import Banner from '../../components/Banner/Banner'
 import Dropper from '../../components/Dropper/Dropper'
 
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
@@ -17,7 +18,7 @@ const StyledState = styled.div`
     max-width: 360px;
     margin: 4rem auto 0 auto;
   }
-  .component--dropper, .component--input {
+  .component--dropper, .component--input, .component--banner {
     margin-top: 1.5rem;
   }
 `
@@ -106,7 +107,12 @@ class StateProjectPreferences extends Component {
               <Fragment>
                 <Heading1>{this.state.currentProject.project.name}</Heading1>
                 <Input label='Name' value={this.state.currentProject.project.name} onChange={(v) => this.onUpdateProp('name', v)} />
-                <Dropper label='Start Space' options={spaceResources} onChoose={(v) => this.onUpdateProp('startSpace', v)} value={this.state.currentProject.project.startSpace} />
+                {spaceResources.length === 0 &&
+                  <Banner>Your game has no Spaces. You can&rsquo;t play it until you add a Space.</Banner>
+                }
+                {spaceResources.length > 0 &&
+                  <Dropper label='Start Space' options={spaceResources} onChoose={(v) => this.onUpdateProp('startSpace', v)} value={this.state.currentProject.project.startSpace} />
+                }
               </Fragment>
             </Box>
           </StyledState>

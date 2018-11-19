@@ -9,7 +9,7 @@ export default async function (state, { id }) {
       return (r.type === 'space' && r.id !== id)
     })
     if (startSpaceResource === undefined) {
-      throw new Error('fuck')
+      throw new Error('this is the only Space in your game')
     }
     newState = await updateProject(newState, { id: currentProject.project.id, startSpace: startSpaceResource.id })
   }
