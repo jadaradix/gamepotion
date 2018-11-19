@@ -31,3 +31,7 @@ cd ..;
 cd platforms/nds;
   npm i;
 cd ../..;
+
+cd inter-router;
+  npm i;
+cd ../..;

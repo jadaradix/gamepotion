@@ -8,12 +8,13 @@ config-gcp.json
 
 abstractions/uuid/index.dist.js
 
+inter-router/index.dist.js
+
 classes/dist
 classes/abstractions
 
 api-core/src/abstractions
 api-bin/src/abstractions
-app-oscar/src/abstractions
 
 platforms/nds/classes
 app-oscar/src/src/classes
@@ -28,3 +29,5 @@ app-oscar/src/coverage
 api-core/files
 
 api-bin/files
+
+app-oscar/src/src/inter-router

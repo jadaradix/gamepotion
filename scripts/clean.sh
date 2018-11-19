@@ -1,4 +1,5 @@
 cd abstractions/uuid;
+  # ...
 cd ../..;
 
 cd classes;
@@ -21,6 +22,6 @@ cd api-bin/src;
 cd ../..;
 
 cd app-oscar/src/src;
-  rm -rf abstractions;
   rm -rf classes;
+  rm -rf inter-router;
 cd ../../..;
