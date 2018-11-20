@@ -1,0 +1,15 @@
+{
+  "name": "gmc-inspect-image",
+  "version": "1.0.0",
+  "description": "gmc-inspect-image",
+  "main": "index.js",
+  "dependencies": {
+    "image-size": "^0.6.3"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0"
+  },
+  "scripts": {
+    "test": "NODE_ENV=local jest"
+  }
+}

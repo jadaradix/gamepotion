@@ -1,6 +1,7 @@
 const errors = require('restify-errors')
 const datalayer = require('../../../../../abstractions/datalayer')
 const storage = require('../../../../../abstractions/storage')
+const inspectImage = require('../../../../../abstractions/inspect-image')
 const classFactory = require('../../../../../classes/factory-commonjs.js')
 
 const findResource = (resourceId, projectId) => {
@@ -13,7 +14,7 @@ const findResource = (resourceId, projectId) => {
   )
 }
 
-const storageResourceBin = (resourceClass, resourceRule, file) => {
+const storeResourceBin = (resourceClass, resourceRule, file) => {
   const fileName = `${resourceClass.id}.${resourceRule.EXTENSION}`
   return storage.file(file.path, fileName, resourceRule.MIMETYPE)
 }
@@ -76,15 +77,17 @@ const route = async (request, response, next) => {
     return next(false)
   }
 
-  const imageWidth = 64
-  const imageHeight = 64
-
-  resourceClass.frameWidth = imageWidth
-  resourceClass.frameHeight = imageHeight
   resourceClass.fixed = null
+  if (resourceClass.type === 'image') {
+    const {
+      width
+    } = await inspectImage(file.path)
+    resourceClass.frameWidth = width
+    resourceClass.frameHeight = width
+  }
 
   Promise.all([
-    storageResourceBin(resourceClass, resourceRule, file),
+    storeResourceBin(resourceClass, resourceRule, file),
     writeResource(resourceClass)
   ])
     .then(() => {

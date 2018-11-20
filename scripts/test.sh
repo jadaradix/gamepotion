@@ -1,7 +1,7 @@
 # ...
 
 cd abstractions/api;
-# ...
+  # ...
 cd ../..;
 cd abstractions/datalayer;
   npm test;
@@ -10,6 +10,9 @@ cd abstractions/storage;
   npm test;
 cd ../..;
 cd abstractions/uuid;
+  npm test;
+cd ../..;
+cd abstractions/inspect-image;
   npm test;
 cd ../..;
 

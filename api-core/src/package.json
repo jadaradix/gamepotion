@@ -11,9 +11,9 @@
     "restify-errors": "5.0.0"
   },
   "scripts": {
-    "start": "NODE_ENV=local PORT=1025 GOOGLE_APPLICATION_CREDENTIALS=/Users/james/src/gmc/config-gcp.json node --max-old-space-size=8192 index.js",
+    "start": "NODE_ENV=local PORT=1025 GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/config-gcp.json node --max-old-space-size=8192 index.js",
     "start-production": "NODE_ENV=production PORT=8000 GOOGLE_APPLICATION_CREDENTIALS=/files/config-gcp.json node --max-old-space-size=8192 index.js",
-    "test": "NODE_ENV=local PORT=1025 GOOGLE_APPLICATION_CREDENTIALS=/Users/james/src/gmc/config-gcp.json jest"
+    "test": "NODE_ENV=local PORT=1025 GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/config-gcp.json jest"
   },
   "devDependencies": {
     "axios": "^0.18.0",

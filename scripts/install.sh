@@ -1,16 +1,19 @@
 npm i;
 
 cd abstractions/api;
-    npm i;
+  npm i;
 cd ../..;
 cd abstractions/datalayer;
-    npm i;
+  npm i;
 cd ../..;
 cd abstractions/storage;
-    npm i;
+  npm i;
 cd ../..;
 cd abstractions/uuid;
-    npm i;
+  npm i;
+cd ../..;
+cd abstractions/inspect-image;
+  npm i;
 cd ../..;
 
 cd api-core/src;

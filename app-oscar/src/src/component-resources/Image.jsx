@@ -56,6 +56,7 @@ class ResourceImage extends PureComponent {
     super(props)
     this.onUpdateProp = this.onUpdateProp.bind(this)
     this.onChooseFixed = this.onChooseFixed.bind(this)
+    this.onUploadDone = this.onUploadDone.bind(this)
   }
 
   onUpdate(data) {
@@ -86,6 +87,20 @@ class ResourceImage extends PureComponent {
     }
   }
 
+  onUploadDone(data) {
+    // this code can go away when api-core and api-bin share a datalayer
+    const {
+      fixed,
+      frameWidth,
+      frameHeight
+    } = data
+    this.onUpdate({
+      fixed,
+      frameWidth,
+      frameHeight
+    })
+  }
+
   render() {
     const fixedOptions = [
       {
@@ -109,7 +124,7 @@ class ResourceImage extends PureComponent {
         </section>
         <section className='split-two'>
           <Box>
-            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['image/png']} onDone={() => this.onUpdate({ fixed: null })} />
+            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['image/png']} onDone={this.onUploadDone} />
           </Box>
           <Box>
             <div className='frame-width-height'>

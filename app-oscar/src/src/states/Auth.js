@@ -45,37 +45,42 @@ const stages = new Map([
     {
       'init': (state) => {
         return {
-          autoFocus: true // (state.email.length > 0)
+          inProgress: false
         }
       },
       'render': (state, setStateCallback) => {
         const canGoNext = () => {
+          const { inProgress } = state
           const isEmailValid = (state.email.indexOf('@') > 0 && state.email.length > state.email.indexOf('@') + 1)
-          return isEmailValid
+          return !inProgress && isEmailValid
         }
         const goNext = (e) => {
           e.preventDefault()
-          dispatch({
-            name: 'USER_LOG_IN',
-            data: {
-              email: state.email,
-              password: 'dummy-password'
-            }
-          })
-            .catch(error => {
-              if (error.response.data.message === 'unknown e-mail address') {
-                return setStateCallback({
-                  stage: 'create-decision',
-                  ...stages.get('create-decision').init(state)
-                })
-              }
-              if (error.response.data.message === 'wrong password') {
-                return setStateCallback({
-                  stage: 'log-in',
-                  ...stages.get('log-in').init(state)
-                })
+          setStateCallback({
+            inProgress: true
+          }, () => {
+            dispatch({
+              name: 'USER_LOG_IN',
+              data: {
+                email: state.email,
+                password: 'dummy-password'
               }
             })
+              .catch(error => {
+                if (error.response.data.message === 'unknown e-mail address') {
+                  return setStateCallback({
+                    stage: 'create-decision',
+                    ...stages.get('create-decision').init(state)
+                  })
+                }
+                if (error.response.data.message === 'wrong password') {
+                  return setStateCallback({
+                    stage: 'log-in',
+                    ...stages.get('log-in').init(state)
+                  })
+                }
+              })
+          })
         }
         const update = (prop, value) => {
           setStateCallback({
@@ -89,7 +94,7 @@ const stages = new Map([
               Enter your e-mail to get started!
             </p>
             <form onSubmit={goNext}>
-              <Input type='email' placeholder='james@gamemaker.club' required autoFocus={state.autoFocus} value={state.email} onChange={(v) => update('email', v)} />
+              <Input type='email' placeholder='james@gamemaker.club' required autoFocus value={state.email} onChange={(v) => update('email', v)} />
               <Button disabled={!canGoNext()}>Next</Button>
             </form>
           </Fragment>
@@ -102,27 +107,37 @@ const stages = new Map([
     {
       'init': (state) => {
         return {
-          autoFocus: true // (state.password.length > 0)
+          inProgress: false
         }
       },
       'render': (state, setStateCallback) => {
         const canGoNext = () => {
+          const { inProgress } = state
           const isPasswordValid = (state.password.length > 0)
-          return isPasswordValid
+          return !inProgress && isPasswordValid
         }
-        const goNext = (e) => {
-          dispatch({
-            name: 'USER_LOG_IN',
-            data: {
-              email: state.email,
-              password: state.password
-            }
-          })
-            .then(() => {
-              setStateCallback({
-                authenticated: true
-              })
+        const goNext = () => {
+          setStateCallback({
+            inProgress: true
+          }, () => {
+            dispatch({
+              name: 'USER_LOG_IN',
+              data: {
+                email: state.email,
+                password: state.password
+              }
             })
+              .then(() => {
+                setStateCallback({
+                  authenticated: true
+                })
+              })
+              .catch(() => {
+                setStateCallback({
+                  inProgress: false
+                })
+              })
+          })
         }
         const goPrevious = (e) => {
           return setStateCallback({
@@ -152,24 +167,39 @@ const stages = new Map([
   ['create-decision',
     {
       'init': (state) => {
-        return {}
+        return {
+          inProgress: false
+        }
       },
       'render': (state, setStateCallback) => {
-        const goNext = (e) => {
-          dispatch({
-            name: 'USER_CREATE',
-            data: {
-              email: state.email,
-              password: state.password
-            }
-          })
-            .then(() => {
-              setStateCallback({
-                authenticated: true
-              })
-            })
+        const canGoNext = () => {
+          const { inProgress } = state
+          return !inProgress
         }
-        const goPrevious = (e) => {
+        const goNext = () => {
+          setStateCallback({
+            inProgress: true
+          }, () => {
+            dispatch({
+              name: 'USER_CREATE',
+              data: {
+                email: state.email,
+                password: state.password
+              }
+            })
+              .then(() => {
+                setStateCallback({
+                  authenticated: true
+                })
+              })
+              .catch(() => {
+                setStateCallback({
+                  inProgress: false
+                })
+              })
+          })
+        }
+        const goPrevious = () => {
           return setStateCallback({
             stage: 'email',
             ...stages.get('email').init(state)
@@ -185,7 +215,7 @@ const stages = new Map([
               <p>
                 Would you like to create one?
               </p>
-              <Button onClick={goNext}>Yes, create an account</Button>
+              <Button onClick={goNext} disabled={!canGoNext()}>Yes, create an account</Button>
               <Button onClick={goPrevious} flavour='weak'>No...</Button>
             </div>
           </Fragment>

@@ -3,13 +3,10 @@ import api from '../../api.js'
 
 const patch = debounce((projectId, payload) => {
   api.patch('api-core', `me/team/projects/${projectId}`, payload)
-}, 500)
+}, 200)
 
 export default async function (state, payload) {
-  const {
-    id
-  } = payload
-  patch(id, payload)
+  patch(payload.id, payload)
   const currentProject = state.currentProject
   currentProject.project.fromApiPatch(payload)
   return {

@@ -11,6 +11,7 @@ const StyledUploader = styled.div`
   @keyframes oscar-in-progress {
     100% { transform: rotate(360deg); }
   }
+  position: relative;
   border: 2px dashed #dadfe1;
   border-radius: 4px;
   cursor: copy;
@@ -72,7 +73,7 @@ class Uploader extends PureComponent {
     const formData = new FormData()
     formData.append('bin', files[0])
     api.uploadBin(this.props.route, formData)
-      .then(() => {
+      .then(data => {
         this.setState({
           inProgress: false,
           isDone: true,
@@ -85,7 +86,7 @@ class Uploader extends PureComponent {
             hasErrored: false
           })
         }, 1500)
-        this.props.onDone()
+        this.props.onDone(data)
       })
       .catch(() => {
         this.setState({
