@@ -5,6 +5,8 @@ import SetXSpeed from './SetXSpeed.js'
 import SetYSpeed from './SetYSpeed.js'
 import SetImage from './SetImage.js'
 
+import PlaySound from './PlaySound.js'
+
 import GoToSpace from './GoToSpace.js'
 import If from './If.js'
 import EndIf from './EndIf.js'
@@ -18,6 +20,8 @@ export default {
   SetXSpeed,
   SetYSpeed,
   SetImage,
+
+  PlaySound,
 
   GoToSpace,
   If,

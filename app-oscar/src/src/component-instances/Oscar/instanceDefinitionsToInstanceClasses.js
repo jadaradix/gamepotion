@@ -1,9 +1,9 @@
-import Instance from './Instance'
+import GameAtomInstance from './GameAtomInstance'
 
-const instanceDefinitionsToInstanceClasses = (resourceContainers, instances) => {
+const instanceDefinitionsToInstanceClasses = (instances, resourceContainers) => {
   return instances.map(i => {
     const atomContainer = resourceContainers.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
-    const imageContainer = resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === atomContainer.resource.imageId)
+    
     const props = {
       x: i.x,
       y: i.y,
@@ -13,7 +13,9 @@ const instanceDefinitionsToInstanceClasses = (resourceContainers, instances) => 
       vz: 0,
       frame: 0
     }
-    return new Instance(props, atomContainer, imageContainer)
+    const newInstance = new GameAtomInstance(props, atomContainer)
+    newInstance.setImage(atomContainer.resource.imageId, resourceContainers)
+    return newInstance
   })
 }
 

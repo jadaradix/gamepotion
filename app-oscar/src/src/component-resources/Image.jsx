@@ -30,19 +30,24 @@ const StyledResource = styled.div`
   section + section {
     margin-top: 2rem;
   }
-  .component--box .frame-width-height {
+  .component--uploader {
+    height: 100%;
+  }
+  .frame-width-height {
     display: grid;
     grid-template-columns: 3fr 3fr 3fr;
     grid-gap: 1rem;
     margin-bottom: 2rem;
   }
-  .component--box .file p {
-    ${font}
-    font-size: 80%;
-    color: #bdc3c7;
-  }
-  .component--box .file .component--dropper + p {
-    margin-top: 1rem;
+  .file {
+    p {
+      ${font}
+      font-size: 80%;
+      color: #bdc3c7;
+    }
+    .component--dropper + p {
+      margin-top: 1rem;
+    } 
   }
 `
 

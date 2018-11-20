@@ -252,6 +252,21 @@ class ResourceSpace extends PureComponent {
       null
     )
 
+    const resourceContainers = this.props.resources.map(resource => {
+      return {
+        resource,
+        extras: {}
+      }
+    })
+    const spaceContainer = {
+      resource: this.props.resource,
+      extras: {
+        backgroundImage: null,
+        foregroundImage: null
+      }
+    }
+    const variables = new Map()
+
     return (
       <StyledResource>
         <section className='settings-plot-info'>
@@ -286,7 +301,7 @@ class ResourceSpace extends PureComponent {
           </Box>
         </section>
         <section className='canvas'>
-          <GameSpace space={this.props.resource} resources={this.props.resources} designMode={!this.state.isRunning} onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords} grid={this.state.grid} />
+          <GameSpace spaceContainer={spaceContainer} resourceContainers={resourceContainers} variables={variables} designMode={!this.state.isRunning} grid={this.state.grid} onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords} />
           <Switch checked={this.state.isRunning} onChange={(v) => this.updateRunning(v)}>Run</Switch>
         </section>
       </StyledResource>

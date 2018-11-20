@@ -19,8 +19,6 @@ class GameSpace extends Component {
     super()
     this.canvasRef = React.createRef()
     this.eventListeners = new Map()
-    this.resourceContainers = []
-    this.spaceContainer = null
   }
 
   handleEvent (event, eventContext, instanceClasses, appliesToInstanceClasses) {
@@ -32,11 +30,17 @@ class GameSpace extends Component {
         const result = handleActionBack(actionBack)
         instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
         instancesToCreate = instancesToCreate.concat(result.instancesToCreate)
-        if (typeof result.setImage === 'string') {
-          i.imageContainer = eventContext.resourceContainers.find(r => r.resource.type === 'image' && r.resource.id === result.setImage)
+        if (typeof result.imageToSet === 'string') {
+          i.setImage(result.imageToSet, eventContext.resourceContainers)
         }
-        if (typeof result.goToSpace === 'string') {
-          this.props.onSwitchSpace(result.goToSpace)
+        if (typeof result.spaceToGoTo === 'string') {
+          this.props.onSwitchSpace(result.spaceToGoTo)
+        }
+        if (typeof result.soundToPlay === 'string') {
+          const foundSound = eventContext.resourceContainers.find(r => r.resource.id === result.soundToPlay)
+          if (foundSound !== undefined) {
+            foundSound.extras.element.play()
+          }
         }
       })
     })
@@ -44,7 +48,7 @@ class GameSpace extends Component {
       console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
       instanceClasses = this.handleEvent('destroy', eventContext, instanceClasses, instanceClassesToDestroy)
     }
-    const createdInstances = instanceDefinitionsToInstanceClasses(eventContext.resourceContainers, instancesToCreate)
+    const createdInstances = instanceDefinitionsToInstanceClasses(instancesToCreate, eventContext.resourceContainers)
     instanceClasses = instanceClasses.concat(createdInstances)
     if (createdInstances.length > 0) {
       console.log('[Oscar] [handleEvent] createdInstances', createdInstances)
@@ -60,8 +64,8 @@ class GameSpace extends Component {
   eventEventStart(instanceClasses) {
     // console.warn('[eventStart] instanceClasses', instanceClasses)
     const eventContext = {
-      spaceContainer: this.spaceContainer,
-      resourceContainers: this.resourceContainers,
+      spaceContainer: this.props.spaceContainer,
+      resourceContainers: this.props.resourceContainers,
       variables: this.props.variables
     }
     return this.handleEvent('create', eventContext, instanceClasses, instanceClasses)
@@ -73,8 +77,8 @@ class GameSpace extends Component {
       i.onStep()
     })
     const eventContext = {
-      spaceContainer: this.spaceContainer,
-      resourceContainers: this.resourceContainers,
+      spaceContainer: this.props.spaceContainer,
+      resourceContainers: this.props.resourceContainers,
       variables: this.props.variables
     }
     return this.handleEvent('step', eventContext, instanceClasses, instanceClasses)
@@ -101,26 +105,12 @@ class GameSpace extends Component {
     }
   }
 
-  renderCanvas(canvas, space, resources) {
-    this.resourceContainers = resources.map(resource => {
-      return {
-        resource,
-        extras: {}
-      }
-    })
-    this.spaceContainer = {
-      resource: space,
-      extras: {
-        backgroundImage: null,
-        foregroundImage: null
-      }
-    }
+  renderCanvas(canvas) {
   
     this.removeEventListeners()
 
     // let because it can be spliced
-    let instanceClasses = instanceDefinitionsToInstanceClasses(this.resourceContainers, space.instances)
-    // console.warn('[renderCanvas] instanceClasses', instanceClasses)
+    let instanceClasses = instanceDefinitionsToInstanceClasses(this.props.spaceContainer.resource.instances, this.props.resourceContainers)
 
     const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
     const getTouchData = (e) => {
@@ -168,8 +158,8 @@ class GameSpace extends Component {
         }
       } else {
         const eventContext = {
-          spaceContainer: this.spaceContainer,
-          resourceContainers: this.resourceContainers,
+          spaceContainer: this.props.spaceContainer,
+          resourceContainers: this.props.resourceContainers,
           variables: this.props.variables
         }
         instanceClasses = this.handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
@@ -190,8 +180,8 @@ class GameSpace extends Component {
         }
       } else {
         const eventContext = {
-          spaceContainer: this.spaceContainer,
-          resourceContainers: this.resourceContainers,
+          spaceContainer: this.props.spaceContainer,
+          resourceContainers: this.props.resourceContainers,
           variables: this.props.variables
         }
         instanceClasses = this.handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
@@ -208,20 +198,20 @@ class GameSpace extends Component {
       this.props.onTouchMove(getMouseData(e))
     })
     let resourceContainersLoadedSoFar = 0
-    const totalResourceContainersToLoad = this.resourceContainers.filter(r => ['image', 'sound'].includes(r.resource.type)).length
+    const totalResourceContainersToLoad = this.props.resourceContainers.filter(r => ['image', 'sound'].includes(r.resource.type)).length
     const startLoading = () => {
       console.warn('[Oscar] [Space] [renderCanvas] start loading!')
-      c.width = space.width
-      c.height = space.height
+      c.width = this.props.spaceContainer.resource.width
+      c.height = this.props.spaceContainer.resource.height
       c.style.display = 'block'
       c.style.backgroundColor = 'black'
-      c.style.width = space.width
-      c.style.height = space.height
+      c.style.width = this.props.spaceContainer.resource.width
+      c.style.height = this.props.spaceContainer.resource.height
       // stop blurred lines from https://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
       ctx.imageSmoothingEnabled = false
       ctx.translate(0.5, 0.5)
       //
-      ctx.clearRect(0, 0, space.width, space.height)
+      ctx.clearRect(0, 0, this.props.spaceContainer.resource.width, this.props.spaceContainer.resource.height)
       ctx.fillStyle = '#ffffff'
       ctx.font = '16px Arial'
       ctx.fillText('Loading...', 16, 24)
@@ -237,12 +227,12 @@ class GameSpace extends Component {
     const loadedGood = () => {
       console.warn('[Oscar] [Space] [renderCanvas] [loadedGood]')
       if (this.props.designMode === true) {
-        draw(ctx, this.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
+        draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
       } else {
         instanceClasses = this.eventEventStart(instanceClasses)
         const logic = () => { 
           instanceClasses = this.handleEventStep(instanceClasses)
-          draw(ctx, this.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
+          draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
           if (this.props.designMode === false) {
             window.requestAnimationFrame(logic)
           }
@@ -264,7 +254,7 @@ class GameSpace extends Component {
     //
     // GET READY FOR EVENTS
     //
-    const resourcesAtoms = this.resourceContainers.filter(r => r.resource.type === 'atom')
+    const resourcesAtoms = this.props.resourceContainers.filter(r => r.resource.type === 'atom')
     resourcesAtoms
       .forEach(r => {
         r.extras.events = new Map(
@@ -289,7 +279,7 @@ class GameSpace extends Component {
     //
     // LOAD IMAGES
     //
-    const resourcesImages = this.resourceContainers.filter(r => r.resource.type === 'image')
+    const resourcesImages = this.props.resourceContainers.filter(r => r.resource.type === 'image')
     resourcesImages.forEach(resource => {
       const element = new window.Image()
       this.addEventListener(element, 'load', loadGoodLogic)
@@ -299,11 +289,11 @@ class GameSpace extends Component {
       })
       resource.extras.element = element
       element.src = resource.resource.getRemoteUrl()
-      if (this.spaceContainer.resource.backgroundImage === resource.resource.id) {
-        this.spaceContainer.extras.backgroundImage = resource
+      if (this.props.spaceContainer.resource.backgroundImage === resource.resource.id) {
+        this.props.spaceContainer.extras.backgroundImage = resource
       }
-      if (this.spaceContainer.resource.foregroundImage === resource.resource.id) {
-        this.spaceContainer.extras.foregroundImage = resource
+      if (this.props.spaceContainer.resource.foregroundImage === resource.resource.id) {
+        this.props.spaceContainer.extras.foregroundImage = resource
       }
       resource.extras.image = element
     })
@@ -311,7 +301,7 @@ class GameSpace extends Component {
     //
     // LOAD SOUNDS
     //
-    const resourcesSounds = this.resourceContainers.filter(r => r.resource.type === 'sound')
+    const resourcesSounds = this.props.resourceContainers.filter(r => r.resource.type === 'sound')
     resourcesSounds.forEach(resource => {
       const element = new window.Audio()
       this.addEventListener(element, 'loadedmetadata', loadGoodLogic)
@@ -336,31 +326,31 @@ class GameSpace extends Component {
   render() {
     console.warn('[Oscar] [Space] [render]')
     const canvasStyle = {
-      width: this.props.space.width,
-      height: this.props.space.height,
-      lineHeight: `${this.props.space.height}px`
+      width: this.props.spaceContainer.resource.width,
+      height: this.props.spaceContainer.resource.height,
+      lineHeight: `${this.props.spaceContainer.resource.height}px`
     }
     return (
       <canvas style={canvasStyle} className='component--oscar-engine-space' ref={(element) => {
         if (element === null) {
           return
         }
-        this.renderCanvas(element, this.props.space, this.props.resources)
+        this.renderCanvas(element)
       }} />
     )
   }
 }
 
 GameSpace.propTypes = {
+  spaceContainer: PropTypes.any.isRequired,
+  resourceContainers: PropTypes.array.isRequired,
   designMode: PropTypes.bool,
-  space: PropTypes.any.isRequired,
-  resources: PropTypes.array.isRequired,
   grid: PropTypes.object,
+  variables: PropTypes.any.isRequired,
   onTouch: PropTypes.func,
   onTouchSecondary: PropTypes.func,
   onTouchMove: PropTypes.func,
-  onSwitchSpace: PropTypes.func,
-  variables: PropTypes.any
+  onSwitchSpace: PropTypes.func
 }
 
 GameSpace.defaultProps = {
@@ -368,8 +358,7 @@ GameSpace.defaultProps = {
   onTouch: () => {},
   onTouchSecondary: () => {},
   onTouchMove: () => {},
-  onSwitchSpace: () => {},
-  variables: new Map()
+  onSwitchSpace: () => {}
 }
 
 export default GameSpace

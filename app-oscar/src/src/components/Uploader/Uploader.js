@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Dropzone from 'react-dropzone'
@@ -20,22 +20,28 @@ const StyledUploader = styled.div`
   &.component--uploader-done {
     cursor: default;
   }
-  img.icon {
-    display: block;
-    width: 48px;
-    height: 48px;
-    margin: 1rem auto 0.25rem auto;
-    // background-color: yellow;
-  }
-  img.icon--in-progress {
-    animation: oscar-in-progress 4s linear infinite;
-  }
-  p {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    ${font}
-    text-align: center;
-    color: #6c7a89;
+  > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    img.icon {
+      display: block;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 0.25rem auto;
+      // background-color: yellow;
+    }
+    img.icon--in-progress {
+      animation: oscar-in-progress 4s linear infinite;
+    }
+    p {
+      padding: 0.5rem 1rem 0 1rem;
+      ${font}
+      font-size: 90%;
+      text-align: center;
+      color: #6c7a89;
+    }
   }
 `
 
@@ -108,34 +114,35 @@ class Uploader extends PureComponent {
   render() {
     const className = (() => {
       if (this.state.inProgress) {
-        return 'component--uploader-in-progress'
+        return ' component--uploader-in-progress'
       }
       if (this.state.isDone) {
-        return 'component--uploader-done'
+        return ' component--uploader-done'
       }
       if (this.state.hasErrored) {
-        return 'component--uploader-errored'
+        return ' component--uploader-errored'
       }
+      return ''
     })()
     return (
-      <StyledUploader className={`component--uploader ${className}`}>
+      <StyledUploader className={`component--uploader${className}`}>
         {this.state.inProgress === true &&
-          <Fragment>
+          <div>
             <img src={icons.generic.uploadInProgress} className='icon icon--in-progress' alt='' />
             <p>Uploading...</p>
-          </Fragment>
+          </div>
         }
         {this.state.isDone === true &&
-          <Fragment>
+          <div>
             <img src={icons.generic.uploadDone} className='icon icon--done' alt='' />
             <p>Done!</p>
-          </Fragment>
+          </div>
         }
         {this.state.hasErrored === true &&
-          <Fragment>
+          <div>
             <img src={icons.generic.uploadErrored} className='icon icon--errored' alt='' />
             <p>Upload failed.</p>
-          </Fragment>
+          </div>
         }
         {this.state.inProgress === false && this.state.isDone === false && this.state.hasErrored === false &&
           <Dropzone
@@ -147,25 +154,25 @@ class Uploader extends PureComponent {
             {({ isDragActive, isDragReject }) => {
               if (isDragReject) {
                 return (
-                  <Fragment>
+                  <div>
                     <img src={icons.generic.upload} className='icon' alt='' />
-                    <p>You can&rsquo;t upload this file.</p>
-                  </Fragment>
+                    <p>You can&rsquo;t use this file.</p>
+                  </div>
                 )
               }
               if (isDragActive) {
                 return (
-                  <Fragment>
+                  <div>
                     <img src={icons.generic.upload} className='icon' alt='' />
-                    <p>You can upload this file.</p>
-                  </Fragment>
+                    <p>You can use this file.</p>
+                  </div>
                 )
               }
               return (
-                <Fragment>
+                <div>
                   <img src={icons.generic.upload} className='icon' alt='' />
-                  <p>Drop a file here or touch to upload.</p>
-                </Fragment>
+                  <p>Drop a file here or touch to choose.</p>
+                </div>
               )
             }}
           </Dropzone>

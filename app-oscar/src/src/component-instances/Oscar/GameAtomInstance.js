@@ -1,14 +1,17 @@
 import parseRunArguments from './parseRunArguments'
 
-class Instance {
-  constructor(props, atomContainer, imageContainer) {
+class GameAtomInstance {
+  constructor(props, atomContainer) {
     this.props = props
     this.atomContainer = atomContainer
-    this.imageContainer = imageContainer
+  }
+
+  setImage(imageId, resourceContainers) {
+    this.imageContainer = resourceContainers.find(r => r.resource.id === imageId)
   }
 
   getImage() {
-    if (!this.imageContainer) {
+    if (this.imageContainer === undefined) {
       return null
     }
     if (typeof this.imageContainer.extras.image.dataset.oscarErrored === 'string') {
@@ -52,4 +55,4 @@ class Instance {
   }
 }
 
-export default Instance
+export default GameAtomInstance

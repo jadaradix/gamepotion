@@ -20,14 +20,14 @@ class Game extends Component {
   }
 
   getSpace(id) {
-    const foundStartSpace = this.props.resources.find(r => {
+    const foundSpace = this.props.resources.find(r => {
       return (r.type === 'space' && r.id === id)
     })
-    if (foundStartSpace === undefined) {
-      console.error('[Oscar] [Game] [render] foundStartSpace is undefined; returning!')
+    if (foundSpace === undefined) {
+      console.error('[Oscar] [Game] [render] foundSpace is undefined; returning!')
       return null
     }
-    return foundStartSpace
+    return foundSpace
   }
 
   render() {
@@ -37,8 +37,23 @@ class Game extends Component {
       return null
     }
 
+    const resourceContainers = this.props.resources.map(resource => {
+      return {
+        resource,
+        extras: {}
+      }
+    })
+    const spaceContainer = {
+      resource: this.state.space,
+      extras: {
+        backgroundImage: null,
+        foregroundImage: null
+      }
+    }
+    const variables = new Map()
+
     return (
-      <GameSpace space={this.state.space} resources={this.props.resources} onSwitchSpace={this.onSwitchSpace} />
+      <GameSpace spaceContainer={spaceContainer} resourceContainers={resourceContainers} variables={variables} onSwitchSpace={this.onSwitchSpace} />
     )
   }
 }

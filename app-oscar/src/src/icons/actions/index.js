@@ -5,6 +5,8 @@ import SetXSpeed from './files/SetXSpeed.svg'
 import SetYSpeed from './files/SetYSpeed.svg'
 import SetImage from './files/SetImage.svg'
 
+import PlaySound from './files/PlaySound.svg'
+
 import GoToSpace from './files/GoToSpace.svg'
 import If from './files/If.svg'
 import EndIf from './files/EndIf.svg'
@@ -18,6 +20,8 @@ export default {
   SetXSpeed,
   SetYSpeed,
   SetImage,
+
+  PlaySound,
 
   GoToSpace,
   If,

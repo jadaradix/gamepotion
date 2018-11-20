@@ -23,13 +23,18 @@ const StyledResource = styled.div`
   section + section {
     margin-top: 2rem;
   }
-  .component--box > p {
-    ${font}
-    font-size: 80%;
-    color: #bdc3c7;
+  .component--uploader {
+    height: 100%;
   }
-  .component--box > .component--dropper + p {
-    margin-top: 1rem;
+  .file {
+    p {
+      ${font}
+      font-size: 80%;
+      color: #bdc3c7;
+    }
+    .component--dropper + p {
+      margin-top: 1rem;
+    } 
   }
 `
 
@@ -78,8 +83,10 @@ class ResourceSound extends PureComponent {
             <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['audio/wav']} onDone={() => this.onUpdate({ fixed: null })} />
           </Box>
           <Box>
-            <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
-            <p>Choosing a Game Maker Club file won&rsquo;t erase a file you have uploaded.</p>
+            <div className='file'>
+              <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+              <p>Choosing a Game Maker Club file won&rsquo;t erase a file you have uploaded.</p>
+            </div>
           </Box>
         </section>
       </StyledResource>
