@@ -37,4 +37,4 @@ cd ../..;
 
 cd inter-router;
   npm i;
-cd ../..;
+cd ..;

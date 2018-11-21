@@ -11,6 +11,12 @@ const guessNameFromEmail = (email) => {
     .join(' ')
 }
 
+const VALID_SUBSCRIPTION_IDS = [
+  'free',
+  'pro',
+  'beast'
+]
+
 class User {
   constructor (json = {}) {
     this.id = json.id || uuid()
@@ -19,6 +25,24 @@ class User {
     this.name = json.name || 'New User'
     this.email = json.email || 'a@b.c'
     this.passwordHash = json.passwordHash || null
+    this.subscriptionEvents = json.subscriptionEvents || []
+  }
+
+  updateSubscription (id) {
+    if (!VALID_SUBSCRIPTION_IDS.includes(id)) {
+      throw new Error(`subscription id ${id} is not one of ${VALID_SUBSCRIPTION_IDS.join('/')}`)
+    }
+    this.subscriptionEvents.push({
+      id,
+      when: Math.floor(new Date() / 1000)
+    })
+  }
+
+  getSubscription () {
+    if (this.subscriptionEvents.length === 0) {
+      this.updateSubscription('free')
+    }
+    return this.subscriptionEvents[this.subscriptionEvents.length - 1]
   }
 
   toApi () {
@@ -49,7 +73,8 @@ class User {
       createdAt: this.createdAt,
       name: this.name,
       email: this.email,
-      passwordHash: this.passwordHash
+      passwordHash: this.passwordHash,
+      subscriptionEvents: this.subscriptionEvents
       // someBoolean: (this.someBoolean === true),
     }
     return JSON.parse(JSON.stringify(json))

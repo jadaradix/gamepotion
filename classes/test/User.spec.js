@@ -50,3 +50,12 @@ test('can be updated from an API call', () => {
   expect(user.teamId).toBe('should-be-persisted')
   expect(user.id).not.toBe('should-not-be-persisted')
 })
+
+test('can have its subscription updated', () => {
+  const user = new User()
+  user.name = 'James'
+  user.email = 'james@gamemaker.club'
+  expect(user.getSubscription().id).toBe('free')
+  user.updateSubscription('pro')
+  expect(user.getSubscription().id).toBe('pro')
+})

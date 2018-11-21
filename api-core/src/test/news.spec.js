@@ -8,8 +8,8 @@ const configs = {
   }
 }
 
-test('gets the news', (done) => {
-  axios({
+test('gets the news', () => {
+  return axios({
     method: 'get',
     url: `${URL_API_CORE}/news`,
     ...configs.auth
@@ -17,7 +17,5 @@ test('gets the news', (done) => {
     .then(response => {
       expect(response.status).toBe(200)
       expect(Array.isArray(response.data)).toBe(true)
-      return done()
     })
-    .catch(done)
 })

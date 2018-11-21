@@ -88,7 +88,7 @@ class ResourceImage extends PureComponent {
   }
 
   onUploadDone(data) {
-    // this code can go away when api-core and api-bin share a datalayer
+    // this code can go away when the apis share a datalayer
     const {
       fixed,
       frameWidth,
