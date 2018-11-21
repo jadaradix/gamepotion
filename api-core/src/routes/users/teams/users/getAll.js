@@ -11,7 +11,7 @@ const route = (request, response, next) => {
     .then(objects => {
       const apiObjects = objects.map(object => {
         const c = classFactory.user(object)
-        return c.toApiUsersList()
+        return c.toApiList()
       })
       response.send(apiObjects)
       return next()

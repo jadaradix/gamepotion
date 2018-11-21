@@ -51,12 +51,13 @@ class User {
       teamId: this.teamId,
       createdAt: this.createdAt,
       name: this.name,
-      email: this.email
+      email: this.email,
+      subscription: this.getSubscription()
     }
     return JSON.parse(JSON.stringify(json))
   }
 
-  toApiUsersList () {
+  toApiList () {
     const json = {
       id: this.id,
       teamId: this.teamId,
@@ -118,6 +119,7 @@ class User {
     this.teamId = json.teamId
     this.name = json.name
     this.email = json.email
+    this.subscription = json.subscription
   }
 }
 
