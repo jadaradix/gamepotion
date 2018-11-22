@@ -1,4 +1,4 @@
-const FeedItem = require('../dist/FeedItem.js').default
+const FeedItem = require('../dist/FeedItem.js')
 
 test('can be created', () => {
   const team = new FeedItem()

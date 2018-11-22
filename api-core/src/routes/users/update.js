@@ -37,11 +37,11 @@ const route = (request, response, next) => {
         return next(false)
       })
   }
-  datalayer.readOne('Users', {email: request.body.email})
+  datalayer.readOne('Users', {userlandId: request.body.userlandId})
     .then(user => {
       const userClass = classFactory.user(user)
       if (userClass.id !== request.authorization.user.id) {
-        response.send(new errors.ForbiddenError('this email is already in use'))
+        response.send(new errors.ForbiddenError('this userlandId (email) is already in use'))
         return next(false)
       }
       updateUser(userClass)

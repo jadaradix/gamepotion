@@ -10,13 +10,13 @@ export default async function (state, payload) {
       const credentials = {
         ...state.credentials
       }
-      if (typeof payload.email === 'string') {
-        credentials.email = payload.email
+      if (typeof payload.userlandId === 'string') {
+        credentials.userlandId = payload.userlandId
       }
       if (typeof payload.password === 'string') {
         credentials.password = payload.password
       }
-      set('credentials-email', credentials.email)
+      set('credentials-userlandId', credentials.userlandId)
       set('credentials-password', credentials.password)
       return {
         ...state,

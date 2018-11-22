@@ -19,7 +19,7 @@ const envs = {
 const apis = envs[env].apis
 
 const auth = {
-  username: getState().credentials.email,
+  username: getState().credentials.userlandId,
   password: getState().credentials.password
 }
 
@@ -161,7 +161,7 @@ export default {
       responseType: 'json'
     })
       .then(response => {
-        auth.username = response.data.email
+        auth.username = response.data.userlandId
         auth.password = response.data.password
         return response.data
       })
@@ -177,7 +177,7 @@ export default {
       responseType: 'json'
     })
       .then(response => {
-        auth.username = payload.email
+        auth.username = payload.userlandId
         auth.password = payload.password
         return response.data
       })

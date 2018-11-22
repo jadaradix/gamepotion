@@ -5,6 +5,10 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
     "jest": "^23.6.0"
   },
   "scripts": {

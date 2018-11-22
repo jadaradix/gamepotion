@@ -20,7 +20,7 @@ import getFeed from './actions/feeds/get'
 
 let state = {
   credentials: {
-    email: get('credentials-email'),
+    userlandId: get('credentials-userlandId'),
     password: get('credentials-password')
   },
   user: null,

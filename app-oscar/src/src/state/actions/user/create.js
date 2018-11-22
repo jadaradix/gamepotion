@@ -22,10 +22,10 @@ export default async function (state, payload) {
   const userClass = await (async () => {
     const user = await doCreateUser(payload)
     credentials = {
-      email: user.email,
+      userlandId: user.userlandId,
       password: user.password
     }
-    set('credentials-email', credentials.email)
+    set('credentials-userlandId', credentials.userlandId)
     set('credentials-password', credentials.password)
     const userClass = new classes.User()
     userClass.clientFromApiGet(user)

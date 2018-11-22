@@ -30,11 +30,11 @@ const parseToken = (token, typeHint, parseContext) => {
   if (typeof token === 'number') {
     return token
   }
-  if (token.indexOf('instance.') === 0) {
+  if (token.startsWith('instance.')) {
     const prop = token.substring('instance.'.length)
     return parseContext.instanceClass.props[prop]
   }
-  if (token.indexOf('camera.') === 0) {
+  if (token.startsWith('camera.')) {
     const prop = token.substring('camera.'.length)
     return parseContext.camera[prop]
   }

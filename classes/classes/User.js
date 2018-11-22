@@ -1,15 +1,5 @@
 import uuid from '../abstractions/uuid/index.dist.js'
-
-const guessNameFromEmail = (email) => {
-  return email
-    .split('@')
-    .shift()
-    .split('.')
-    .map(n => {
-      return `${n[0].toUpperCase()}${n.substring(1)}`
-    })
-    .join(' ')
-}
+import guessNameFromUserlandId from './guessNameFromUserlandId.js'
 
 const VALID_SUBSCRIPTION_IDS = [
   'free',
@@ -22,8 +12,8 @@ class User {
     this.id = json.id || uuid()
     this.teamId = json.teamId || null
     this.createdAt = json.createdAt || Math.floor(new Date() / 1000)
-    this.name = json.name || 'New User'
-    this.email = json.email || 'a@b.c'
+    this.name = json.name || null
+    this.userlandId = json.userlandId || 'a@b.c'
     this.passwordHash = json.passwordHash || null
     this.subscriptionEvents = json.subscriptionEvents || []
   }
@@ -51,7 +41,7 @@ class User {
       teamId: this.teamId,
       createdAt: this.createdAt,
       name: this.name,
-      email: this.email,
+      userlandId: this.userlandId,
       subscription: this.getSubscription()
     }
     return JSON.parse(JSON.stringify(json))
@@ -62,7 +52,7 @@ class User {
       id: this.id,
       teamId: this.teamId,
       name: this.name,
-      email: this.email
+      userlandId: this.userlandId
     }
     return JSON.parse(JSON.stringify(json))
   }
@@ -73,7 +63,7 @@ class User {
       teamId: this.teamId,
       createdAt: this.createdAt,
       name: this.name,
-      email: this.email,
+      userlandId: this.userlandId,
       passwordHash: this.passwordHash,
       subscriptionEvents: this.subscriptionEvents
       // someBoolean: (this.someBoolean === true),
@@ -82,12 +72,12 @@ class User {
   }
 
   fromApiPost (json) {
-    if (typeof json.email !== 'string' || json.email.indexOf('@') < 1) { // -1 or 0
-      throw new Error('email is not valid')
+    if (typeof json.userlandId !== 'string' || json.userlandId.length === 0) { // -1 or 0
+      throw new Error('userlandId is not valid')
     }
     this.teamId = (typeof json.teamId === 'string') ? json.teamId : this.teamId
-    this.name = guessNameFromEmail(json.email)
-    this.email = json.email
+    this.name = guessNameFromUserlandId(json.userlandId)
+    this.userlandId = json.userlandId
   }
 
   fromApiPatch (json) {
@@ -105,11 +95,11 @@ class User {
         this.name = json.name
       }
     }
-    if (typeof json.email === 'string') {
-      if (json.email.indexOf('@') < 1) {
-        throw new Error('email is not valid')
+    if (typeof json.userlandId === 'string') {
+      if (json.userlandId.length === 0) {
+        throw new Error('userlandId is not valid')
       } else {
-        this.email = json.email
+        this.userlandId = json.userlandId
       }
     }
   }
@@ -118,7 +108,7 @@ class User {
     this.id = json.id
     this.teamId = json.teamId
     this.name = json.name
-    this.email = json.email
+    this.userlandId = json.userlandId
     this.subscription = json.subscription
   }
 }

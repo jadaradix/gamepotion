@@ -126,8 +126,8 @@ const read = (entity, queryObject, orderBy, select) => {
       }
     })
     if (orderBy !== undefined) {
-      query.order(orderBy.indexOf('descending:') === 0 ? orderBy.substring('descending:'.length) : orderBy, {
-        [orderBy.indexOf('descending:') === 0 ? 'descending' : 'ascending']: true
+      query.order(orderBy.startsWith('descending:') ? orderBy.substring('descending:'.length) : orderBy, {
+        [orderBy.startsWith('descending:') ? 'descending' : 'ascending']: true
       })
     }
     return datastore

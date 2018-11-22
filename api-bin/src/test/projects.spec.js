@@ -4,7 +4,7 @@ const URL_API_CORE = 'http://localhost:1025/v1'
 const URL_API_BIN = 'http://localhost:1026/v1'
 
 const user = {
-  email: 'j@jada.io',
+  userlandId: 'j@jada.io',
   password: 'letmein'
 }
 
@@ -16,7 +16,7 @@ const configs = {
   auth: {
     validateStatus: false,
     auth: {
-      username: user.email,
+      username: user.userlandId,
       password: user.password
     }
   },
@@ -25,7 +25,7 @@ const configs = {
   }
 }
 
-test('creates a project', (done) => {
+it('creates a project', (done) => {
   axios({
     method: 'post',
     url: `${URL_API_CORE}/me/team/projects`,
@@ -44,7 +44,7 @@ test('creates a project', (done) => {
 describe('resources', () => {
   let resourceAtomId
   let resourceImageId
-  test('adds an atom resource', (done) => {
+  it('adds an atom resource', (done) => {
     axios({
       method: 'post',
       url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
@@ -62,7 +62,7 @@ describe('resources', () => {
       .catch(done)
   })
 
-  test('adds an image resource', (done) => {
+  it('adds an image resource', (done) => {
     axios({
       method: 'post',
       url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
@@ -80,7 +80,7 @@ describe('resources', () => {
       .catch(done)
   })
 
-  test('throws a wobbler when updating a resource if there is no bin file key', (done) => {
+  it('throws a wobbler when updating a resource if there is no bin file key', (done) => {
     axios.post(
       `${URL_API_BIN}/me/team/projects/${project.id}/resources/${resourceAtomId}`,
       {},
@@ -96,7 +96,7 @@ describe('resources', () => {
       .catch(done)
   })
 
-  test('deletes the atom resource', (done) => {
+  it('deletes the atom resource', (done) => {
     axios({
       method: 'delete',
       url: `${URL_API_CORE}/me/team/projects/${project.id}/resources/${resourceAtomId}`,
@@ -109,7 +109,7 @@ describe('resources', () => {
       .catch(done)
   })
 
-  test('deletes the image resource', (done) => {
+  it('deletes the image resource', (done) => {
     axios({
       method: 'delete',
       url: `${URL_API_CORE}/me/team/projects/${project.id}/resources/${resourceImageId}`,
@@ -123,7 +123,7 @@ describe('resources', () => {
   })
 })
 
-test('deletes the project', (done) => {
+it('deletes the project', (done) => {
   axios({
     method: 'delete',
     url: `${URL_API_CORE}/me/team/projects/${project.id}`,

@@ -4,7 +4,7 @@
     "teamId": "team-hack-fatquack",
     "createdAt": 100,
     "name": "James",
-    "email": "j@jada.io",
+    "userlandId": "j@jada.io",
     "passwordHash": "$2a$10$EttWVUXm7yCSJGBafCFSveecQyN1prQEdgoftA47mBAi9TBD8gtrC",
     "activationCode": "done-xyz"
   }

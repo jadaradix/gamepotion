@@ -23,9 +23,9 @@ cd api-bin/src;
   npm test;
 cd ../..;
 
-cd app-oscar;
-  npm test;
-cd ..;
+cd app-oscar/src;
+  CI=true npm test;
+cd ../..;
 
 cd classes;
   npm test;
@@ -37,4 +37,4 @@ cd ../..;
 
 cd inter-router;
   npm test;
-cd ../..;
+cd ..;

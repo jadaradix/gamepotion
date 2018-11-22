@@ -1,4 +1,4 @@
-const Project = require('../dist/Project.js').default
+const Project = require('../dist/Project.js')
 
 test('can be created', () => {
   const project = new Project()

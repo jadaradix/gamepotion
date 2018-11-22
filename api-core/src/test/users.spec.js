@@ -5,14 +5,14 @@ const URL_API_CORE = 'http://localhost:1025/v1'
 
 const id = createRandomString()
 const user = {
-  email: `xxx${id}@gamemaker.club`
+  userlandId: `xxx${id}@gamemaker.club`
 }
 
 const configs = {
   auth: {
     validateStatus: false,
     auth: {
-      username: user.email,
+      username: user.userlandId,
       password: '???'
     }
   },
@@ -21,18 +21,18 @@ const configs = {
   }
 }
 
-test('doesnt create a user with a bad email (class testing)', (done) => {
+test('doesnt create a user with a bad userlandId (class testing)', (done) => {
   axios({
     method: 'post',
     url: `${URL_API_CORE}/users`,
     data: {
-      email: 'qweqweqwe'
+      userlandId: ''
     },
     ...configs.noAuth
   })
     .then(response => {
       expect(response.status).toBe(400)
-      expect(response.data.message).toBe('this would not get created (email is not valid)')
+      expect(response.data.message).toBe('this would not get created (userlandId is not valid)')
       return done()
     })
     .catch(done)

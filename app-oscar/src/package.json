@@ -17,7 +17,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --setupFiles=$(pwd)/jest.setup.js --ci"
+    "test": "react-scripts test --env=jsdom --setupFiles=$(pwd)/jest.setup.js"
   },
   "devDependencies": {
     "enzyme": "^3.7.0",

@@ -28,7 +28,7 @@ const middleware = (publicRoutes, request, response, next) => {
     const method = $[1]
     const route = $[2]
     if (mode === 'START') {
-      return (request.method === method && request.getUrl().pathname.indexOf(route) === 0)
+      return (request.method === method && request.getUrl().pathname.startsWith(route))
     } else {
       return (request.method === method && request.getUrl().pathname === route)
     }
@@ -39,9 +39,9 @@ const middleware = (publicRoutes, request, response, next) => {
       response.send(new errors.UnauthorizedError('basic auth does not support empty values (probably a zero length password)'))
       return next(false)
     } else {
-      let email = request.authorization.basic.username
+      let userlandId = request.authorization.basic.username
       let password = request.authorization.basic.password
-      datalayer.readOne('Users', {email})
+      datalayer.readOne('Users', {userlandId})
         .then(object => {
           const user = new classes.User(object);
           (async () => {

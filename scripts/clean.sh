@@ -10,6 +10,10 @@ cd platforms/nds;
   rm -rf classes;
 cd ../..;
 
+cd inter-router;
+  npm run build;
+cd ..;
+
 cd api-core/src;
   rm -rf abstractions;
   rm -rf classes;

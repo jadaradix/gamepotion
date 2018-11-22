@@ -51,7 +51,7 @@ const stages = new Map([
       'render': (state, setStateCallback) => {
         const canGoNext = () => {
           const { inProgress } = state
-          const isEmailValid = (state.email.indexOf('@') > 0 && state.email.length > state.email.indexOf('@') + 1)
+          const isEmailValid = (state.userlandId.indexOf('@') > 0 && state.userlandId.length > state.userlandId.indexOf('@') + 1)
           return !inProgress && isEmailValid
         }
         const goNext = (e) => {
@@ -62,7 +62,7 @@ const stages = new Map([
             dispatch({
               name: 'USER_LOG_IN',
               data: {
-                email: state.email,
+                userlandId: state.userlandId,
                 password: 'dummy-password'
               }
             })
@@ -94,7 +94,7 @@ const stages = new Map([
               Enter your e-mail to get started!
             </p>
             <form onSubmit={goNext}>
-              <Input type='email' placeholder='james@gamemaker.club' required autoFocus value={state.email} onChange={(v) => update('email', v)} />
+              <Input type='email' placeholder='james@gamemaker.club' required autoFocus value={state.userlandId} onChange={(v) => update('userlandId', v)} />
               <Button disabled={!canGoNext()}>Next</Button>
             </form>
           </Fragment>
@@ -123,7 +123,7 @@ const stages = new Map([
             dispatch({
               name: 'USER_LOG_IN',
               data: {
-                email: state.email,
+                userlandId: state.userlandId,
                 password: state.password
               }
             })
@@ -183,7 +183,7 @@ const stages = new Map([
             dispatch({
               name: 'USER_CREATE',
               data: {
-                email: state.email,
+                userlandId: state.userlandId,
                 password: state.password
               }
             })
@@ -210,7 +210,7 @@ const stages = new Map([
             <Heading1>Hey there</Heading1>
             <div>
               <p>
-                We couldn&rsquo;t find an account for <strong>{state.email}</strong>.
+                We couldn&rsquo;t find an account for <strong>{state.userlandId}</strong>.
               </p>
               <p>
                 Would you like to create one?
@@ -231,7 +231,7 @@ class StateDashboard extends PureComponent {
     super(props)
     this.state = {
       stage: 'email',
-      email: getState().credentials.email,
+      userlandId: getState().credentials.userlandId,
       password: getState().credentials.password,
       authenticated: false
     }

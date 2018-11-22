@@ -4,7 +4,7 @@ const createRandomString = require('../abstractions/createRandomString.js')
 const URL_API_CORE = 'http://localhost:1025/v1'
 
 const user = {
-  email: `${createRandomString()}@gamemaker.club`
+  userlandId: `${createRandomString()}@gamemaker.club`
 }
 
 const team = {
@@ -19,7 +19,7 @@ const configs = {
   auth: {
     validateStatus: false,
     auth: {
-      username: user.email
+      username: user.userlandId
     }
   },
   noAuth: {

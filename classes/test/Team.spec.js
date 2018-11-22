@@ -1,4 +1,4 @@
-const Team = require('../dist/Team.js').default
+const Team = require('../dist/Team.js')
 
 test('can be created', () => {
   const team = new Team()

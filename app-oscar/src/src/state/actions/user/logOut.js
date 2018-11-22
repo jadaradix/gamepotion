@@ -1,13 +1,12 @@
 import api from '../../api.js'
 import { set } from '../../../localStorage'
 
-export default function (state, { email, password }) {
-  api.logOut(email, password)
+export default function (state, {}) {
+  api.logOut()
   const credentials = {
     ...state.credentials,
     password: ''
   }
-  set('credentials-email', credentials.email)
   set('credentials-password', credentials.password)
   return Promise.resolve({
     ...state,

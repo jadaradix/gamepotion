@@ -4,8 +4,8 @@ const datalayer = require('../../abstractions/datalayer')
 const uuid = require('../../abstractions/uuid/index.dist.js')
 const classes = require('../../classes/dist.js')
 
-const getExistingUser = (email) => {
-  return datalayer.readOne('Users', { email })
+const getExistingUser = (userlandId) => {
+  return datalayer.readOne('Users', { userlandId })
 }
 
 const createRandomPassword = () => {
@@ -25,9 +25,9 @@ const route = async (request, response, next) => {
     response.send(new errors.BadRequestError(`this would not get created (${error.message})`))
     return next(false)
   }
-  getExistingUser(userClass.email)
+  getExistingUser(userClass.userlandId)
     .then(() => {
-      response.send(new errors.BadRequestError('this email is already in use'))
+      response.send(new errors.BadRequestError('this userlandId (email) is already in use'))
       return next(false)
     })
     .catch(() => {

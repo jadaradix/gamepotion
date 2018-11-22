@@ -45,7 +45,7 @@ class MainToolbarContainer extends Component {
 
   handleOnClick (action) {
     console.warn('[MainToolbarContainer] [handleOnClick] action', action)
-    if (action.indexOf('add-resource-') === 0) {
+    if (action.startsWith('add-resource-')) {
       const resourceType = action.substring('add-resource-'.length)
       return this.addResource(resourceType)
     }
