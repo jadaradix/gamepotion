@@ -6,18 +6,19 @@ const datastore = new Datastore({
 
 const WORK_LOCALLY = true
 
-const jsons = {
+const sampleDatas = {
   'Users': require('./sample-data/Users.json'),
   'Teams': require('./sample-data/Teams.json'),
   'Projects': require('./sample-data/Projects.json'),
-  'Resources': require('./sample-data/Resources.json')
+  'Resources': require('./sample-data/Resources.json'),
+  'FeedItems': require('./sample-data/FeedItems.json')
 }
 
 const write = (entity, id, data) => {
   if (WORK_LOCALLY === true) {
     // warning: not persisted to filesystem!
     let didUpdate = false
-    jsons[entity] = jsons[entity].map(e => {
+    sampleDatas[entity] = sampleDatas[entity].map(e => {
       if (e.id === id) {
         e = data
         didUpdate = true
@@ -25,7 +26,7 @@ const write = (entity, id, data) => {
       return e
     })
     if (didUpdate === false) {
-      jsons[entity].push(data)
+      sampleDatas[entity].push(data)
     }
     return Promise.resolve(true)
   } else {
@@ -38,7 +39,7 @@ const write = (entity, id, data) => {
           return {
             name: $,
             value: data[$],
-            excludeFromIndexes: ['name'].includes($)
+            excludeFromIndexes: ['name', 'subscriptionEvents'].includes($)
           }
         })
       },
@@ -68,6 +69,15 @@ const write = (entity, id, data) => {
             excludeFromIndexes: ['name'].includes($)
           }
         })
+      },
+      'FeedItems': () => {
+        return Object.keys(data).map($ => {
+          return {
+            name: $,
+            value: data[$],
+            excludeFromIndexes: ['title', 'content'].includes($)
+          }
+        })
       }
     }
     const key = datastore.key([entity, id])
@@ -94,7 +104,7 @@ const readByKeys = (keys) => {
 
 const read = (entity, queryObject, orderBy, select) => {
   if (WORK_LOCALLY === true) {
-    return Promise.resolve(jsons[entity].filter($ => {
+    return Promise.resolve(sampleDatas[entity].filter($ => {
       return Object.keys(queryObject).every(queryObjectKey => {
         if (queryObject[queryObjectKey] === null) {
           return ($[queryObjectKey] === queryObject[queryObjectKey])
@@ -144,7 +154,7 @@ const read = (entity, queryObject, orderBy, select) => {
 const readOne = (entity, queryObject) => {
   // console.log('[datalayer] [readOne] entity/queryObject', entity, queryObject)
   if (WORK_LOCALLY === true) {
-    const found = jsons[entity].find($ => {
+    const found = sampleDatas[entity].find($ => {
       return Object.keys(queryObject).every(queryObjectKey => {
         return ($[queryObjectKey] === queryObject[queryObjectKey])
       })
@@ -169,7 +179,7 @@ const readOne = (entity, queryObject) => {
 
 const deleteOne = (entity, id) => {
   if (WORK_LOCALLY === true) {
-    jsons[entity] = jsons[entity].filter($ => $.id !== id)
+    sampleDatas[entity] = sampleDatas[entity].filter($ => $.id !== id)
     return Promise.resolve(true)
   } else {
     const key = datastore.key([entity, id])

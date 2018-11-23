@@ -8,10 +8,10 @@ const configs = {
   }
 }
 
-test('gets the news', () => {
+test('gets a feed', () => {
   return axios({
     method: 'get',
-    url: `${URL_API_CORE}/news`,
+    url: `${URL_API_CORE}/feed/news`,
     ...configs.auth
   })
     .then(response => {

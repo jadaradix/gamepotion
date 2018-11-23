@@ -7,7 +7,7 @@ export default function (state, { id }) {
     return Promise.resolve(state)
   }
   return api
-    .get('api-core', 'news')
+    .get('api-core', `feed/${id}`)
     .then(feedItems => {
       feedItems = feedItems.map(fi => {
         const feedItemClass = new classes.FeedItem()

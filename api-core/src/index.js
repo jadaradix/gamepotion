@@ -14,7 +14,7 @@ const server = restify.createServer(
 const middlewareAuthPublicRoutes = [
   ['EXACT', 'GET', '/v1'],
   ['EXACT', 'POST', '/v1/users'],
-  ['EXACT', 'GET', '/v1/news']
+  ['START', 'GET', '/v1/feed/']
 ]
 
 const morgan = require('morgan')
@@ -44,7 +44,7 @@ const middlewares = {
 
 const routes = {
   'GET      /v1': require('./routes/healthcheck'),
-  'GET      /v1/news': require('./routes/news'),
+  'GET      /v1/feed/:id': require('./routes/feed'),
   // -> users
   'POST     /v1/users': require('./routes/users/create'),
   'GET      /v1/me': require('./routes/users/get'),

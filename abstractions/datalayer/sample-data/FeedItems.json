@@ -1,0 +1,9 @@
+[
+  {
+    "id": "feed-item-hack-hello-world",
+    "feedId": "news",
+    "createdAt": 100,
+    "title": "Hello, World",
+    "content": "Hello, World."
+  }
+]
