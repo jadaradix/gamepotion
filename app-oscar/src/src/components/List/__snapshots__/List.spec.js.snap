@@ -109,6 +109,7 @@ exports[`renders 1`] = `
   <button
     className="component--list-item c1"
     onClick={[Function]}
+    style={Object {}}
   >
     <img
       alt=""
@@ -124,6 +125,7 @@ exports[`renders 1`] = `
   <button
     className="component--list-item c1"
     onClick={[Function]}
+    style={Object {}}
   >
     <img
       alt=""

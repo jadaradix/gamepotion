@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 
 import icons  from '../../icons'
 import { colours } from '../../styleAbstractions'
@@ -158,7 +159,7 @@ class Modal extends React.Component {
         <div
           role="dialog"
           aria-modal="true"
-          className={`component--modal ${this.props.className}`}
+          className={classnames('component--modal', this.props.className)}
           ref={this.references.dialog}
           onKeyDown={this.handleKeyDown}
         >

@@ -28,7 +28,7 @@ describe('<Modal />', () => {
   it('should trigger onClose with the escape key', () => {
     const close = jest.fn()
     const wrapper = shallow(<Modal onClose={close} />)
-    const element = wrapper.find('[data-overlay]').at(0)
+    const element = wrapper.find('[data-overlay] > div').at(0)
     element.simulate('keyDown', { key: 'Escape', keyCode: 27, which: 27 })
     expect(close).toHaveBeenCalled()
   })

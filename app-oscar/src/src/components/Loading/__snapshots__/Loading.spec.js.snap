@@ -11,8 +11,8 @@ exports[`renders 1`] = `
   display: block;
   width: 2rem;
   margin: 0 auto 0 auto;
-  -webkit-animation: gmc-loading 4s linear infinite;
-  animation: gmc-loading 4s linear infinite;
+  -webkit-animation: oscar-loading 4s linear infinite;
+  animation: oscar-loading 4s linear infinite;
 }
 
 <div

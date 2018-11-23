@@ -10,7 +10,7 @@ exports[`renders 1`] = `
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   font-size: 80%;
-  color: #bdc3c7;
+  color: #6c7a89;
 }
 
 .c0 select {

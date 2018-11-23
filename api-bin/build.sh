@@ -1,6 +1,6 @@
-cd ..;
-  . scripts/build.sh;
-cd api-bin;
+# cd ..;
+#   . scripts/build.sh;
+# cd api-bin;
 
 rm -rf files;
 cp -R src files;

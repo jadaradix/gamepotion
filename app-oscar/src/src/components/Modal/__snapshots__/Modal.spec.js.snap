@@ -23,6 +23,7 @@ ShallowWrapper {
       "children": <div
         aria-modal="true"
         className="component--modal"
+        onKeyDown={[Function]}
         role="dialog"
       >
         <button
@@ -37,7 +38,6 @@ ShallowWrapper {
         </button>
       </div>,
       "data-overlay": true,
-      "onKeyDown": [Function],
       "onMouseDown": [Function],
       "onMouseUp": [Function],
       "role": "presentation",
@@ -63,6 +63,7 @@ ShallowWrapper {
           </button>,
         ],
         "className": "component--modal",
+        "onKeyDown": [Function],
         "role": "dialog",
       },
       "ref": Object {
@@ -103,7 +104,7 @@ ShallowWrapper {
     },
     "type": Object {
       "$$typeof": Symbol(react.forward_ref),
-      "attrs": undefined,
+      "attrs": Array [],
       "componentStyle": ComponentStyle {
         "componentId": "sc-bdVaJa",
         "isStatic": true,
@@ -118,10 +119,10 @@ ShallowWrapper {
   background-color: rgba(0, 0, 0, 0.75);
   .component--modal {
     width: ",
-          "60%",
+          "50%",
           ";
     max-width: ",
-          "500px",
+          "320px",
           ";
     z-index: 3;
     position: absolute;
@@ -166,6 +167,7 @@ ShallowWrapper {
       "render": [Function],
       "styledComponentId": "sc-bdVaJa",
       "target": "div",
+      "toString": [Function],
       "warnTooManyClasses": [Function],
       "withComponent": [Function],
     },
@@ -179,6 +181,7 @@ ShallowWrapper {
         "children": <div
           aria-modal="true"
           className="component--modal"
+          onKeyDown={[Function]}
           role="dialog"
         >
           <button
@@ -193,7 +196,6 @@ ShallowWrapper {
           </button>
         </div>,
         "data-overlay": true,
-        "onKeyDown": [Function],
         "onMouseDown": [Function],
         "onMouseUp": [Function],
         "role": "presentation",
@@ -219,6 +221,7 @@ ShallowWrapper {
             </button>,
           ],
           "className": "component--modal",
+          "onKeyDown": [Function],
           "role": "dialog",
         },
         "ref": Object {
@@ -259,7 +262,7 @@ ShallowWrapper {
       },
       "type": Object {
         "$$typeof": Symbol(react.forward_ref),
-        "attrs": undefined,
+        "attrs": Array [],
         "componentStyle": ComponentStyle {
           "componentId": "sc-bdVaJa",
           "isStatic": true,
@@ -274,10 +277,10 @@ ShallowWrapper {
   background-color: rgba(0, 0, 0, 0.75);
   .component--modal {
     width: ",
-            "60%",
+            "50%",
             ";
     max-width: ",
-            "500px",
+            "320px",
             ";
     z-index: 3;
     position: absolute;
@@ -322,6 +325,7 @@ ShallowWrapper {
         "render": [Function],
         "styledComponentId": "sc-bdVaJa",
         "target": "div",
+        "toString": [Function],
         "warnTooManyClasses": [Function],
         "withComponent": [Function],
       },

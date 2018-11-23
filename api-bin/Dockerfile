@@ -14,4 +14,4 @@ RUN cd /files/abstractions/uuid && npm i --only=production
 RUN cd /files/classes && npm i
 
 CMD cd /files && npm run start-production
-EXPOSE 8000
+EXPOSE 1026

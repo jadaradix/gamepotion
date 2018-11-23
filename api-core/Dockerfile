@@ -16,4 +16,4 @@ RUN cd /files/classes && npm i
 RUN cd /files/platforms/nds && npm i --only=production
 
 CMD cd /files && npm run start-production
-EXPOSE 8000
+EXPOSE 1025

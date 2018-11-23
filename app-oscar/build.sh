@@ -1,6 +1,6 @@
-cd ..;
-  . scripts/build.sh;
-cd app;
+# cd ..;
+#   . scripts/build.sh;
+# cd app;
 
 cd src;
   npm i;
