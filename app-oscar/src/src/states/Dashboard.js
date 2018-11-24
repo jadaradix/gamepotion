@@ -120,12 +120,12 @@ class StateDashboard extends Component {
   actOnProject(id, action) {
     const project = this.state.projects.find(project => project.project.id === id)
     const actions = {
-      // 'load': () => {
-      //   console.warn('[state-Dashboard] [actOnProject] load')
-      //   this.loadProject(id)
-      // },
+      'load': () => {
+        console.warn('[state-Dashboard] [actOnProject] load', id)
+        this.loadProject(id)
+      },
       'rename': () => {
-        console.warn('[state-Dashboard] [actOnProject] rename')
+        console.warn('[state-Dashboard] [actOnProject] rename', id)
         const name = window.prompt(`What would you like to call ${project.project.name}`, project.project.name)
         if (name === null || name.length === 0) {
           return
@@ -139,7 +139,7 @@ class StateDashboard extends Component {
         })
       },
       'delete': () => {
-        console.warn('[state-Dashboard] [actOnProject] delete')
+        console.warn('[state-Dashboard] [actOnProject] delete', id)
         const confirmation = window.confirm(`Are you sure you want to delete ${project.project.name}?`)
         if (confirmation === false) {
           return
@@ -192,7 +192,7 @@ class StateDashboard extends Component {
                             key={p.project.id}
                             id={p.project.id}
                             icon={icons.generic.project.project}
-                            actions={['rename', 'delete']}
+                            actions={['load', 'rename', 'delete']}
                             onChoose={(id) => this.loadProject(id)}
                             onAction={this.actOnProject}
                           >

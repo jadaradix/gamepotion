@@ -6,11 +6,11 @@ import classnames from 'classnames'
 import icons from '../../icons'
 import { font, colours } from '../../styleAbstractions'
 
-const StyledListItem = styled.button`
+const StyledListItem = styled.li`
   position: relative;
   display: block;
   width: 100%;
-  height: calc(2rem + 4px);
+  height: 2rem;
   list-style-type: none;
   border-width: 2px;
   border-style: solid;
@@ -19,6 +19,7 @@ const StyledListItem = styled.button`
   background-color: transparent;
   transition: border-color 0.2s ease-in-out;
   outline: 0;
+  cursor: default;
   &.selected {
     background-color: #dadfe1;
   }
@@ -30,15 +31,18 @@ const StyledListItem = styled.button`
     float: left;
     width: 1.5rem;
     height: 1.5rem;
-    margin-top: 0.25rem;
-    margin-left: 0.25rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    margin-left: 0.3rem;
     // background-color: red;
   }
   > span {
     display: block;
     float: left;
-    height: 2rem;
-    line-height: 2rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
     margin-left: 0.5rem;
     ${font}
     color: ${colours.fore};
@@ -83,6 +87,7 @@ const StyledListItem = styled.button`
 `
 
 const actions = {
+  'load': (id, handleOnAction) => (<img title='Load' key='action-load' onClick={(e) => handleOnAction(e, id, 'load')} className='action' src={icons.generic.actions.load} alt='' tabIndex='0' />),
   'add': (id, handleOnAction) => (<img title='Add' key='action-add' onClick={(e) => handleOnAction(e, id, 'add')} className='action' src={icons.generic.actions.add} alt='' tabIndex='0' />),
   'rename': (id, handleOnAction) => (<img title='Rename' key='action-rename' onClick={(e) => handleOnAction(e, id, 'rename')} className='action' src={icons.generic.actions.edit} alt='' tabIndex='0' />),
   'edit': (id, handleOnAction) => (<img title='Edit' key='action-edit' onClick={(e) => handleOnAction(e, id, 'edit')} className='action' src={icons.generic.actions.edit} alt='' tabIndex='0' />),
@@ -103,7 +108,7 @@ const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, s
     onAction(id, action)
   }
   return (
-    <StyledListItem onClick={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})} style={style}>
+    <StyledListItem onClick={() => onChoose(id)} onTouchStart={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})} style={style}>
       <img src={icon} alt='' />
       <span>{children}</span>
       <div className='actions'>
