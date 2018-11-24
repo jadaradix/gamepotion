@@ -72,7 +72,8 @@ class ResourceImage extends PureComponent {
   onChooseFixed(fixed) {
     if (fixed === 'none') {
       this.onUpdate({
-        fixed: null
+        fixed: null,
+        extension: 'png'
       })
     } else {
       const {
@@ -81,6 +82,7 @@ class ResourceImage extends PureComponent {
       } = resourceTypes.find(rt => rt.type === 'image').fixed.find(o => o.id === fixed)
       this.onUpdate({
         fixed,
+        extension: 'png',
         frameWidth: width,
         frameHeight: height
       })

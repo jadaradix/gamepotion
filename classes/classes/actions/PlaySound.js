@@ -10,6 +10,10 @@ class PlaySound extends Action {
       ['Sound', {
         type: 'sound',
         value: ''
+      }],
+      ['Loop', {
+        type: 'boolean',
+        value: false
       }]
     ])
   }
@@ -20,7 +24,8 @@ class PlaySound extends Action {
       return {
         actionBack: 'SOUND_PLAY',
         actionBackArguments: [
-          runArguments[0]
+          runArguments[0],
+          runArguments[1]
         ],
         appliesTo
       }
@@ -32,7 +37,12 @@ class PlaySound extends Action {
   }
 
   toString(runArguments, appliesTo) {
-    return `Play ${runArguments[0]}`
+    if (runArguments[1] === true) {
+      return `Play ${runArguments[0]} on loop`
+    } else {
+      return `Play ${runArguments[0]}`
+    }
+    
   }
 }
 

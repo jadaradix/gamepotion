@@ -36,9 +36,13 @@ class GameSpace extends Component {
         if (typeof result.spaceToGoTo === 'string') {
           this.props.onSwitchSpace(result.spaceToGoTo)
         }
-        if (typeof result.soundToPlay === 'string') {
-          const foundSound = eventContext.resourceContainers.find(r => r.resource.id === result.soundToPlay)
+        if (typeof result.soundToPlay === 'object') {
+          const {
+            soundToPlay
+          } = result
+          const foundSound = eventContext.resourceContainers.find(r => r.resource.id === soundToPlay.soundToPlay)
           if (foundSound !== undefined) {
+            foundSound.extras.element.loop = soundToPlay.doLoop
             foundSound.extras.element.play()
           }
         }
@@ -129,8 +133,8 @@ class GameSpace extends Component {
     }
     const onTouch = (coords) => {
       if (this.props.gridOn === true) {
-        coords.x = coords.x - (coords.x % this.props.grid.width)
-        coords.y = coords.y - (coords.y % this.props.grid.width)
+        coords.x = coords.x - (coords.x % this.props.gridWidth)
+        coords.y = coords.y - (coords.y % this.props.gridHeight)
       }
       this.props.onTouch(coords)
     }

@@ -54,7 +54,8 @@ class ResourceSound extends PureComponent {
       fixed = null
     }
     this.onUpdate({
-      fixed
+      fixed,
+      extension: 'wav'
     })
   }
 

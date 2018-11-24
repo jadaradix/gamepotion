@@ -23,6 +23,7 @@ const StyledInput = styled.div`
     appearance: none;
     outline: 0;
     border: 0;
+    border-radius: 0;
     border-bottom: 2px solid #dadfe1;
     background-color: transparent;
     letter-spacing: 0;
