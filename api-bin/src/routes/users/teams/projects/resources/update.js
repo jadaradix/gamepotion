@@ -14,37 +14,23 @@ const findResource = (resourceId, projectId) => {
   )
 }
 
-const storeResourceBin = (resourceClass, resourceRule, file) => {
-  const fileName = `${resourceClass.id}.${resourceRule.EXTENSION}`
-  return storage.file(file.path, fileName, resourceRule.MIMETYPE)
+const storeResourceBin = (resourceClass, file, mimetype, extension) => {
+  const fileName = `${resourceClass.id}.${extension}`
+  return storage.file(file.path, fileName, mimetype)
 }
 
 const writeResource = (resourceClass) => {
   return datalayer.write('Resources', resourceClass.id, resourceClass.toDatastore())
 }
 
-const RESOURCES_RULES = {
-  'image': {
-    SUPPORTED_MIME_TYPES: [
-      'image/png',
-    ],
-    SUPPORTED_EXTENSIONS: [
-      'png'
-    ],
-    MIMETYPE: 'image/png',
-    EXTENSION: 'png'
-  },
-  'sound': {
-    SUPPORTED_MIME_TYPES: [
-      'audio/wav'
-    ],
-    SUPPORTED_EXTENSIONS: [
-      'wav'
-    ],
-    MIMETYPE: 'audio/wav',
-    EXTENSION: 'wav'
-  }
-}
+const RESOURCE_RULES = [
+  ['image', 'image/png', 'png'],
+  ['image', 'image/gif', 'gif'],
+  ['image', 'image/bmp', 'bmp'],
+  ['sound', 'audio/wav', 'wav'],
+  ['sound', 'audio/mpeg', 'mp3'],
+  ['sound', 'audio/mp3', 'mp3']
+]
 
 const route = async (request, response, next) => {
   if (request.files === undefined || typeof request.files.bin !== 'object') {
@@ -59,25 +45,27 @@ const route = async (request, response, next) => {
     return next(false)
   }
   const resourceClass = classFactory.resource(resource)
-  const resourceRule = RESOURCES_RULES[resourceClass.type]
-  if (resourceRule === undefined) {
-    response.send(new errors.BadRequestError('you cant update the bin of this resource type'))
-    return next(false)
-  }
   const file = request.files.bin
-  if (!resourceRule.SUPPORTED_MIME_TYPES.includes(file.type)) {
-    response.send(new errors.BadRequestError(`mime type not supported (one of ${resourceRule.SUPPORTED_MIME_TYPES.join(' / ')})`))
-    return next(false)
-  }
-  const foundValidExtension = resourceRule.SUPPORTED_EXTENSIONS.find(e => {
-    return (file.name.indexOf(e) === file.name.length - e.length)
+  const resourceRule = RESOURCE_RULES.find(([type, mimeType, extension]) => {
+    return (
+      resourceClass.type === type &&
+      file.type === mimeType &&
+      file.name.endsWith(`.${extension}`)
+    )
   })
-  if (foundValidExtension === undefined) {
-    response.send(new errors.BadRequestError(`extension not supported (one of ${resourceRule.SUPPORTED_EXTENSIONS.join(' / ')})`))
+  if (resourceRule === undefined) {
+    response.send(new errors.BadRequestError('you cant update the bin of this resource with a file of that type'))
     return next(false)
   }
 
   resourceClass.fixed = null
+  const [
+    // eslint-disable-next-line no-unused-vars
+    sType,
+    sMimetype,
+    sExtension
+  ] = resourceRule
+  resourceClass.extension = sExtension
   if (resourceClass.type === 'image') {
     const {
       width
@@ -87,7 +75,7 @@ const route = async (request, response, next) => {
   }
 
   Promise.all([
-    storeResourceBin(resourceClass, resourceRule, file),
+    storeResourceBin(resourceClass, file, sMimetype, sExtension),
     writeResource(resourceClass)
   ])
     .then(() => {

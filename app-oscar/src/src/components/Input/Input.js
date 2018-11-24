@@ -29,6 +29,7 @@ const StyledInput = styled.div`
     transition: border-color 0.2s ease-in-out;
     ${font}
     color: ${colours.fore};
+    -webkit-appearance: none;
     &:focus {
       border-color: #bdc3c7;
     }

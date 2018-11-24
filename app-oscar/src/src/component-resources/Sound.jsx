@@ -42,6 +42,7 @@ class ResourceSound extends PureComponent {
   constructor(props) {
     super(props)
     this.onChooseFixed = this.onChooseFixed.bind(this)
+    this.onUploadDone = this.onUploadDone.bind(this)
   }
 
   onUpdate(data) {
@@ -54,6 +55,18 @@ class ResourceSound extends PureComponent {
     }
     this.onUpdate({
       fixed
+    })
+  }
+
+  onUploadDone(data) {
+    // apis go away
+    const {
+      fixed,
+      extension
+    } = data
+    this.onUpdate({
+      fixed,
+      extension
     })
   }
 
@@ -80,7 +93,7 @@ class ResourceSound extends PureComponent {
         </section>
         <section className='split-two'>
           <Box>
-            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['audio/wav']} onDone={() => this.onUpdate({ fixed: null })} />
+            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['audio/wav', 'audio/mpeg', 'audio/mp3']} onDone={this.onUploadDone} />
           </Box>
           <Box>
             <div className='file'>
