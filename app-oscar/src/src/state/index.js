@@ -17,6 +17,7 @@ import createProjectResource from './actions/projects/resources/create'
 import updateProjectResource from './actions/projects/resources/update'
 import deleteProjectResource from './actions/projects/resources/delete'
 import getFeed from './actions/feeds/get'
+import localSettingsUpdate from './actions/localSettings/update'
 
 let state = {
   credentials: {
@@ -27,7 +28,13 @@ let state = {
   team: null,
   projects: null,
   currentProject: null,
-  feeds: new Map()
+  feeds: new Map(),
+  localSettings: {
+    'atom-to-plot': get('atom-to-plot'),
+    'grid-on': get('grid-on'),
+    'grid-width': get('grid-width'),
+    'grid-height': get('grid-height')
+  }
 }
 
 const actions = new Map([
@@ -45,7 +52,8 @@ const actions = new Map([
   ['PROJECTS_RESOURCES_LOAD', loadProjectResource],
   ['PROJECTS_RESOURCES_UPDATE', updateProjectResource],
   ['PROJECTS_RESOURCES_DELETE', deleteProjectResource],
-  ['FEEDS_GET', getFeed]
+  ['FEEDS_GET', getFeed],
+  ['LOCAL_SETTINGS_UPDATE', localSettingsUpdate]
 ])
 
 const element = document.createElement('SPAN')

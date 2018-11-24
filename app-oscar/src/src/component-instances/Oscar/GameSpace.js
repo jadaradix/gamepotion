@@ -128,7 +128,7 @@ class GameSpace extends Component {
       return { x, y, z }
     }
     const onTouch = (coords) => {
-      if (this.props.grid && this.props.grid.on === true) {
+      if (this.props.gridOn === true) {
         coords.x = coords.x - (coords.x % this.props.grid.width)
         coords.y = coords.y - (coords.y % this.props.grid.width)
       }
@@ -227,12 +227,12 @@ class GameSpace extends Component {
     const loadedGood = () => {
       console.warn('[Oscar] [Space] [renderCanvas] [loadedGood]')
       if (this.props.designMode === true) {
-        draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
+        draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.gridOn, parseInt(this.props.gridWidth, 10), parseInt(this.props.gridHeight, 10))
       } else {
         instanceClasses = this.eventEventStart(instanceClasses)
         const logic = () => { 
           instanceClasses = this.handleEventStep(instanceClasses)
-          draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.grid)
+          draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.gridOn, parseInt(this.props.gridWidth, 10), parseInt(this.props.gridHeight, 10))
           if (this.props.designMode === false) {
             window.requestAnimationFrame(logic)
           }
@@ -345,7 +345,9 @@ GameSpace.propTypes = {
   spaceContainer: PropTypes.any.isRequired,
   resourceContainers: PropTypes.array.isRequired,
   designMode: PropTypes.bool,
-  grid: PropTypes.object,
+  gridOn: PropTypes.bool,
+  gridWidth: PropTypes.string,
+  gridHeight: PropTypes.string,
   variables: PropTypes.any.isRequired,
   onTouch: PropTypes.func,
   onTouchSecondary: PropTypes.func,
@@ -355,6 +357,9 @@ GameSpace.propTypes = {
 
 GameSpace.defaultProps = {
   designMode: false,
+  gridOn: PropTypes.false,
+  gridWidth: 16,
+  gridHeight: 16,
   onTouch: () => {},
   onTouchSecondary: () => {},
   onTouchMove: () => {},

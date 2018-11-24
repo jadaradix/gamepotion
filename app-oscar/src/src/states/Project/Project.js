@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { dispatch, subscribe } from '../../state'
+import { getState, dispatch, subscribe } from '../../state'
 
 import Box from '../../components/Box/Box'
 import Loading from '../../components/Loading/Loading'
@@ -49,7 +49,8 @@ class StateProjectProject extends Component {
     super(props)
     this.state = {
       currentProject: null,
-      resourceToLoadId: null
+      resourceToLoadId: null,
+      localSettings: getState().localSettings
     }
   }
 
@@ -101,6 +102,11 @@ class StateProjectProject extends Component {
       subscribe('PROJECTS_RESOURCES_DELETE', (state) => {
         this.setState({
           currentProject: state.currentProject
+        })
+      }),
+      subscribe('LOCAL_SETTINGS_UPDATE', (state) => {
+        this.setState({
+          localSettings: state.localSettings
         })
       })
     ]
@@ -179,6 +185,17 @@ class StateProjectProject extends Component {
       .catch(() => {})
   }
 
+  onUpdateLocalSetting(name, value) {
+    console.log('onUpdateLocalSetting!!!')
+    return dispatch({
+      name: 'LOCAL_SETTINGS_UPDATE',
+      data: {
+        name,
+        value
+      }
+    })
+  }
+
   render() {
     // if (this.state.currentProject && this.state.currentProject.currentResource) {
     //   console.warn('[state-Project] this.state.currentProject.currentResource', this.state.currentProject.currentResource)
@@ -193,13 +210,27 @@ class StateProjectProject extends Component {
             }
             {this.state.currentProject !== null &&
               <Box>
-                <ResourceList onAdd={this.onAddResource} onLoad={(r) => this.doLoadResource(this.state.currentProject.project.id, r.id)} onRename={this.onRenameResource} onDelete={this.onDeleteResource} resources={this.state.currentProject.resources} currentResource={this.state.currentProject.currentResource} />
+                <ResourceList
+                  resources={this.state.currentProject.resources}
+                  currentResource={this.state.currentProject.currentResource}
+                  onAdd={this.onAddResource}
+                  onLoad={(r) => this.doLoadResource(this.state.currentProject.project.id, r.id)}
+                  onRename={this.onRenameResource}
+                  onDelete={this.onDeleteResource}
+                />
               </Box>
             }
           </aside>
           <main>
             {this.state.currentProject !== null && this.state.currentProject.currentResource !== null &&
-              <Resource project={this.state.currentProject.project} resources={this.state.currentProject.resources} resource={this.state.currentProject.currentResource} onUpdate={(data) => this.onUpdateResource(this.state.currentProject.currentResource, data)} />
+              <Resource
+                project={this.state.currentProject.project}
+                resources={this.state.currentProject.resources}
+                resource={this.state.currentProject.currentResource}
+                localSettings={this.state.localSettings}
+                onUpdate={(data) => this.onUpdateResource(this.state.currentProject.currentResource, data)}
+                onUpdateLocalSetting={this.onUpdateLocalSetting}
+              />
             }
           </main>
         </StyledState>

@@ -1,4 +1,4 @@
-const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
+const draw = (ctx, spaceContainer, instanceClasses, designMode, gridOn, gridWidth, gridHeight) => {
   ctx.clearRect(0, 0, spaceContainer.resource.width, spaceContainer.resource.height)
   if (spaceContainer.extras.backgroundImage !== null) {
     const {
@@ -27,17 +27,17 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
     ctx.drawImage(spaceContainer.extras.foregroundImage.extras.element, 0, 0)
   }
   const plotGrid = () => {
-    let x = parseInt(grid.width, 10)
-    let y = parseInt(grid.height, 10)
+    let x = gridWidth
+    let y = gridHeight
     ctx.beginPath()
     while (x < spaceContainer.resource.width) {
       ctx.moveTo(x, 0)
       ctx.lineTo(x, spaceContainer.resource.height)
-      x += parseInt(grid.width, 10)
+      x += gridWidth
       while (y < spaceContainer.resource.height) {
         ctx.moveTo(0, y)
         ctx.lineTo(spaceContainer.resource.width, y)
-        y += parseInt(grid.height, 10)
+        y += gridHeight
       }
     }
     ctx.closePath()
@@ -54,7 +54,7 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, grid) => {
     ctx.closePath()
   }
   if (designMode === true) {
-    if (grid && grid.on === true) {
+    if (gridOn === true) {
       ctx.globalAlpha = 0.5
       plotGrid()
       ctx.strokeStyle = '#ffffff'
