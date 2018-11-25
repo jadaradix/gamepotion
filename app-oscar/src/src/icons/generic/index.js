@@ -9,6 +9,7 @@ import uploadInProgress from './files/upload-in-progress.svg'
 import uploadDone from './files/upload-done.svg'
 import uploadErrored from './files/upload-errored.svg'
 
+import actionLoad from './files/action-load.svg'
 import actionAdd from './files/action-add.svg'
 import actionEdit from './files/action-edit.svg'
 import actionDelete from './files/action-delete.svg'
@@ -31,6 +32,7 @@ export default {
   uploadDone,
   uploadErrored,
   actions: {
+    load: actionLoad,
     add: actionAdd,
     edit: actionEdit,
     delete: actionDelete

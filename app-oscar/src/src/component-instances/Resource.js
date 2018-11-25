@@ -31,12 +31,12 @@ const StyledResource = styled.div`
   }
 `
 
-const getComponent = (project, resources, resource, onUpdate) => {
+const getComponent = (project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate) => {
   const FoundResourceType = resourceTypes.find(r => r.type === resource.type).component
-  return <FoundResourceType project={project} resources={resources} resource={resource} onUpdate={onUpdate} />
+  return <FoundResourceType project={project} resources={resources} resource={resource} localSettings={localSettings} onUpdate={onUpdate} onUpdateLocalSetting={onUpdateLocalSetting} />
 }
 
-const Resource = ({ project, resources, resource, onUpdate }) => {
+const Resource = ({ project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate }) => {
   // console.warn('[component-Resource] resource', resource)
   return (
     <StyledResource className='component--resource'>
@@ -47,7 +47,7 @@ const Resource = ({ project, resources, resource, onUpdate }) => {
         <img src={icons.resources[resource.type]} alt={'nice'} />
         <Heading1>{resource.name}</Heading1>
       </div>
-      {getComponent(project, resources, resource, onUpdate)}
+      {getComponent(project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate)}
     </StyledResource>
   )
 }
@@ -56,11 +56,14 @@ Resource.propTypes = {
   project: PropTypes.object.isRequired,
   resources: PropTypes.array.isRequired,
   resource: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func
+  localSettings: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func,
+  onUpdateLocalSetting: PropTypes.func,
 }
 
 Resource.defaultProps = {
-  onUpdate: () => {}
+  onUpdate: () => {},
+  onUpdateLocalSetting: () => {}
 }
 
 export default Resource

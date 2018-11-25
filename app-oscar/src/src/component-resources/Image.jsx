@@ -72,7 +72,8 @@ class ResourceImage extends PureComponent {
   onChooseFixed(fixed) {
     if (fixed === 'none') {
       this.onUpdate({
-        fixed: null
+        fixed: null,
+        extension: 'png'
       })
     } else {
       const {
@@ -81,6 +82,7 @@ class ResourceImage extends PureComponent {
       } = resourceTypes.find(rt => rt.type === 'image').fixed.find(o => o.id === fixed)
       this.onUpdate({
         fixed,
+        extension: 'png',
         frameWidth: width,
         frameHeight: height
       })
@@ -88,14 +90,16 @@ class ResourceImage extends PureComponent {
   }
 
   onUploadDone(data) {
-    // this code can go away when the apis share a datalayer
+    // apis go away
     const {
       fixed,
+      extension,
       frameWidth,
       frameHeight
     } = data
     this.onUpdate({
       fixed,
+      extension,
       frameWidth,
       frameHeight
     })
@@ -124,7 +128,7 @@ class ResourceImage extends PureComponent {
         </section>
         <section className='split-two'>
           <Box>
-            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['image/png']} onDone={this.onUploadDone} />
+            <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['image/png', 'image/gif', 'image/bmp']} onDone={this.onUploadDone} />
           </Box>
           <Box>
             <div className='frame-width-height'>

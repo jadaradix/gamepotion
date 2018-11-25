@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { get, set } from '../localStorage'
-
 import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
@@ -38,14 +36,6 @@ const getImageDropperResources = (resources) => {
       name: '<None>'
     }
   ]
-}
-
-const getAtomToPlot = (resources) => {
-  const foundAtom = resources.find(r => r.type === 'atom')
-  if (foundAtom !== undefined) {
-    return foundAtom.id
-  }
-  return 'none'
 }
 
 const StyledResource = styled.div`
@@ -125,12 +115,6 @@ class ResourceSpace extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      atomToPlot: getAtomToPlot(props.resources),
-      grid: {
-        on: get('grid-on'),
-        width: get('grid-width'),
-        height: get('grid-height')
-      },
       isRunning: false
     }
     this.thisRefs = {
@@ -139,7 +123,6 @@ class ResourceSpace extends PureComponent {
     }
     this.onChooseBackgroundImage = this.onChooseBackgroundImage.bind(this)
     this.onChooseForegroundImage = this.onChooseForegroundImage.bind(this)
-    this.onChooseAtomToPlot = this.onChooseAtomToPlot.bind(this)
     this.plotAtom = this.plotAtom.bind(this)
     this.unplotAtoms = this.unplotAtoms.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
@@ -179,22 +162,17 @@ class ResourceSpace extends PureComponent {
     })
   }
 
-  onChooseAtomToPlot(atomToPlot) {
-    this.setState({
-      atomToPlot
-    })
-  }
-
   plotAtom(coords) {
-    console.warn('[plotAtom]', this.state.atomToPlot, 'at', coords)
-    if (this.state.atomToPlot === 'none') {
+    const atomId = this.props.localSettings['atom-to-plot']
+    console.warn('[plotAtom] atomId', atomId, 'at', coords)
+    if (atomId === 'none') {
       return
     }
     this.props.onUpdate({
       instances: [
         ...this.props.resource.instances,
         {
-          atomId: this.state.atomToPlot,
+          atomId,
           ...coords
         }
       ]
@@ -217,17 +195,6 @@ class ResourceSpace extends PureComponent {
     this.thisRefs.touchCoordsY.value = coords.y
   }
 
-  updateGridProperty(property, value) {
-    this.setState({
-      grid: {
-        ...this.state.grid,
-        [property]: value
-      }
-    }, () => {
-      set(`grid-${property}`, value)
-    })
-  }
-
   updateRunning(isRunning) {
     this.setState({
       isRunning
@@ -243,7 +210,7 @@ class ResourceSpace extends PureComponent {
     const backgroundImage = (this.props.resource.backgroundImage === null ? 'none' : this.props.resource.backgroundImage)
     const foregroundImage = (this.props.resource.foregroundImage === null ? 'none' : this.props.resource.foregroundImage)
 
-    const atomToPlot = this.state.atomToPlot
+    const atomToPlot = this.props.localSettings['atom-to-plot']
     const foundAtomResource = this.props.resources.find(r => r.id === atomToPlot)
     const foundImageResource = (foundAtomResource !== undefined ? this.props.resources.find(r => r.id === foundAtomResource.imageId) : undefined)
     const imageSrc = (foundImageResource !== undefined?
@@ -274,7 +241,7 @@ class ResourceSpace extends PureComponent {
             <div className='image-container'>
               <Image src={imageSrc} />
             </div>
-            <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={this.onChooseAtomToPlot} />
+            <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
           </Box>
           <Box className='settings'>
             <Dropper options={imageDropperResources} value={backgroundImage} onChoose={this.onChooseBackgroundImage} label='Background image' />
@@ -293,15 +260,23 @@ class ResourceSpace extends PureComponent {
               <Input label='Touch X' onRef={(r) => { this.thisRefs.touchCoordsX = r; this.thisRefs.touchCoordsX.value = 0 }} type='number' disabled />
               <Input label='Touch Y' onRef={(r) => { this.thisRefs.touchCoordsY = r; this.thisRefs.touchCoordsY.value = 0 }} type='number' disabled />
             </div>
-            <Switch checked={this.state.grid.on} onChange={(v) => this.updateGridProperty('on', v)}>Grid</Switch>
+            <Switch checked={this.props.localSettings['grid-on']} onChange={(v) => this.props.onUpdateLocalSetting('grid-on', v)}>Grid</Switch>
             <div className='grid-properties'>
-              <Input label='Grid Width' value={this.state.grid.width} disabled={!this.state.grid.on} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('width', v)} />
-              <Input label='Grid Height' value={this.state.grid.height} disabled={!this.state.grid.on} type='number' min='4' max='256' onChange={(v) => this.updateGridProperty('height', v)} />
+              <Input label='Grid Width' value={this.props.localSettings['grid-width']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-width', v)} />
+              <Input label='Grid Height' value={this.props.localSettings['grid-height']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-height', v)} />
             </div>
           </Box>
         </section>
         <section className='canvas'>
-          <GameSpace spaceContainer={spaceContainer} resourceContainers={resourceContainers} variables={variables} designMode={!this.state.isRunning} grid={this.state.grid} onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords} />
+          <GameSpace
+            spaceContainer={spaceContainer}
+            resourceContainers={resourceContainers}
+            variables={variables}
+            designMode={!this.state.isRunning}
+            gridOn={this.props.localSettings['grid-on']}
+            gridWidth={this.props.localSettings['grid-width']}
+            gridHeight={this.props.localSettings['grid-height']}
+            onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords} />
           <Switch checked={this.state.isRunning} onChange={(v) => this.updateRunning(v)}>Run</Switch>
         </section>
       </StyledResource>
@@ -310,13 +285,16 @@ class ResourceSpace extends PureComponent {
 }
 
 ResourceSpace.propTypes = {
-  resources: PropTypes.array,
+  resources: PropTypes.array.isRequired,
   resource: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func
+  localSettings: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func,
+  onUpdateLocalSetting: PropTypes.func,
 }
 
 ResourceSpace.defaultProps = {
-  onUpdate: () => {}
+  onUpdate: () => {},
+  onUpdateLocalSetting: () => {}
 }
 
 export default ResourceSpace

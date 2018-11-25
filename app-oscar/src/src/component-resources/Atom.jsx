@@ -42,7 +42,6 @@ const StyledResource = styled.div`
     }
   }
   section.actions {
-    margin-top: 1rem;
     // background-color: red;
     .component--box.actions {
       padding: 1rem;

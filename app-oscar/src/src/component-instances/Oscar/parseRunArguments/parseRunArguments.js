@@ -27,14 +27,14 @@ const parseFunctionArgumentsString = (argumentsString, typeHint, parseContext) =
 }
 
 const parseToken = (token, typeHint, parseContext) => {
-  if (typeof token === 'number') {
+  if (typeof token === 'boolean') {
     return token
   }
-  if (token.startsWith('instance.')) {
+  if (typeof token === 'string' && token.startsWith('instance.')) {
     const prop = token.substring('instance.'.length)
     return parseContext.instanceClass.props[prop]
   }
-  if (token.startsWith('camera.')) {
+  if (typeof token === 'string' && token.startsWith('camera.')) {
     const prop = token.substring('camera.'.length)
     return parseContext.camera[prop]
   }
@@ -54,12 +54,12 @@ const parseToken = (token, typeHint, parseContext) => {
     const functionName = token.substring(0, indexOfFirstBracket)
     const foundFunction = functions.get(functionName)
     if (foundFunction === undefined) {
-      throw new Error(`you tried to call function ${functionName} which doesnt exist!`)
+      throw new Error(`you tried to call function ${functionName}() which doesnt exist!`)
     }
     const functionArguments = token.substring(indexOfFirstBracket + 1, indexOfLastBracket)
-    const functionRunArguments = parseFunctionArgumentsString(functionArguments, 'generic', parseContext.eventContext.variables)
+    const functionRunArguments = parseFunctionArgumentsString(functionArguments, 'generic', parseContext)
     if (foundFunction.argumentsNeeded !== functionRunArguments.length) {
-      throw new Error(`you tried to call function with ${functionRunArguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
+      throw new Error(`you tried to call function ${functionName}() with ${functionRunArguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
     }
     return foundFunction.logic(functionRunArguments)
   }

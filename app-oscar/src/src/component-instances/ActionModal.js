@@ -7,6 +7,7 @@ import Heading2 from '../components/Heading2/Heading2'
 import Button from '../components/Button/Button'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
+import Switch from '../components/Switch/Switch'
 
 const StyledActionModal = styled.div`
   .component--modal {
@@ -99,6 +100,8 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
       return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={atomResources} />
     case 'space':
       return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={spaceResources} />
+    case 'boolean':
+      return <Switch onChange={handleOnUpdateArgument} checked={value}>{name}</Switch>
     case 'generic':
     case 'number':
     default:

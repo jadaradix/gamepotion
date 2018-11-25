@@ -5,6 +5,7 @@
     "createdAt": 100,
     "type": "image",
     "fixed": "ball",
+    "extension": "png",
     "name": "Ball"
   },
   {
@@ -13,6 +14,7 @@
     "createdAt": 200,
     "type": "sound",
     "fixed": "zap",
+    "extension": "wav",
     "name": "Zap"
   },
   {

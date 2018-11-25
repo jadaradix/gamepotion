@@ -44,7 +44,10 @@ const handleActionBack = (actionBack) => {
     'SOUND_PLAY': () => {
       return {
         ...baseReturn,
-        soundToPlay: actionBack.actionBackArguments[0]
+        soundToPlay: {
+          soundToPlay: actionBack.actionBackArguments[0],
+          doLoop: actionBack.actionBackArguments[1]
+        }
       }
     }
   }

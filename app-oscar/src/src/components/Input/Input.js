@@ -23,12 +23,14 @@ const StyledInput = styled.div`
     appearance: none;
     outline: 0;
     border: 0;
+    border-radius: 0;
     border-bottom: 2px solid #dadfe1;
     background-color: transparent;
     letter-spacing: 0;
     transition: border-color 0.2s ease-in-out;
     ${font}
     color: ${colours.fore};
+    -webkit-appearance: none;
     &:focus {
       border-color: #bdc3c7;
     }

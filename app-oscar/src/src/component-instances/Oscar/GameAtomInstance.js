@@ -1,4 +1,4 @@
-import parseRunArguments from './parseRunArguments'
+import parseRunArguments from './parseRunArguments/parseRunArguments'
 
 class GameAtomInstance {
   constructor(props, atomContainer) {

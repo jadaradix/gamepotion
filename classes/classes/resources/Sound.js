@@ -4,6 +4,7 @@ class ResourceSound extends Resource {
   constructor (json = {}) {
     super(json)
     this.type = 'sound'
+    this.extension = json.extension || 'wav'
     this.fixed = ((typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : 'zap')
   }
 
@@ -19,7 +20,7 @@ class ResourceSound extends Resource {
         return this.id
       }
     })()
-    return `https://storage.googleapis.com/gmc-resources/${pathname}.wav`
+    return `https://storage.googleapis.com/gmc-resources/${pathname}.${this.extension}`
   }
 
   toApi() {
@@ -27,7 +28,7 @@ class ResourceSound extends Resource {
     return {
       ...r,
       fixed: this.fixed,
-      remoteUrl: this.getRemoteUrl()
+      extension: this.extension
     }
   }
 
@@ -35,7 +36,8 @@ class ResourceSound extends Resource {
     const r = super.toDatastore()
     return {
       ...r,
-      fixed: this.fixed
+      fixed: this.fixed,
+      extension: this.extension
     }
   }
 
@@ -47,11 +49,13 @@ class ResourceSound extends Resource {
   fromApiPatch(json) {
     super.fromApiPatch(json)
     this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
+    this.extension = (typeof json.extension === 'string') ? json.extension : this.extension // apis go away
   }
 
   clientFromApiGet(json) {
     super.clientFromApiGet(json)
     this.fixed = json.fixed
+    this.extension = json.extension
   }
 }
 

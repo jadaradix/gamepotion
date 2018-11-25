@@ -4,6 +4,7 @@ class ResourceImage extends Resource {
   constructor (json = {}) {
     super(json)
     this.type = 'image'
+    this.extension = json.extension || 'png'
     this.fixed = ((typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : 'ball')
     this.frameWidth = (typeof json.frameWidth === 'number' ? json.frameWidth : 64)
     this.frameHeight = (typeof json.frameHeight === 'number' ? json.frameHeight : 64)
@@ -22,7 +23,7 @@ class ResourceImage extends Resource {
         return this.id
       }
     })()
-    return `https://storage.googleapis.com/gmc-resources/${pathname}.png`
+    return `https://storage.googleapis.com/gmc-resources/${pathname}.${this.extension}`
   }
 
   toApi() {
@@ -30,7 +31,7 @@ class ResourceImage extends Resource {
     return {
       ...r,
       fixed: this.fixed,
-      remoteUrl: this.getRemoteUrl(),
+      extension: this.extension,
       frameWidth: this.frameWidth,
       frameHeight: this.frameHeight,
       frameSpeed: this.frameSpeed
@@ -42,6 +43,7 @@ class ResourceImage extends Resource {
     return {
       ...r,
       fixed: this.fixed,
+      extension: this.extension,
       frameWidth: this.frameWidth,
       frameHeight: this.frameHeight,
       frameSpeed: this.frameSpeed
@@ -56,6 +58,7 @@ class ResourceImage extends Resource {
   fromApiPatch(json) {
     super.fromApiPatch(json)
     this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
+    this.extension = (typeof json.extension === 'string') ? json.extension : this.extension // apis go away
     this.frameWidth = (typeof json.frameWidth === 'number' ? json.frameWidth : this.frameWidth)
     this.frameHeight = (typeof json.frameHeight === 'number' ? json.frameHeight : this.frameHeight)
     this.frameSpeed = (typeof json.frameSpeed === 'number' ? json.frameSpeed : this.frameSpeed)
@@ -64,6 +67,7 @@ class ResourceImage extends Resource {
   clientFromApiGet(json) {
     super.clientFromApiGet(json)
     this.fixed = json.fixed
+    this.extension = json.extension
     this.frameWidth = json.frameWidth
     this.frameHeight = json.frameHeight
     this.frameSpeed = json.frameSpeed
