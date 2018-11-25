@@ -49,9 +49,7 @@ class StateDashboard extends Component {
       projectToLoadId: null,
       // feeds
       feeds: getState().feeds,
-      // feedItemToLoadId: null,
-      // etc
-      loggedOut: false
+      // feedItemToLoadId: null
     }
     dispatch({
       name: 'PROJECTS_GET'
@@ -89,11 +87,6 @@ class StateDashboard extends Component {
         console.warn('FEEDS_GET', state)
         this.setState({
           feeds: state.feeds
-        })
-      }),
-      subscribe('USER_LOG_OUT', () => {
-        this.setState({
-          loggedOut: true
         })
       })
     ]
@@ -158,19 +151,11 @@ class StateDashboard extends Component {
     }
   }
 
-  logOut() {
-    dispatch({
-      name: 'USER_LOG_OUT'
-    })
-  }
-
   render() {
     if (this.state.projectToLoadId !== null) {
       return <Redirect to={`/projects/${this.state.projectToLoadId}`} />
     }
-    if (this.state.loggedOut === true) {
-      return <Redirect to='/auth' />
-    }
+
     const newsFeed = this.state.feeds.get('news')
     return (
       <Fragment>
@@ -232,9 +217,6 @@ class StateDashboard extends Component {
                   </Fragment>
                 }
               </Box>
-            </section>
-            <section>
-              <Button onClick={this.logOut} flavour='weak'>Log out</Button>
             </section>
           </StyledState>
         </ResponsiveContainer>

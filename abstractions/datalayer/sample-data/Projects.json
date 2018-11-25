@@ -3,6 +3,7 @@
     "id": "project-hack-aggressive-avians",
     "teamId": "team-hack-fatquack",
     "createdAt": 100,
-    "name": "Aggressive Avians"
+    "name": "Aggressive Avians",
+    "startSpace": "resource-hack-space-bird"
   }
 ]
