@@ -1,6 +1,5 @@
 import debounce from 'debounce'
 import api from '../../api.js'
-import classes from '../../../classes'
 import { set } from '../../../localStorage'
 
 const patch = debounce((payload) => {

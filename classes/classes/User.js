@@ -4,7 +4,7 @@ import guessNameFromUserlandId from './guessNameFromUserlandId.js'
 const VALID_SUBSCRIPTION_IDS = [
   'free',
   'pro',
-  'beast'
+  'boss'
 ]
 
 class User {
