@@ -27,9 +27,6 @@ const parseFunctionArgumentsString = (argumentsString, typeHint, parseContext) =
 }
 
 const parseToken = (token, typeHint, parseContext) => {
-  if (typeof token === 'number') {
-    return token
-  }
   if (typeof token === 'boolean') {
     return token
   }
@@ -57,12 +54,12 @@ const parseToken = (token, typeHint, parseContext) => {
     const functionName = token.substring(0, indexOfFirstBracket)
     const foundFunction = functions.get(functionName)
     if (foundFunction === undefined) {
-      throw new Error(`you tried to call function ${functionName} which doesnt exist!`)
+      throw new Error(`you tried to call function ${functionName}() which doesnt exist!`)
     }
     const functionArguments = token.substring(indexOfFirstBracket + 1, indexOfLastBracket)
-    const functionRunArguments = parseFunctionArgumentsString(functionArguments, 'generic', parseContext.eventContext.variables)
+    const functionRunArguments = parseFunctionArgumentsString(functionArguments, 'generic', parseContext)
     if (foundFunction.argumentsNeeded !== functionRunArguments.length) {
-      throw new Error(`you tried to call function with ${functionRunArguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
+      throw new Error(`you tried to call function ${functionName}() with ${functionRunArguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
     }
     return foundFunction.logic(functionRunArguments)
   }
