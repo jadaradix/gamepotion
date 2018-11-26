@@ -4,7 +4,7 @@ const datastore = new Datastore({
   projectId: 'thegmc-219013'
 })
 
-const WORK_LOCALLY = true
+const WORK_LOCALLY = false
 
 const sampleDatas = {
   'Users': require('./sample-data/Users.json'),
