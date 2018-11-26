@@ -8,19 +8,19 @@ const patch = debounce((payload) => {
 
 export default async function (state, payload) {
   patch(payload)
-  const user = state.user
-  user.fromApiPatch(payload)
   const credentials = {
     ...state.credentials
   }
   if (typeof payload.userlandId === 'string') {
     credentials.userlandId = payload.userlandId
+    set('credentials-userlandId', credentials.userlandId)
   }
   if (typeof payload.password === 'string') {
     credentials.password = payload.password
+    set('credentials-password', credentials.password)
   }
-  set('credentials-userlandId', credentials.userlandId)
-  set('credentials-password', credentials.password)
+  const user = state.user
+  user.fromApiPatch(payload)
   return {
     ...state,
     user
