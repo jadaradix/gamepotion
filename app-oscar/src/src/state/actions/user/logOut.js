@@ -1,7 +1,7 @@
 import api from '../../api.js'
 import { set } from '../../../localStorage'
 
-export default function (state, {}) {
+export default function (state) {
   api.logOut()
   const credentials = {
     ...state.credentials,
