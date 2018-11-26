@@ -14,8 +14,8 @@
     "jest": "^23.6.0"
   },
   "scripts": {
-    "deploy-indexes": "gcloud datastore create-indexes index.yaml",
-    "clean-indexes": "gcloud datastore cleanup-indexes index.yaml",
+    "deploy-indexes": "gcloud datastore indexes create index.yaml",
+    "clean-indexes": "gcloud datastore indexes cleanup index.yaml",
     "test": "NODE_ENV=local GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/config-gcp.json jest"
   }
 }

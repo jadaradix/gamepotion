@@ -1,1 +1,10 @@
 indexes:
+- kind: Projects
+  properties:
+  - name: id
+  - name: teamId
+
+- kind: Resources
+  properties:
+  - name: id
+  - name: projectId
