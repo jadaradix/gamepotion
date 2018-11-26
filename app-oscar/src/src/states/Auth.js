@@ -154,7 +154,7 @@ const stages = new Map([
           <Fragment>
             <Heading1>Welcome back!</Heading1>
             <div>
-              <Input type='password' label='Password' placeholder='' required autoFocus={state.autoFocus} value={state.password} onChange={(v) => update('password', v)} />
+              <Input type='password' label='Password' placeholder='' required autoFocus value={state.password} onChange={(v) => update('password', v)} onDone={goNext} />
               <Button onClick={goNext} disabled={!canGoNext()}>Log in</Button>
               <Button onClick={goPrevious} flavour='weak'>Go back</Button>
             </div>
