@@ -133,8 +133,8 @@ class GameSpace extends Component {
     }
     const onTouch = (coords) => {
       if (this.props.gridOn === true) {
-        coords.x = coords.x - (coords.x % this.props.gridWidth)
-        coords.y = coords.y - (coords.y % this.props.gridHeight)
+        coords.x = coords.x - (coords.x % parseInt(this.props.gridWidth, 10))
+        coords.y = coords.y - (coords.y % parseInt(this.props.gridHeight, 10))
       }
       this.props.onTouch(coords)
     }
@@ -350,8 +350,8 @@ GameSpace.propTypes = {
   resourceContainers: PropTypes.array.isRequired,
   designMode: PropTypes.bool,
   gridOn: PropTypes.bool,
-  gridWidth: PropTypes.string,
-  gridHeight: PropTypes.string,
+  gridWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  gridHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   variables: PropTypes.any.isRequired,
   onTouch: PropTypes.func,
   onTouchSecondary: PropTypes.func,
@@ -361,7 +361,7 @@ GameSpace.propTypes = {
 
 GameSpace.defaultProps = {
   designMode: false,
-  gridOn: PropTypes.false,
+  gridOn: false,
   gridWidth: 16,
   gridHeight: 16,
   onTouch: () => {},

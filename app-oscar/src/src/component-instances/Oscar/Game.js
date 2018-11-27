@@ -53,7 +53,12 @@ class Game extends Component {
     const variables = new Map()
 
     return (
-      <GameSpace spaceContainer={spaceContainer} resourceContainers={resourceContainers} variables={variables} onSwitchSpace={this.onSwitchSpace} />
+      <GameSpace
+        spaceContainer={spaceContainer}
+        resourceContainers={resourceContainers}
+        variables={variables}
+        onSwitchSpace={this.onSwitchSpace}
+      />
     )
   }
 }
