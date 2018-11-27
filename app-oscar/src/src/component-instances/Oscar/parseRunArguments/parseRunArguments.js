@@ -1,3 +1,5 @@
+import jsep from 'jsep'
+
 const RESOURCE_TYPES = [
   'image',
   'sound',
@@ -5,7 +7,7 @@ const RESOURCE_TYPES = [
   'space'
 ]
 
-const functions = new Map([
+const FUNCTIONS = new Map([
   [
     'random',
     {
@@ -20,54 +22,82 @@ const functions = new Map([
   ]
 ])
 
-const parseFunctionArgumentsString = (argumentsString, typeHint, parseContext) => {
-  return argumentsString.split(',').map(p => {
-    return parseToken(p.trim(), typeHint, parseContext)
-  })
+const OPERATORS = {
+  '+'(l, r) {
+    return l + r
+  },
+  '-'(l, r) {
+    return l - r
+  },
+  '*'(l, r) {
+    return l * r
+  },
+  '/'(l, r) {
+    return l / r
+  }
 }
 
 const parseToken = (token, typeHint, parseContext) => {
-  if (typeof token === 'boolean') {
-    return token
-  }
-  if (typeof token === 'string' && token.startsWith('instance.')) {
-    const prop = token.substring('instance.'.length)
-    return parseContext.instanceClass.props[prop]
-  }
-  if (typeof token === 'string' && token.startsWith('camera.')) {
-    const prop = token.substring('camera.'.length)
-    return parseContext.camera[prop]
+  const memberExpressions = {
+    instance: parseContext.instanceClass.props,
+    camera: parseContext.camera
   }
   if (RESOURCE_TYPES.includes(typeHint)) {
     return token
   }
-  if (token[0] === '"' && token[token.length - 1] === '"') {
-    return token.substring(1, token.length - 1)
+  if (typeof token === 'boolean') {
+    return token
   }
-  const foundVariable = parseContext.eventContext.variables.get(token)
-  if (foundVariable !== undefined) {
-    return foundVariable
+  let j
+  if (typeof token === 'object' && token.hasOwnProperty('type')) {
+    j = token
+  } else {
+    j = jsep(token)
   }
-  const indexOfFirstBracket = token.indexOf('(')
-  const indexOfLastBracket = token.indexOf(')')
-  if (indexOfFirstBracket > 0 && indexOfLastBracket === token.length - 1) {
-    const functionName = token.substring(0, indexOfFirstBracket)
-    const foundFunction = functions.get(functionName)
+  if (j.type === 'Literal') {
+    return j.value
+  }
+  if (j.type === 'Identifier') {
+    const foundVariable = parseContext.eventContext.variables.get(j.name)
+    if (foundVariable !== undefined) {
+      return foundVariable
+    } else {
+      throw new Error(`variable ${j.name} unknown`)
+    }
+  }
+  if (j.type === 'CallExpression') {
+    const foundFunction = FUNCTIONS.get(j.callee.name)
     if (foundFunction === undefined) {
-      throw new Error(`you tried to call function ${functionName}() which doesnt exist!`)
+      throw new Error(`you tried to call function ${j.callee.name}() which doesnt exist!`)
     }
-    const functionArguments = token.substring(indexOfFirstBracket + 1, indexOfLastBracket)
-    const functionRunArguments = parseFunctionArgumentsString(functionArguments, 'generic', parseContext)
-    if (foundFunction.argumentsNeeded !== functionRunArguments.length) {
-      throw new Error(`you tried to call function ${functionName}() with ${functionRunArguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
+    if (foundFunction.argumentsNeeded !== j.arguments.length) {
+      throw new Error(`you tried to call function ${j.callee.name}() with ${j.arguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
     }
-    return foundFunction.logic(functionRunArguments)
+    const parsedArguments = j.arguments.map(jArgument => {
+      return parseToken(jArgument.raw, 'generic', parseContext)
+    })
+    return foundFunction.logic(parsedArguments)
   }
-  const asInteger = parseInt(token, 10)
-  if (isNaN(asInteger)) {
-    throw new Error(`could not parse ${token}`)
+  if (j.type === 'MemberExpression') {
+    const foundMemberExpression = memberExpressions[j.object.name]
+    if (foundMemberExpression !== undefined) {
+      return foundMemberExpression[j.property.name]
+    } else {
+      throw new Error(`member ${j.object.name} unknown`)
+    }
   }
-  return asInteger
+  if (j.type === 'BinaryExpression') {
+    const foundOperator = OPERATORS[j.operator]
+    if (typeof foundOperator === 'function') {
+      return foundOperator(
+        parseToken(j.left, 'generic', parseContext),
+        parseToken(j.right, 'generic', parseContext)
+      )
+    } else {
+      throw new Error(`operator ${j.operator} unsupported`)
+    }
+  }
+  throw new Error(`could not parse ${token}`)
 }
 
 const parseRunArguments = (argumentTypes, runArguments, parseContext) => {

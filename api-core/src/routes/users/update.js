@@ -37,7 +37,8 @@ const route = (request, response, next) => {
         return next(false)
       })
   }
-  datalayer.readOne('Users', {userlandId: request.body.userlandId})
+  if (typeof request.body.userlandId === 'string') {
+    datalayer.readOne('Users', {userlandId: request.body.userlandId})
     .then(user => {
       const userClass = classFactory.user(user)
       if (userClass.id !== request.authorization.user.id) {
@@ -49,6 +50,9 @@ const route = (request, response, next) => {
     .catch(() => {
       updateUser(request.authorization.user)
     })
+  } else {
+    return updateUser(request.authorization.user)
+  }
 }
 
 module.exports = route

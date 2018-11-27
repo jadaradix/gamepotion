@@ -1,11 +1,15 @@
 const axios = require('axios')
+const createRandomString = require('../abstractions/createRandomString.js')
 
 const URL_API_CORE = 'http://localhost:1025/v1'
 const URL_API_BIN = 'http://localhost:1026/v1'
 
 const user = {
-  userlandId: 'j@jada.io',
-  password: 'letmein'
+  userlandId: `${createRandomString()}@gamemaker.club`
+}
+
+const team = {
+  name: 'FatQuack'
 }
 
 const project = {
@@ -16,8 +20,7 @@ const configs = {
   auth: {
     validateStatus: false,
     auth: {
-      username: user.userlandId,
-      password: user.password
+      username: user.userlandId
     }
   },
   noAuth: {
@@ -25,7 +28,56 @@ const configs = {
   }
 }
 
-it('creates a project', (done) => {
+test('creates a user', (done) => {
+  axios({
+    method: 'post',
+    url: `${URL_API_CORE}/users`,
+    data: user,
+    ...configs.noAuth
+  })
+    .then(response => {
+      expect(response.status).toBe(201)
+      user.id = response.data.id
+      configs.auth.auth.password = response.data.password
+      return done()
+    })
+    .catch(done)
+})
+
+test('creates a team', (done) => {
+  axios({
+    method: 'post',
+    url: `${URL_API_CORE}/teams`,
+    data: team,
+    ...configs.auth
+  })
+    .then(response => {
+      expect(response.status).toBe(201)
+      expect(response.data.name).toBe(team.name)
+      team.id = response.data.id
+      return done()
+    })
+    .catch(done)
+})
+
+test('updates the users team', (done) => {
+  axios({
+    method: 'patch',
+    url: `${URL_API_CORE}/me`,
+    data: {
+      teamId: team.id
+    },
+    ...configs.auth
+  })
+    .then(response => {
+      expect(response.status).toBe(200)
+      expect(response.data.teamId).toBe(team.id)
+      return done()
+    })
+    .catch(done)
+})
+
+test('creates a project', (done) => {
   axios({
     method: 'post',
     url: `${URL_API_CORE}/me/team/projects`,
@@ -42,26 +94,7 @@ it('creates a project', (done) => {
 })
 
 describe('resources', () => {
-  let resourceAtomId
   let resourceImageId
-  it('adds an atom resource', (done) => {
-    axios({
-      method: 'post',
-      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
-      data: {
-        type: 'atom',
-        name: 'Bird Atom'
-      },
-      ...configs.auth
-    })
-      .then(response => {
-        expect(response.status).toBe(201)
-        resourceAtomId = response.data.id
-        return done()
-      })
-      .catch(done)
-  })
-
   it('adds an image resource', (done) => {
     axios({
       method: 'post',
@@ -82,7 +115,7 @@ describe('resources', () => {
 
   it('throws a wobbler when updating a resource if there is no bin file key', (done) => {
     axios.post(
-      `${URL_API_BIN}/me/team/projects/${project.id}/resources/${resourceAtomId}`,
+      `${URL_API_BIN}/me/team/projects/${project.id}/resources/${resourceImageId}`,
       {},
       {
         ...configs.auth
@@ -91,19 +124,6 @@ describe('resources', () => {
       .then(response => {
         expect(response.status).toBe(400)
         expect(response.data.message).toBe('no bin file key')
-        return done()
-      })
-      .catch(done)
-  })
-
-  it('deletes the atom resource', (done) => {
-    axios({
-      method: 'delete',
-      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources/${resourceAtomId}`,
-      ...configs.auth
-    })
-      .then(response => {
-        expect(response.status).toBe(204)
         return done()
       })
       .catch(done)
@@ -123,10 +143,36 @@ describe('resources', () => {
   })
 })
 
-it('deletes the project', (done) => {
+test('deletes the project', (done) => {
   axios({
     method: 'delete',
     url: `${URL_API_CORE}/me/team/projects/${project.id}`,
+    ...configs.auth
+  })
+    .then(response => {
+      expect(response.status).toBe(204)
+      return done()
+    })
+    .catch(done)
+})
+
+test('deletes the team', (done) => {
+  axios({
+    method: 'delete',
+    url: `${URL_API_CORE}/me/team`,
+    ...configs.auth
+  })
+    .then(response => {
+      expect(response.status).toBe(204)
+      return done()
+    })
+    .catch(done)
+})
+
+test('deletes the user', (done) => {
+  axios({
+    method: 'delete',
+    url: `${URL_API_CORE}/me`,
     ...configs.auth
   })
     .then(response => {

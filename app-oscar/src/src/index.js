@@ -6,6 +6,7 @@ import api from './state/api.js'
 import CustomHelment from './component-instances/CustomHelmet.js'
 
 import Dashboard from './states/Dashboard.js'
+import Account from './states/Account.js'
 import ProjectNew from './states/Project/New.js'
 import ProjectProject from './states/Project/Project.js'
 import ProjectPlay from './states/Project/Play.js'
@@ -29,6 +30,7 @@ const app = (
       <Switch>
         <Route path='/auth' exact strict component={Auth} />
         <PrivateRoute path='/dashboard' exact strict WhichComponent={Dashboard} />
+        <PrivateRoute path='/account' exact strict WhichComponent={Account} />
         <PrivateRoute path='/projects/new' exact strict WhichComponent={ProjectNew} />
         <PrivateRoute path='/projects/:id/play' exact strict WhichComponent={ProjectPlay} />
         <PrivateRoute path='/projects/:id/preferences' exact strict WhichComponent={ProjectPreferences} />

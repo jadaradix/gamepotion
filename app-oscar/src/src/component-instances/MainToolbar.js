@@ -30,13 +30,14 @@ const MainToolbar = ({ currentProject, onClick, disabled }) => {
       }
       <ToolbarGap />
       <ToolbarButton route={getProjectRoute('play', currentProject)} disabled={disabled || currentProject === null} icon={icons.generic.project.run} hint='Play game' />
+      <ToolbarButton route={getProjectRoute('preferences', currentProject)} disabled={disabled || currentProject === null} icon={icons.generic.preferences} hint='Game settings' />
       <ToolbarGap />
       {resourceTypes.map(rt => (
         <ToolbarButton key={rt.type} onClick={() => onClick(`add-resource-${rt.type}`)} disabled={disabled || currentProject === null} icon={icons.resources[rt.type]} hint={`Add ${rt.nameSingular}`} />
       ))
       }
       <ToolbarGap />
-      <ToolbarButton route={getProjectRoute('preferences', currentProject)} disabled={disabled || currentProject === null} icon={icons.generic.preferences} hint='Game settings' />
+      <ToolbarButton route={'/account'} disabled={disabled} icon={icons.generic.account} hint='Account' />
     </Toolbar>
   )
 }

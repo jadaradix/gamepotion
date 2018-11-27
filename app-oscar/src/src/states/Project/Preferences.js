@@ -12,6 +12,7 @@ import Dropper from '../../components/Dropper/Dropper'
 
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../../component-instances/ResponsiveContainer'
+import CustomHelmet from '../../component-instances/CustomHelmet'
 
 const StyledState = styled.div`
   .component--box {
@@ -100,12 +101,15 @@ class StateProjectPreferences extends Component {
 
     return (
       <Fragment>
+        <CustomHelmet
+          title='Game settings'
+        />
         <MainToolbarContainer />
         <ResponsiveContainer>
           <StyledState>
             <Box>
               <Fragment>
-                <Heading1>{this.state.currentProject.project.name}</Heading1>
+                <Heading1>Game settings</Heading1>
                 <Input label='Name' value={this.state.currentProject.project.name} onChange={(v) => this.onUpdateProp('name', v)} />
                 {spaceResources.length === 0 &&
                   <Banner>Your game has no Spaces. You can&rsquo;t play it until you add a Space.</Banner>

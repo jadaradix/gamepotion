@@ -1,5 +1,6 @@
 import symbol from './files/symbol.png'
 import folder from './files/folder.svg'
+import account from './files/account.svg'
 import preferences from './files/preferences.svg'
 import loading from './files/loading.svg'
 import modalClose from './files/modal-close.svg'
@@ -24,6 +25,7 @@ import resourceSoundStop from './files/resource-sound-stop.svg'
 export default {
   symbol,
   folder,
+  account,
   preferences,
   loading,
   modalClose,

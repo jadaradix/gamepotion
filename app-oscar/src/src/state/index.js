@@ -91,7 +91,7 @@ export function dispatch ({ name, data = {} }) {
     })
     .catch(error => {
       console.error('[state] action execution failed!', error)
-      if (name !== 'USER_LOG_IN' && error.hasOwnProperty('response') && AUTH_FAILED_MESSAGES.includes(error.response.data.message)) {
+      if (name !== 'USER_LOG_IN' && error.response && error.response.data && AUTH_FAILED_MESSAGES.includes(error.response.data.message)) {
         window.location = '/auth'
         return false
       }

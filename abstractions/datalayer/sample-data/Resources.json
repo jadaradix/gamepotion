@@ -33,5 +33,12 @@
         }
       ]
     }
+  },
+  {
+    "id": "resource-hack-space-bird",
+    "projectId": "project-hack-aggressive-avians",
+    "createdAt": 200,
+    "type": "space",
+    "name": "Level 1"
   }
 ]

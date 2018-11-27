@@ -72,7 +72,7 @@ const getMax = (props) => {
 }
 
 const getTitle = (props) => {
-  return (props.type === 'password' ? '8 to 128 characters' : undefined)
+  return (props.type === 'password' ? '6 to 128 characters' : undefined)
 }
 
 const getPattern = (props) => {
