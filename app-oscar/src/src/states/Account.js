@@ -16,6 +16,7 @@ import Input from '../components/Input/Input'
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
 import CustomHelmet from '../component-instances/CustomHelmet'
+import ChangePasswordModal from '../modals/ChangePassword'
 
 const SUBSCRIPTIONS = [
   {
@@ -44,29 +45,39 @@ const StyledState = styled.div`
     margin-top: 1.5rem;
   }
   section + section {
-    margin-top: 2rem;
+    margin-top: 3rem;
   }
-  .subscription {
-    padding: 1rem;
-    border-radius: 4px;
-    border: 2px solid transparent;
-    box-shadow: 0 4px 20px rgb(212, 212, 212);
-    .component--heading2 + .component--button {
-      margin-top: 1rem;
+  section.account {
+    .component--button {
+      display: inline-block;
     }
-    .component--heading2 + p {
-      margin-top: 0.5rem;
+    .component--button + .component--button {
+      margin-left: 0.5rem;
     }
-    p {
-      ${font}
-      font-size: 80%;
-      color: #6c7a89;
-    }
-    &.current {
-      border-color: #dadfe1;
-    }
-    &:not(:last-child) {
-      margin-bottom: 1rem;
+  }
+  section.subscriptions {
+    .subscription {
+      padding: 1rem;
+      border-radius: 4px;
+      border: 2px solid transparent;
+      box-shadow: 0 4px 20px rgb(212, 212, 212);
+      .component--heading2 + .component--button {
+        margin-top: 1rem;
+      }
+      .component--heading2 + p {
+        margin-top: 0.5rem;
+      }
+      p {
+        ${font}
+        font-size: 80%;
+        color: #6c7a89;
+      }
+      &.current {
+        border-color: #dadfe1;
+      }
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
     }
   }
 `
@@ -76,8 +87,13 @@ class StateAccount extends Component {
     super(props)
     this.state = {
       user: getState().user,
+      showingChangePassword: false,
+      newPassword: '',
       loggedOut: false
     }
+    this.changePassword = this.changePassword.bind(this)
+    this.onChangePassword = this.onChangePassword.bind(this)
+    this.onCancelChangePassword = this.onCancelChangePassword.bind(this)
   }
 
   componentDidMount () {
@@ -106,6 +122,9 @@ class StateAccount extends Component {
           password: getState().credentials.password
         }
       })
+        .catch(() => {
+          this.logOut()
+        })
     }
   }
 
@@ -114,7 +133,7 @@ class StateAccount extends Component {
   }
 
   onUpdateProp(prop, value) {
-    dispatch({
+    return dispatch({
       name: 'USER_UPDATE',
       data: {
         id: this.props.match.params.id,
@@ -129,6 +148,30 @@ class StateAccount extends Component {
     })
   }
 
+  changePassword() {
+    this.setState({
+      newPassword: '',
+      showingChangePassword: true
+    })
+  }
+
+  onChangePassword() {
+    this.onUpdateProp('password', this.state.newPassword)
+      .then(() => {
+        this.setState({
+          newPassword: '',
+          showingChangePassword: false
+        })
+      })
+
+  }
+
+  onCancelChangePassword() {
+    this.setState({
+      newPassword: '',
+      showingChangePassword: false
+    })
+  }
 
   render() {
     if (this.state.loggedOut === true) {
@@ -158,16 +201,26 @@ class StateAccount extends Component {
         <CustomHelmet
           title='Account'
         />
+        {this.state.showingChangePassword && (
+          <ChangePasswordModal
+            password={this.state.newPassword}
+            onUpdate={(p, v) => this.setState({newPassword: v})}
+            onGood={this.onChangePassword}
+            onBad={this.onCancelChangePassword}
+          />
+        )
+        }
         <MainToolbarContainer />
         <ResponsiveContainer>
           <StyledState>
             <Box>
-              <section>
+              <section className='account'>
                 <Heading1>Account</Heading1>
                 <Input label='Name' value={this.state.user.name} onChange={(v) => this.onUpdateProp('name', v)} />
-                <Button onClick={this.logOut}>Log out</Button>
+                <Button onClick={this.changePassword}>Change password</Button>
+                <Button onClick={this.logOut} flavour='weak'>Log out</Button>
               </section>
-              <section>
+              <section className='subscriptions'>
                 <Heading1>Subscription</Heading1>
                 {SUBSCRIPTIONS.map(s => {
                   const current = (currentSubscriptionId === s.id)

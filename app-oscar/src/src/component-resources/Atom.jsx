@@ -15,7 +15,7 @@ import ListItem from '../components/ListItem/ListItem'
 import Image from '../components/Image/Image'
 import Heading2 from '../components/Heading2/Heading2'
 
-import ActionModal from '../component-instances/ActionModal'
+import ActionModal from '../modals/Action'
 import ActionsList from '../component-instances/ActionsList'
 
 const StyledResource = styled.div`

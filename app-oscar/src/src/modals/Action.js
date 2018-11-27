@@ -3,15 +3,15 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Modal from '../components/Modal/Modal'
-import Heading2 from '../components/Heading2/Heading2'
+import Heading1 from '../components/Heading1/Heading1'
 import Button from '../components/Button/Button'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 
-const StyledActionModal = styled.div`
+const StyledModal = styled.div`
   .component--modal {
-    .component--heading2 {
+    .component--heading1 {
       margin-bottom: 1rem;
     }
     .argument {
@@ -111,9 +111,9 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
 
   // console.warn('[component-ActionModal] actionClassInstance', actionClassInstance)
   return (
-    <StyledActionModal className='component--resource'>
+    <StyledModal className='component--resource'>
       <Modal onClose={onBad}>
-        <Heading2>{actionClassInstance.name}</Heading2>
+        <Heading1>{actionClassInstance.name}</Heading1>
         {Array.from(actionClassInstance.defaultRunArguments.keys()).map((k, i) => {
           const {
             type
@@ -128,7 +128,7 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
           <Button onClick={() => onGood(actionClassInstance)}>Done</Button>
         </div>
       </Modal>
-    </StyledActionModal>
+    </StyledModal>
   )
 }
 
