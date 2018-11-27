@@ -14,7 +14,8 @@ const server = restify.createServer(
 const middlewareAuthPublicRoutes = [
   ['EXACT', 'GET', '/v1'],
   ['EXACT', 'POST', '/v1/users'],
-  ['START', 'GET', '/v1/feed/']
+  ['START', 'GET', '/v1/feed/'],
+  ['EXACT', 'GET', '/v1/stripe-callback']
 ]
 
 const morgan = require('morgan')
@@ -44,7 +45,7 @@ const middlewares = {
 
 const routes = {
   'GET      /v1': require('./routes/healthcheck'),
-  'PUT      /v1/stripe-callback': require('./routes/stripe-callback'),
+  'GET      /v1/stripe-callback': require('./routes/stripe-callback'),
   'GET      /v1/feed/:id': require('./routes/feed'),
   // -> users
   'POST     /v1/users': require('./routes/users/create'),
