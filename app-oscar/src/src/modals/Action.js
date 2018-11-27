@@ -30,7 +30,7 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
 
   const resourcesByType = {}
   resourceTypes.forEach(rt => {
-    resourcesByType[rt] = resources
+    resourcesByType[rt.type] = resources
       .filter(r => r.type === rt.type)
       .map(r => {
         return {

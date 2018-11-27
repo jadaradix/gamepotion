@@ -11,7 +11,7 @@ const getLabel = (resourceTypeTypes, resources, actionClassInstance, action) => 
   const runArguments = Array.from(actionClassInstance.defaultRunArguments.values()).map((dra, i) => {
     if (resourceTypeTypes.includes(dra.type)) {
       const foundResource = resources.find(r => r.id === action.runArguments[i])
-      return (foundResource !== undefined ? foundResource : '?')
+      return (foundResource !== undefined ? foundResource.name : '?')
     }
     return action.runArguments[i]
   })

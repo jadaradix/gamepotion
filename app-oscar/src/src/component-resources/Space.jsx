@@ -210,14 +210,19 @@ class ResourceSpace extends PureComponent {
     const backgroundImage = (this.props.resource.backgroundImage === null ? 'none' : this.props.resource.backgroundImage)
     const foregroundImage = (this.props.resource.foregroundImage === null ? 'none' : this.props.resource.foregroundImage)
 
-    const atomToPlot = this.props.localSettings['atom-to-plot']
+    let atomToPlot = this.props.localSettings['atom-to-plot']
+    if (atomToPlot === 'none' && atomDropperResources.length > 0) {
+      atomToPlot = atomDropperResources[0].id
+    }
     const foundAtomResource = this.props.resources.find(r => r.id === atomToPlot)
     const foundImageResource = (foundAtomResource !== undefined ? this.props.resources.find(r => r.id === foundAtomResource.imageId) : undefined)
-    const imageSrc = (foundImageResource !== undefined?
+    const imageSrc = (foundImageResource !== undefined ?
       foundImageResource.getRemoteUrl()
       :
       null
     )
+    console.warn('foundAtomResource', foundAtomResource)
+    console.warn('foundImageResource', foundImageResource)
 
     const resourceContainers = this.props.resources.map(resource => {
       return {
