@@ -54,8 +54,9 @@ class GameAtomInstance {
         camera: eventContext.spaceContainer.resource.camera
       }
       const runArguments = parseRunArguments(action.argumentTypes, action.runArguments, parseContext)
-      if (action.id === 'If') {
-        if (runArguments[0] === runArguments[1]) {
+      const result = action.run(runContext, runArguments, action.appliesTo)
+      if (action.id.startsWith('If')) {
+        if (result === true) {
           i += 1
         } else {
           i += 1

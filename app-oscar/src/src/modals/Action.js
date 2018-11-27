@@ -44,8 +44,8 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
     const handleOnUpdateArgument = (v) => {
       return onUpdateArgument(index, v)
     }
-    if (actionClassInstance.runArguments[index].length === 0) {
-      if (resourcesByType.hasOwnProperty(type) && resourcesByType[type].length > 0) {
+    if (actionClassInstance.runArguments[index].length === 0 && resourcesByType.hasOwnProperty(type)) {
+      if (resourcesByType[type].length > 0) {
         actionClassInstance.runArguments[index] = resourcesByType[type][0].id
       } else {
         actionClassInstance.runArguments[index] = '?'
