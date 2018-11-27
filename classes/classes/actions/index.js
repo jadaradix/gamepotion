@@ -8,6 +8,9 @@ import SetImage from './SetImage.js'
 import PlaySound from './PlaySound.js'
 
 import GoToSpace from './GoToSpace.js'
+import SetSpaceBackgroundImage from './SetSpaceBackgroundImage.js'
+import SetSpaceForegroundImage from './SetSpaceForegroundImage.js'
+
 import If from './If.js'
 import EndIf from './EndIf.js'
 import SetVariable from './SetVariable.js'
@@ -24,6 +27,9 @@ export default {
   PlaySound,
 
   GoToSpace,
+  SetSpaceBackgroundImage,
+  SetSpaceForegroundImage,
+
   If,
   EndIf,
   SetVariable,

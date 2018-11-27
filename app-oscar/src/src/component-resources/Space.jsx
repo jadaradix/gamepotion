@@ -212,7 +212,7 @@ class ResourceSpace extends PureComponent {
 
     let atomToPlot = this.props.localSettings['atom-to-plot']
     if (atomToPlot === 'none' && atomDropperResources.length > 0) {
-      atomToPlot = atomDropperResources[0].id
+      this.props.onUpdateLocalSetting('atom-to-plot', atomDropperResources[0].id)
     }
     const foundAtomResource = this.props.resources.find(r => r.id === atomToPlot)
     const foundImageResource = (foundAtomResource !== undefined ? this.props.resources.find(r => r.id === foundAtomResource.imageId) : undefined)
@@ -232,10 +232,7 @@ class ResourceSpace extends PureComponent {
     })
     const spaceContainer = {
       resource: this.props.resource,
-      extras: {
-        backgroundImage: null,
-        foregroundImage: null
-      }
+      extras: {}
     }
     const variables = new Map()
 
