@@ -67,6 +67,11 @@ const stages = new Map([
               }
             })
               .catch(error => {
+                if (error.response === undefined) {
+                  return setStateCallback({
+                    inProgress: false
+                  }) 
+                }
                 if (error.response.data.message === 'unknown e-mail address') {
                   return setStateCallback({
                     stage: 'create-decision',

@@ -19,7 +19,7 @@ const route = async (request, response, next) => {
     response.send(new errors.NotFoundError('didnt work (1)'))
     return next(false)
   }
-  datalayer.read('Resources', {projectId: request.params.projectId}, 'descending:createdAt')
+  datalayer.read('Resources', {projectId: request.params.projectId})
     .then(objects => {
       const apiObjects = objects.map(object => {
         const c = classFactory.resource(object)

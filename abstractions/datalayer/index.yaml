@@ -1,8 +1,21 @@
 indexes:
+
+- kind: Users
+  properties:
+  - name: teamId
+  - name: createdAt
+    direction: desc
+
 - kind: Projects
   properties:
   - name: id
   - name: teamId
+
+- kind: Projects
+  properties:
+  - name: teamId
+  - name: createdAt
+    direction: desc
 
 - kind: Resources
   properties:
