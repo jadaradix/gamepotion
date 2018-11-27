@@ -12,7 +12,7 @@ import Switch from '../components/Switch/Switch'
 const StyledModal = styled.div`
   .component--modal {
     .component--heading1 {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
     .argument {
       margin-bottom: 1rem;
