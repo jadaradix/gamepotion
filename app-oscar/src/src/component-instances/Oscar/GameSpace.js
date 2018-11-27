@@ -283,6 +283,7 @@ class GameSpace extends Component {
                 const actionClassInstance = actionClassInstances.get(a.id)
                 const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
                 return {
+                  id: actionClassInstance.id,
                   run: actionClassInstance.run,
                   runArguments: a.runArguments,
                   appliesTo: a.appliesTo,
