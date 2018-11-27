@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getState } from './index.js'
+import { getState } from './state'
 
 const env = (window.location.protocol === 'http:' ? 'local' : 'production')
 const envs = {

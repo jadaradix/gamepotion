@@ -94,7 +94,7 @@ const stages = new Map([
         }
         return (
           <Fragment>
-            <Heading1>Welcome to Game Maker Club</Heading1>
+            <Heading1>Welcome to {process.env.REACT_APP_NAME}</Heading1>
             <p>
               Enter your e-mail to get started!
             </p>

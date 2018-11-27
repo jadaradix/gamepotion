@@ -4,6 +4,10 @@ cd ../..;
 
 cd classes;
   rm -rf abstractions;
+  #
+  #
+  #
+  #
 cd ..;
 
 cd platforms/nds;

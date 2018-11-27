@@ -1,43 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import resourceTypes from '../resourceTypes'
 import icons from '../icons'
 
 import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
 
-const argumentTypesToRunArgument = new Map([
-  ['image', (resources, runArgument) => {
-    const foundResource = resources.find(r => r.id === runArgument)
-    return (foundResource !== undefined ? foundResource.name : '?')
-  }],
-  ['sound', (resources, runArgument) => {
-    const foundResource = resources.find(r => r.id === runArgument)
-    return (foundResource !== undefined ? foundResource.name : '?')
-  }],
-  ['atom', (resources, runArgument) => {
-    const foundResource = resources.find(r => r.id === runArgument)
-    return (foundResource !== undefined ? foundResource.name : '?')
-  }],
-  ['space', (resources, runArgument) => {
-    const foundResource = resources.find(r => r.id === runArgument)
-    return (foundResource !== undefined ? foundResource.name : '?')
-  }]
-])
-
-const getLabel = (resources, actionClassInstance, action) => {
+const getLabel = (resourceTypeTypes, resources, actionClassInstance, action) => {
   const runArguments = Array.from(actionClassInstance.defaultRunArguments.values()).map((dra, i) => {
-    const foundArgumentTypesToRunArgument = argumentTypesToRunArgument.get(dra.type)
-    if (typeof foundArgumentTypesToRunArgument === 'function') {
-      return foundArgumentTypesToRunArgument(resources, action.runArguments[i])
-    } else {
-      return action.runArguments[i]
+    if (resourceTypeTypes.includes(dra.type)) {
+      const foundResource = resources.find(r => r.id === action.runArguments[i])
+      return (foundResource !== undefined ? foundResource : '?')
     }
+    return action.runArguments[i]
   })
   return actionClassInstance.toString(runArguments, action.appliesTo)
 }
 
 const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => {
+
+  const resourceTypeTypes = resourceTypes.map(r => r.type)
 
   const getEmpty = () => {
     return (
@@ -59,7 +42,7 @@ const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => 
           if (actionClassInstance.indent === true) {
             indent += 1
           }
-          const label = getLabel(resources, actionClassInstance, action)
+          const label = getLabel(resourceTypeTypes, resources, actionClassInstance, action)
           const argumentsCount = actionClassInstance.defaultRunArguments.size
           const actionActions = [...(argumentsCount === 0 ? [] : ['edit']), 'delete']
           return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={actionActions} onChoose={() => onAction(i, 'edit')} onAction={onAction} style={style}>{label}</ListItem>)

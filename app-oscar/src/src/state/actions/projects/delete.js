@@ -1,4 +1,4 @@
-import api from '../../api.js'
+import api from '../../../api'
 import getProjects from './get'
 
 export default async function (state, { id }) {

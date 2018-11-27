@@ -98,8 +98,8 @@ class ResourceSound extends PureComponent {
           </Box>
           <Box>
             <div className='file'>
-              <Dropper label='Choose a Game Maker Club file' options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
-              <p>Choosing a Game Maker Club file won&rsquo;t erase a file you have uploaded.</p>
+              <Dropper label={`Choose a ${process.env.REACT_APP_NAME} file`} options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+              <p>Choosing a {process.env.REACT_APP_NAME} file won&rsquo;t erase a file you have uploaded.</p>
             </div>
           </Box>
         </section>

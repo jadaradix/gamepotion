@@ -30,6 +30,6 @@ cd api-bin/src;
 cd ../..;
 
 cd app-oscar/src;
-  rm -rf src/classes; cp -R ../../classes src/classes; cd src/classes; rm -rf node_modules; cd ../..;
-  rm -rf src/inter-router; cp -R ../../inter-router src/inter-router; cd src/inter-router; rm -rf node_modules; cd ../..;
+  rm -rf src/classes; cp -R ../../classes src/classes; rm -rf src/classes/node_modules;
+  rm -rf src/inter-router; cp -R ../../inter-router src/inter-router; rm -rf src/inter-router/node_modules;
 cd ../..;

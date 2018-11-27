@@ -1,48 +1,37 @@
 import uuid from '../abstractions/uuid/index.dist.js'
 import guessNameFromUserlandId from './guessNameFromUserlandId.js'
 
-const VALID_SUBSCRIPTION_IDS = [
-  'free',
-  'pro',
-  'boss'
-]
-
 class User {
   constructor (json = {}) {
     this.id = json.id || uuid()
+    this.accessToken = json.accessToken || uuid()
     this.teamId = json.teamId || null
     this.createdAt = json.createdAt || Math.floor(new Date() / 1000)
     this.name = json.name || null
     this.userlandId = json.userlandId || 'a@b.c'
     this.passwordHash = json.passwordHash || null
-    this.subscriptionEvents = json.subscriptionEvents || []
+    this.modules = json.modules || []
+    if (this.modules.length === 0) {
+      this.addModule('free')
+    }
   }
 
-  updateSubscription (id) {
-    if (!VALID_SUBSCRIPTION_IDS.includes(id)) {
-      throw new Error(`subscription id ${id} is not one of ${VALID_SUBSCRIPTION_IDS.join('/')}`)
-    }
-    this.subscriptionEvents.push({
+  addModule (id) {
+    this.modules.push({
       id,
       when: Math.floor(new Date() / 1000)
     })
   }
 
-  getSubscription () {
-    if (this.subscriptionEvents.length === 0) {
-      this.updateSubscription('free')
-    }
-    return this.subscriptionEvents[this.subscriptionEvents.length - 1]
-  }
-
   toApi () {
     const json = {
       id: this.id,
+      accessToken: this.accessToken,
       teamId: this.teamId,
       createdAt: this.createdAt,
       name: this.name,
       userlandId: this.userlandId,
-      subscription: this.getSubscription()
+      modules: this.modules
     }
     return JSON.parse(JSON.stringify(json))
   }
@@ -50,9 +39,7 @@ class User {
   toApiList () {
     const json = {
       id: this.id,
-      teamId: this.teamId,
-      name: this.name,
-      userlandId: this.userlandId
+      name: this.name
     }
     return JSON.parse(JSON.stringify(json))
   }
@@ -60,12 +47,13 @@ class User {
   toDatastore () {
     const json = {
       id: this.id,
+      accessToken: this.accessToken,
       teamId: this.teamId,
       createdAt: this.createdAt,
       name: this.name,
       userlandId: this.userlandId,
       passwordHash: this.passwordHash,
-      subscriptionEvents: this.subscriptionEvents
+      modules: this.modules
       // someBoolean: (this.someBoolean === true),
     }
     return JSON.parse(JSON.stringify(json))
@@ -106,10 +94,11 @@ class User {
 
   clientFromApiGet (json) {
     this.id = json.id
+    this.accessToken = json.accessToken
     this.teamId = json.teamId
     this.name = json.name
     this.userlandId = json.userlandId
-    this.subscription = json.subscription
+    this.modules = json.modules
   }
 }
 

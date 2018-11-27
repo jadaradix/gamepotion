@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Dropzone from 'react-dropzone'
 
-import api from '../../state/api'
+import api from '../../api'
 import { font } from '../../styleAbstractions'
 import icons from '../../icons'
 

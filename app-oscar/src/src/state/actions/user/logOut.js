@@ -1,4 +1,4 @@
-import api from '../../api.js'
+import api from '../../../api'
 import { set } from '../../../localStorage'
 
 export default function (state) {

@@ -1,6 +1,7 @@
 {
-  "name": "gmc-app",
-  "version": "1.0.0",
+  "name": "gmc-app-oscar",
+  "version": "0.0.2",
+  "description": "Game Maker Club",
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
@@ -16,7 +17,7 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom --setupFiles=$(pwd)/jest.setup.js"
   },

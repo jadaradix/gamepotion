@@ -39,7 +39,7 @@ const write = (entity, id, data) => {
           return {
             name: $,
             value: data[$],
-            excludeFromIndexes: ['name', 'subscriptionEvents'].includes($)
+            excludeFromIndexes: ['name', 'modules'].includes($)
           }
         })
       },

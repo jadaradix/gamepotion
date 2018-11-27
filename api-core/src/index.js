@@ -44,12 +44,12 @@ const middlewares = {
 
 const routes = {
   'GET      /v1': require('./routes/healthcheck'),
+  'PUT      /v1/stripe-callback': require('./routes/stripe-callback'),
   'GET      /v1/feed/:id': require('./routes/feed'),
   // -> users
   'POST     /v1/users': require('./routes/users/create'),
   'GET      /v1/me': require('./routes/users/get'),
   'PATCH    /v1/me': require('./routes/users/update'),
-  'PUT      /v1/me/subscription/:id': require('./routes/users/update-subscription'),
   'DEL      /v1/me': require('./routes/users/delete'),
   //   -> teams
   'POST     /v1/teams': require('./routes/users/teams/create'),

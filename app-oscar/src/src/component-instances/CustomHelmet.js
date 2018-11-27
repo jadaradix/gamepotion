@@ -5,8 +5,8 @@ import PropTypes from 'prop-types'
 const CustomHelmet = ({ title }) => {
   return (
     <Helmet
-      defaultTitle="Game Maker Club"
-      titleTemplate="%s | Game Maker Club"
+      defaultTitle={process.env.REACT_APP_NAME}
+      titleTemplate={`%s | ${process.env.REACT_APP_NAME}`}
     >
       <title>{title}</title>
     </Helmet>
