@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
 import { storeHome } from '../inter-router'
-import { getState } from '../state'
+import { getState, dispatch, subscribe } from '../state'
 
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
@@ -25,7 +25,29 @@ class StateStore extends Component {
     }
   }
 
+  componentDidMount () {
+    this.subscriptions = [
+      subscribe('USER_GET', (state) => {
+        this.setState({
+          user: state.user
+        })
+      })
+    ]
+    if (this.state.user === null) {
+      dispatch({
+        name: 'USER_GET',
+      })
+    }
+  }
+
+  componentWillUnmount () {
+    this.subscriptions.forEach(s => s.unsubscribe())
+  }
+
   render() {
+    if (this.state.user === null) {
+      return null
+    }
     return (
       <Fragment>
         <CustomHelmet
@@ -34,7 +56,7 @@ class StateStore extends Component {
         <MainToolbarContainer />
         <ResponsiveContainer>
           <StyledState>
-            <iframe title='Store' src={storeHome('production', 'api-key-here')}>...</iframe>
+            <iframe title='Store' src={storeHome(process.env.NODE_ENV, this.state.user.accessToken)}>...</iframe>
           </StyledState>
         </ResponsiveContainer>
       </Fragment>

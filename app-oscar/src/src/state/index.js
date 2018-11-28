@@ -2,10 +2,12 @@ import { get } from '../localStorage'
 
 import notify from '../notify.js'
 
+import createUser from './actions/user/create'
+import getUser from './actions/user/get'
 import logIn from './actions/user/logIn'
 import logOut from './actions/user/logOut'
-import createUser from './actions/user/create'
 import updateUser from './actions/user/update'
+
 import createProject from './actions/projects/create'
 import getProjects from './actions/projects/get'
 import updateProject from './actions/projects/update'
@@ -38,9 +40,10 @@ let state = {
 }
 
 const actions = new Map([
+  ['USER_CREATE', createUser],
+  ['USER_GET', getUser],
   ['USER_LOG_IN', logIn],
   ['USER_LOG_OUT', logOut],
-  ['USER_CREATE', createUser],
   ['USER_UPDATE', updateUser],
   ['PROJECTS_CREATE', createProject],
   ['PROJECTS_GET', getProjects],
