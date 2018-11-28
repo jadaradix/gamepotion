@@ -16,7 +16,7 @@ class If extends Action {
         value: ''
       }]
     ])
-    this.indent = true
+    this.indentation = 1
   }
 
   run(context, runArguments, appliesTo) {

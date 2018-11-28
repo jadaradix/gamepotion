@@ -6,6 +6,7 @@ import SetYSpeed from './files/SetYSpeed.svg'
 import SetImage from './files/SetImage.svg'
 
 import PlaySound from './files/PlaySound.svg'
+import ShowMessage from './files/ShowMessage.svg'
 
 import GoToSpace from './files/GoToSpace.svg'
 import SetSpaceBackgroundImage from './files/SetSpaceBackgroundImage.svg'
@@ -13,6 +14,7 @@ import SetSpaceForegroundImage from './files/SetSpaceForegroundImage.svg'
 
 import If from './files/If.svg'
 import IfNot from './files/IfNot.svg'
+import Else from './files/Else.svg'
 import EndIf from './files/EndIf.svg'
 import SetVariable from './files/SetVariable.svg'
 import Debug from './files/Debug.svg'
@@ -26,6 +28,7 @@ export default {
   SetImage,
 
   PlaySound,
+  ShowMessage,
 
   GoToSpace,
   SetSpaceBackgroundImage,
@@ -33,6 +36,7 @@ export default {
 
   If,
   IfNot,
+  Else,
   EndIf,
   SetVariable,
   Debug

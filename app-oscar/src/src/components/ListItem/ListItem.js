@@ -102,14 +102,17 @@ const getAction = (onAction, id, name) => {
   return null
 }
 
-const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, style }) => {
+const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, indentation }) => {
   const handleOnAction = (e, id, action) => {
     e.stopPropagation()
     onAction(id, action)
   }
+  const imgStyle = {
+    marginLeft: `${indentation}px`
+  }
   return (
-    <StyledListItem onClick={() => onChoose(id)} onTouchStart={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})} style={style}>
-      <img src={icon} alt='' />
+    <StyledListItem onClick={() => onChoose(id)} onTouchStart={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})}>
+      <img src={icon} style={imgStyle} alt='' />
       <span>{children}</span>
       <div className='actions'>
         {actions.map(name => getAction(handleOnAction, id, name))}
@@ -125,7 +128,7 @@ ListItem.propTypes = {
   actions: PropTypes.array,
   onChoose: PropTypes.func,
   onAction: PropTypes.func,
-  style: PropTypes.object
+  indentation: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 }
 
 ListItem.defaultProps = {
@@ -134,7 +137,7 @@ ListItem.defaultProps = {
   actions: [],
   onChoose: () => {},
   onAction: () => {},
-  style: {}
+  indentation: 0
 }
 
 export default ListItem
