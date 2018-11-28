@@ -1,5 +1,5 @@
 import debounce from 'debounce'
-import api from '../../api.js'
+import api from '../../../api'
 
 const patch = debounce((projectId, payload) => {
   api.patch('api-core', `me/team/projects/${projectId}`, payload)

@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import resourceTypes from '../resourceTypes'
+
 import Modal from '../components/Modal/Modal'
 import Heading1 from '../components/Heading1/Heading1'
 import Button from '../components/Button/Button'
@@ -26,80 +28,33 @@ const StyledModal = styled.div`
 
 const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateArgument }) => {
 
-  const imageResources = resources
-    .filter(r => r.type === 'image')
-    .map(r => {
-      return {
-        id: r.id,
-        name: r.name
-      }
-    })
-  const soundResources = resources
-    .filter(r => r.type === 'sound')
-    .map(r => {
-      return {
-        id: r.id,
-        name: r.name
-      }
-    })
-  const atomResources = resources
-    .filter(r => r.type === 'atom')
-    .map(r => {
-      return {
-        id: r.id,
-        name: r.name
-      }
-    })
-  const spaceResources = resources
-    .filter(r => r.type === 'space')
-    .map(r => {
-      return {
-        id: r.id,
-        name: r.name
-      }
-    })
+  const resourcesByType = {}
+  resourceTypes.forEach(rt => {
+    resourcesByType[rt.type] = resources
+      .filter(r => r.type === rt.type)
+      .map(r => {
+        return {
+          id: r.id,
+          name: r.name
+        }
+      })
+  })
 
   const getArgument = (index, name, type, value) => {
     const handleOnUpdateArgument = (v) => {
       return onUpdateArgument(index, v)
     }
-    if (type === 'image' && value === '') {
-      if (imageResources.length > 0) {
-        actionClassInstance.runArguments[index] = imageResources[0].id
+    if (actionClassInstance.runArguments[index].length === 0 && resourcesByType.hasOwnProperty(type)) {
+      if (resourcesByType[type].length > 0) {
+        actionClassInstance.runArguments[index] = resourcesByType[type][0].id
       } else {
         actionClassInstance.runArguments[index] = '?'
       }
     }
-    if (type === 'sound' && value === '') {
-      if (soundResources.length > 0) {
-        actionClassInstance.runArguments[index] = soundResources[0].id
-      } else {
-        actionClassInstance.runArguments[index] = '?'
-      }
-    }
-    if (type === 'atom' && value === '') {
-      if (atomResources.length > 0) {
-        actionClassInstance.runArguments[index] = atomResources[0].id
-      } else {
-        actionClassInstance.runArguments[index] = '?'
-      }
-    }
-    if (type === 'space' && value === '') {
-      if (spaceResources.length > 0) {
-        actionClassInstance.runArguments[index] = spaceResources[0].id
-      } else {
-        actionClassInstance.runArguments[index] = '?'
-      }
+    if (resourcesByType.hasOwnProperty(type)) {
+      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={resourcesByType[type]} />
     }
     switch (type) {
-    case 'image':
-      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={imageResources} />
-    case 'sound':
-      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={soundResources} />
-    case 'atom':
-      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={atomResources} />
-    case 'space':
-      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={spaceResources} />
     case 'boolean':
       return <Switch onChange={handleOnUpdateArgument} checked={value}>{name}</Switch>
     case 'generic':

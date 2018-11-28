@@ -13,6 +13,8 @@ test('can be created from an API call', () => {
     userlandId: 'james@gamemaker.club'
   }
   user.fromApiPost(body)
+  expect(user.id).toHaveLength(36)
+  expect(user.accessToken).toHaveLength(36)
   expect(user.name).toBe('James')
   expect(user.userlandId).toBe('james@gamemaker.club')
 })
@@ -42,11 +44,9 @@ test('can be updated from an API call', () => {
   expect(user.id).not.toBe('should-not-be-persisted')
 })
 
-test('can have its subscription updated', () => {
+test('can add a module', () => {
   const user = new User()
-  user.name = 'James'
-  user.userlandId = 'james@gamemaker.club'
-  expect(user.getSubscription().id).toBe('free')
-  user.updateSubscription('pro')
-  expect(user.getSubscription().id).toBe('pro')
+  expect(user.modules[0].id).toBe('free')
+  user.addModule('pro')
+  expect(user.modules[1].id).toBe('pro')
 })

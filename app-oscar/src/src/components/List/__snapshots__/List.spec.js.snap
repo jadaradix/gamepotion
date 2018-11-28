@@ -21,7 +21,7 @@ exports[`renders 1`] = `
   position: relative;
   display: block;
   width: 100%;
-  height: calc(2rem + 4px);
+  height: 2rem;
   list-style-type: none;
   border-width: 2px;
   border-style: solid;
@@ -31,6 +31,7 @@ exports[`renders 1`] = `
   -webkit-transition: border-color 0.2s ease-in-out;
   transition: border-color 0.2s ease-in-out;
   outline: 0;
+  cursor: default;
 }
 
 .c1.selected {
@@ -46,15 +47,18 @@ exports[`renders 1`] = `
   float: left;
   width: 1.5rem;
   height: 1.5rem;
-  margin-top: 0.25rem;
-  margin-left: 0.25rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  margin-left: 0.3rem;
 }
 
 .c1 > span {
   display: block;
   float: left;
-  height: 2rem;
-  line-height: 2rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
   margin-left: 0.5rem;
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   font-weight: 400;
@@ -106,9 +110,10 @@ exports[`renders 1`] = `
 <ul
   className="component--list c0"
 >
-  <button
+  <li
     className="component--list-item c1"
     onClick={[Function]}
+    onTouchStart={[Function]}
     style={Object {}}
   >
     <img
@@ -121,10 +126,11 @@ exports[`renders 1`] = `
     <div
       className="actions"
     />
-  </button>
-  <button
+  </li>
+  <li
     className="component--list-item c1"
     onClick={[Function]}
+    onTouchStart={[Function]}
     style={Object {}}
   >
     <img
@@ -137,6 +143,6 @@ exports[`renders 1`] = `
     <div
       className="actions"
     />
-  </button>
+  </li>
 </ul>
 `;

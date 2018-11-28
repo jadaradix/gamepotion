@@ -1,4 +1,4 @@
-import api from '../../../api.js'
+import api from '../../../../api'
 import classFactory from '../../../../classes/factory'
 
 export default async function (state, { type }) {

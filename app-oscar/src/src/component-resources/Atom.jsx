@@ -147,15 +147,17 @@ class ResourceAtom extends Component {
     const isAdding = this.state.actionClassInstanceIsAdding
     let events = {}
     if (isAdding === true) {
+      const actionObject = {
+        id: actionClassInstance.id,
+        runArguments: actionClassInstance.runArguments,
+        appliesTo: 'this'
+      }
+      console.warn('actionObject', actionObject)
       events = {
         ...this.props.resource.events,
         [this.state.currentEvent]: [
           ...this.props.resource.events[this.state.currentEvent],
-          {
-            id: actionClassInstance.id,
-            runArguments: actionClassInstance.runArguments,
-            appliesTo: 'this'
-          }
+          actionObject
         ]
       }
     } else {

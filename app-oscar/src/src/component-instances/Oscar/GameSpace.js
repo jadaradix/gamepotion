@@ -36,6 +36,18 @@ class GameSpace extends Component {
         if (typeof result.spaceToGoTo === 'string') {
           this.props.onSwitchSpace(result.spaceToGoTo)
         }
+        if (typeof result.backgroundImageToSet === 'string') {
+          const foundImage = eventContext.resourceContainers.find(r => r.resource.id === result.backgroundImageToSet)
+          if (typeof foundImage === 'object') {
+            this.props.spaceContainer.extras.backgroundImage = foundImage
+          }
+        }
+        if (typeof result.foregroundImageToSet === 'string') {
+          const foundImage = eventContext.resourceContainers.find(r => r.resource.id === result.foregroundImageToSet)
+          if (typeof foundImage === 'object') {
+            this.props.spaceContainer.extras.foregroundImage = foundImage
+          }
+        }
         if (typeof result.soundToPlay === 'object') {
           const {
             soundToPlay
@@ -133,8 +145,10 @@ class GameSpace extends Component {
     }
     const onTouch = (coords) => {
       if (this.props.gridOn === true) {
-        coords.x = coords.x - (coords.x % parseInt(this.props.gridWidth, 10))
-        coords.y = coords.y - (coords.y % parseInt(this.props.gridHeight, 10))
+        const gridWidth = parseInt(this.props.gridWidth, 10)
+        const gridHeight = parseInt(this.props.gridHeight, 10)
+        coords.x = coords.x - (coords.x % gridWidth)
+        coords.y = coords.y - (coords.y % gridHeight)
       }
       this.props.onTouch(coords)
     }
@@ -269,6 +283,7 @@ class GameSpace extends Component {
                 const actionClassInstance = actionClassInstances.get(a.id)
                 const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
                 return {
+                  id: actionClassInstance.id,
                   run: actionClassInstance.run,
                   runArguments: a.runArguments,
                   appliesTo: a.appliesTo,

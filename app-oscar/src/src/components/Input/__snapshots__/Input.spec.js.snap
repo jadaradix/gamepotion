@@ -26,6 +26,7 @@ exports[`renders 1`] = `
   appearance: none;
   outline: 0;
   border: 0;
+  border-radius: 0;
   border-bottom: 2px solid #dadfe1;
   background-color: transparent;
   -webkit-letter-spacing: 0;
@@ -40,6 +41,7 @@ exports[`renders 1`] = `
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   color: #2e3131;
+  -webkit-appearance: none;
 }
 
 .c0 input:focus {

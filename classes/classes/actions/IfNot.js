@@ -1,11 +1,11 @@
 import Action from '../Action.js'
 
-class If extends Action {
+class IfNot extends Action {
   constructor(json = {}) {
     super(json)
-    this.id = 'If'
-    this.name = 'If'
-    this.description = 'Conditionally runs actions.'
+    this.id = 'IfNot'
+    this.name = 'If Not'
+    this.description = 'Conditionally does not run actions.'
     this.defaultRunArguments = new Map([
       ['Expression 1', {
         type: 'generic',
@@ -22,17 +22,17 @@ class If extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      return (runArguments[0] === runArguments[1])
+      return (runArguments[0] !== runArguments[1])
     case 'nds':
-      return `if(${runArguments[0]} == ${runArguments[1]}) {`
+      return `if(${runArguments[0]} != ${runArguments[1]}) {`
     default:
       return null
     }
   }
 
   toString(runArguments, appliesTo) {
-    return `If ${runArguments[0]} is ${runArguments[1]}`
+    return `If ${runArguments[0]} is not ${runArguments[1]}`
   }
 }
 
-export default If
+export default IfNot

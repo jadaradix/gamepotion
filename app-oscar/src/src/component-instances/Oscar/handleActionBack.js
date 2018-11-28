@@ -1,9 +1,6 @@
 const baseReturn = {
   instanceClassesToDestroy: [],
-  instancesToCreate: [],
-  imageToSet: null,
-  spaceToGoTo: null,
-  soundToPlay: null
+  instancesToCreate: []
 }
 
 const handleActionBack = (actionBack) => {
@@ -33,6 +30,18 @@ const handleActionBack = (actionBack) => {
       return {
         ...baseReturn,
         imageToSet: actionBack.actionBackArguments[0]
+      }
+    },
+    'SPACE_SET_BACKGROUND_IMAGE': () => {
+      return {
+        ...baseReturn,
+        backgroundImageToSet: actionBack.actionBackArguments[0]
+      }
+    },
+    'SPACE_SET_FOREGROUND_IMAGE': () => {
+      return {
+        ...baseReturn,
+        foregroundImageToSet: actionBack.actionBackArguments[0]
       }
     },
     'SPACE_GO': () => {

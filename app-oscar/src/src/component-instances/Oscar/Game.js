@@ -45,10 +45,7 @@ class Game extends Component {
     })
     const spaceContainer = {
       resource: this.state.space,
-      extras: {
-        backgroundImage: null,
-        foregroundImage: null
-      }
+      extras: {}
     }
     const variables = new Map()
 

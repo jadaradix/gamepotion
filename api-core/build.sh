@@ -1,7 +1,3 @@
-# cd ..;
-#   . scripts/build.sh;
-# cd api-core;
-
 rm -rf files;
 cp -R src files;
 

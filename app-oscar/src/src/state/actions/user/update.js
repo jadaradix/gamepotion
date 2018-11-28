@@ -1,5 +1,5 @@
 import debounce from 'debounce'
-import api from '../../api.js'
+import api from '../../../api'
 import { set } from '../../../localStorage'
 import notify from '../../../notify.js'
 

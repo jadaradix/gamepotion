@@ -8,7 +8,11 @@ import SetImage from './files/SetImage.svg'
 import PlaySound from './files/PlaySound.svg'
 
 import GoToSpace from './files/GoToSpace.svg'
+import SetSpaceBackgroundImage from './files/SetSpaceBackgroundImage.svg'
+import SetSpaceForegroundImage from './files/SetSpaceForegroundImage.svg'
+
 import If from './files/If.svg'
+import IfNot from './files/IfNot.svg'
 import EndIf from './files/EndIf.svg'
 import SetVariable from './files/SetVariable.svg'
 import Debug from './files/Debug.svg'
@@ -24,7 +28,11 @@ export default {
   PlaySound,
 
   GoToSpace,
+  SetSpaceBackgroundImage,
+  SetSpaceForegroundImage,
+
   If,
+  IfNot,
   EndIf,
   SetVariable,
   Debug

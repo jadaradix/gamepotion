@@ -36,7 +36,11 @@ class GameAtomInstance {
 
   onEvent(event, eventContext) {
     const instance = this
-    return this.atomContainer.extras.events.get(event).map(a => {
+    const actions = this.atomContainer.extras.events.get(event)
+    const results = []
+    let i = 0
+    while (i < actions.length) {
+      const action = actions[i]
       const runContext = {
         eventContext,
         platform: 'html5',
@@ -49,9 +53,26 @@ class GameAtomInstance {
         instanceClass: this,
         camera: eventContext.spaceContainer.resource.camera
       }
-      const runArguments = parseRunArguments(a.argumentTypes, a.runArguments, parseContext)
-      return a.run(runContext, runArguments, a.appliesTo)
-    })
+      const runArguments = parseRunArguments(action.argumentTypes, action.runArguments, parseContext)
+      const result = action.run(runContext, runArguments, action.appliesTo)
+      if (action.id.startsWith('If')) {
+        if (result === true) {
+          i += 1
+        } else {
+          i += 1
+          while (i < actions.length) {
+            if (actions[i].id === 'EndIf') {
+              break
+            }
+            i += 1
+          }
+        }
+      } else {
+        results.push(action.run(runContext, runArguments, action.appliesTo))
+        i += 1
+      }
+    }
+    return results
   }
 }
 

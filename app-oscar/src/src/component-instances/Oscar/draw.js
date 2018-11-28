@@ -1,6 +1,6 @@
 const draw = (ctx, spaceContainer, instanceClasses, designMode, gridOn, gridWidth, gridHeight) => {
   ctx.clearRect(0, 0, spaceContainer.resource.width, spaceContainer.resource.height)
-  if (spaceContainer.extras.backgroundImage !== null) {
+  if (typeof spaceContainer.extras.backgroundImage === 'object') {
     const {
       frameWidth,
       frameHeight
@@ -23,7 +23,7 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, gridOn, gridWidt
       ctx.drawImage(image, 0, frame * height, width, height, i.props.x, i.props.y, width, height) 
     }
   })
-  if (spaceContainer.extras.foregroundImage !== null) {
+  if (typeof spaceContainer.extras.foregroundImage === 'object') {
     ctx.drawImage(spaceContainer.extras.foregroundImage.extras.element, 0, 0)
   }
   const plotGrid = () => {
