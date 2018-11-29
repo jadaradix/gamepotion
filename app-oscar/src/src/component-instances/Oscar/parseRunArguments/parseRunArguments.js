@@ -62,7 +62,11 @@ const OPERATORS = {
 const parseToken = (token, typeHint, parseContext) => {
   const memberExpressions = {
     instance: parseContext.instanceClass.props,
-    camera: parseContext.camera
+    space: parseContext.eventContext.spaceContainer.resource,
+    camera: parseContext.eventContext.spaceContainer.resource.camera
+  }
+  if (typeHint === 'variable') {
+    return token
   }
   if (RESOURCE_TYPES.includes(typeHint)) {
     return token

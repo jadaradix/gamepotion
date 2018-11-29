@@ -5,12 +5,10 @@ class Action {
     this.id = 'AbstractActionIdBadNewsIfYouEverSeeThis'
     this.name = 'AbstractActionNameBadNewsIfYouEverSeeThis'
     this.description = 'AbstractActionDescriptionBadNewsIfYouEverSeeThis'
-    this.defaultRunArguments = new Map([
-    ])
+    this.defaultRunArguments = new Map([])
+    this.runArguments = json.runArguments || []
     this.indentation = 0
     this.invertIndentation = false
-
-    this.runArguments = json.runArguments || [] // this should only be triggered in abstract contexts
     this.appliesTo = json.appliesTo || 'this'
   }
 
@@ -20,7 +18,7 @@ class Action {
     })
   }
 
-  run(event, platform, space, instance, runArguments) {
+  run(context, runArguments, appliesTo) {
     console.warn('abstract run() method of Action class was called. Bad news.')
     return null
   }

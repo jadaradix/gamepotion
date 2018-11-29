@@ -7,7 +7,7 @@ class ShowMessage extends Action {
     this.name = 'Show Message'
     this.description = 'Shows a message.'
     this.defaultRunArguments = new Map([
-      ['Expression 1', {
+      ['Message', {
         type: 'generic',
         value: ''
       }],
