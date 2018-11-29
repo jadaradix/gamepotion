@@ -115,7 +115,7 @@ class StateAccount extends Component {
 
   componentDidMount () {
     this.subscriptions = [
-      subscribe('USER_LOG_IN', (state) => {
+      subscribe('USER_GET', (state) => {
         this.setState({
           user: state.user
         })
@@ -133,15 +133,8 @@ class StateAccount extends Component {
     ]
     if (this.state.user === null) {
       dispatch({
-        name: 'USER_LOG_IN',
-        data: {
-          userlandId: getState().credentials.userlandId,
-          password: getState().credentials.password
-        }
+        name: 'USER_GET'
       })
-        .catch(() => {
-          this.logOut()
-        })
     }
   }
 

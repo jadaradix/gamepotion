@@ -68,7 +68,7 @@ class GameAtomInstance {
           }
         }
       } else {
-        results.push(action.run(runContext, runArguments, action.appliesTo))
+        results.push(result)
         i += 1
       }
     }

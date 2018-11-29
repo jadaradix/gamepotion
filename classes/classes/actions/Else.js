@@ -1,14 +1,14 @@
 import Action from '../Action.js'
 
-class EndIf extends Action {
+class Else extends Action {
   constructor(json = {}) {
     super(json)
-    this.id = 'EndIf'
-    this.name = 'End If'
-    this.description = 'Ends conditionally running actions.'
+    this.id = 'Else'
+    this.name = 'Else'
+    this.description = 'Inverts conditionally running actions.'
     this.defaultRunArguments = new Map([
     ])
-    this.indentation = -1
+    this.invertIndentation = true
   }
 
   run(context, runArguments, appliesTo) {
@@ -16,15 +16,15 @@ class EndIf extends Action {
     case 'html5':
       return null
     case 'nds':
-      return '}'
+      return '} else {'
     default:
       return null
     }
   }
 
   toString(runArguments, appliesTo) {
-    return 'End If'
+    return 'Else'
   }
 }
 
-export default EndIf
+export default Else

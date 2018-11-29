@@ -6,6 +6,7 @@ import SetYSpeed from './SetYSpeed.js'
 import SetImage from './SetImage.js'
 
 import PlaySound from './PlaySound.js'
+import ShowMessage from './ShowMessage.js'
 
 import GoToSpace from './GoToSpace.js'
 import SetSpaceBackgroundImage from './SetSpaceBackgroundImage.js'
@@ -13,6 +14,7 @@ import SetSpaceForegroundImage from './SetSpaceForegroundImage.js'
 
 import If from './If.js'
 import IfNot from './IfNot.js'
+import Else from './Else.js'
 import EndIf from './EndIf.js'
 import SetVariable from './SetVariable.js'
 import Debug from './Debug.js'
@@ -26,6 +28,7 @@ export default {
   SetImage,
 
   PlaySound,
+  ShowMessage,
 
   GoToSpace,
   SetSpaceBackgroundImage,
@@ -33,6 +36,7 @@ export default {
 
   If,
   IfNot,
+  Else,
   EndIf,
   SetVariable,
   Debug

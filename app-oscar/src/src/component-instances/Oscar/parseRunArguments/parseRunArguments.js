@@ -19,6 +19,28 @@ const FUNCTIONS = new Map([
         return r
       }
     }
+  ],
+  [
+    'prompt',
+    {
+      argumentsNeeded: 2,
+      logic: (functionArguments) => {
+        const v = window.prompt(functionArguments[0], functionArguments[1])
+        if (typeof v !== 'string') {
+          return ''
+        }
+        return v
+      }
+    }
+  ],
+  [
+    'confirm',
+    {
+      argumentsNeeded: 1,
+      logic: (functionArguments) => {
+        return window.confirm(functionArguments[0])
+      }
+    }
   ]
 ])
 

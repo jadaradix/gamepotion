@@ -28,24 +28,30 @@ const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => 
     )
   }
   const getList = (actions) => {
-    let indent = 0
+    let indentation = 0
+    let indentation32 = 0
     return (
       <List>
         {actions.map((action, i) => {
           const actionClassInstance = actionClassInstances.find(actionClassInstance => actionClassInstance.id === action.id)
-          if (actionClassInstance.dedent === true && indent > 0) {
-            indent -= 1
+          const previousActionClassInstance = actions[i - 1] ? actionClassInstances.find(actionClassInstance => actionClassInstance.id === actions[i - 1].id) : undefined
+          if (actionClassInstance.invertIndentation === true && indentation > 0) {
+            indentation -= 1
           }
-          const style = {
-            'marginLeft': `${indent * 32}px`
+          if (actionClassInstance.indentation === -1 && indentation > 0) {
+            indentation -= 1
           }
-          if (actionClassInstance.indent === true) {
-            indent += 1
+          if (previousActionClassInstance !== undefined && previousActionClassInstance.invertIndentation === true) {
+            indentation += 1
+          }
+          indentation32 = indentation * 32
+          if (actionClassInstance.indentation === 1) {
+            indentation += 1
           }
           const label = getLabel(resourceTypeTypes, resources, actionClassInstance, action)
           const argumentsCount = actionClassInstance.defaultRunArguments.size
           const actionActions = [...(argumentsCount === 0 ? [] : ['edit']), 'delete']
-          return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={actionActions} onChoose={() => onAction(i, 'edit')} onAction={onAction} style={style}>{label}</ListItem>)
+          return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={actionActions} onChoose={() => onAction(i, 'edit')} onAction={onAction} indentation={indentation32}>{label}</ListItem>)
         })}
       </List>
     )

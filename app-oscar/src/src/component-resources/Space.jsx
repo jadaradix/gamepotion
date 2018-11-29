@@ -221,8 +221,6 @@ class ResourceSpace extends PureComponent {
       :
       null
     )
-    console.warn('foundAtomResource', foundAtomResource)
-    console.warn('foundImageResource', foundImageResource)
 
     const resourceContainers = this.props.resources.map(resource => {
       return {
