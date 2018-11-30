@@ -8,7 +8,7 @@ class SetVariable extends Action {
     this.description = 'Sets a variable.'
     this.defaultRunArguments = new Map([
       ['Variable', {
-        type: 'generic',
+        type: 'variable',
         value: ''
       }],
       ['Value', {
@@ -21,7 +21,7 @@ class SetVariable extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      context.variables.set(runArguments[0], runArguments[1])
+      context.eventContext.variables.set(runArguments[0], runArguments[1])
       return null
     case 'nds':
       return `var_${runArguments[0]} = ${runArguments[1]};`

@@ -17,13 +17,13 @@ class GoToSpace extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-    return {
-      actionBack: 'SPACE_GO',
-      actionBackArguments: [
-        runArguments[0]
-      ],
-      appliesTo
-    }
+      return {
+        actionBack: 'SPACE_GO',
+        actionBackArguments: [
+          runArguments[0]
+        ],
+        appliesTo
+      }
     case 'nds':
       return ''
     default:

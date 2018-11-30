@@ -7,15 +7,21 @@ const parseContext = {
       y: 200
     }
   },
-  camera: {
-    x: 300,
-    y: 400
-  },
   eventContext: {
     variables: new Map([
       ['name', 'James'],
       ['speed', 2]
-    ])
+    ]),
+    spaceContainer: {
+      resource: {
+        width: 100,
+        height: 200,
+        camera: {
+          x: 300,
+          y: 400
+        },
+      }
+    }
   }
 }
 
@@ -104,7 +110,14 @@ test('works for an instance property', () => {
   expect(r[0]).toBe(100)
 })
 
-test('works for a camera property', () => {
+test('works for space property', () => {
+  const argType = 'generic'
+  const arg = 'space.width'
+  const r = parseRunArguments([argType], [arg], parseContext)
+  expect(r[0]).toBe(100)
+})
+
+test('works for camera property', () => {
   const argType = 'generic'
   const arg = 'camera.x'
   const r = parseRunArguments([argType], [arg], parseContext)
