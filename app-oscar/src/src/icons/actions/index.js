@@ -9,6 +9,8 @@ import PlaySound from './files/PlaySound.svg'
 import ShowMessage from './files/ShowMessage.svg'
 
 import GoToSpace from './files/GoToSpace.svg'
+import GoToNextSpace from './files/GoToNextSpace.svg'
+import GoToPreviousSpace from './files/GoToPreviousSpace.svg'
 import SetSpaceBackgroundImage from './files/SetSpaceBackgroundImage.svg'
 import SetSpaceForegroundImage from './files/SetSpaceForegroundImage.svg'
 
@@ -31,6 +33,8 @@ export default {
   ShowMessage,
 
   GoToSpace,
+  GoToNextSpace,
+  GoToPreviousSpace,
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
