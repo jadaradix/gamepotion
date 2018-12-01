@@ -13,13 +13,13 @@ export default async function (state, { id }) {
   const { projects } = await getProjects(state)
   const currentProject = projects.find(project => project.project.id === id)
   if (currentProject === undefined) {
-    throw new Error('This project couldn&rsquo;t be loaded.')
+    throw new Error('This project couldn&rsquo;t be loaded')
   }
   if (currentProject.resources === null) {
     try {
       currentProject.resources = await getResources(id)
     } catch (error) {
-      throw new Error('This project&rsquo;s resources couldn&rsquo;t be loaded.')
+      throw new Error('This project&rsquo;s resources couldn&rsquo;t be loaded')
     }
   }
   return Promise.resolve({

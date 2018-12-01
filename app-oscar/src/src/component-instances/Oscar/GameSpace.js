@@ -128,18 +128,22 @@ class GameSpace extends Component {
     // let because it can be spliced
     let instanceClasses = instanceDefinitionsToInstanceClasses(this.props.spaceContainer.resource.instances, this.props.resourceContainers)
 
-    const [c, ctx, cDomBounds] = [canvas, canvas.getContext('2d'), canvas.getBoundingClientRect()]
+    const domBoundsX = 576
+    const domBoundsY = 164
+    const [c, ctx] = [canvas, canvas.getContext('2d')]
     const getTouchData = (e) => {
       e.preventDefault()
-      const x = parseInt(e.touches[0].clientX - cDomBounds.x + window.scrollX, 10)
-      const y = parseInt(e.touches[0].clientY - cDomBounds.y + window.scrollY, 10)
+      // console.error('[renderCanvas] [getTouchData]', e.touches[0].clientY, domBoundsY, window.scrollY)
+      let x = parseInt(e.touches[0].clientX - domBoundsX, 10)
+      let y = parseInt(e.touches[0].clientY - domBoundsY, 10)
       const z = parseInt(0, 10)
       return { x, y, z }
     }
     const getMouseData = (e) => {
       e.preventDefault()
-      const x = parseInt(e.clientX - cDomBounds.x + window.scrollX, 10)
-      const y = parseInt(e.clientY - cDomBounds.y + window.scrollY, 10)
+      // console.error('[renderCanvas] [getMouseData]', e.clientY, domBoundsY, window.scrollY)
+      const x = parseInt(e.clientX - domBoundsX + window.scrollX, 10)
+      const y = parseInt(e.clientY - domBoundsY + window.scrollY, 10)
       const z = parseInt(0, 10)
       return { x, y, z }
     }
