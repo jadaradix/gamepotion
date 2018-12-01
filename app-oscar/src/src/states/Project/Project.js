@@ -139,7 +139,7 @@ class StateProjectProject extends Component {
   }
 
   onLoadResource(resource) {
-    return dispatch({
+    dispatch({
       name: 'PROJECTS_RESOURCES_LOAD',
       data: {
         id: resource.id
@@ -152,7 +152,7 @@ class StateProjectProject extends Component {
     if (name === null || name.length === 0) {
       return
     }
-    return dispatch({
+    dispatch({
       name: 'PROJECTS_RESOURCES_UPDATE',
       data: {
         id: resource.id,
@@ -162,7 +162,7 @@ class StateProjectProject extends Component {
   }
 
   onUpdateResource(resource, data) {
-    return dispatch({
+    dispatch({
       name: 'PROJECTS_RESOURCES_UPDATE',
       data: {
         id: resource.id,
@@ -182,12 +182,13 @@ class StateProjectProject extends Component {
         id: resource.id
       }
     })
-      .catch(() => {})
+    // why?
+    // .catch(() => {})
   }
 
   onUpdateLocalSetting(name, value) {
     console.log('onUpdateLocalSetting!!!')
-    return dispatch({
+    dispatch({
       name: 'LOCAL_SETTINGS_UPDATE',
       data: {
         name,

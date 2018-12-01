@@ -13,7 +13,6 @@ import SetSpaceBackgroundImage from './files/SetSpaceBackgroundImage.svg'
 import SetSpaceForegroundImage from './files/SetSpaceForegroundImage.svg'
 
 import If from './files/If.svg'
-import IfNot from './files/IfNot.svg'
 import Else from './files/Else.svg'
 import EndIf from './files/EndIf.svg'
 import SetVariable from './files/SetVariable.svg'
@@ -35,7 +34,6 @@ export default {
   SetSpaceForegroundImage,
 
   If,
-  IfNot,
   Else,
   EndIf,
   SetVariable,

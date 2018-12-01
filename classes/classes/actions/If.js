@@ -14,6 +14,10 @@ class If extends Action {
       ['Expression 2', {
         type: 'generic',
         value: ''
+      }],
+      ['Not', {
+        type: 'boolean',
+        value: false
       }]
     ])
     this.indentation = 1
@@ -22,16 +26,22 @@ class If extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      return (runArguments[0] === runArguments[1])
+      if (runArguments[0]) {
+        return (runArguments[0] !== runArguments[1])
+      } else {
+        return (runArguments[0] === runArguments[1])
+      }
+      
     case 'nds':
-      return `if(${runArguments[0]} == ${runArguments[1]}) {`
+      return `if(${runArguments[0]} ${runArguments[2] ? '!=' : '=='} ${runArguments[1]}) {`
     default:
       return null
     }
   }
 
   toString(runArguments, appliesTo) {
-    return `If ${runArguments[0]} is ${runArguments[1]}`
+    const comparator = (runArguments[2] ? 'is not' : 'is')
+    return `If ${runArguments[0]} ${comparator} ${runArguments[1]}`
   }
 }
 

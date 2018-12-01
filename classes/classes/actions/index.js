@@ -13,7 +13,6 @@ import SetSpaceBackgroundImage from './SetSpaceBackgroundImage.js'
 import SetSpaceForegroundImage from './SetSpaceForegroundImage.js'
 
 import If from './If.js'
-import IfNot from './IfNot.js'
 import Else from './Else.js'
 import EndIf from './EndIf.js'
 import SetVariable from './SetVariable.js'
@@ -35,7 +34,6 @@ export default {
   SetSpaceForegroundImage,
 
   If,
-  IfNot,
   Else,
   EndIf,
   SetVariable,

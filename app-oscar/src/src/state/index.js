@@ -81,7 +81,7 @@ const AUTH_FAILED_MESSAGES = [
   'wrong password'
 ]
 
-export function dispatch ({ name, data = {} }) {
+export function dispatch ({ name, pleaseThrow = false, data = {} }) {
   const foundAction = actions.get(name)
   if (foundAction === undefined) {
     return Promise.reject(`[state] action ${name} is not understood!`)
@@ -113,7 +113,9 @@ export function dispatch ({ name, data = {} }) {
         }
       })()
       notify.bad(errorMessage)
-      throw error
+      if (pleaseThrow === true) {
+        throw error
+      }
     })
 }
 
