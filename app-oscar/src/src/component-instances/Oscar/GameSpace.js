@@ -103,13 +103,16 @@ class GameSpace extends Component {
 
   renderCanvas(canvas) {
   
+    // sorry
+    const domBoundsX = canvas.getBoundingClientRect().x
+    const domBoundsY = canvas.getBoundingClientRect().y
+    //
+
     this.removeEventListeners()
 
     // let because it can be spliced
     let instanceClasses = instanceDefinitionsToInstanceClasses(this.props.spaceContainer.resource.instances, this.props.resourceContainers)
 
-    const domBoundsX = 576
-    const domBoundsY = 164
     const [c, ctx] = [canvas, canvas.getContext('2d')]
     const getTouchData = (e) => {
       e.preventDefault()

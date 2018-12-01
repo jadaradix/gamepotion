@@ -16,6 +16,7 @@ import SetSpaceForegroundImage from './SetSpaceForegroundImage.js'
 
 import If from './If.js'
 import IfInstances from './IfInstances.js'
+import IfNextSpace from './IfNextSpace.js'
 import Else from './Else.js'
 import EndIf from './EndIf.js'
 import SetVariable from './SetVariable.js'
@@ -40,6 +41,7 @@ export default {
 
   If,
   IfInstances,
+  IfNextSpace,
   Else,
   EndIf,
   SetVariable,

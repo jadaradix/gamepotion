@@ -4,7 +4,7 @@ class IfInstances extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'IfInstances'
-    this.name = 'If instances'
+    this.name = 'If Instances'
     this.description = 'Conditionally runs actions when there is a number of instances.'
     this.defaultRunArguments = new Map([
       ['Atom', {
