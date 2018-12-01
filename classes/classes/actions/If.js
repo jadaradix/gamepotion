@@ -26,7 +26,7 @@ class If extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      if (runArguments[0]) {
+      if (runArguments[2]) {
         return (runArguments[0] !== runArguments[1])
       } else {
         return (runArguments[0] === runArguments[1])

@@ -13,17 +13,16 @@ const handleActionBack = (actionBack) => {
       }
     },
     'INSTANCE_CREATE': () => {
-      const instancesToCreate = [
-        {
-          atomId: actionBack.actionBackArguments[0],
-          x: actionBack.actionBackArguments[1],
-          y: actionBack.actionBackArguments[2],
-          z: 0
-        }
-      ]
       return {
         ...baseReturn,
-        instancesToCreate,
+        instancesToCreate: [
+          {
+            atomId: actionBack.actionBackArguments[0],
+            x: actionBack.actionBackArguments[1],
+            y: actionBack.actionBackArguments[2],
+            z: 0
+          }
+        ],
       }
     },
     'INSTANCE_SET_IMAGE': () => {
@@ -32,31 +31,10 @@ const handleActionBack = (actionBack) => {
         imageToSet: actionBack.actionBackArguments[0]
       }
     },
-    'SPACE_SET_BACKGROUND_IMAGE': () => {
-      return {
-        ...baseReturn,
-        backgroundImageToSet: actionBack.actionBackArguments[0]
-      }
-    },
-    'SPACE_SET_FOREGROUND_IMAGE': () => {
-      return {
-        ...baseReturn,
-        foregroundImageToSet: actionBack.actionBackArguments[0]
-      }
-    },
     'SPACE_GO': () => {
       return {
         ...baseReturn,
         spaceToGoTo: actionBack.actionBackArguments[0]
-      }
-    },
-    'SOUND_PLAY': () => {
-      return {
-        ...baseReturn,
-        soundToPlay: {
-          soundToPlay: actionBack.actionBackArguments[0],
-          doLoop: actionBack.actionBackArguments[1]
-        }
       }
     }
   }

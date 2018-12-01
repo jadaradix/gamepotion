@@ -9,10 +9,13 @@ import PlaySound from './PlaySound.js'
 import ShowMessage from './ShowMessage.js'
 
 import GoToSpace from './GoToSpace.js'
+import GoToNextSpace from './GoToNextSpace.js'
+import GoToPreviousSpace from './GoToPreviousSpace.js'
 import SetSpaceBackgroundImage from './SetSpaceBackgroundImage.js'
 import SetSpaceForegroundImage from './SetSpaceForegroundImage.js'
 
 import If from './If.js'
+import IfInstances from './IfInstances.js'
 import Else from './Else.js'
 import EndIf from './EndIf.js'
 import SetVariable from './SetVariable.js'
@@ -30,10 +33,13 @@ export default {
   ShowMessage,
 
   GoToSpace,
+  GoToNextSpace,
+  GoToPreviousSpace,
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
   If,
+  IfInstances,
   Else,
   EndIf,
   SetVariable,

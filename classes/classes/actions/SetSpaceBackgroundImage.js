@@ -15,15 +15,13 @@ class SetSpaceBackgroundImage extends Action {
   }
 
   run(context, runArguments, appliesTo) {
+    const foundImage = context.eventContext.resourceContainers.find(r => r.resource.id === runArguments[0])
     switch(context.platform) {
     case 'html5':
-      return {
-        actionBack: 'SPACE_SET_BACKGROUND_IMAGE',
-        actionBackArguments: [
-          runArguments[0]
-        ],
-        appliesTo
+      if (typeof foundImage === 'object') {
+        context.eventContext.spaceContainer.extras.backgroundImage = foundImage
       }
+      return null
     case 'nds':
       return ''
     default:

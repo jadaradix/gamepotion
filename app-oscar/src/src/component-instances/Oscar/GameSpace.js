@@ -36,28 +36,6 @@ class GameSpace extends Component {
         if (typeof result.spaceToGoTo === 'string') {
           this.props.onSwitchSpace(result.spaceToGoTo)
         }
-        if (typeof result.backgroundImageToSet === 'string') {
-          const foundImage = eventContext.resourceContainers.find(r => r.resource.id === result.backgroundImageToSet)
-          if (typeof foundImage === 'object') {
-            this.props.spaceContainer.extras.backgroundImage = foundImage
-          }
-        }
-        if (typeof result.foregroundImageToSet === 'string') {
-          const foundImage = eventContext.resourceContainers.find(r => r.resource.id === result.foregroundImageToSet)
-          if (typeof foundImage === 'object') {
-            this.props.spaceContainer.extras.foregroundImage = foundImage
-          }
-        }
-        if (typeof result.soundToPlay === 'object') {
-          const {
-            soundToPlay
-          } = result
-          const foundSound = eventContext.resourceContainers.find(r => r.resource.id === soundToPlay.soundToPlay)
-          if (foundSound !== undefined) {
-            foundSound.extras.element.loop = soundToPlay.doLoop
-            foundSound.extras.element.play()
-          }
-        }
       })
     })
     if (instanceClassesToDestroy.length > 0) {
@@ -80,6 +58,7 @@ class GameSpace extends Component {
   eventEventStart(instanceClasses) {
     // console.warn('[eventStart] instanceClasses', instanceClasses)
     const eventContext = {
+      instanceClasses,
       spaceContainer: this.props.spaceContainer,
       resourceContainers: this.props.resourceContainers,
       variables: this.props.variables
@@ -93,6 +72,7 @@ class GameSpace extends Component {
       i.onStep()
     })
     const eventContext = {
+      instanceClasses,
       spaceContainer: this.props.spaceContainer,
       resourceContainers: this.props.resourceContainers,
       variables: this.props.variables
@@ -104,8 +84,8 @@ class GameSpace extends Component {
     this.removeEventListeners()
   }
 
-  addEventListener(element, event, logic) {
-    element.addEventListener(event, logic)
+  addEventListener(element, event, logic, passive = false) {
+    element.addEventListener(event, logic, {passive})
     this.eventListeners.set(
       {
         element,
@@ -161,7 +141,7 @@ class GameSpace extends Component {
     this.addEventListener(canvas, 'touchstart', (e) => {
       touchStartTime = Date.now()
       touchStartCoords = getTouchData(e)
-    })
+    }, true)
     this.addEventListener(canvas, 'touchend', () => {
       const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, touchStartCoords)
       const touchEndTime = Date.now()
@@ -180,13 +160,14 @@ class GameSpace extends Component {
         }
       } else {
         const eventContext = {
+          instanceClasses,
           spaceContainer: this.props.spaceContainer,
           resourceContainers: this.props.resourceContainers,
           variables: this.props.variables
         }
         instanceClasses = this.handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
       }
-    })
+    }, true)
     this.addEventListener(canvas, 'mousedown', (e) => {
       e.preventDefault()
       const coords = getMouseData(e)
@@ -202,6 +183,7 @@ class GameSpace extends Component {
         }
       } else {
         const eventContext = {
+          instanceClasses,
           spaceContainer: this.props.spaceContainer,
           resourceContainers: this.props.resourceContainers,
           variables: this.props.variables
