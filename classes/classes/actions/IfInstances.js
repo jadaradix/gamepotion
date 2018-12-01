@@ -13,7 +13,7 @@ class IfInstances extends Action {
       }],
       ['Count', {
         type: 'generic',
-        value: ''
+        value: '1'
       }],
       ['Not', {
         type: 'boolean',
@@ -45,7 +45,7 @@ class IfInstances extends Action {
   }
 
   toString(runArguments, appliesTo) {
-    if (runArguments[1] === 1) {
+    if (runArguments[1] === '1') {
       const comparator = (runArguments[2] ? 'is not' : 'is')
       return `If there ${comparator} 1 instance of ${runArguments[0]}`
     } else {

@@ -8,8 +8,8 @@ class SetYSpeed extends Action {
     this.description = 'Sets the Y speed.'
     this.defaultRunArguments = new Map([
       ['Speed', {
-        type: 'number',
-        value: 1
+        type: 'generic',
+        value: '1'
       }]
     ])
   }

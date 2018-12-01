@@ -40,14 +40,14 @@ test('works for a string', () => {
 })
 
 test('works for a number', () => {
-  const argType = 'generic'
-  const arg = '100'
+  const argType = 'number'
+  const arg = '1'
   const r = parseRunArguments([argType], [arg], parseContext)[0]
-  expect(r).toBe(100)
+  expect(r).toBe(1)
 })
 
 test('works for a boolean', () => {
-  const argType = 'generic'
+  const argType = 'boolean'
   const arg = true
   const r = parseRunArguments([argType], [arg], parseContext)[0]
   expect(r).toBe(true)
