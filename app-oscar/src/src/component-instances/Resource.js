@@ -44,7 +44,7 @@ const Resource = ({ project, resources, resource, localSettings, onUpdateLocalSe
         title={`${resource.name} - ${project.name}`}
       />
       <div className='heading'>
-        <img src={icons.resources[resource.type]} alt={'nice'} />
+        <img src={icons.resources[resource.type]} alt='' />
         <Heading1>{resource.name}</Heading1>
       </div>
       {getComponent(project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate)}

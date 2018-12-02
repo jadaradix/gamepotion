@@ -162,8 +162,7 @@ class GameSpace extends Component {
       // console.warn('timeDifference', timeDifference)
       if (this.props.designMode === true) {
         if (timeDifference <= 1000) {
-          touchStartCoords = normaliseCoords(touchStartCoords)
-          this.props.onTouch(touchStartCoords)
+          this.props.onTouch(normaliseCoords(touchStartCoords))
         } else {
           const indicesAtCoords = instancesAtCoords.map(ic => {
             return instanceClasses.indexOf(ic)
@@ -186,8 +185,7 @@ class GameSpace extends Component {
       const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, normaliseCoords(coords))
       if (this.props.designMode === true) {
         if (e.which === 1) {
-          touchStartCoords = normaliseCoords(touchStartCoords)
-          this.props.onTouch(touchStartCoords)
+          this.props.onTouch(normaliseCoords(coords))
         } else {
           const indicesAtCoords = instancesAtCoords.map(ic => {
             return instanceClasses.indexOf(ic)
