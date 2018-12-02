@@ -138,14 +138,14 @@ class StateProjectProject extends Component {
     this.subscriptions.forEach(s => s.unsubscribe())
   }
 
-  onAddResource(type) {
-    dispatch({
-      name: 'PROJECTS_RESOURCES_CREATE',
-      data: {
-        type
-      }
-    })
-  }
+  // onAddResource(type) {
+  //   dispatch({
+  //     name: 'PROJECTS_RESOURCES_CREATE',
+  //     data: {
+  //       type
+  //     }
+  //   })
+  // }
 
   onLoadResource(resource) {
     dispatch({
@@ -223,7 +223,7 @@ class StateProjectProject extends Component {
                 <ResourceList
                   resources={this.state.currentProject.resources}
                   currentResource={this.state.currentProject.currentResource}
-                  onAdd={this.onAddResource}
+                  // onAdd={this.onAddResource}
                   onLoad={(r) => this.doLoadResource(this.state.currentProject.project.id, r.id)}
                   onRename={this.onRenameResource}
                   onDelete={this.onDeleteResource}

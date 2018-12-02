@@ -21,3 +21,8 @@ indexes:
   properties:
   - name: id
   - name: projectId
+
+- kind: Resources
+  properties:
+  - name: projectId
+  - name: type
