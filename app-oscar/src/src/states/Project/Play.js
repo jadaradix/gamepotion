@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { getState, dispatch, subscribe } from '../../state'
 
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
+import CustomHelmet from '../../component-instances/CustomHelmet'
 import Game from '../../component-instances/Oscar/Game'
 
 const StyledState = styled.div`
@@ -48,6 +49,9 @@ class StateProjectPlay extends PureComponent {
         <StyledState>
           {this.state.currentProject !== null &&
             <Fragment>
+              <CustomHelmet
+                title={this.state.currentProject.project.name}
+              />
               <Game project={this.state.currentProject.project} resources={this.state.currentProject.resources} />
             </Fragment>
           }

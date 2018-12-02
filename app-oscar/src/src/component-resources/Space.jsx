@@ -86,7 +86,7 @@ const StyledResource = styled.div`
     margin-top: 1rem;
     overflow: scroll;
     // background-color: red;
-    .component--oscar-engine-space + .component--switch {
+    .component--switch + .component--oscar-engine-space {
       margin-top: 1rem;
     }
   }
@@ -115,7 +115,7 @@ class ResourceSpace extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      isRunning: false
+      isPlaying: false
     }
     this.thisRefs = {
       touchCoordsX: null,
@@ -126,7 +126,7 @@ class ResourceSpace extends PureComponent {
     this.plotAtom = this.plotAtom.bind(this)
     this.unplotAtoms = this.unplotAtoms.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
-    this.updateRunning = this.updateRunning.bind(this)
+    this.updatePlaying = this.updatePlaying.bind(this)
   }
 
   onChangeMasterProp(prop, v) {
@@ -195,9 +195,9 @@ class ResourceSpace extends PureComponent {
     this.thisRefs.touchCoordsY.value = coords.y
   }
 
-  updateRunning(isRunning) {
+  updatePlaying(isPlaying) {
     this.setState({
-      isRunning
+      isPlaying
     })
   }
 
@@ -270,16 +270,17 @@ class ResourceSpace extends PureComponent {
           </Box>
         </section>
         <section className='canvas'>
+          <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>
           <GameSpace
             spaceContainer={spaceContainer}
             resourceContainers={resourceContainers}
             variables={variables}
-            designMode={!this.state.isRunning}
+            designMode={!this.state.isPlaying}
             gridOn={this.props.localSettings['grid-on']}
             gridWidth={this.props.localSettings['grid-width']}
             gridHeight={this.props.localSettings['grid-height']}
-            onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords} />
-          <Switch checked={this.state.isRunning} onChange={(v) => this.updateRunning(v)}>Run</Switch>
+            onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords}
+          />
         </section>
       </StyledResource>
     )

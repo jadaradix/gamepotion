@@ -218,21 +218,24 @@ class GameSpace extends Component {
     let resourceContainersLoadedSoFar = 0
     const totalResourceContainersToLoad = this.props.resourceContainers.filter(r => ['image', 'sound'].includes(r.resource.type)).length
     const startLoading = () => {
-      console.warn('[Oscar] [Space] [renderCanvas] start loading!')
-      c.width = this.props.spaceContainer.resource.width
-      c.height = this.props.spaceContainer.resource.height
+      console.warn('[Oscar] [Space] [renderCanvas] this.props.spaceContainer.resource.camera', this.props.spaceContainer.resource.camera)
+      c.width = (this.props.designMode ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width)
+      c.height = (this.props.designMode ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
       c.style.display = 'block'
       c.style.backgroundColor = 'black'
-      c.style.width = this.props.spaceContainer.resource.width
-      c.style.height = this.props.spaceContainer.resource.height
       // stop blurred lines from https://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
       ctx.imageSmoothingEnabled = false
       ctx.translate(0.5, 0.5)
       //
-      ctx.clearRect(0, 0, this.props.spaceContainer.resource.width, this.props.spaceContainer.resource.height)
-      ctx.fillStyle = '#ffffff'
-      ctx.font = '16px Arial'
-      ctx.fillText('Loading...', 16, 24)
+      // ctx.clearRect(
+      //   0,
+      //   0,
+      //   (this.props.designMode ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width),
+      //   (this.props.designMode ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
+      // )
+      // ctx.fillStyle = '#ffffff'
+      // ctx.font = '16px Arial'
+      // ctx.fillText('Loading...', 16, 24)
     }
 
     const loadGoodLogic = () => {
@@ -260,7 +263,12 @@ class GameSpace extends Component {
     }
     // const loadedBad = () => {
     //   console.warn('[Oscar] [Space] [renderCanvas] [loadedBad]')
-    //   ctx.clearRect(0, 0, space.width, space.height)
+    //   ctx.clearRect(
+    //     0,
+    //     0,
+    //     (this.props.designMode ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width),
+    //     (this.props.designMode ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
+    //   )
     //   ctx.fillStyle = '#ffffff'
     //   ctx.font = '16px Arial'
     //   ctx.fillText('This space could not be loaded.', 16, 24)
@@ -345,9 +353,8 @@ class GameSpace extends Component {
   render() {
     console.warn('[Oscar] [Space] [render]')
     const canvasStyle = {
-      width: this.props.spaceContainer.resource.width,
-      height: this.props.spaceContainer.resource.height,
-      lineHeight: `${this.props.spaceContainer.resource.height}px`
+      width: (this.props.designMode ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width),
+      height: (this.props.designMode ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
     }
     return (
       <canvas style={canvasStyle} className='component--oscar-engine-space' ref={(element) => {
