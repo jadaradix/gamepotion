@@ -31,12 +31,12 @@ const StyledResource = styled.div`
   }
 `
 
-const getComponent = (project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate) => {
+const getComponent = (moduleIds, project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate) => {
   const FoundResourceType = resourceTypes.find(r => r.type === resource.type).component
-  return <FoundResourceType project={project} resources={resources} resource={resource} localSettings={localSettings} onUpdate={onUpdate} onUpdateLocalSetting={onUpdateLocalSetting} />
+  return <FoundResourceType moduleIds={moduleIds} project={project} resources={resources} resource={resource} localSettings={localSettings} onUpdate={onUpdate} onUpdateLocalSetting={onUpdateLocalSetting} />
 }
 
-const Resource = ({ project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate }) => {
+const Resource = ({ moduleIds, project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate }) => {
   // console.warn('[component-Resource] resource', resource)
   return (
     <StyledResource className='component--resource'>
@@ -44,15 +44,16 @@ const Resource = ({ project, resources, resource, localSettings, onUpdateLocalSe
         title={`${resource.name} - ${project.name}`}
       />
       <div className='heading'>
-        <img src={icons.resources[resource.type]} alt={'nice'} />
+        <img src={icons.resources[resource.type]} alt='' />
         <Heading1>{resource.name}</Heading1>
       </div>
-      {getComponent(project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate)}
+      {getComponent(moduleIds, project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate)}
     </StyledResource>
   )
 }
 
 Resource.propTypes = {
+  moduleIds: PropTypes.array.isRequired,
   project: PropTypes.object.isRequired,
   resources: PropTypes.array.isRequired,
   resource: PropTypes.object.isRequired,

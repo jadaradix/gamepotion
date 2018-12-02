@@ -30,6 +30,7 @@ class Notify {
       }
       .notification {
         position: fixed;
+        z-index: 3;
         bottom: 16px;
         border-radius: 4px;
         box-shadow: 0 1px 3px rgba(172, 172, 172, 0.75);

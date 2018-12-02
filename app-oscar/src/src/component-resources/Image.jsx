@@ -11,6 +11,8 @@ import Dropper from '../components/Dropper/Dropper'
 import Uploader from '../components/Uploader/Uploader'
 import Image from '../components/Image/Image'
 
+import BuyModuleBanner from '../component-instances/BuyModuleBanner'
+
 const StyledResource = styled.div`
   section.split-two {
     display: grid;
@@ -33,21 +35,24 @@ const StyledResource = styled.div`
   .component--uploader {
     height: 100%;
   }
-  .frame-width-height {
+  .frame-stuff {
     display: grid;
-    grid-template-columns: 3fr 3fr 3fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 1rem;
     margin-bottom: 2rem;
   }
   .file {
-    p {
+    .component--dropper + p {
+      margin-top: 1rem;
+    }
+    > p {
       ${font}
       font-size: 80%;
       color: #bdc3c7;
     }
-    .component--dropper + p {
+    p + .component--banner {
       margin-top: 1rem;
-    } 
+    }
   }
 `
 
@@ -79,7 +84,7 @@ class ResourceImage extends PureComponent {
       const {
         width,
         height
-      } = resourceTypes.find(rt => rt.type === 'image').fixed.find(o => o.id === fixed)
+      } = resourceTypes.find(rt => rt.type === 'image').getFixed().find(o => o.id === fixed)
       this.onUpdate({
         fixed,
         extension: 'png',
@@ -95,29 +100,34 @@ class ResourceImage extends PureComponent {
       fixed,
       extension,
       frameWidth,
-      frameHeight
+      frameHeight,
+      frameCount
     } = data
     this.onUpdate({
       fixed,
       extension,
       frameWidth,
-      frameHeight
+      frameHeight,
+      frameCount
     })
   }
 
   render() {
+
+    const purchasedResourcePackModule = this.props.moduleIds.includes('resource-pack')
     const fixedOptions = [
       {
         id: 'none',
         name: '<None>'
       },
-      ...resourceTypes.find(rt => rt.type === 'image').fixed.map(o => {
+      ...resourceTypes.find(rt => rt.type === 'image').getFixed(purchasedResourcePackModule).map(o => {
         return {
           id: o.id,
           name: o.id
         }
       })
     ]
+
     const fixedValue = (this.props.resource.fixed === null ? 'none' : this.props.resource.fixed)
     const remoteUrl = this.props.resource.getRemoteUrl()
 
@@ -131,14 +141,18 @@ class ResourceImage extends PureComponent {
             <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['image/png', 'image/gif', 'image/bmp']} onDone={this.onUploadDone} />
           </Box>
           <Box>
-            <div className='frame-width-height'>
+            <div className='frame-stuff'>
               <Input label='Frame Width' value={this.props.resource.frameWidth} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameWidth', v)} />
               <Input label='Frame Height' value={this.props.resource.frameHeight} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameHeight', v)} />
-              <Input label='Frame Speed' value={this.props.resource.frameSpeed} type='number' min='0' max='24' onChange={(v) => this.onUpdateProp('frameSpeed', v)} />
+              <Input label='Frame Speed' value={this.props.resource.frameSpeed} type='number' min='0' max='3' onChange={(v) => this.onUpdateProp('frameSpeed', v)} />
+              <Input label='Frame Count' value={this.props.resource.frameCount} type='number' disabled />
             </div>
             <div className='file'>
-              <Dropper label={`Choose a ${process.env.REACT_APP_NAME} file`} options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
-              <p>Choosing a {process.env.REACT_APP_NAME} file won&rsquo;t erase a file you have uploaded.</p>
+              <Dropper label={'Choose an included file'} options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+              <p>Choosing an included file won&rsquo;t erase a file you have uploaded.</p>
+              {purchasedResourcePackModule === false &&
+                <BuyModuleBanner moduleId='resource-pack' moduleName='Resource Pack' verb='get more included files' />
+              }
             </div>
           </Box>
         </section>
@@ -148,6 +162,7 @@ class ResourceImage extends PureComponent {
 }
 
 ResourceImage.propTypes = {
+  moduleIds: PropTypes.array.isRequired,
   project: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func

@@ -68,10 +68,12 @@ const route = async (request, response, next) => {
   resourceClass.extension = sExtension
   if (resourceClass.type === 'image') {
     const {
-      width
+      width,
+      height
     } = await inspectImage(file.path)
     resourceClass.frameWidth = width
     resourceClass.frameHeight = width
+    resourceClass.frameCount = parseInt(height / width, 10)
   }
 
   Promise.all([

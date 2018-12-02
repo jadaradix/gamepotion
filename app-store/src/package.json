@@ -1,0 +1,32 @@
+{
+  "name": "gmc-app-store",
+  "version": "0.0.1",
+  "description": "Store",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "classnames": "^2.2.6",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-helmet": "^5.2.0",
+    "react-scripts": "2.1.1",
+    "styled-components": "^4.1.1"
+  },
+  "scripts": {
+    "start": "PORT=3001 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom --setupFiles=$(pwd)/jest.setup.js"
+  },
+  "devDependencies": {
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
+    "jest-styled-components": "^6.3.1",
+    "react-test-renderer": "^16.6.3"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "homepage": "https://store.gamemaker.club"
+}

@@ -12,6 +12,18 @@ const findProject = (projectId, teamId) => {
   )
 }
 
+const countResouresOfThisType = (projectId, type) => {
+  return datalayer.read(
+    'Resources',
+    {
+      projectId,
+      type
+    }
+  ).then(resources => resources.length)
+}
+
+const MAX_RESOURCES_BEFORE_PURCHASE_PRO = 5
+
 const route = async (request, response, next) => {
   let resourceClass
   try {
@@ -19,6 +31,11 @@ const route = async (request, response, next) => {
     resourceClass = classFactory.resource({
       type: request.body.type
     })
+    const resourcesOfThisType = await countResouresOfThisType(request.params.projectId, resourceClass.type)
+    if (resourcesOfThisType >= MAX_RESOURCES_BEFORE_PURCHASE_PRO) {
+      response.send(new errors.BadRequestError(`you need to buy Pro in the Store to add more than ${MAX_RESOURCES_BEFORE_PURCHASE_PRO} ${resourceClass.type}s`))
+      return next(false)
+    }
     resourceClass.fromApiPost(request.body)
     resourceClass.projectId = request.params.projectId
   } catch (error) {

@@ -1,5 +1,10 @@
 const draw = (ctx, spaceContainer, instanceClasses, designMode, gridOn, gridWidth, gridHeight) => {
-  ctx.clearRect(0, 0, spaceContainer.resource.width, spaceContainer.resource.height)
+  ctx.clearRect(
+    0,
+    0,
+    (designMode ? spaceContainer.resource.width : spaceContainer.resource.camera.width),
+    (designMode ? spaceContainer.resource.height : spaceContainer.resource.camera.height)
+  )
   if (typeof spaceContainer.extras.backgroundImage === 'object') {
     const {
       frameWidth,
@@ -9,22 +14,31 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, gridOn, gridWidt
     const yCount = (spaceContainer.resource.height + (spaceContainer.resource.height % frameHeight)) / frameHeight
     for (let x = 0; x < xCount; x++) {
       for (let y = 0; y < yCount; y++) {
-        ctx.drawImage(spaceContainer.extras.backgroundImage.extras.element, x * frameWidth, y * frameHeight)
+        const actualX = x * frameWidth - (!designMode ? spaceContainer.resource.camera.x : 0)
+        const actualY = y * frameHeight - (!designMode ? spaceContainer.resource.camera.y : 0)
+        ctx.drawImage(spaceContainer.extras.backgroundImage.extras.element, actualX, actualY)
       }
     }    
   }
   instanceClasses.forEach(i => {
-    const frame = i.props.frame
+    const frame = parseInt(i.props.frame, 10)
     const image = i.getImage()
+    const x = i.props.x - (!designMode ? spaceContainer.resource.camera.x : 0)
+    const y = i.props.y - (!designMode ? spaceContainer.resource.camera.y : 0)
     const width = i.getWidth()
     const height = i.getHeight()
-    // drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
+    // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
     if (image !== null) {
-      ctx.drawImage(image, 0, frame * height, width, height, i.props.x, i.props.y, width, height) 
+      ctx.drawImage(image, 0, frame * height, width, height, x, y, width, height) 
     }
   })
   if (typeof spaceContainer.extras.foregroundImage === 'object') {
     ctx.drawImage(spaceContainer.extras.foregroundImage.extras.element, 0, 0)
+    // ctx.drawImage(
+    //   spaceContainer.extras.foregroundImage.extras.element,
+    //   (!designMode ? -spaceContainer.resource.camera.x : 0),
+    //   (!designMode ? -spaceContainer.resource.camera.y : 0)
+    // )
   }
   const plotGrid = () => {
     let x = gridWidth
@@ -53,14 +67,14 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, gridOn, gridWidt
     ctx.rect(x, y, width - 1, height - 1)
     ctx.closePath()
   }
+  if (gridOn === true) {
+    ctx.globalAlpha = 0.5
+    plotGrid()
+    ctx.strokeStyle = '#ffffff'
+    ctx.stroke()
+    ctx.globalAlpha = 1
+  }
   if (designMode === true) {
-    if (gridOn === true) {
-      ctx.globalAlpha = 0.5
-      plotGrid()
-      ctx.strokeStyle = '#ffffff'
-      ctx.stroke()
-      ctx.globalAlpha = 1
-    }
     ctx.globalAlpha = 0.75
     plotCamera()
     ctx.strokeStyle = '#ff0000'

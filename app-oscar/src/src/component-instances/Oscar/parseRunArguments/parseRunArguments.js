@@ -44,7 +44,7 @@ const FUNCTIONS = new Map([
   ]
 ])
 
-const OPERATORS = {
+const OPERATORS_BINARY_EXPRESSION = {
   '+'(l, r) {
     return l + r
   },
@@ -59,9 +59,19 @@ const OPERATORS = {
   }
 }
 
+const OPERATORS_UNARY_EXPRESSION = {
+  '-'(v) {
+    return -v
+  }
+}
+
 const parseToken = (token, typeHint, parseContext) => {
   const memberExpressions = {
-    instance: parseContext.instanceClass.props,
+    instance: {
+      ...parseContext.instanceClass.props,
+      width: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameWidth : 0),
+      height: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameHeight : 0),
+    },
     space: parseContext.eventContext.spaceContainer.resource,
     camera: parseContext.eventContext.spaceContainer.resource.camera
   }
@@ -120,12 +130,20 @@ const parseToken = (token, typeHint, parseContext) => {
     }
   }
   if (j.type === 'BinaryExpression') {
-    const foundOperator = OPERATORS[j.operator]
+    const foundOperator = OPERATORS_BINARY_EXPRESSION[j.operator]
     if (typeof foundOperator === 'function') {
       return foundOperator(
         parseToken(j.left, 'generic', parseContext),
         parseToken(j.right, 'generic', parseContext)
       )
+    } else {
+      throw new Error(`operator ${j.operator} unsupported`)
+    }
+  }
+  if (j.type === 'UnaryExpression') {
+    const foundOperator = OPERATORS_UNARY_EXPRESSION[j.operator]
+    if (typeof foundOperator === 'function') {
+      return foundOperator(j.argument.value)
     } else {
       throw new Error(`operator ${j.operator} unsupported`)
     }

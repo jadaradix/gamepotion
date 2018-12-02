@@ -21,7 +21,7 @@ class GameSpace extends Component {
     this.eventListeners = new Map()
   }
 
-  handleEvent (event, eventContext, instanceClasses, appliesToInstanceClasses) {
+  handleEvent(event, eventContext, instanceClasses, appliesToInstanceClasses) {
     let instanceClassesToDestroy = []
     let instancesToCreate = []
     appliesToInstanceClasses.forEach(i => {
@@ -55,8 +55,8 @@ class GameSpace extends Component {
     return instanceClasses
   }
 
-  eventEventStart(instanceClasses) {
-    // console.warn('[eventStart] instanceClasses', instanceClasses)
+  handleEventStart(instanceClasses) {
+    // console.warn('[Oscar] [handleEventStart] instanceClasses', instanceClasses)
     const eventContext = {
       instanceClasses,
       spaceContainer: this.props.spaceContainer,
@@ -67,7 +67,11 @@ class GameSpace extends Component {
   }
 
   handleEventStep(instanceClasses) {
-    // console.warn('[eventStep] instanceClasses', instanceClasses)
+    // console.warn('[Oscar] [handleEventStep] this.props.designMode', this.props.designMode)
+    // hack: stops rendering on the 'last frame' of step event when turning 'Play' off in the editor
+    if (this.props.designMode === true) {
+      return []
+    }
     instanceClasses.forEach(i => {
       i.onStep()
     })
@@ -130,14 +134,22 @@ class GameSpace extends Component {
       const z = parseInt(0, 10)
       return { x, y, z }
     }
-    const onTouch = (coords) => {
+    const normaliseCoords = (coords) => {
+      // console.error('[normaliseCoords] this.props.designMode', this.props.designMode)
+      const normalisedCoords = {
+        ...coords
+      }
+      if (this.props.designMode === false) {
+        normalisedCoords.x = normalisedCoords.x + this.props.spaceContainer.resource.camera.x
+        normalisedCoords.y = normalisedCoords.y + this.props.spaceContainer.resource.camera.y
+      }
       if (this.props.gridOn === true) {
         const gridWidth = parseInt(this.props.gridWidth, 10)
         const gridHeight = parseInt(this.props.gridHeight, 10)
-        coords.x = coords.x - (coords.x % gridWidth)
-        coords.y = coords.y - (coords.y % gridHeight)
+        normalisedCoords.x = normalisedCoords.x - (normalisedCoords.x % gridWidth)
+        normalisedCoords.y = normalisedCoords.y - (normalisedCoords.y % gridHeight)
       }
-      this.props.onTouch(coords)
+      return normalisedCoords
     }
     let touchStartTime = 0
     let touchStartCoords = null
@@ -146,7 +158,7 @@ class GameSpace extends Component {
       touchStartCoords = getTouchData(e)
     }, true)
     this.addEventListener(canvas, 'touchend', () => {
-      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, touchStartCoords)
+      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, normaliseCoords(touchStartCoords))
       const touchEndTime = Date.now()
       const timeDifference = touchEndTime - touchStartTime
       // console.warn('touchEndTime', touchEndTime)
@@ -154,7 +166,7 @@ class GameSpace extends Component {
       // console.warn('timeDifference', timeDifference)
       if (this.props.designMode === true) {
         if (timeDifference <= 1000) {
-          onTouch(touchStartCoords)
+          this.props.onTouch(normaliseCoords(touchStartCoords))
         } else {
           const indicesAtCoords = instancesAtCoords.map(ic => {
             return instanceClasses.indexOf(ic)
@@ -174,10 +186,10 @@ class GameSpace extends Component {
     this.addEventListener(canvas, 'mousedown', (e) => {
       e.preventDefault()
       const coords = getMouseData(e)
-      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, coords)
+      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, normaliseCoords(coords))
       if (this.props.designMode === true) {
         if (e.which === 1) {
-          onTouch(coords)
+          this.props.onTouch(normaliseCoords(coords))
         } else {
           const indicesAtCoords = instancesAtCoords.map(ic => {
             return instanceClasses.indexOf(ic)
@@ -207,21 +219,24 @@ class GameSpace extends Component {
     let resourceContainersLoadedSoFar = 0
     const totalResourceContainersToLoad = this.props.resourceContainers.filter(r => ['image', 'sound'].includes(r.resource.type)).length
     const startLoading = () => {
-      console.warn('[Oscar] [Space] [renderCanvas] start loading!')
-      c.width = this.props.spaceContainer.resource.width
-      c.height = this.props.spaceContainer.resource.height
+      console.warn('[Oscar] [Space] [renderCanvas] this.props.spaceContainer.resource.camera', this.props.spaceContainer.resource.camera)
+      c.width = (this.props.designMode ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width)
+      c.height = (this.props.designMode ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
       c.style.display = 'block'
       c.style.backgroundColor = 'black'
-      c.style.width = this.props.spaceContainer.resource.width
-      c.style.height = this.props.spaceContainer.resource.height
       // stop blurred lines from https://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
       ctx.imageSmoothingEnabled = false
       ctx.translate(0.5, 0.5)
       //
-      ctx.clearRect(0, 0, this.props.spaceContainer.resource.width, this.props.spaceContainer.resource.height)
-      ctx.fillStyle = '#ffffff'
-      ctx.font = '16px Arial'
-      ctx.fillText('Loading...', 16, 24)
+      // ctx.clearRect(
+      //   0,
+      //   0,
+      //   (this.props.designMode ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width),
+      //   (this.props.designMode ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
+      // )
+      // ctx.fillStyle = '#ffffff'
+      // ctx.font = '16px Arial'
+      // ctx.fillText('Loading...', 16, 24)
     }
 
     const loadGoodLogic = () => {
@@ -234,22 +249,29 @@ class GameSpace extends Component {
     const loadedGood = () => {
       console.warn('[Oscar] [Space] [renderCanvas] [loadedGood]')
       if (this.props.designMode === true) {
+        console.warn('entere here first')
         draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.gridOn, parseInt(this.props.gridWidth, 10), parseInt(this.props.gridHeight, 10))
       } else {
-        instanceClasses = this.eventEventStart(instanceClasses)
-        const logic = () => { 
+        instanceClasses = this.handleEventStart(instanceClasses)
+        const logic = () => {
           instanceClasses = this.handleEventStep(instanceClasses)
           draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.gridOn, parseInt(this.props.gridWidth, 10), parseInt(this.props.gridHeight, 10))
           if (this.props.designMode === false) {
             window.requestAnimationFrame(logic)
           }
         }
-        logic()
+        setTimeout(logic, 0)
+        // logic()
       }
     }
     // const loadedBad = () => {
     //   console.warn('[Oscar] [Space] [renderCanvas] [loadedBad]')
-    //   ctx.clearRect(0, 0, space.width, space.height)
+    //   ctx.clearRect(
+    //     0,
+    //     0,
+    //     (this.props.designMode ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width),
+    //     (this.props.designMode ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
+    //   )
     //   ctx.fillStyle = '#ffffff'
     //   ctx.font = '16px Arial'
     //   ctx.fillText('This space could not be loaded.', 16, 24)
@@ -333,10 +355,13 @@ class GameSpace extends Component {
 
   render() {
     console.warn('[Oscar] [Space] [render]')
+    if (this.props.designMode === true) {
+      this.props.spaceContainer.resource.camera.x = 0
+      this.props.spaceContainer.resource.camera.y = 0
+    }
     const canvasStyle = {
-      width: this.props.spaceContainer.resource.width,
-      height: this.props.spaceContainer.resource.height,
-      lineHeight: `${this.props.spaceContainer.resource.height}px`
+      width: (this.props.designMode === true ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width),
+      height: (this.props.designMode === true ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
     }
     return (
       <canvas style={canvasStyle} className='component--oscar-engine-space' ref={(element) => {

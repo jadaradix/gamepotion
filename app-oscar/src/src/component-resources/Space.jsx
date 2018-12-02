@@ -86,7 +86,7 @@ const StyledResource = styled.div`
     margin-top: 1rem;
     overflow: scroll;
     // background-color: red;
-    .component--oscar-engine-space + .component--switch {
+    .component--switch + .component--oscar-engine-space {
       margin-top: 1rem;
     }
   }
@@ -115,7 +115,7 @@ class ResourceSpace extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      isRunning: false
+      isPlaying: false
     }
     this.thisRefs = {
       touchCoordsX: null,
@@ -126,7 +126,7 @@ class ResourceSpace extends PureComponent {
     this.plotAtom = this.plotAtom.bind(this)
     this.unplotAtoms = this.unplotAtoms.bind(this)
     this.updateTouchCoords = this.updateTouchCoords.bind(this)
-    this.updateRunning = this.updateRunning.bind(this)
+    this.updatePlaying = this.updatePlaying.bind(this)
   }
 
   onChangeMasterProp(prop, v) {
@@ -195,9 +195,9 @@ class ResourceSpace extends PureComponent {
     this.thisRefs.touchCoordsY.value = coords.y
   }
 
-  updateRunning(isRunning) {
+  updatePlaying(isPlaying) {
     this.setState({
-      isRunning
+      isPlaying
     })
   }
 
@@ -213,7 +213,8 @@ class ResourceSpace extends PureComponent {
     let atomToPlot = this.props.localSettings['atom-to-plot']
     if (
       (atomToPlot === 'none' || atomDropperResources.find(r => r.id === atomToPlot) === undefined)
-      && atomDropperResources.length > 0) {
+      && atomDropperResources.length > 0)
+    {
       this.props.onUpdateLocalSetting('atom-to-plot', atomDropperResources[0].id)
     }
     const foundAtomResource = this.props.resources.find(r => r.id === atomToPlot)
@@ -256,8 +257,6 @@ class ResourceSpace extends PureComponent {
               <Input label='Height' type='number' value={this.props.resource.height} onChange={(v) => this.onChangeMasterProp('height', v)} min='0' max='4096' />
               <Input label='Cam Width' type='number' value={this.props.resource.camera.width} onChange={(v) => this.onChangeCameraProp('width', v)} min='0' max='4096' />
               <Input label='Cam Height' type='number' value={this.props.resource.camera.height} onChange={(v) => this.onChangeCameraProp('height', v)} min='0' max='4096' />
-              <Input label='Cam X' type='number' value={this.props.resource.camera.x} min='0' onChange={(v) => this.onChangeCameraProp('x', v)} max='4096' />
-              <Input label='Cam Y' type='number' value={this.props.resource.camera.y} min='0' onChange={(v) => this.onChangeCameraProp('y', v)} max='4096' />
             </div>
           </Box>
           <Box className='info'>
@@ -273,16 +272,17 @@ class ResourceSpace extends PureComponent {
           </Box>
         </section>
         <section className='canvas'>
+          <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>
           <GameSpace
             spaceContainer={spaceContainer}
             resourceContainers={resourceContainers}
             variables={variables}
-            designMode={!this.state.isRunning}
-            gridOn={this.props.localSettings['grid-on']}
+            designMode={!this.state.isPlaying}
+            gridOn={this.props.localSettings['grid-on'] && !this.state.isPlaying}
             gridWidth={this.props.localSettings['grid-width']}
             gridHeight={this.props.localSettings['grid-height']}
-            onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords} />
-          <Switch checked={this.state.isRunning} onChange={(v) => this.updateRunning(v)}>Run</Switch>
+            onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords}
+          />
         </section>
       </StyledResource>
     )

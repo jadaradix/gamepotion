@@ -9,48 +9,73 @@ export default [
     nameSingular: 'image',
     namePlural: 'Images',
     component: Image,
-    fixed: [
-      {
-        id: 'ball',
-        width: 64,
-        height: 64
-      },
-      {
-        id: 'block',
-        width: 32,
-        height: 32
-      },
-      {
-        id: 'puck',
-        width: 16,
-        height: 16
-      },
-      {
-        id: 'wood',
-        width: 320,
-        height: 240
-      }
-    ]
+    getFixed(purchasedImagePackModule = false) {
+      const fixed = [
+        {
+          id: 'ball',
+          width: 64,
+          height: 64
+        },
+        {
+          id: 'block',
+          width: 32,
+          height: 32
+        },
+        {
+          id: 'puck',
+          width: 16,
+          height: 16
+        },
+        {
+          id: 'wood',
+          width: 320,
+          height: 240
+        }
+      ]
+      return [
+        ...fixed,
+        ...(purchasedImagePackModule === true
+          ?
+          [
+            {
+              id: 'reiners-tilesets-gold-sacks',
+              width: 64,
+              height: 64
+            },
+            {
+              id: 'reiners-tilesets-logs',
+              width: 64,
+              height: 64
+            }
+          ]
+          :
+          []  
+        )
+      ]
+    }
   },
   {
     type: 'sound',
     nameSingular: 'sound',
     namePlural: 'Sounds',
     component: Sound,
-    fixed: [
-      {
-        id: 'click'
-      },
-      {
-        id: 'explosion'
-      },
-      {
-        id: 'gun'
-      },
-      {
-        id: 'zap'
-      }
-    ]
+    getFixed(purchasedImagePackModule = false) {
+      const fixed = [
+        {
+          id: 'click'
+        },
+        {
+          id: 'explosion'
+        },
+        {
+          id: 'gun'
+        },
+        {
+          id: 'zap'
+        }
+      ]
+      return fixed
+    }
   },
   {
     type: 'atom',

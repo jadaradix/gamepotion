@@ -14,7 +14,9 @@ import Input from '../components/Input/Input'
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
 import CustomHelmet from '../component-instances/CustomHelmet'
+
 import ChangePasswordModal from '../modals/ChangePassword'
+import ChangeUserlandIdModal from '../modals/ChangeUserlandId'
 
 // import Heading2 from '../components/Heading2/Heading2'
 // const SUBSCRIPTIONS = [
@@ -52,7 +54,7 @@ const currentSubscriptionWhen = new Date(this.state.user.getSubscription().when 
 
 const StyledState = styled.div`
   .component--box {
-    max-width: 360px;
+    max-width: 420px;
     margin: 4rem auto 0 auto;
   }
   .component--dropper, .component--input, .component--banner {
@@ -106,8 +108,15 @@ class StateAccount extends Component {
       user: getState().user,
       showingChangePassword: false,
       newPassword: '',
+      showingChangeUserlandId: false,
+      newUserlandId: '',
       loggedOut: false
     }
+
+    this.changeUserlandId = this.changeUserlandId.bind(this)
+    this.onChangeUserlandId = this.onChangeUserlandId.bind(this)
+    this.onCancelChangeUserlandId = this.onCancelChangeUserlandId.bind(this)
+
     this.changePassword = this.changePassword.bind(this)
     this.onChangePassword = this.onChangePassword.bind(this)
     this.onCancelChangePassword = this.onCancelChangePassword.bind(this)
@@ -158,6 +167,28 @@ class StateAccount extends Component {
     })
   }
 
+  changeUserlandId() {
+    this.setState({
+      newUserlandId: this.state.user.userlandId,
+      showingChangeUserlandId: true
+    })
+  }
+
+  onChangeUserlandId() {
+    this.onUpdateProp('userlandId', this.state.newUserlandId)
+      .then(() => {
+        this.setState({
+          showingChangeUserlandId: false
+        })
+      })
+  }
+
+  onCancelChangeUserlandId() {
+    this.setState({
+      showingChangeUserlandId: false
+    })
+  }
+
   changePassword() {
     this.setState({
       newPassword: '',
@@ -173,7 +204,6 @@ class StateAccount extends Component {
           showingChangePassword: false
         })
       })
-
   }
 
   onCancelChangePassword() {
@@ -208,14 +238,21 @@ class StateAccount extends Component {
         <CustomHelmet
           title='Account'
         />
-        {this.state.showingChangePassword && (
+        {this.state.showingChangeUserlandId &&
+          <ChangeUserlandIdModal
+            value={this.state.newUserlandId}
+            onUpdate={(p, v) => this.setState({newUserlandId: v})}
+            onGood={this.onChangeUserlandId}
+            onBad={this.onCancelChangeUserlandId}
+          />
+        }
+        {this.state.showingChangePassword &&
           <ChangePasswordModal
-            password={this.state.newPassword}
+            value={this.state.newPassword}
             onUpdate={(p, v) => this.setState({newPassword: v})}
             onGood={this.onChangePassword}
             onBad={this.onCancelChangePassword}
           />
-        )
         }
         <MainToolbarContainer />
         <ResponsiveContainer>
@@ -224,7 +261,13 @@ class StateAccount extends Component {
               <section className='account'>
                 <Heading1>Account</Heading1>
                 <Input label='Name' value={this.state.user.name} onChange={(v) => this.onUpdateProp('name', v)} />
-                <Button onClick={this.changePassword}>Change password</Button>
+                {this.state.user.userlandId.indexOf('@') > 0 &&
+                  <Fragment>
+                    <Input label='E-mail' value={this.state.user.userlandId} disabled />
+                    <Button onClick={this.changeUserlandId}>Change e-mail</Button>
+                    <Button onClick={this.changePassword}>Change password</Button>
+                  </Fragment>
+                }
                 <Button onClick={this.logOut} flavour='weak'>Log out</Button>
               </section>
             </Box>
