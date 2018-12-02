@@ -7,6 +7,10 @@ class IfNextSpace extends Action {
     this.name = 'If Next Space'
     this.description = 'Conditionally runs actions when there is a next space.'
     this.defaultRunArguments = new Map([
+      ['Not', {
+        type: 'boolean',
+        value: false
+      }]
     ])
     this.indentation = 1
   }
@@ -26,7 +30,11 @@ class IfNextSpace extends Action {
         spaceContainerIndex += 1
       }
       foundOtherSpaceContainer = spaceContainers[spaceContainerIndex + 1]
-      return (typeof foundOtherSpaceContainer === 'object')
+      if (runArguments[0]) {
+        return (typeof foundOtherSpaceContainer !== 'object')
+      } else {
+        return (typeof foundOtherSpaceContainer === 'object')
+      }
     case 'nds':
       return ''
     default:
@@ -35,7 +43,8 @@ class IfNextSpace extends Action {
   }
 
   toString(runArguments, appliesTo) {
-    return 'If there is a next Space'
+    const comparator = (runArguments[0] ? 'is not' : 'is')
+    return `If there ${comparator} a next Space`
   }
 }
 

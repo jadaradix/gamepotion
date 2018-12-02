@@ -46,6 +46,13 @@ test('works for a number', () => {
   expect(r).toBe(1)
 })
 
+test('works for a negative number', () => {
+  const argType = 'generic'
+  const arg = '-1'
+  const r = parseRunArguments([argType], [arg], parseContext)[0]
+  expect(r).toBe(-1)
+})
+
 test('works for a boolean', () => {
   const argType = 'boolean'
   const arg = true
