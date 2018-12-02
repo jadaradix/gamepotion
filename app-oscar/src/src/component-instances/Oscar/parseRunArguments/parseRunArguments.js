@@ -44,7 +44,7 @@ const FUNCTIONS = new Map([
   ]
 ])
 
-const OPERATORS = {
+const OPERATORS_BINARY_EXPRESSION = {
   '+'(l, r) {
     return l + r
   },
@@ -56,6 +56,12 @@ const OPERATORS = {
   },
   '/'(l, r) {
     return l / r
+  }
+}
+
+const OPERATORS_UNARY_EXPRESSION = {
+  '-'(v) {
+    return -v
   }
 }
 
@@ -113,12 +119,20 @@ const parseToken = (token, typeHint, parseContext) => {
     }
   }
   if (j.type === 'BinaryExpression') {
-    const foundOperator = OPERATORS[j.operator]
+    const foundOperator = OPERATORS_BINARY_EXPRESSION[j.operator]
     if (typeof foundOperator === 'function') {
       return foundOperator(
         parseToken(j.left, 'generic', parseContext),
         parseToken(j.right, 'generic', parseContext)
       )
+    } else {
+      throw new Error(`operator ${j.operator} unsupported`)
+    }
+  }
+  if (j.type === 'UnaryExpression') {
+    const foundOperator = OPERATORS_UNARY_EXPRESSION[j.operator]
+    if (typeof foundOperator === 'function') {
+      return foundOperator(j.argument.value)
     } else {
       throw new Error(`operator ${j.operator} unsupported`)
     }
