@@ -33,7 +33,7 @@ const ChangePasswordModal = ({ password, onGood, onBad, onUpdate }) => {
   }
 
   return (
-    <StyledModal className='component--resource'>
+    <StyledModal>
       <Modal onClose={onBad}>
         <Heading1>Change password</Heading1>
         <form onSubmit={submit}>

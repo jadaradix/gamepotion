@@ -66,7 +66,7 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
 
   // console.warn('[component-ActionModal] actionClassInstance', actionClassInstance)
   return (
-    <StyledModal className='component--resource'>
+    <StyledModal>
       <Modal onClose={onBad}>
         <Heading1>{actionClassInstance.name}</Heading1>
         {Array.from(actionClassInstance.defaultRunArguments.keys()).map((k, i) => {
