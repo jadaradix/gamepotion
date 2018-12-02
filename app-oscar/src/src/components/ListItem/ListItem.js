@@ -137,7 +137,7 @@ ListItem.defaultProps = {
   actions: [],
   onChoose: () => {},
   onAction: () => {},
-  indentation: 0
+  indentation: 4
 }
 
 export default ListItem

@@ -21,7 +21,7 @@ class GameSpace extends Component {
     this.eventListeners = new Map()
   }
 
-  handleEvent (event, eventContext, instanceClasses, appliesToInstanceClasses) {
+  handleEvent(event, eventContext, instanceClasses, appliesToInstanceClasses) {
     let instanceClassesToDestroy = []
     let instancesToCreate = []
     appliesToInstanceClasses.forEach(i => {
@@ -55,8 +55,8 @@ class GameSpace extends Component {
     return instanceClasses
   }
 
-  eventEventStart(instanceClasses) {
-    // console.warn('[eventStart] instanceClasses', instanceClasses)
+  handleEventStart(instanceClasses) {
+    // console.warn('[Oscar] [handleEventStart] instanceClasses', instanceClasses)
     const eventContext = {
       instanceClasses,
       spaceContainer: this.props.spaceContainer,
@@ -67,7 +67,11 @@ class GameSpace extends Component {
   }
 
   handleEventStep(instanceClasses) {
-    // console.warn('[eventStep] instanceClasses', instanceClasses)
+    // console.warn('[Oscar] [handleEventStep] this.props.designMode', this.props.designMode)
+    // hack: stops rendering on the 'last frame' of step event when turning 'Play' off in the editor
+    if (this.props.designMode === true) {
+      return []
+    }
     instanceClasses.forEach(i => {
       i.onStep()
     })
@@ -245,17 +249,19 @@ class GameSpace extends Component {
     const loadedGood = () => {
       console.warn('[Oscar] [Space] [renderCanvas] [loadedGood]')
       if (this.props.designMode === true) {
+        console.warn('entere here first')
         draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.gridOn, parseInt(this.props.gridWidth, 10), parseInt(this.props.gridHeight, 10))
       } else {
-        instanceClasses = this.eventEventStart(instanceClasses)
-        const logic = () => { 
+        instanceClasses = this.handleEventStart(instanceClasses)
+        const logic = () => {
           instanceClasses = this.handleEventStep(instanceClasses)
           draw(ctx, this.props.spaceContainer, instanceClasses, this.props.designMode, this.props.gridOn, parseInt(this.props.gridWidth, 10), parseInt(this.props.gridHeight, 10))
           if (this.props.designMode === false) {
             window.requestAnimationFrame(logic)
           }
         }
-        logic()
+        setTimeout(logic, 0)
+        // logic()
       }
     }
     // const loadedBad = () => {
@@ -349,6 +355,8 @@ class GameSpace extends Component {
 
   render() {
     console.warn('[Oscar] [Space] [render]')
+    this.props.spaceContainer.resource.camera.x = 0
+    this.props.spaceContainer.resource.camera.y = 0
     const canvasStyle = {
       width: (this.props.designMode ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width),
       height: (this.props.designMode ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
