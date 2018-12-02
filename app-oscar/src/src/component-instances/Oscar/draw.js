@@ -21,7 +21,7 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, gridOn, gridWidt
     }    
   }
   instanceClasses.forEach(i => {
-    const frame = i.props.frame
+    const frame = parseInt(i.props.frame, 10)
     const image = i.getImage()
     const x = i.props.x - (!designMode ? spaceContainer.resource.camera.x : 0)
     const y = i.props.y - (!designMode ? spaceContainer.resource.camera.y : 0)

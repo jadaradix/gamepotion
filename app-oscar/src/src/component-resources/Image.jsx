@@ -33,9 +33,9 @@ const StyledResource = styled.div`
   .component--uploader {
     height: 100%;
   }
-  .frame-width-height {
+  .frame-stuff {
     display: grid;
-    grid-template-columns: 3fr 3fr 3fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 1rem;
     margin-bottom: 2rem;
   }
@@ -95,13 +95,15 @@ class ResourceImage extends PureComponent {
       fixed,
       extension,
       frameWidth,
-      frameHeight
+      frameHeight,
+      frameCount
     } = data
     this.onUpdate({
       fixed,
       extension,
       frameWidth,
-      frameHeight
+      frameHeight,
+      frameCount
     })
   }
 
@@ -131,10 +133,11 @@ class ResourceImage extends PureComponent {
             <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['image/png', 'image/gif', 'image/bmp']} onDone={this.onUploadDone} />
           </Box>
           <Box>
-            <div className='frame-width-height'>
+            <div className='frame-stuff'>
               <Input label='Frame Width' value={this.props.resource.frameWidth} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameWidth', v)} />
               <Input label='Frame Height' value={this.props.resource.frameHeight} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameHeight', v)} />
-              <Input label='Frame Speed' value={this.props.resource.frameSpeed} type='number' min='0' max='24' onChange={(v) => this.onUpdateProp('frameSpeed', v)} />
+              <Input label='Frame Speed' value={this.props.resource.frameSpeed} type='number' min='0' max='3' onChange={(v) => this.onUpdateProp('frameSpeed', v)} />
+              <Input label='Frame Count' value={this.props.resource.frameCount} type='number' disabled />
             </div>
             <div className='file'>
               <Dropper label={`Choose a ${process.env.REACT_APP_NAME} file`} options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
