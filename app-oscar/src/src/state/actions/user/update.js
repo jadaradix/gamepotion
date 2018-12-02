@@ -10,7 +10,7 @@ export default async function (state, payload) {
   const credentials = {
     ...state.credentials
   }
-  if (typeof payload.userlandId !== 'string' && typeof payload.password !== 'string') {
+  if (typeof payload.name === 'string') {
     patch(payload)
     const user = state.user
     user.fromApiPatch(payload)
@@ -18,6 +18,17 @@ export default async function (state, payload) {
       ...state,
       user
     }
+  }
+  if (typeof payload.teamId === 'string') {
+    return patchLogic(payload)
+      .then(() => {
+        const user = state.user
+        user.fromApiPatch(payload)
+        return {
+          ...state,
+          user
+        }
+      })
   }
   if (typeof payload.userlandId === 'string') {
     return patchLogic(payload)
