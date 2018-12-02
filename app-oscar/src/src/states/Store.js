@@ -12,7 +12,6 @@ const StyledState = styled.div`
   iframe {
     width: 100%;
     height: 640px;
-    background-color: red;
     border: 0;
   }
 `
