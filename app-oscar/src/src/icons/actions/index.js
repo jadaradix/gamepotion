@@ -9,11 +9,14 @@ import PlaySound from './files/PlaySound.svg'
 import ShowMessage from './files/ShowMessage.svg'
 
 import GoToSpace from './files/GoToSpace.svg'
+import GoToNextSpace from './files/GoToNextSpace.svg'
+import GoToPreviousSpace from './files/GoToPreviousSpace.svg'
 import SetSpaceBackgroundImage from './files/SetSpaceBackgroundImage.svg'
 import SetSpaceForegroundImage from './files/SetSpaceForegroundImage.svg'
 
 import If from './files/If.svg'
-import IfNot from './files/IfNot.svg'
+import IfInstances from './files/IfInstances.svg'
+import IfNextSpace from './files/IfNextSpace.svg'
 import Else from './files/Else.svg'
 import EndIf from './files/EndIf.svg'
 import SetVariable from './files/SetVariable.svg'
@@ -31,11 +34,14 @@ export default {
   ShowMessage,
 
   GoToSpace,
+  GoToNextSpace,
+  GoToPreviousSpace,
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
   If,
-  IfNot,
+  IfInstances,
+  IfNextSpace,
   Else,
   EndIf,
   SetVariable,

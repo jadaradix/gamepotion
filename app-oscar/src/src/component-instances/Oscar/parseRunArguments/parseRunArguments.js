@@ -93,6 +93,13 @@ const parseToken = (token, typeHint, parseContext) => {
   if (j.type === 'Literal') {
     return j.value
   }
+  if (j.type === 'UnaryExpression') {
+    if (j.operator === '-') {
+      return j.argument.value * -1
+    } else {
+      throw new Error(`found UnaryExpression with unsupported operator ${j.operator}!`)
+    }
+  }
   if (j.type === 'Identifier') {
     const foundVariable = parseContext.eventContext.variables.get(j.name)
     if (foundVariable !== undefined) {

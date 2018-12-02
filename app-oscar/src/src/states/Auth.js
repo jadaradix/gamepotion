@@ -61,6 +61,7 @@ const stages = new Map([
           }, () => {
             dispatch({
               name: 'USER_LOG_IN',
+              pleaseThrow: true,
               data: {
                 userlandId: state.userlandId,
                 password: 'dummy-password'
@@ -127,6 +128,7 @@ const stages = new Map([
           }, () => {
             dispatch({
               name: 'USER_LOG_IN',
+              pleaseThrow: true,
               data: {
                 userlandId: state.userlandId,
                 password: state.password
@@ -187,6 +189,7 @@ const stages = new Map([
           }, () => {
             dispatch({
               name: 'USER_CREATE',
+              pleaseThrow: true,
               data: {
                 userlandId: state.userlandId,
                 password: state.password
