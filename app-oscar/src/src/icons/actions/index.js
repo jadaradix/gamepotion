@@ -11,6 +11,7 @@ import ShowMessage from './files/ShowMessage.svg'
 import GoToSpace from './files/GoToSpace.svg'
 import GoToNextSpace from './files/GoToNextSpace.svg'
 import GoToPreviousSpace from './files/GoToPreviousSpace.svg'
+import MoveCamera from './files/MoveCamera.svg'
 import SetSpaceBackgroundImage from './files/SetSpaceBackgroundImage.svg'
 import SetSpaceForegroundImage from './files/SetSpaceForegroundImage.svg'
 
@@ -28,6 +29,7 @@ export default {
   Destroy,
   SetXSpeed,
   SetYSpeed,
+  IfInstances,
   SetImage,
 
   PlaySound,
@@ -36,12 +38,12 @@ export default {
   GoToSpace,
   GoToNextSpace,
   GoToPreviousSpace,
+  MoveCamera,
+  IfNextSpace,
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
   If,
-  IfInstances,
-  IfNextSpace,
   Else,
   EndIf,
   SetVariable,
