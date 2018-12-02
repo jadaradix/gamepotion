@@ -355,11 +355,13 @@ class GameSpace extends Component {
 
   render() {
     console.warn('[Oscar] [Space] [render]')
-    this.props.spaceContainer.resource.camera.x = 0
-    this.props.spaceContainer.resource.camera.y = 0
+    if (this.props.designMode === true) {
+      this.props.spaceContainer.resource.camera.x = 0
+      this.props.spaceContainer.resource.camera.y = 0
+    }
     const canvasStyle = {
-      width: (this.props.designMode ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width),
-      height: (this.props.designMode ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
+      width: (this.props.designMode === true ? this.props.spaceContainer.resource.width : this.props.spaceContainer.resource.camera.width),
+      height: (this.props.designMode === true ? this.props.spaceContainer.resource.height : this.props.spaceContainer.resource.camera.height)
     }
     return (
       <canvas style={canvasStyle} className='component--oscar-engine-space' ref={(element) => {
