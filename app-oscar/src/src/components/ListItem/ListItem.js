@@ -111,7 +111,7 @@ const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, i
     marginLeft: `${indentation}px`
   }
   return (
-    <StyledListItem onClick={() => onChoose(id)} onTouchStart={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})}>
+    <StyledListItem onClick={() => onChoose(id)} onTouchEnd={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})}>
       <img src={icon} style={imgStyle} alt='' />
       <span>{children}</span>
       <div className='actions'>
