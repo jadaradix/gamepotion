@@ -58,7 +58,6 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
     case 'boolean':
       return <Switch onChange={handleOnUpdateArgument} checked={value}>{name}</Switch>
     case 'generic':
-    case 'number':
     default:
       return <Input onChange={handleOnUpdateArgument} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
     }
