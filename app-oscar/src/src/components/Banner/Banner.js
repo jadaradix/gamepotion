@@ -9,7 +9,12 @@ const StyledBanner = styled.div`
   box-shadow: 0 2px 10px rgb(212, 212, 212);
   p {
     ${font}
+    font-size: 80%;
+    line-height: 1.5;
     color: ${colours.fore};
+    a {
+      color: inherit;
+    }
   }
   `
 

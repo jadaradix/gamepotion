@@ -10,6 +10,8 @@ import Dropper from '../components/Dropper/Dropper'
 import Uploader from '../components/Uploader/Uploader'
 import AudioPlayer from '../components/AudioPlayer/AudioPlayer'
 
+import BuyModuleBanner from '../component-instances/BuyModuleBanner'
+
 const StyledResource = styled.div`
   section.split-two {
     display: grid;
@@ -27,14 +29,17 @@ const StyledResource = styled.div`
     height: 100%;
   }
   .file {
-    p {
+    .component--dropper + p {
+      margin-top: 1rem;
+    }
+    > p {
       ${font}
       font-size: 80%;
       color: #bdc3c7;
     }
-    .component--dropper + p {
+    p + .component--banner {
       margin-top: 1rem;
-    } 
+    }
   }
 `
 
@@ -72,12 +77,13 @@ class ResourceSound extends PureComponent {
   }
 
   render() {
+    const purchasedResourcePackModule = this.props.moduleIds.includes('resource-pack')
     const fixedOptions = [
       {
         id: 'none',
         name: '<None>'
       },
-      ...resourceTypes.find(rt => rt.type === 'sound').fixed.map(o => {
+      ...resourceTypes.find(rt => rt.type === 'sound').getFixed(purchasedResourcePackModule).map(o => {
         return {
           id: o.id,
           name: o.id
@@ -98,8 +104,11 @@ class ResourceSound extends PureComponent {
           </Box>
           <Box>
             <div className='file'>
-              <Dropper label={`Choose a ${process.env.REACT_APP_NAME} file`} options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
-              <p>Choosing a {process.env.REACT_APP_NAME} file won&rsquo;t erase a file you have uploaded.</p>
+              <Dropper label={'Choose an included file'} options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+              <p>Choosing an included file won&rsquo;t erase a file you have uploaded.</p>
+              {purchasedResourcePackModule === false &&
+                <BuyModuleBanner moduleId='resource-pack' moduleName='Resource Pack' verb='get more included files' />
+              }
             </div>
           </Box>
         </section>
@@ -109,6 +118,8 @@ class ResourceSound extends PureComponent {
 }
 
 ResourceSound.propTypes = {
+  moduleIds: PropTypes.array.isRequired,
+  project: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
   onUpdate: PropTypes.func
 }

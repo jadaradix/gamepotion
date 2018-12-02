@@ -48,6 +48,7 @@ class StateProjectProject extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      moduleIds: [],
       currentProject: null,
       resourceToLoadId: null,
       localSettings: getState().localSettings
@@ -70,6 +71,11 @@ class StateProjectProject extends Component {
 
   componentDidMount() {
     this.subscriptions = [
+      subscribe('USER_GET', (state) => {
+        this.setState({
+          moduleIds: state.user.modules.map(m => m.id)
+        })
+      }),
       subscribe('PROJECTS_LOAD', (state) => {
         this.setState({
           currentProject: state.currentProject
@@ -110,6 +116,9 @@ class StateProjectProject extends Component {
         })
       })
     ]
+    dispatch({
+      name: 'USER_GET'
+    })
     dispatch({
       name: 'PROJECTS_START_LOAD'
     })
@@ -225,6 +234,7 @@ class StateProjectProject extends Component {
           <main>
             {this.state.currentProject !== null && this.state.currentProject.currentResource !== null &&
               <Resource
+                moduleIds={this.state.moduleIds}
                 project={this.state.currentProject.project}
                 resources={this.state.currentProject.resources}
                 resource={this.state.currentProject.currentResource}
