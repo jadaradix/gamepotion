@@ -67,7 +67,11 @@ const OPERATORS_UNARY_EXPRESSION = {
 
 const parseToken = (token, typeHint, parseContext) => {
   const memberExpressions = {
-    instance: parseContext.instanceClass.props,
+    instance: {
+      ...parseContext.instanceClass.props,
+      width: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameWidth : 0),
+      height: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameHeight : 0),
+    },
     space: parseContext.eventContext.spaceContainer.resource,
     camera: parseContext.eventContext.spaceContainer.resource.camera
   }
