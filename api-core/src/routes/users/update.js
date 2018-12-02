@@ -39,17 +39,18 @@ const route = (request, response, next) => {
   }
   if (typeof request.body.userlandId === 'string') {
     datalayer.readOne('Users', {userlandId: request.body.userlandId})
-    .then(user => {
-      const userClass = classFactory.user(user)
-      if (userClass.id !== request.authorization.user.id) {
-        response.send(new errors.ForbiddenError('this userlandId (email) is already in use'))
-        return next(false)
-      }
-      updateUser(userClass)
-    })
-    .catch(() => {
-      updateUser(request.authorization.user)
-    })
+      .then(user => {
+        const userClass = classFactory.user(user)
+        if (userClass.id !== request.authorization.user.id) {
+          const what = (userClass.userlandId.indexOf('@') > 0 ? 'e-mail' : 'userlandId')
+          response.send(new errors.BadRequestError(`this ${what} is already in use`))
+          return next(false)
+        }
+        updateUser(userClass)
+      })
+      .catch(() => {
+        updateUser(request.authorization.user)
+      })
   } else {
     return updateUser(request.authorization.user)
   }

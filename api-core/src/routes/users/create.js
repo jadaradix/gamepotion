@@ -27,7 +27,8 @@ const route = async (request, response, next) => {
   }
   getExistingUser(userClass.userlandId)
     .then(() => {
-      response.send(new errors.BadRequestError('this userlandId (email) is already in use'))
+      const what = (userClass.userlandId.indexOf('@') > 0 ? 'e-mail' : 'userlandId')
+      response.send(new errors.BadRequestError(`this ${what} is already in use`))
       return next(false)
     })
     .catch(() => {
