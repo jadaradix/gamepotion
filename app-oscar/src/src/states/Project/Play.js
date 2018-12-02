@@ -52,7 +52,10 @@ class StateProjectPlay extends PureComponent {
               <CustomHelmet
                 title={this.state.currentProject.project.name}
               />
-              <Game project={this.state.currentProject.project} resources={this.state.currentProject.resources} />
+              <Game
+                project={this.state.currentProject.project}
+                resources={this.state.currentProject.resources}
+              />
             </Fragment>
           }
         </StyledState>

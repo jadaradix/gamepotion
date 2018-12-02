@@ -280,7 +280,7 @@ class ResourceSpace extends PureComponent {
             resourceContainers={resourceContainers}
             variables={variables}
             designMode={!this.state.isPlaying}
-            gridOn={this.props.localSettings['grid-on']}
+            gridOn={this.props.localSettings['grid-on'] && !this.state.isPlaying}
             gridWidth={this.props.localSettings['grid-width']}
             gridHeight={this.props.localSettings['grid-height']}
             onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords}

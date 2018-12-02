@@ -67,14 +67,14 @@ const draw = (ctx, spaceContainer, instanceClasses, designMode, gridOn, gridWidt
     ctx.rect(x, y, width - 1, height - 1)
     ctx.closePath()
   }
+  if (gridOn === true) {
+    ctx.globalAlpha = 0.5
+    plotGrid()
+    ctx.strokeStyle = '#ffffff'
+    ctx.stroke()
+    ctx.globalAlpha = 1
+  }
   if (designMode === true) {
-    if (gridOn === true) {
-      ctx.globalAlpha = 0.5
-      plotGrid()
-      ctx.strokeStyle = '#ffffff'
-      ctx.stroke()
-      ctx.globalAlpha = 1
-    }
     ctx.globalAlpha = 0.75
     plotCamera()
     ctx.strokeStyle = '#ff0000'

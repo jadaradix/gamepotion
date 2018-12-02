@@ -130,14 +130,22 @@ class GameSpace extends Component {
       const z = parseInt(0, 10)
       return { x, y, z }
     }
-    const onTouch = (coords) => {
+    const normaliseCoords = (coords) => {
+      // console.error('[normaliseCoords] this.props.designMode', this.props.designMode)
+      const normalisedCoords = {
+        ...coords
+      }
+      if (this.props.designMode === false) {
+        normalisedCoords.x = normalisedCoords.x + this.props.spaceContainer.resource.camera.x
+        normalisedCoords.y = normalisedCoords.y + this.props.spaceContainer.resource.camera.y
+      }
       if (this.props.gridOn === true) {
         const gridWidth = parseInt(this.props.gridWidth, 10)
         const gridHeight = parseInt(this.props.gridHeight, 10)
-        coords.x = coords.x - (coords.x % gridWidth)
-        coords.y = coords.y - (coords.y % gridHeight)
+        normalisedCoords.x = normalisedCoords.x - (normalisedCoords.x % gridWidth)
+        normalisedCoords.y = normalisedCoords.y - (normalisedCoords.y % gridHeight)
       }
-      this.props.onTouch(coords)
+      return normalisedCoords
     }
     let touchStartTime = 0
     let touchStartCoords = null
@@ -146,7 +154,7 @@ class GameSpace extends Component {
       touchStartCoords = getTouchData(e)
     }, true)
     this.addEventListener(canvas, 'touchend', () => {
-      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, touchStartCoords)
+      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, normaliseCoords(touchStartCoords))
       const touchEndTime = Date.now()
       const timeDifference = touchEndTime - touchStartTime
       // console.warn('touchEndTime', touchEndTime)
@@ -154,7 +162,8 @@ class GameSpace extends Component {
       // console.warn('timeDifference', timeDifference)
       if (this.props.designMode === true) {
         if (timeDifference <= 1000) {
-          onTouch(touchStartCoords)
+          touchStartCoords = normaliseCoords(touchStartCoords)
+          this.props.onTouch(touchStartCoords)
         } else {
           const indicesAtCoords = instancesAtCoords.map(ic => {
             return instanceClasses.indexOf(ic)
@@ -174,10 +183,11 @@ class GameSpace extends Component {
     this.addEventListener(canvas, 'mousedown', (e) => {
       e.preventDefault()
       const coords = getMouseData(e)
-      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, coords)
+      const instancesAtCoords = getInstanceClassesAtCoords(instanceClasses, normaliseCoords(coords))
       if (this.props.designMode === true) {
         if (e.which === 1) {
-          onTouch(coords)
+          touchStartCoords = normaliseCoords(touchStartCoords)
+          this.props.onTouch(touchStartCoords)
         } else {
           const indicesAtCoords = instancesAtCoords.map(ic => {
             return instanceClasses.indexOf(ic)
