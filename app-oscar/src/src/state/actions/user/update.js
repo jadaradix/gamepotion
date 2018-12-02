@@ -15,6 +15,9 @@ export default async function (state, payload) {
   if (typeof payload.userlandId === 'string') {
     credentials.userlandId = payload.userlandId
     set('credentials-userlandId', credentials.userlandId)
+    if (payload.userlandId.indexOf('@') > 0) {
+      notify.good('Your e-mail has been changed.')
+    }
   }
   if (typeof payload.password === 'string') {
     credentials.password = payload.password

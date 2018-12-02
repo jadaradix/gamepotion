@@ -22,7 +22,7 @@ const canSubmit = (value) => {
   return (value.length >= 6 && value.length <= 128)
 }
 
-const ChangePasswordModal = ({ value, onGood, onBad, onUpdate }) => {
+const ChangeUserlandIdModal = ({ value, onGood, onBad, onUpdate }) => {
 
   const submit = (e) => {
     e.preventDefault()
@@ -35,9 +35,9 @@ const ChangePasswordModal = ({ value, onGood, onBad, onUpdate }) => {
   return (
     <StyledModal>
       <Modal onClose={onBad}>
-        <Heading1>Change password</Heading1>
+        <Heading1>Change e-mail</Heading1>
         <form onSubmit={submit}>
-          <Input type='password' label='New password' value={value} onChange={(v) => onUpdate('password', v)} />
+          <Input type='email' label='New e-mail' value={value} onChange={(v) => onUpdate('userlandId', v)} />
           <Button disabled={!canSubmit(value)}>Save</Button>
         </form>
       </Modal>
@@ -45,17 +45,17 @@ const ChangePasswordModal = ({ value, onGood, onBad, onUpdate }) => {
   )
 }
 
-ChangePasswordModal.propTypes = {
+ChangeUserlandIdModal.propTypes = {
   value: PropTypes.string,
   onGood: PropTypes.func,
   onBad: PropTypes.func,
   onUpdate: PropTypes.func
 }
-
-ChangePasswordModal.defaultProps = {
+  
+ChangeUserlandIdModal.defaultProps = {
   onGood: () => {},
   onBad: () => {},
   onUpdate: () => {}
 }
   
-export default ChangePasswordModal
+export default ChangeUserlandIdModal
