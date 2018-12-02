@@ -8,11 +8,11 @@ class Move extends Action {
     this.description = 'Moves an instance.'
     this.defaultRunArguments = new Map([
       ['X', {
-        type: 'number',
+        type: 'generic',
         value: ''
       }],
       ['Y', {
-        type: 'number',
+        type: 'generic',
         value: ''
       }]
     ])

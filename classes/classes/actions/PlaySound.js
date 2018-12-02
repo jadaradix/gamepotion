@@ -19,16 +19,14 @@ class PlaySound extends Action {
   }
 
   run(context, runArguments, appliesTo) {
+    const foundSound = context.eventContext.resourceContainers.find(r => r.resource.id === runArguments[0])
     switch(context.platform) {
     case 'html5':
-      return {
-        actionBack: 'SOUND_PLAY',
-        actionBackArguments: [
-          runArguments[0],
-          runArguments[1]
-        ],
-        appliesTo
+      if (typeof foundSound === 'object') {
+        foundSound.extras.element.loop = runArguments[1]
+        foundSound.extras.element.play()
       }
+      return null
     case 'nds':
       return ''
     default:

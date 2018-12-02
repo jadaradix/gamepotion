@@ -48,9 +48,8 @@ class GameAtomInstance {
       }
       const runArguments = parseRunArguments(action.argumentTypes, action.runArguments, parseContext)
       const runContext = {
-        eventContext,
         platform: 'html5',
-        space: eventContext.spaceContainer.space,
+        eventContext,
         instance,
         otherInstance: null
       }

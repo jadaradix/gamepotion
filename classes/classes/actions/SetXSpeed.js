@@ -8,8 +8,8 @@ class SetXSpeed extends Action {
     this.description = 'Sets the X speed.'
     this.defaultRunArguments = new Map([
       ['Speed', {
-        type: 'number',
-        value: 1
+        type: 'generic',
+        value: '1'
       }]
     ])
   }

@@ -23,7 +23,7 @@ class EndIf extends Action {
   }
 
   toString(runArguments, appliesTo) {
-    return 'End If'
+    return ''
   }
 }
 

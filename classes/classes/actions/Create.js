@@ -12,11 +12,11 @@ class Create extends Action {
         value: ''
       }],
       ['X', {
-        type: 'number',
+        type: 'generic',
         value: ''
       }],
       ['Y', {
-        type: 'number',
+        type: 'generic',
         value: ''
       }]
     ])

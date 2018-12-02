@@ -143,7 +143,7 @@ class StateAccount extends Component {
   }
 
   onUpdateProp(prop, value) {
-    return dispatch({
+    dispatch({
       name: 'USER_UPDATE',
       data: {
         id: this.props.match.params.id,
