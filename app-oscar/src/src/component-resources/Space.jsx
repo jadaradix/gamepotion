@@ -46,7 +46,7 @@ const StyledResource = styled.div`
         display: grid;
         grid-template-columns: 2fr 2fr;
         grid-gap: 1rem;
-        margin-top: 2rem;
+        margin-bottom: 2rem;
       }
       .component--dropper:not(:last-child) {
         margin-bottom: 1rem;
@@ -250,14 +250,14 @@ class ResourceSpace extends PureComponent {
             <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
           </Box>
           <Box className='settings'>
-            <Dropper options={imageDropperResources} value={backgroundImage} onChoose={this.onChooseBackgroundImage} label='Background image' />
-            <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
             <div className='coords'>
               <Input label='Width' type='number' value={this.props.resource.width} onChange={(v) => this.onChangeMasterProp('width', v)} min='0' max='4096' />
               <Input label='Height' type='number' value={this.props.resource.height} onChange={(v) => this.onChangeMasterProp('height', v)} min='0' max='4096' />
               <Input label='Cam Width' type='number' value={this.props.resource.camera.width} onChange={(v) => this.onChangeCameraProp('width', v)} min='0' max='4096' />
               <Input label='Cam Height' type='number' value={this.props.resource.camera.height} onChange={(v) => this.onChangeCameraProp('height', v)} min='0' max='4096' />
             </div>
+            <Dropper options={imageDropperResources} value={backgroundImage} onChoose={this.onChooseBackgroundImage} label='Background image' />
+            <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
           </Box>
           <Box className='info'>
             <div className='touches'>
