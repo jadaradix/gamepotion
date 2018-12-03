@@ -7,7 +7,6 @@ import { font } from '../styleAbstractions'
 
 const StyledModule = styled.div`
   position: relative;
-  cursor: pointer;
   // background-color: blue;
   a {
     display: block;

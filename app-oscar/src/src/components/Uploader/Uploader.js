@@ -172,7 +172,7 @@ class Uploader extends PureComponent {
               return (
                 <div>
                   <img src={icons.generic.upload} className='icon' alt='' />
-                  <p>Drop a file here or touch to choose.</p>
+                  <p>Drop a file here or touch to upload.</p>
                 </div>
               )
             }}

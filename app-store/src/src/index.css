@@ -13,11 +13,12 @@ html {
 }
 
 body {
-  background-color: #ecf0f1;
 }
 
 #root {
-  height: 100%;
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: white;
 }
 
 strong {

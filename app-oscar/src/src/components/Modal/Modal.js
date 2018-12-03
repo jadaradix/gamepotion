@@ -6,8 +6,8 @@ import classnames from 'classnames'
 import icons  from '../../icons'
 import { colours } from '../../styleAbstractions'
 
-const KEY_TAB = 9
-const KEY_ESC = 27
+const KEY_TAB = 'Tab'
+const KEY_ESC = 'Escape'
 
 const WIDTH = '50%'
 const MAX_WIDTH = '320px'
@@ -129,7 +129,7 @@ class Modal extends React.Component {
         focusableElements[0].focus()
       }
     }
-    switch (e.keyCode) {
+    switch (e.key) {
     case KEY_TAB:
       if (activeElementIndex === -1 || focusableElements.length === 1) {
         e.preventDefault()

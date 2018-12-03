@@ -11,6 +11,7 @@ import events from '../atomEvents'
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
 import List from '../components/List/List'
+import FilterableList from '../components/FilterableList/FilterableList'
 import ListItem from '../components/ListItem/ListItem'
 import Image from '../components/Image/Image'
 import Heading2 from '../components/Heading2/Heading2'
@@ -286,11 +287,11 @@ class ResourceAtom extends Component {
           </Box>
           <Box className='add-action'>
             <Heading2>Add an action</Heading2>
-            <List>
+            <FilterableList>
               {this.actionClassInstances.map(a => {
                 return <ListItem id={a.id} key={a.id} actions={['add']} onAction={(id, action) => this.onChooseAddAction(id)} icon={icons.actions[a.id]} onChoose={this.onChooseAddAction}>{a.name}</ListItem>
               })}
-            </List>
+            </FilterableList>
           </Box>
         </section>
       </StyledResource>
