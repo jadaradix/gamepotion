@@ -2,7 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import { font } from '../styleAbstractions'
+
 const StyledModule = styled.div`
+  position: relative;
+  cursor: pointer;
   // background-color: blue;
   img {
     display: block;
@@ -12,12 +16,13 @@ const StyledModule = styled.div`
     // border-radius: 8px;
     // background-color: orange;
   }
-  .is-purchased {
+  span {
     display: block;
     position: absolute;
     bottom: 0.5rem;
     right: 0.5rem;
     color: white;
+    ${font}
     // background-color: pink;
   }
 `
@@ -27,7 +32,7 @@ const hackErroredImage = (e) => {
   element.style.height = '172px'
 }
 
-const Module = ({ id, name, isPurchased, onClick }) => {
+const Module = ({ id, name, price, isPurchased, onClick }) => {
   // console.warn('[component-Module] id/isPurchased', id, isPurchased)
   return (
     <StyledModule className='component--module'>
@@ -37,8 +42,11 @@ const Module = ({ id, name, isPurchased, onClick }) => {
         onError={hackErroredImage}
         onClick={onClick}
       />
+      {isPurchased === false &&
+        <span>{price}</span>
+      }
       {isPurchased === true &&
-        <span className='is-purachased'>Purchased</span>
+        <span>Purchased</span>
       }
     </StyledModule>
   )

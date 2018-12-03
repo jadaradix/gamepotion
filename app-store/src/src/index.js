@@ -1,8 +1,23 @@
 import React, { Fragment } from 'react'
 import ReactDOM from 'react-dom'
+import styled from 'styled-components'
+
 import './index.css'
 
+import logo from './images/logo.png'
 import Modules from './components/Modules'
+
+const StyledApp = styled.div`
+  max-width: 480px;
+  img {
+    display: block;
+    width: 100%;
+    max-width: 256px;
+  }
+  .component--modules {
+    margin-top: 1rem;
+  }
+`
 
 const modules = [
   {
@@ -28,12 +43,15 @@ class App extends React.PureComponent {
   }
 
   render() {
-    return <Fragment>
-      <Modules
-        modules={modules}
-        onChoose={this.onChooseModule}
-      />
-    </Fragment>
+    return (
+      <StyledApp>
+        <img src={logo} alt='' />
+        <Modules
+          modules={modules}
+          onChoose={this.onChooseModule}
+        />
+      </StyledApp>
+    )
   }
 }
 

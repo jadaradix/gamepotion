@@ -8,9 +8,8 @@ const StyledModules = styled.div`
   display: grid;
   grid-template-columns: 2fr 2fr;
   grid-gap: 1rem;
-  max-width: 480px;
   // background-color: red;
-  `
+`
 
 const Modules = ({ modules, onChoose }) => {
   // console.warn('[component-Bricks] modules', modules)
@@ -19,10 +18,11 @@ const Modules = ({ modules, onChoose }) => {
       {modules.map(module => {
         const {
           id,
-          name
+          name,
+          price
         } = module
         return (
-          <Module key={id} id={id} name={name} onClick={() => onChoose(id)} />
+          <Module key={id} id={id} name={name} price={price} onClick={() => onChoose(id)} />
         )
       })}
     </StyledModules>
