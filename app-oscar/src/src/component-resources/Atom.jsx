@@ -6,7 +6,6 @@ import classes from '../classes'
 
 import { font, colours } from '../styleAbstractions'
 import icons from '../icons'
-import events from '../atomEvents'
 
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
@@ -17,6 +16,7 @@ import Image from '../components/Image/Image'
 import Heading2 from '../components/Heading2/Heading2'
 
 import ActionModal from '../modals/Action'
+import EventModal from '../modals/Event'
 import ActionsList from '../component-instances/ActionsList'
 
 const StyledResource = styled.div`
@@ -89,10 +89,11 @@ class ResourceAtom extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentEvent: 'create',
+      currentEvent: undefined,
       actionClassInstance: null,
       actionClassInstanceIsAdding: false
     }
+
     this.onChooseImage = this.onChooseImage.bind(this)
     this.onChooseEvent = this.onChooseEvent.bind(this)
     this.onChooseAddAction = this.onChooseAddAction.bind(this)
@@ -103,6 +104,9 @@ class ResourceAtom extends Component {
     this.actionClassInstances = Object.keys(classes.actions).map(k => {
       return new classes.actions[k]()
     })
+
+    this.onEventModalGood = this.onEventModalGood.bind(this)
+    this.onEventModalGood = this.onEventModalGood.bind(this)
   }
 
   onUpdate(data) {
@@ -132,11 +136,14 @@ class ResourceAtom extends Component {
       actionClassInstance.runArguments.push(v.value)
     })
     if (argumentsCount === 0 && actionClassInstance.caresAboutAppliesTo === false) {
-      return this.setState({
+      return this.setState(
+        {
         actionClassInstanceIsAdding: true
-      }, () => {
-        this.onActionModalGood(actionClassInstance)
-      })
+        },
+        () => {
+          this.onActionModalGood(actionClassInstance)
+        }
+      )
     }
     this.setState({
       actionClassInstance,
@@ -156,24 +163,16 @@ class ResourceAtom extends Component {
       console.warn('[component-resource-Atom] [onActionModalGood] actionObject', actionObject)
       events = {
         ...this.props.resource.events,
-        [this.state.currentEvent]: [
+        [this.state.currentEvent]: {
           ...this.props.resource.events[this.state.currentEvent],
-          actionObject
-        ]
+          actions: [
+            ...this.props.resource.events[this.state.currentEvent].actions,
+            actionObject
+          ] 
+        }
       }
     } else {
       events = this.props.resource.events
-      // events = {
-      //   ...this.props.resource.events,
-      //   [this.state.currentEvent]: [
-      //     ...this.props.resource.events[this.state.currentEvent],
-      //     {
-      //       id: actionClassInstance.id,
-      //       runArguments: actionClassInstance.runArguments,
-      //       appliesTo: 'this'
-      //     }
-      //   ]
-      // }
     }
     this.onUpdate({
       events
@@ -187,6 +186,14 @@ class ResourceAtom extends Component {
     this.setState({
       actionClassInstance: null
     })
+  }
+
+  onEventModalGood() {
+  
+  }
+
+  onEventModalBad() {
+  
   }
 
   onActionModalUpdateArgument() {
@@ -214,9 +221,12 @@ class ResourceAtom extends Component {
         this.onUpdate({
           events: {
             ...this.props.resource.events,
-            [this.state.currentEvent]: this.props.resource.events[this.state.currentEvent].filter((a, i) => {
-              return (i !== id)
-            })
+            [this.state.currentEvent]: {
+              ...this.props.resource.events[this.state.currentEvent],
+              actions: this.props.resource.events[this.state.currentEvent].actions.filter((a, i) => {
+                return (i !== id)
+              })
+            }
           }
         })
       }
@@ -256,8 +266,11 @@ class ResourceAtom extends Component {
     //   console.warn('[component-resource-Atom] [render] this.state.actionClassInstance.defaultRunArguments', this.state.actionClassInstance.defaultRunArguments)
     //   console.warn('[component-resource-Atom] [render] this.state.actionClassInstance.defaultRunArguments.keys()', this.state.actionClassInstance.defaultRunArguments.keys())
     // }
+    // const events = Object.values(classes.events).map(eventClass => new eventClass())
 
-    const currentEventName = events.find(e => e.id === this.state.currentEvent).name
+    const currentEvent = this.props.resource.events[this.state.currentEvent]
+    const currentEventActions = (typeof currentEvent === 'object' ? currentEvent.actions : [])
+
     return (
       <StyledResource>
         {this.state.actionClassInstance !== null &&
@@ -273,16 +286,27 @@ class ResourceAtom extends Component {
           <Box className='events'>
             <Heading2>Events</Heading2>
             <List>
-              {events.map(e => {
-                return <ListItem id={e.id} key={e.id} icon={icons.events[e.icon]} onChoose={this.onChooseEvent} selected={e.id === this.state.currentEvent}>{e.name}</ListItem>
+              {Object.keys(this.props.resource.events).map(eventId => {
+                console.warn('eventId', eventId)
+                const eventClass = new classes.events[eventId]()
+                return <ListItem
+                  id={eventClass.id}
+                  key={eventClass.id}
+                  icon={icons.events[eventClass.icon]}
+                  selected={eventClass.id === this.state.currentEvent}
+                  onChoose={this.onChooseEvent}
+                >
+                  {eventClass.toString()}
+                </ListItem>
               })}
             </List>
+            <Button onClick={}>Add event</Button>
           </Box>
         </section>
         <section className='actions'>
           <Box className='actions'>
-            <Heading2>{currentEventName} event actions</Heading2>
-            <ActionsList resources={this.props.resources} actions={this.props.resource.events[this.state.currentEvent]} actionClassInstances={this.actionClassInstances} onAction={this.actOnAction} />
+            <Heading2>Actions</Heading2>
+            <ActionsList resources={this.props.resources} actions={currentEventActions} actionClassInstances={this.actionClassInstances} onAction={this.actOnAction} />
           </Box>
           <Box className='add-action'>
             <Heading2>Add an action</Heading2>
