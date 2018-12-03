@@ -11,7 +11,7 @@ const StyledModules = styled.div`
   // background-color: red;
 `
 
-const Modules = ({ modules, onChoose }) => {
+const Modules = ({ modules }) => {
   // console.warn('[component-Bricks] modules', modules)
   return (
     <StyledModules className='component--modules'>
@@ -22,7 +22,7 @@ const Modules = ({ modules, onChoose }) => {
           price
         } = module
         return (
-          <Module key={id} id={id} name={name} price={price} onClick={() => onChoose(id)} />
+          <Module key={id} id={id} name={name} price={price} />
         )
       })}
     </StyledModules>
@@ -30,12 +30,10 @@ const Modules = ({ modules, onChoose }) => {
 }
 
 Modules.propTypes = {
-  modules: PropTypes.array.isRequired,
-  onChoose: PropTypes.func
+  modules: PropTypes.array.isRequired
 }
 
 Modules.defaultProps = {
-  onChoose: () => {}
 }
 
 export default Modules
