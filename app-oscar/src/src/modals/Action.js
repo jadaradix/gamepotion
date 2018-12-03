@@ -16,9 +16,16 @@ const StyledModal = styled.div`
     .component--heading1 {
       margin-bottom: 2rem;
     }
-    .argument {
-      margin-bottom: 1rem;
-      // background-color: red;
+    .applies-to {
+      margin-bottom: 2rem;
+      // background-color: yellow;
+    }
+    .arguments {
+      // background-color: blue;
+      .argument {
+        margin-bottom: 1rem;
+        // background-color: red;
+      }
     }
     .decision {
       // background-color: green;
@@ -26,7 +33,7 @@ const StyledModal = styled.div`
   }
 `
 
-const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateArgument }) => {
+const ActionModal = ({ actionClassInstance, resources, onUpdateArgument, onGood, onBad }) => {
 
   const resourcesByType = {}
   resourceTypes.forEach(rt => {
@@ -40,11 +47,29 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
       })
   })
 
-  const getArgument = (index, name, type, value) => {
-    const handleOnUpdateArgument = (v) => {
-      return onUpdateArgument(index, v)
+  const appliesToOptions = [
+    {
+      id: 'this',
+      name: 'This instance'
+    },
+    {
+      id: 'other',
+      name: 'Other instance'
     }
-    if (actionClassInstance.runArguments[index].length === 0 && resourcesByType.hasOwnProperty(type)) {
+  ]
+
+  const updateArgument = (index, value) => {
+    actionClassInstance.runArguments[index] = value
+    onUpdateArgument()
+  }
+
+  const updateAppliesTo = (appliesTo) => {
+    actionClassInstance.appliesTo = appliesTo
+    onUpdateArgument()
+  }
+
+  const getArgument = (index, name, type, value) => {
+    if (resourcesByType.hasOwnProperty(type) && actionClassInstance.runArguments[index].length === 0) {
       if (resourcesByType[type].length > 0) {
         actionClassInstance.runArguments[index] = resourcesByType[type][0].id
       } else {
@@ -52,14 +77,14 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
       }
     }
     if (resourcesByType.hasOwnProperty(type)) {
-      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={resourcesByType[type]} />
+      return <Dropper onChoose={(v) => updateArgument(index, v)} label={name} value={value} options={resourcesByType[type]} />
     }
     switch (type) {
     case 'boolean':
-      return <Switch onChange={handleOnUpdateArgument} checked={value}>{name}</Switch>
+      return <Switch onChoose={(v) => updateArgument(index, v)} checked={value}>{name}</Switch>
     case 'generic':
     default:
-      return <Input onChange={handleOnUpdateArgument} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
+      return <Input onChange={(v) => updateArgument(index, v)} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
     }
   }
 
@@ -68,16 +93,23 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
     <StyledModal>
       <Modal onClose={onBad}>
         <Heading1>{actionClassInstance.name}</Heading1>
-        {Array.from(actionClassInstance.defaultRunArguments.keys()).map((k, i) => {
-          const {
-            type
-          } = actionClassInstance.defaultRunArguments.get(k)
-          return (
-            <div className='argument' key={k}>
-              {getArgument(i, k, type, actionClassInstance.runArguments[i])}
-            </div>
-          )
-        })}
+        {actionClassInstance.caresAboutAppliesTo &&
+          <div className='applies-to'>
+            <Dropper onChoose={updateAppliesTo} label={'Applies to'} value={actionClassInstance.appliesTo} options={appliesToOptions} />
+          </div>
+        }
+        <div className='arguments'>
+          {Array.from(actionClassInstance.defaultRunArguments.keys()).map((k, i) => {
+            const {
+              type
+            } = actionClassInstance.defaultRunArguments.get(k)
+            return (
+              <div className='argument' key={k}>
+                {getArgument(i, k, type, actionClassInstance.runArguments[i])}
+              </div>
+            )
+          })}
+        </div>
         <div className='decision'>
           <Button onClick={() => onGood(actionClassInstance)}>Done</Button>
         </div>
@@ -89,15 +121,15 @@ const ActionModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateAr
 ActionModal.propTypes = {
   actionClassInstance: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired,
+  onUpdateArgument: PropTypes.func,
   onGood: PropTypes.func,
   onBad: PropTypes.func,
-  onUpdateArgument: PropTypes.func
 }
 
 ActionModal.defaultProps = {
+  onUpdateArgument: () => {},
   onGood: () => {},
-  onBad: () => {},
-  onUpdateArgument: () => {}
+  onBad: () => {}
 }
 
 export default ActionModal

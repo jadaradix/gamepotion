@@ -12,6 +12,7 @@ class SetYSpeed extends Action {
         value: '1'
       }]
     ])
+    this.caresAboutAppliesTo = true
   }
 
   run(context, runArguments, appliesTo) {

@@ -131,7 +131,7 @@ class ResourceAtom extends Component {
     actionClassInstance.defaultRunArguments.forEach((v) => {
       actionClassInstance.runArguments.push(v.value)
     })
-    if (argumentsCount === 0) {
+    if (argumentsCount === 0 && actionClassInstance.caresAboutAppliesTo === false) {
       return this.setState({
         actionClassInstanceIsAdding: true
       }, () => {
@@ -153,7 +153,7 @@ class ResourceAtom extends Component {
         runArguments: actionClassInstance.runArguments,
         appliesTo: 'this'
       }
-      console.warn('actionObject', actionObject)
+      console.warn('[component-resource-Atom] [onActionModalGood] actionObject', actionObject)
       events = {
         ...this.props.resource.events,
         [this.state.currentEvent]: [
@@ -189,9 +189,8 @@ class ResourceAtom extends Component {
     })
   }
 
-  onActionModalUpdateArgument(index, value) {
+  onActionModalUpdateArgument() {
     const { actionClassInstance } = this.state
-    actionClassInstance.runArguments[index] = value
     this.setState({
       actionClassInstance
     })
