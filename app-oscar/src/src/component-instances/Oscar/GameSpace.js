@@ -121,16 +121,16 @@ class GameSpace extends Component {
     const getTouchData = (e) => {
       e.preventDefault()
       // console.error('[renderCanvas] [getTouchData]', e.touches[0].clientY, domBoundsY, window.scrollY)
-      let x = parseInt(e.touches[0].clientX - domBoundsX, 10)
-      let y = parseInt(e.touches[0].clientY - domBoundsY, 10)
+      let x = parseInt(e.touches[0].clientX - domBoundsX - window.scrollX, 10)
+      let y = parseInt(e.touches[0].clientY - domBoundsY - window.scrollY, 10)
       const z = parseInt(0, 10)
       return { x, y, z }
     }
     const getMouseData = (e) => {
       e.preventDefault()
       // console.error('[renderCanvas] [getMouseData]', e.clientY, domBoundsY, window.scrollY)
-      const x = parseInt(e.clientX - domBoundsX + window.scrollX, 10)
-      const y = parseInt(e.clientY - domBoundsY + window.scrollY, 10)
+      const x = parseInt(e.clientX - domBoundsX - window.scrollX, 10)
+      const y = parseInt(e.clientY - domBoundsY - window.scrollY, 10)
       const z = parseInt(0, 10)
       return { x, y, z }
     }
