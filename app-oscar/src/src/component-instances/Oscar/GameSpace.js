@@ -21,32 +21,35 @@ class GameSpace extends Component {
     this.eventListeners = new Map()
   }
 
-  handleEvent(event, eventContext, instanceClasses, appliesToInstanceClasses) {
+  handleEvent(eventId, eventContext, instanceClasses, appliesToInstanceClasses) {
     let instanceClassesToDestroy = []
     let instancesToCreate = []
     appliesToInstanceClasses.forEach(i => {
-      const actionBacks = i.onEvent(event, eventContext).filter(ab => typeof ab === 'object' && ab !== null)
-      actionBacks.forEach(actionBack => {
-        const result = handleActionBack(actionBack)
-        instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
-        instancesToCreate = instancesToCreate.concat(result.instancesToCreate)
-        if (typeof result.imageToSet === 'string') {
-          i.setImage(result.imageToSet, eventContext.resourceContainers)
-        }
-        if (typeof result.spaceToGoTo === 'string') {
-          this.props.onSwitchSpace(result.spaceToGoTo)
-        }
+      i.atomContainer.extras.events.filter(e => e.id === eventId).forEach(e => {
+        const actions = e.actions
+        const actionBacks = i.onEvent(actions, eventContext).filter(ab => typeof ab === 'object' && ab !== null)
+        actionBacks.forEach(actionBack => {
+          const result = handleActionBack(actionBack)
+          instanceClassesToDestroy = instanceClassesToDestroy.concat(result.instanceClassesToDestroy)
+          instancesToCreate = instancesToCreate.concat(result.instancesToCreate)
+          if (typeof result.imageToSet === 'string') {
+            i.setImage(result.imageToSet, eventContext.resourceContainers)
+          }
+          if (typeof result.spaceToGoTo === 'string') {
+            this.props.onSwitchSpace(result.spaceToGoTo)
+          }
+        })
       })
     })
     if (instanceClassesToDestroy.length > 0) {
       console.log('[Oscar] [handleEvent] instanceClassesToDestroy', instanceClassesToDestroy)
-      instanceClasses = this.handleEvent('destroy', eventContext, instanceClasses, instanceClassesToDestroy)
+      instanceClasses = this.handleEvent('Destroy', eventContext, instanceClasses, instanceClassesToDestroy)
     }
     const createdInstances = instanceDefinitionsToInstanceClasses(instancesToCreate, eventContext.resourceContainers)
     instanceClasses = instanceClasses.concat(createdInstances)
     if (createdInstances.length > 0) {
       console.log('[Oscar] [handleEvent] createdInstances', createdInstances)
-      instanceClasses = this.handleEvent('create', eventContext, instanceClasses, createdInstances)
+      instanceClasses = this.handleEvent('Create', eventContext, instanceClasses, createdInstances)
     }
     instanceClasses = instanceClasses.filter(ic => {
       const willDestroy = instanceClassesToDestroy.includes(ic)
@@ -63,7 +66,7 @@ class GameSpace extends Component {
       resourceContainers: this.props.resourceContainers,
       variables: this.props.variables
     }
-    return this.handleEvent('create', eventContext, instanceClasses, instanceClasses)
+    return this.handleEvent('Create', eventContext, instanceClasses, instanceClasses)
   }
 
   handleEventStep(instanceClasses) {
@@ -81,7 +84,7 @@ class GameSpace extends Component {
       resourceContainers: this.props.resourceContainers,
       variables: this.props.variables
     }
-    return this.handleEvent('step', eventContext, instanceClasses, instanceClasses)
+    return this.handleEvent('Step', eventContext, instanceClasses, instanceClasses)
   }
 
   componentWillUnmount() {
@@ -121,16 +124,16 @@ class GameSpace extends Component {
     const getTouchData = (e) => {
       e.preventDefault()
       // console.error('[renderCanvas] [getTouchData]', e.touches[0].clientY, domBoundsY, window.scrollY)
-      let x = parseInt(e.touches[0].clientX - domBoundsX, 10)
-      let y = parseInt(e.touches[0].clientY - domBoundsY, 10)
+      let x = parseInt(e.touches[0].clientX - domBoundsX - window.scrollX, 10)
+      let y = parseInt(e.touches[0].clientY - domBoundsY - window.scrollY, 10)
       const z = parseInt(0, 10)
       return { x, y, z }
     }
     const getMouseData = (e) => {
       e.preventDefault()
       // console.error('[renderCanvas] [getMouseData]', e.clientY, domBoundsY, window.scrollY)
-      const x = parseInt(e.clientX - domBoundsX + window.scrollX, 10)
-      const y = parseInt(e.clientY - domBoundsY + window.scrollY, 10)
+      const x = parseInt(e.clientX - domBoundsX - window.scrollX, 10)
+      const y = parseInt(e.clientY - domBoundsY - window.scrollY, 10)
       const z = parseInt(0, 10)
       return { x, y, z }
     }
@@ -180,7 +183,7 @@ class GameSpace extends Component {
           resourceContainers: this.props.resourceContainers,
           variables: this.props.variables
         }
-        instanceClasses = this.handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
+        instanceClasses = this.handleEvent('Touch', eventContext, instanceClasses, instancesAtCoords)
       }
     }, true)
     this.addEventListener(canvas, 'mousedown', (e) => {
@@ -203,7 +206,7 @@ class GameSpace extends Component {
           resourceContainers: this.props.resourceContainers,
           variables: this.props.variables
         }
-        instanceClasses = this.handleEvent('touch', eventContext, instanceClasses, instancesAtCoords)
+        instanceClasses = this.handleEvent('Touch', eventContext, instanceClasses, instancesAtCoords)
       }
     })
     this.addEventListener(canvas, 'contextmenu', (e) => {
@@ -286,24 +289,23 @@ class GameSpace extends Component {
     const resourcesAtoms = this.props.resourceContainers.filter(r => r.resource.type === 'atom')
     resourcesAtoms
       .forEach(r => {
-        r.extras.events = new Map(
-          Object.keys(r.resource.events).map(k => {
-            return [
-              k,
-              r.resource.events[k].map(a => {
-                const actionClassInstance = actionClassInstances.get(a.id)
-                const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
-                return {
-                  id: actionClassInstance.id,
-                  run: actionClassInstance.run,
-                  runArguments: a.runArguments,
-                  appliesTo: a.appliesTo,
-                  argumentTypes
-                }
-              })
-            ]
-          })
-        )
+        r.extras.events = r.resource.events.map(e => {
+          return {
+            id: e.id,
+            configuration: e.configuration,
+            actions: e.actions.map(a => {
+              const actionClassInstance = actionClassInstances.get(a.id)
+              const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
+              return {
+                id: actionClassInstance.id,
+                run: actionClassInstance.run,
+                runArguments: a.runArguments,
+                appliesTo: a.appliesTo,
+                argumentTypes
+              }
+            })
+          }
+        })
       })
 
     //

@@ -1,40 +1,40 @@
 import React, { Fragment } from 'react'
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import ReactDOM from 'react-dom'
+import styled from 'styled-components'
+
 import './index.css'
+import logo from './images/logo.png'
 
-import Modules from './components/Modules'
+import Home from './routes/Home'
+import Module from './routes/Module'
 
-const modules = [
-  {
-    id: 'pro',
-    name: 'Pro',
-    price: '$10'
-  },
-  {
-    id: 'resource-pack',
-    name: 'Resource Pack',
-    price: '$5'
+const StyledApp = styled.div`
+  a.logo {
+    max-width: 256px;
+    display: block;
+    margin-bottom: 1rem;
+    img {
+      display: block;
+      width: 100%;
+    }
   }
-]
+`
 
-class App extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.onChooseModule = this.onChooseModule.bind(this)
-  }
-
-  onChooseModule(id) {
-    console.warn('[onChooseModule] id', id)
-  }
-
-  render() {
-    return <Fragment>
-      <Modules
-        modules={modules}
-        onChoose={this.onChooseModule}
-      />
-    </Fragment>
-  }
+const App = () => {
+  return (
+    <StyledApp>
+      <a href='/' className='logo'>
+        <img src={logo} alt='' />
+      </a>
+      <Router>
+        <Switch>
+          <Route path='/modules/:id' exact strict component={Module} />
+          <Route component={Home} />
+        </Switch>
+      </Router>
+    </StyledApp>
+  )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))

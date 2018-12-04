@@ -7,6 +7,11 @@ import resources from './classes/resources/index.js'
 import events from './classes/events/index.js'
 import actions from './classes/actions/index.js'
 
+export {
+  events,
+  actions
+}
+
 export default {
   User,
   Team,

@@ -3,7 +3,7 @@ import Event from '../Event.js'
 class Input extends Event {
   constructor(json = {}) {
     super(json)
-    this.id = 'input'
+    this.id = 'Input'
     this.name = 'Input'
     this.icon = 'input'
     this.defaultConfiguration = [

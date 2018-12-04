@@ -3,7 +3,6 @@ import { Redirect } from 'react-router'
 import styled from 'styled-components'
 
 import { getState, dispatch, subscribe } from '../state'
-import { font } from '../styleAbstractions'
 
 import Loading from '../components/Loading/Loading'
 import Button from '../components/Button/Button'
@@ -17,40 +16,6 @@ import CustomHelmet from '../component-instances/CustomHelmet'
 
 import ChangePasswordModal from '../modals/ChangePassword'
 import ChangeUserlandIdModal from '../modals/ChangeUserlandId'
-
-// import Heading2 from '../components/Heading2/Heading2'
-// const SUBSCRIPTIONS = [
-//   {
-//     id: 'free',
-//     name: 'Free'
-//   },
-//   {
-//     id: 'pro',
-//     name: 'Pro'
-//   },
-//   {
-//     id: 'boss',
-//     name: 'Boss'
-//   }
-// ]
-/*
-const currentSubscriptionId = this.state.user.getSubscription().id
-const currentSubscriptionWhen = new Date(this.state.user.getSubscription().when * 1000).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})
-<section className='subscriptions'>
-<Heading1>Subscription</Heading1>
-{SUBSCRIPTIONS.map(s => {
-  const current = (currentSubscriptionId === s.id)
-  return (
-    <div key={s.id} className={classNames('subscription', {current})}>
-      <Heading2>{s.name}</Heading2>
-      {current && <p>Since {currentSubscriptionWhen}</p>}
-      {current && currentSubscriptionId !== 'free' && <Button disabled>Unsubscribe</Button>}
-      {!current && <Button disabled>Subscribe</Button>}
-    </div>
-  )
-})}
-</section>
-*/
 
 const StyledState = styled.div`
   .component--box {
@@ -71,34 +36,6 @@ const StyledState = styled.div`
       margin-left: 0.5rem;
     }
   }
-  // section.subscriptions {
-  //   .component--heading1 + .subscription {
-  //     margin-top: 1.5rem;
-  //   }
-  //   .subscription {
-  //     padding: 1rem;
-  //     border-radius: 4px;
-  //     border: 2px solid transparent;
-  //     box-shadow: 0 4px 20px rgb(212, 212, 212);
-  //     .component--heading2 + .component--button {
-  //       margin-top: 1rem;
-  //     }
-  //     .component--heading2 + p {
-  //       margin-top: 0.5rem;
-  //     }
-  //     p {
-  //       ${font}
-  //       font-size: 80%;
-  //       color: #6c7a89;
-  //     }
-  //     &.current {
-  //       border-color: #dadfe1;
-  //     }
-  //     &:not(:last-child) {
-  //       margin-bottom: 1rem;
-  //     }
-  //   }
-  // }
 `
 
 class StateAccount extends Component {

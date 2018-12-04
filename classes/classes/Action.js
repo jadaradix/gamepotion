@@ -10,6 +10,7 @@ class Action {
     this.indentation = 0
     this.invertIndentation = false
     this.appliesTo = json.appliesTo || 'this'
+    this.caresAboutAppliesTo = false
   }
 
   getDefaultRunArguments() {

@@ -12,6 +12,7 @@ class SetImage extends Action {
         value: ''
       }]
     ])
+    this.caresAboutAppliesTo = true
   }
 
   run(context, runArguments, appliesTo) {

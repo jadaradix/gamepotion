@@ -42,16 +42,16 @@ const StyledInput = styled.div`
     opacity: 0.5;
   }
   input::-webkit-input-placeholder {
-    color: #dadfe1;
+    color: #bdc3c7;
   }
   input&::-moz-placeholder {
-    color: #dadfe1;
+    color: #bdc3c7;
   }
   input:-moz-placeholder {
-    color: #dadfe1;
+    color: #bdc3c7;
   }
   input:-ms-input-placeholder {
-    color: #dadfe1;
+    color: #bdc3c7;
   }
 `
 

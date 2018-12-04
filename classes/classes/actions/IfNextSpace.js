@@ -4,7 +4,7 @@ class IfNextSpace extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'IfNextSpace'
-    this.name = 'If Next Space'
+    this.name = 'If next Space'
     this.description = 'Conditionally runs actions when there is a next space.'
     this.defaultRunArguments = new Map([
       ['Not', {

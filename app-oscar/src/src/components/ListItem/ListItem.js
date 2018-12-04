@@ -103,6 +103,11 @@ const getAction = (onAction, id, name) => {
 }
 
 const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, indentation }) => {
+  const handleKeypress = (e) => {
+    if (e.key === 'Enter') {
+      onChoose(id)
+    }
+  }
   const handleOnAction = (e, id, action) => {
     e.stopPropagation()
     onAction(id, action)
@@ -111,7 +116,7 @@ const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, i
     marginLeft: `${indentation}px`
   }
   return (
-    <StyledListItem onClick={() => onChoose(id)} onTouchEnd={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})}>
+    <StyledListItem onClick={() => onChoose(id)} onTouchEnd={() => onChoose(id)} className={classnames('component--list-item', {'selected': selected})} tabIndex='0' onKeyPress={handleKeypress}>
       <img src={icon} style={imgStyle} alt='' />
       <span>{children}</span>
       <div className='actions'>
@@ -122,7 +127,7 @@ const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, i
 }
 
 ListItem.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   icon: PropTypes.string,
   selected: PropTypes.bool,
   actions: PropTypes.array,

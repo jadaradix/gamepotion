@@ -8,6 +8,7 @@ class Destroy extends Action {
     this.description = 'Destroys an instance.'
     this.defaultRunArguments = new Map([
     ])
+    this.caresAboutAppliesTo = true
   }
 
   run(context, runArguments, appliesTo) {

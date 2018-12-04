@@ -22,16 +22,11 @@ const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => 
 
   const resourceTypeTypes = resourceTypes.map(r => r.type)
 
-  const getEmpty = () => {
-    return (
-      <p className='no-actions'>There aren&rsquo;t any actions for this event.</p>
-    )
-  }
   const getList = (actions) => {
     let indentation = 0
     let indentation32 = 0
     return (
-      <List>
+      <List emptyText='There aren&rsquo;t any actions for this event.'>
         {actions.map((action, i) => {
           const actionClassInstance = actionClassInstances.find(actionClassInstance => actionClassInstance.id === action.id)
           const previousActionClassInstance = actions[i - 1] ? actionClassInstances.find(actionClassInstance => actionClassInstance.id === actions[i - 1].id) : undefined
@@ -57,12 +52,7 @@ const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => 
     )
   }
 
-  if (actions.length > 0) {
-    return getList(actions)
-  } else {
-    return getEmpty()
-  }
-
+  return getList(actions)
 }
 
 ActionsList.propTypes = {

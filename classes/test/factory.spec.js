@@ -26,12 +26,12 @@ test('creates an atom resource with events/actions (one action doesnt exist)', (
         {
           id: 'Debug',
           runArguments: ['"hello world"'],
-          appliesTo: "this"
+          appliesTo: 'this'
         },
         {
           id: 'Qwe Qwe Qwe',
           runArguments: ['one', 'two', ' three'],
-          appliesTo: "this"
+          appliesTo: 'this'
         }
       ]
     }

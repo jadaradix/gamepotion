@@ -9,17 +9,16 @@
 }
 
 html {
-  height: 100%;
   font-size: 16px;
 }
 
 body {
-  height: 100%;
-  background-color: #ecf0f1;
 }
 
 #root {
-  height: 100%;
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: white;
 }
 
 strong {

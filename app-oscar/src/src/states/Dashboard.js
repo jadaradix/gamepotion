@@ -169,25 +169,21 @@ class StateDashboard extends Component {
                   :
                   <Fragment>
                     <Heading1>Games</Heading1>
-                    {this.state.projects.length > 0 ?
-                      <List>
-                        {this.state.projects.map(p => (
-                          <ListItem
-                            selected={p === this.state.currentProject}
-                            key={p.project.id}
-                            id={p.project.id}
-                            icon={icons.generic.project.project}
-                            actions={['load', 'rename', 'delete']}
-                            onChoose={(id) => this.loadProject(id)}
-                            onAction={this.actOnProject}
-                          >
-                            {p.project.name}
-                          </ListItem>
-                        ))}
-                      </List>
-                      :
-                      <p>You haven&rsquo;t created any games yet.</p>
-                    }
+                    <List emptyText='You haven&rsquo;t created any games yet.'>
+                      {this.state.projects.map(p => (
+                        <ListItem
+                          selected={p === this.state.currentProject}
+                          key={p.project.id}
+                          id={p.project.id}
+                          icon={icons.generic.project.project}
+                          actions={['load', 'rename', 'delete']}
+                          onChoose={(id) => this.loadProject(id)}
+                          onAction={this.actOnProject}
+                        >
+                          {p.project.name}
+                        </ListItem>
+                      ))}
+                    </List>
                     <Button route='/projects/new'>Create a game</Button>
                   </Fragment>
                 }
@@ -198,22 +194,18 @@ class StateDashboard extends Component {
                   :
                   <Fragment>
                     <Heading1>News</Heading1>
-                    {newsFeed.length > 0 ?
-                      <List>
-                        {newsFeed.map(n => (
-                          <ListItem
-                            key={n.id}
-                            id={n.id}
-                            icon={icons.generic.project.project}
-                            onChoose={(id) => this.loadFeedItem('news', id)}
-                          >
-                            {n.title}
-                          </ListItem>
-                        ))}
-                      </List>
-                      :
-                      <p>There&rsquo;s no news yet.</p>
-                    }
+                    <List emptyText='There&rsquo;s no news yet.'>
+                      {newsFeed.map(n => (
+                        <ListItem
+                          key={n.id}
+                          id={n.id}
+                          icon={icons.generic.project.project}
+                          onChoose={(id) => this.loadFeedItem('news', id)}
+                        >
+                          {n.title}
+                        </ListItem>
+                      ))}
+                    </List>
                   </Fragment>
                 }
               </Box>

@@ -74,7 +74,7 @@ exports[`Uploader renders 1`] = `
         src="upload.svg"
       />
       <p>
-        Drop a file here or touch to choose.
+        Drop a file here or touch to upload.
       </p>
     </div>
     <input
@@ -174,7 +174,7 @@ exports[`Uploader renders disabled 1`] = `
         src="upload.svg"
       />
       <p>
-        Drop a file here or touch to choose.
+        Drop a file here or touch to upload.
       </p>
     </div>
     <input
