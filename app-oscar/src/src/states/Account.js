@@ -3,7 +3,6 @@ import { Redirect } from 'react-router'
 import styled from 'styled-components'
 
 import { getState, dispatch, subscribe } from '../state'
-import { font } from '../styleAbstractions'
 
 import Loading from '../components/Loading/Loading'
 import Button from '../components/Button/Button'

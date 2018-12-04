@@ -1,11 +1,14 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import resourceTypes from '../resourceTypes'
+import { events } from '../classes'
+import icons from '../icons'
 
 import Modal from '../components/Modal/Modal'
 import Heading1 from '../components/Heading1/Heading1'
+import List from '../components/List/List'
+import ListItem from '../components/ListItem/ListItem'
 import Button from '../components/Button/Button'
 import Dropper from '../components/Dropper/Dropper'
 
@@ -14,9 +17,8 @@ const StyledModal = styled.div`
     .component--heading1 {
       margin-bottom: 2rem;
     }
-    .argument {
+    .component--list {
       margin-bottom: 1rem;
-      // background-color: red;
     }
     .decision {
       // background-color: green;
@@ -24,79 +26,86 @@ const StyledModal = styled.div`
   }
 `
 
-const EventModal = ({ actionClassInstance, resources, onGood, onBad, onUpdateArgument }) => {
-
-  const resourcesByType = {}
-  resourceTypes.forEach(rt => {
-    resourcesByType[rt.type] = resources
-      .filter(r => r.type === rt.type)
-      .map(r => {
-        return {
-          id: r.id,
-          name: r.name
-        }
-      })
-  })
-
-  const getArgument = (index, name, type, value) => {
-    const handleOnUpdateArgument = (v) => {
-      return onUpdateArgument(index, v)
+class EventModal extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      id: this.props.id,
+      configuration: this.props.configuration
     }
-    if (actionClassInstance.runArguments[index].length === 0 && resourcesByType.hasOwnProperty(type)) {
-      if (resourcesByType[type].length > 0) {
-        actionClassInstance.runArguments[index] = resourcesByType[type][0].id
-      } else {
-        actionClassInstance.runArguments[index] = '?'
-      }
-    }
-    if (resourcesByType.hasOwnProperty(type)) {
-      return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={resourcesByType[type]} />
-    }
-    switch (type) {
-    case 'boolean':
-      return <Switch onChange={handleOnUpdateArgument} checked={value}>{name}</Switch>
-    case 'generic':
-    case 'number':
-    default:
-      return <Input onChange={handleOnUpdateArgument} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
-    }
+    this.eventClasses = Object.keys(events).map(k => {
+      return new events[k]()
+    })
+    this.onChooseEvent = this.onChooseEvent.bind(this)
   }
 
-  // console.warn('[component-EventModal] actionClassInstance', actionClassInstance)
-  return (
-    <StyledModal>
-      <Modal onClose={onBad}>
-        <Heading1>{actionClassInstance.name}</Heading1>
-        {Array.from(actionClassInstance.defaultRunArguments.keys()).map((k, i) => {
-          const {
-            type
-          } = actionClassInstance.defaultRunArguments.get(k)
-          return (
-            <div className='argument' key={k}>
-              {getArgument(i, k, type, actionClassInstance.runArguments[i])}
-            </div>
-          )
-        })}
-        <div className='decision'>
-          <Button onClick={() => onGood(actionClassInstance)}>Done</Button>
-        </div>
-      </Modal>
-    </StyledModal>
-  )
+  onChooseEvent(id) {
+    this.setState({
+      id
+    })
+  }
+
+  render() {
+    return (
+      <StyledModal>
+        <Modal onClose={this.props.onBad}>
+          <Heading1>Add event</Heading1>
+          <List>
+            {this.eventClasses.map(ec => {
+              return (
+                <ListItem key={ec.id} id={ec.id} icon={icons.events[ec.icon]} onChoose={this.onChooseEvent}>{ec.name}</ListItem>
+              )
+            })}
+          </List>
+          <div className='decision'>
+            <Button onClick={() => this.props.onGood(this.state.id, this.state.configuration)}>Done</Button>
+          </div>
+          {/* <p>id: {this.state.id}</p> */}
+        </Modal>
+      </StyledModal>
+    )
+  }
 }
 
+// const EventModal = ({ id = '', configuration = [] }) => {
+
+//   const getArgument = (index, name, type, value) => {
+//     const handleOnUpdateArgument = (v) => {
+//       return onUpdateArgument(index, v)
+//     }
+//     if (actionClassInstance.runArguments[index].length === 0 && resourcesByType.hasOwnProperty(type)) {
+//       if (resourcesByType[type].length > 0) {
+//         actionClassInstance.runArguments[index] = resourcesByType[type][0].id
+//       } else {
+//         actionClassInstance.runArguments[index] = '?'
+//       }
+//     }
+//     if (resourcesByType.hasOwnProperty(type)) {
+//       return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={resourcesByType[type]} />
+//     }
+//     switch (type) {
+//     case 'boolean':
+//       return <Switch onChange={handleOnUpdateArgument} checked={value}>{name}</Switch>
+//     case 'generic':
+//     case 'number':
+//     default:
+//       return <Input onChange={handleOnUpdateArgument} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
+//     }
+//   }
+// }
+
 EventModal.propTypes = {
-  actionClassInstance: PropTypes.any.isRequired,
-  resources: PropTypes.array.isRequired,
+  id: PropTypes.string,
+  configuration: PropTypes.array,
   onGood: PropTypes.func,
-  onBad: PropTypes.func,
-  onUpdateArgument: PropTypes.func
+  onBad: PropTypes.func
 }
 
 EventModal.defaultProps = {
+  id: 'Create',
+  configuration: [],
   onGood: () => {},
-  onBad: () => {},
-  onUpdateArgument: () => {}
+  onBad: () => {}
 }
 
 export default EventModal

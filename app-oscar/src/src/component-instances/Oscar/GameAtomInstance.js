@@ -46,9 +46,8 @@ class GameAtomInstance {
     }
   }
 
-  onEvent(event, eventContext) {
+  onEvent(actions, eventContext) {
     const instance = this
-    const actions = this.atomContainer.extras.events.get(event)
     const results = []
     let i = 0
     let executeElseClause = true

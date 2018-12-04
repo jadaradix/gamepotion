@@ -19,8 +19,8 @@ resourceTypeFunctions.set(
   'atom',
   (resource) => {
     const resourceClass = new classes.resources.Atom(resource)
-    Object.keys(resourceClass.events).forEach((eventName) => {
-      resourceClass.events[eventName].actions = resourceClass.events[eventName].actions.filter(action => (classes.actions[action.id] !== undefined))
+    resourceClass.events.forEach(event => {
+      event.actions = event.actions.filter(action => (classes.actions[action.id] !== undefined))
     })
     return resourceClass
   },

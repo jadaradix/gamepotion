@@ -6,32 +6,31 @@ resourceTypeFunctions.set(
   (resource) => {
     const c = new classes.resources.Image(resource)
     return c
-  },
+  }
 )
 resourceTypeFunctions.set(
   'sound',
   (resource) => {
     const c = new classes.resources.Sound(resource)
     return c
-  },
+  }
 )
 resourceTypeFunctions.set(
   'atom',
   (resource) => {
     const resourceClass = new classes.resources.Atom(resource)
-    console.warn('resourceClass.events', resourceClass.events)
-    Object.keys(resourceClass.events).forEach(eventName => {
-      resourceClass.events[eventName].actions = resourceClass.events[eventName].actions.filter(action => (classes.actions[action.id] !== undefined))
+    resourceClass.events.forEach(event => {
+      event.actions = event.actions.filter(action => (classes.actions[action.id] !== undefined))
     })
     return resourceClass
-  },
+  }
 )
 resourceTypeFunctions.set(
   'space',
   (resource) => {
     const c = new classes.resources.Space(resource)
     return c
-  },
+  }
 )
 
 export default {

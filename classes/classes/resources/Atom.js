@@ -4,7 +4,13 @@ class ResourceAtom extends Resource {
   constructor(json = {}) {
     super(json)
     this.type = 'atom'
-    this.events = (typeof json.events === 'object') ? json.events : {}
+    this.events = (Array.isArray(json.events)) ? json.events : [
+      {
+        id: 'Create',
+        configuration: [],
+        actions: []
+      }
+    ]
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : null
   }
 
@@ -36,13 +42,13 @@ class ResourceAtom extends Resource {
 
   fromApiPost(json) {
     super.fromApiPost(json)
-    this.events = (typeof json.events === 'object') ? json.events : this.events
+    this.events = (Array.isArray(json.events)) ? json.events : this.events
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : this.imageId
   }
 
   fromApiPatch(json) {
     super.fromApiPatch(json)
-    this.events = (typeof json.events === 'object') ? json.events : this.events
+    this.events = (Array.isArray(json.events)) ? json.events : this.events
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : this.imageId
   }
 

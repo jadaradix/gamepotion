@@ -8,7 +8,7 @@ test('works', () => {
     classFactory.resource({
       type: 'space',
       name: 'Bird Space',
-      events: {}
+      events: []
     })
   ]
   // jest hacks

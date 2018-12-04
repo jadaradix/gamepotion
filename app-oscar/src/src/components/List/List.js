@@ -1,5 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
+
+import { font, colours } from '../../styleAbstractions'
 
 const StyledList = styled.ul`
   .component--list {
@@ -14,14 +17,34 @@ const StyledList = styled.ul`
   .component--list-item + .component--list-item {
     margin-top: 0.25rem;
   }
+  .empty-text {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    ${font}
+    text-align: center;
+    color: ${colours.fore};
+    opacity: 0.5;
+    // background-color: navy;
+  }
 `
 
-const List = ({ children }) => {
+const List = ({ children, emptyText }) => {
   return (
     <StyledList className='component--list'>
+      {children.length === 0 && emptyText.length > 0 &&
+        <p className='empty-text'>{emptyText}</p>
+      }
       {children}
     </StyledList>
   )
+}
+
+List.propTypes = {
+  emptyText: PropTypes.string
+}
+
+List.defaultProps = {
+  emptyText: ''
 }
 
 export default List

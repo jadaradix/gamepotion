@@ -127,7 +127,7 @@ const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, i
 }
 
 ListItem.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   icon: PropTypes.string,
   selected: PropTypes.bool,
   actions: PropTypes.array,

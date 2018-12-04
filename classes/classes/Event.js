@@ -9,14 +9,6 @@ class Event {
     this.configuration = []
   }
 
-  toApi() {
-    return {
-      id: this.id,
-      name: this.name,
-      icon: this.icon
-    }
-  }
-
   toString() {
     return this.name
   }
