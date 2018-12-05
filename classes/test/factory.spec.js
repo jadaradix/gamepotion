@@ -21,23 +21,27 @@ test('creates an atom resource with events/actions (one action doesnt exist)', (
   const resource = factory.resource({
     type: 'atom',
     name: 'Bird Atom',
-    events: {
-      'create': [
-        {
-          id: 'Debug',
-          runArguments: ['"hello world"'],
-          appliesTo: 'this'
-        },
-        {
-          id: 'Qwe Qwe Qwe',
-          runArguments: ['one', 'two', ' three'],
-          appliesTo: 'this'
-        }
-      ]
-    }
+    events: [
+      {
+        id: 'Create',
+        configuration: [],
+        actions: [
+          {
+            id: 'Debug',
+            runArguments: ['"hello world"'],
+            appliesTo: 'this'
+          },
+          {
+            id: 'Qwe Qwe Qwe',
+            runArguments: ['one', 'two', ' three'],
+            appliesTo: 'this'
+          }
+        ]
+      }
+    ]
   })
   expect(resource.type).toBe('atom')
-  expect(resource.events.create).toEqual([
+  expect(resource.events[0].actions).toEqual([
     {
       id: 'Debug',
       runArguments: ['"hello world"'],
@@ -49,7 +53,7 @@ test('creates an atom resource with events/actions (one action doesnt exist)', (
 test('doesnt create a resource when the type is stupid', () => {
   expect(
     () => {
-      const resource = factory.resource({
+      factory.resource({
         type: 'qweqweqwe',
         name: 'Qwe Qwe Qwe Thing'
       })

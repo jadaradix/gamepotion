@@ -8,8 +8,24 @@ class Input extends Event {
     this.icon = 'input'
     this.defaultConfiguration = [
       {
+        name: 'State',
+        type: 'options',
+        defaultValue: 'press',
+        values: [
+          {
+            id: 'press',
+            name: 'Press'
+          },
+          {
+            id: 'hold',
+            name: 'Hold'
+          }
+        ]
+      },
+      {
         name: 'Key',
         type: 'options',
+        defaultValue: 'secondary',
         values: [
           {
             id: 'primary',
@@ -28,25 +44,13 @@ class Input extends Event {
             name: 'Right'
           }
         ]
-      },
-      {
-        name: 'State',
-        type: 'options',
-        values: [
-          {
-            id: 'press',
-            name: 'Press'
-          },
-          {
-            id: 'hold',
-            name: 'Hold'
-          }
-        ]
       }
     ]
   }
 
   toString() {
+    // console.warn('[action-Input] [toString] this.defaultConfiguration', this.defaultConfiguration)
+    // console.warn('[action-Input] [toString] this.configuration', this.configuration)
     const key = this.defaultConfiguration.find(v => v.name === 'Key').values.find(v => v.id === this.configuration[0]).name
     const state = this.defaultConfiguration.find(v => v.name === 'State').values.find(v => v.id === this.configuration[1]).name
     return `${state} ${key}`

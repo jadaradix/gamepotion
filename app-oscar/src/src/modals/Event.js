@@ -10,7 +10,9 @@ import Heading1 from '../components/Heading1/Heading1'
 import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
 import Button from '../components/Button/Button'
+
 import Dropper from '../components/Dropper/Dropper'
+import Input from '../components/Input/Input'
 
 const StyledModal = styled.div`
   .component--modal {
@@ -18,7 +20,16 @@ const StyledModal = styled.div`
       margin-bottom: 2rem;
     }
     .component--list {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+    .configuration {
+      margin-bottom: 2rem;
+      .component--dropper:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+      .component--input:not(:last-child) {
+        margin-bottom: 1rem;
+      }
     }
     .decision {
       // background-color: green;
@@ -26,23 +37,59 @@ const StyledModal = styled.div`
   }
 `
 
+const getConfiguration = (name, type, options, value, onUpdate, onGood) => {
+  const key = `${type}-${name}`
+  switch (type) {
+  case 'options':
+    return <Dropper key={key} options={options} value={value} label={name} onChoose={onUpdate} />
+  default:
+    return <Input key={key} label={name} value={value} onChange={onUpdate} onDone={onGood} />
+  }
+}
+
 class EventModal extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {
-      id: this.props.id,
-      configuration: this.props.configuration
-    }
     this.eventClasses = Object.keys(events).map(k => {
       return new events[k]()
     })
+    const eventClass = this.eventClasses.find(ec => ec.id === this.props.id)
+    this.state = {
+      eventClass,
+      configuration: ((configuration, defaultConfiguration) => {
+        if (Array.isArray(configuration)) {
+          return configuration
+        }
+        return defaultConfiguration.map(dc => dc.defaultValue)
+      })(props.configuration, eventClass.defaultConfiguration)
+    }
+    // console.warn('[EventModal] [constructor] this.state', this.state)
     this.onChooseEvent = this.onChooseEvent.bind(this)
+    this.onChangeConfiguration = this.onChangeConfiguration.bind(this)
+    this.handleOnGood = this.handleOnGood.bind(this)
   }
 
   onChooseEvent(id) {
+    const eventClass = this.eventClasses.find(ec => ec.id === id)
     this.setState({
-      id
+      eventClass,
+      configuration: eventClass.defaultConfiguration.map(dc => dc.defaultValue)
     })
+  }
+
+  onChangeConfiguration(index, value) {
+    this.setState({
+      configuration: this.state.configuration.map((c, i) => {
+        if (i === index) {
+          c = value
+        }
+        return c
+      })
+    })
+  }
+
+  handleOnGood() {
+    this.props.onGood(this.state.eventClass.id, this.state.configuration)
   }
 
   render() {
@@ -53,57 +100,42 @@ class EventModal extends PureComponent {
           <List>
             {this.eventClasses.map(ec => {
               return (
-                <ListItem key={ec.id} id={ec.id} icon={icons.events[ec.icon]} onChoose={this.onChooseEvent}>{ec.name}</ListItem>
+                <ListItem
+                  key={ec.id}
+                  id={ec.id}
+                  icon={icons.events[ec.icon]}
+                  selected={this.state.eventClass.id === ec.id}
+                  onChoose={this.onChooseEvent}
+                >
+                  {ec.name}
+                </ListItem>
               )
             })}
           </List>
-          <div className='decision'>
-            <Button onClick={() => this.props.onGood(this.state.id, this.state.configuration)}>Done</Button>
+          <div className='configuration'>
+            {this.state.eventClass.defaultConfiguration.map((dc, dci) => {
+              return getConfiguration(dc.name, dc.type, dc.values || [], this.state.configuration[dci], (v) => this.onChangeConfiguration(dci, v), this.handleOnGood)
+            })}
           </div>
-          {/* <p>id: {this.state.id}</p> */}
+          <div className='decision'>
+            <Button onClick={this.handleOnGood}>Done</Button>
+          </div>
         </Modal>
       </StyledModal>
     )
   }
 }
 
-// const EventModal = ({ id = '', configuration = [] }) => {
-
-//   const getArgument = (index, name, type, value) => {
-//     const handleOnUpdateArgument = (v) => {
-//       return onUpdateArgument(index, v)
-//     }
-//     if (actionClassInstance.runArguments[index].length === 0 && resourcesByType.hasOwnProperty(type)) {
-//       if (resourcesByType[type].length > 0) {
-//         actionClassInstance.runArguments[index] = resourcesByType[type][0].id
-//       } else {
-//         actionClassInstance.runArguments[index] = '?'
-//       }
-//     }
-//     if (resourcesByType.hasOwnProperty(type)) {
-//       return <Dropper onChoose={handleOnUpdateArgument} label={name} value={value} options={resourcesByType[type]} />
-//     }
-//     switch (type) {
-//     case 'boolean':
-//       return <Switch onChange={handleOnUpdateArgument} checked={value}>{name}</Switch>
-//     case 'generic':
-//     case 'number':
-//     default:
-//       return <Input onChange={handleOnUpdateArgument} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
-//     }
-//   }
-// }
-
 EventModal.propTypes = {
   id: PropTypes.string,
-  configuration: PropTypes.array,
+  configuration: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   onGood: PropTypes.func,
   onBad: PropTypes.func
 }
 
 EventModal.defaultProps = {
   id: 'Create',
-  configuration: [],
+  configuration: null,
   onGood: () => {},
   onBad: () => {}
 }
