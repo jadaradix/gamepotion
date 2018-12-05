@@ -133,7 +133,7 @@ class ResourceAtom extends Component {
 
   onChooseAddAction(id) {
     const actionClassInstance = new actions[id]()
-    console.log('[component-resource-Atom] [onChooseAddAction] actionClassInstance', actionClassInstance)
+    // console.log('[component-resource-Atom] [onChooseAddAction] actionClassInstance', actionClassInstance)
     const argumentsCount = actionClassInstance.defaultRunArguments.size
     actionClassInstance.defaultRunArguments.forEach((v) => {
       actionClassInstance.runArguments.push(v.value)
@@ -162,7 +162,7 @@ class ResourceAtom extends Component {
         runArguments: actionClassInstance.runArguments,
         appliesTo: actionClassInstance.appliesTo
       }
-      console.warn('[component-resource-Atom] [onActionModalGood] actionObject', actionObject)
+      // console.warn('[component-resource-Atom] [onActionModalGood] actionObject', actionObject)
       this.onUpdate({
         events: this.props.resource.events.map((e, index) => {
           if (index === this.state.currentEventIndex) {
@@ -198,11 +198,11 @@ class ResourceAtom extends Component {
     id = parseInt(id, 10)
     const thingsThatCouldHappen = {
       'edit': () => {
-        console.warn('[component-resource-Atom] [actOnAction] id/thingThatCouldHappen', id, thingThatCouldHappen)
+        // console.warn('[component-resource-Atom] [actOnAction] id/thingThatCouldHappen', id, thingThatCouldHappen)
         const actualAction = this.props.resource.events[this.state.currentEventIndex].actions[id]
         const actionClassInstance = new actions[actualAction.id]()
         actionClassInstance.runArguments = actualAction.runArguments
-        console.log('[component-resource-Atom] [actOnAction] actionClassInstance', actionClassInstance)
+        // console.log('[component-resource-Atom] [actOnAction] actionClassInstance', actionClassInstance)
         this.setState({
           actionClassInstance,
           actionClassInstanceIsAdding: false
@@ -258,6 +258,7 @@ class ResourceAtom extends Component {
   }
 
   onEventModalGood(id, configuration) {
+    // console.warn('[component-resource-Atom] [onEventModalGood]', id, configuration)
     this.setState(
       {
         isEventDialogShowing: false
@@ -322,7 +323,10 @@ class ResourceAtom extends Component {
           <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.onActionModalGood} onBad={this.onActionModalBad} onUpdateArgument={this.onActionModalUpdateArgument} />
         }
         {this.state.isEventDialogShowing &&
-          <EventModal onGood={this.onEventModalGood} onBad={this.onEventModalBad} />
+          <EventModal
+            onGood={this.onEventModalGood}
+            onBad={this.onEventModalBad}
+          />
         }
         <section className='image-events'>
           <Box className='image'>
@@ -335,8 +339,9 @@ class ResourceAtom extends Component {
             <Heading2>Events</Heading2>
             <List emptyText='There aren&rsquo;t any events.'>
               {this.props.resource.events.map((event, eventIndex) => {
-                console.warn('event.id', event.id)
+                // console.warn('[component-resource-Atom] [render] event.id', event.id)
                 const eventClass = new events[event.id]()
+                eventClass.configuration = event.configuration
                 return <ListItem
                   id={eventIndex}
                   key={eventIndex}
