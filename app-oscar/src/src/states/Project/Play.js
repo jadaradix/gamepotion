@@ -6,7 +6,6 @@ import { getState, dispatch, subscribe } from '../../state'
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
 import CustomHelmet from '../../component-instances/CustomHelmet'
 
-import Oscar1 from '../../component-instances/Oscar/Game'
 import Oscar2 from '../../Oscar2'
 
 const StyledState = styled.div`
@@ -56,10 +55,6 @@ class StateProjectPlay extends PureComponent {
             <Fragment>
               <CustomHelmet
                 title={this.state.currentProject.project.name}
-              />
-              <Oscar1
-                project={this.state.currentProject.project}
-                resources={this.state.currentProject.resources}
               />
               <div id='oscar2-container' />
               <Oscar2

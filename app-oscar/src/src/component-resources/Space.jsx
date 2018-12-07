@@ -8,8 +8,6 @@ import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 import Image from '../components/Image/Image'
 
-import GameSpace from '../component-instances/Oscar/GameSpace'
-
 const getAtomDropperResources = (resources) => {
   return resources
     .filter(r => r.type === 'atom')
