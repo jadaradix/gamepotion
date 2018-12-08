@@ -340,8 +340,7 @@ class ResourceAtom extends Component {
             <List emptyText='There aren&rsquo;t any events.'>
               {this.props.resource.events.map((event, eventIndex) => {
                 // console.warn('[component-resource-Atom] [render] event.id', event.id)
-                const eventClass = new events[event.id]()
-                eventClass.configuration = event.configuration
+                const eventClass = new events[event.id](event.configuration)
                 return <ListItem
                   id={eventIndex}
                   key={eventIndex}
