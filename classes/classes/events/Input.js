@@ -46,13 +46,15 @@ class Input extends Event {
         ]
       }
     ]
+    this.stateConfigurationValues = this.defaultConfiguration.find(v => v.name === 'State').values
+    this.keyConfigurationValues = this.defaultConfiguration.find(v => v.name === 'Key').values
   }
 
   toString() {
     // console.warn('[action-Input] [toString] this.defaultConfiguration', this.defaultConfiguration)
     // console.warn('[action-Input] [toString] this.configuration', this.configuration)
-    const key = this.defaultConfiguration.find(v => v.name === 'Key').values.find(v => v.id === this.configuration[0]).name
-    const state = this.defaultConfiguration.find(v => v.name === 'State').values.find(v => v.id === this.configuration[1]).name
+    const state = this.stateConfiguration.find(v => v.id === this.configuration[1]).name
+    const key = this.keyConfiguration.find(v => v.id === this.configuration[0]).name
     return `${state} ${key}`
   }
 }

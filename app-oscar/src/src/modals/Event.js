@@ -37,7 +37,7 @@ const StyledModal = styled.div`
   }
 `
 
-const getConfiguration = (name, type, options, value, onUpdate, onGood) => {
+const getConfiguration = (name, type, options = [], value, onUpdate, onGood) => {
   const key = `${type}-${name}`
   switch (type) {
   case 'options':
@@ -55,13 +55,7 @@ class EventModal extends PureComponent {
     })
     const eventClass = this.eventClasses.find(ec => ec.id === this.props.id)
     this.state = {
-      eventClass,
-      configuration: ((configuration, defaultConfiguration) => {
-        if (Array.isArray(configuration)) {
-          return configuration
-        }
-        return defaultConfiguration.map(dc => dc.defaultValue)
-      })(props.configuration, eventClass.defaultConfiguration)
+      eventClass
     }
     // console.warn('[EventModal] [constructor] this.state', this.state)
     this.onChooseEvent = this.onChooseEvent.bind(this)
@@ -71,25 +65,27 @@ class EventModal extends PureComponent {
 
   onChooseEvent(id) {
     const eventClass = this.eventClasses.find(ec => ec.id === id)
+    eventClass.configuration = eventClass.defaultConfiguration.map(dc => dc.defaultValue)
     this.setState({
-      eventClass,
-      configuration: eventClass.defaultConfiguration.map(dc => dc.defaultValue)
+      eventClass
     })
   }
 
   onChangeConfiguration(index, value) {
+    const { eventClass} = this.state
+    eventClass.configuration = eventClass.configuration.map((c, i) => {
+      if (i === index) {
+        c = value
+      }
+      return c
+    })
     this.setState({
-      configuration: this.state.configuration.map((c, i) => {
-        if (i === index) {
-          c = value
-        }
-        return c
-      })
+      eventClass
     })
   }
 
   handleOnGood() {
-    this.props.onGood(this.state.eventClass.id, this.state.configuration)
+    this.props.onGood(this.state.eventClass.id, this.state.eventClass.configuration)
   }
 
   render() {
@@ -114,7 +110,7 @@ class EventModal extends PureComponent {
           </List>
           <div className='configuration'>
             {this.state.eventClass.defaultConfiguration.map((dc, dci) => {
-              return getConfiguration(dc.name, dc.type, dc.values || [], this.state.configuration[dci], (v) => this.onChangeConfiguration(dci, v), this.handleOnGood)
+              return getConfiguration(dc.name, dc.type, dc.values, this.state.eventClass.configuration[dci], (v) => this.onChangeConfiguration(dci, v), this.handleOnGood)
             })}
           </div>
           <div className='decision'>
@@ -128,7 +124,7 @@ class EventModal extends PureComponent {
 
 EventModal.propTypes = {
   id: PropTypes.string,
-  configuration: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  configuration: PropTypes.array,
   onGood: PropTypes.func,
   onBad: PropTypes.func
 }
