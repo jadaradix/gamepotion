@@ -21,7 +21,7 @@ const MainToolbar = ({ currentProject, onClick, disabled }) => {
     <Toolbar>
       <ToolbarButton route='/dashboard' disabled={disabled} icon={icons.generic.symbol} hint='Dashboard' significant />
       {currentProject !== null &&
-        <ToolbarButton fixedWidth='180' route={`/projects/${currentProject.project.id}`} hint={currentProject.project.name}>
+        <ToolbarButton fixedWidth='180' route={`/projects/${currentProject.project.id}/resources/load`} hint={currentProject.project.name}>
           {currentProject.project.name}
         </ToolbarButton>
       }
