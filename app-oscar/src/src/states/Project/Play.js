@@ -57,6 +57,7 @@ class StateProjectPlay extends PureComponent {
                 containerElementId='oscar2-container'
                 project={this.state.currentProject.project}
                 resources={this.state.currentProject.resources}
+                spaceId={this.state.currentProject.project.startSpace}
                 designMode={false}
                 gridOn={false}
               />

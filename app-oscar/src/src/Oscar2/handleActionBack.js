@@ -1,5 +1,5 @@
 const baseReturn = {
-  instanceClassesToDestroy: [],
+  instancesToDestroy: [],
   instancesToCreate: []
 }
 
@@ -9,7 +9,7 @@ const handleActionBack = (actionBack) => {
     'INSTANCE_DESTROY': () => {
       return {
         ...baseReturn,
-        instanceClassesToDestroy: actionBack.actionBackArguments
+        instancesToDestroy: actionBack.actionBackArguments
       }
     },
     'INSTANCE_CREATE': () => {

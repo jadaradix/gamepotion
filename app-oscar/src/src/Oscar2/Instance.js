@@ -53,6 +53,7 @@ class Instance {
         eventContext,
         instanceClass: this
       }
+      // console.warn('[onEvent] parseContext', parseContext)
       const runArguments = parseRunArguments(action.argumentTypes, action.runArguments, parseContext)
       const runContext = {
         platform: 'html5',

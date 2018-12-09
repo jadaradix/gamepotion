@@ -7,7 +7,7 @@ import RenderGameSpace from './RenderGameSpace.js'
 class Oscar2 extends Component {
   constructor(props) {
     super(props)
-    console.warn('first this.props.spaceId', this.props.spaceId)
+    console.warn('constructor', this.props.spaceId)
     this.loadGameSpace(this.props.spaceId, this.props.resources)
       .then(gameSpaceFunctions => {
         this.gameSpaceFunctions = gameSpaceFunctions 
@@ -84,7 +84,8 @@ class Oscar2 extends Component {
         gridOn: this.props.gridOn,
         gridWidth: this.props.gridWidth,
         gridHeight: this.props.gridHeight,
-        onTouch: this.props.onTouch
+        onTouch: this.props.onTouch,
+        onTouchSecondary: this.props.onTouchSecondary,
       })
     }
 

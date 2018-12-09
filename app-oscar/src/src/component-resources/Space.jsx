@@ -86,7 +86,7 @@ const StyledResource = styled.div`
     margin-top: 1rem;
     overflow: scroll;
     // background-color: red;
-    .component--switch + .component--oscar-engine-space {
+    .component--switch + #oscar2-container {
       margin-top: 1rem;
     }
   }
@@ -266,7 +266,7 @@ class ResourceSpace extends PureComponent {
             containerElementId='oscar2-container'
             project={this.props.project}
             resources={this.props.resources}
-            spaceId={this.props.project.startSpace}
+            spaceId={this.props.resource.id}
             designMode={!this.state.isPlaying}
             gridOn={this.props.localSettings['grid-on'] && !this.state.isPlaying}
             gridWidth={this.props.localSettings['grid-width']}

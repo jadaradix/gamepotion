@@ -29,24 +29,24 @@ const drawBackgroundImage = (ctx, spaceContainer, designMode) => {
   }
 }
 
-const drawInstance = (ctx, spaceContainer, designMode, instance) => {
-  // const frame = parseInt(instance.props.frame, 10)
-  // const image = instance.getImage()
-  // const x = instance.props.x - (!designMode ? spaceContainer.resource.camera.x : 0)
-  // const y = instance.props.y - (!designMode ? spaceContainer.resource.camera.y : 0)
-  // const width = instance.getWidth()
-  // const height = instance.getHeight()
-  // // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
-  // if (image !== null) {
-  //   ctx.drawImage(image, 0, frame * height, width, height, x, y, width, height) 
-  // }
-}
-
 const drawForegroundImage = (ctx, spaceContainer) => {
   if (typeof spaceContainer.extras.foregroundImage !== 'object') {
     return
   }
   ctx.drawImage(spaceContainer.extras.foregroundImage.extras.element, 0, 0)
+}
+
+const drawInstance = (ctx, spaceContainer, designMode, instance) => {
+  const frame = parseInt(instance.props.frame, 10)
+  const image = instance.getImage()
+  const x = instance.props.x - (!designMode ? spaceContainer.resource.camera.x : 0)
+  const y = instance.props.y - (!designMode ? spaceContainer.resource.camera.y : 0)
+  const width = instance.getWidth()
+  const height = instance.getHeight()
+  // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
+  if (image !== null) {
+    ctx.drawImage(image, 0, frame * height, width, height, x, y, width, height) 
+  }
 }
 
 const drawGrid = (ctx, spaceContainer, gridWidth, gridHeight) => {
@@ -147,6 +147,7 @@ const loadResources = (resourceContainers, spaceContainer) => {
 
   const resourcesImages = resourceContainers.filter(r => r.resource.type === 'image')
   const resourcesSounds = resourceContainers.filter(r => r.resource.type === 'sound')
+  const resourcesAtoms = resourceContainers.filter(r => r.resource.type === 'atom')
 
   return new Promise((resolve, reject) => {
 
@@ -159,8 +160,7 @@ const loadResources = (resourceContainers, spaceContainer) => {
     }
 
     const errBack = (e) => {
-      console.error('[errBack]', e)
-      return reject()
+      return reject(e)
     }
 
     resourcesImages.forEach(resource => {
@@ -189,6 +189,27 @@ const loadResources = (resourceContainers, spaceContainer) => {
       element.src = resource.resource.getRemoteUrl()
       element.load()
     })
+
+    resourcesAtoms
+      .forEach(r => {
+        r.extras.events = r.resource.events.map(e => {
+          return {
+            id: e.id,
+            configuration: e.configuration,
+            actions: e.actions.map(a => {
+              const actionClassInstance = actionClasses.get(a.id)
+              const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
+              return {
+                id: actionClassInstance.id,
+                run: actionClassInstance.run,
+                runArguments: a.runArguments,
+                appliesTo: a.appliesTo,
+                argumentTypes
+              }
+            })
+          }
+        })
+      })
 
     if (resourcesImages.length === 0 && resourcesSounds.length === 0) {
       resolve()
@@ -239,16 +260,17 @@ const gameLoopNotDesignMode = (ctx, spaceContainer, gridOn, gridWidth, gridHeigh
   return instances
 }
 
-const handleEvent = (eventId, eventContext, instances, appliesToInstanceClasses) => {
+const handleEvent = (eventId, eventContext, instances, appliesToInstances) => {
+  console.warn('eventContext', eventContext)
   let instancesToDestroy = []
   let instancesToCreate = []
-  appliesToInstanceClasses.forEach(i => {
+  appliesToInstances.forEach(i => {
     i.atomContainer.extras.events.filter(e => e.id === eventId).forEach(e => {
       const actions = e.actions
       const actionBacks = i.onEvent(actions, eventContext).filter(ab => typeof ab === 'object' && ab !== null)
       actionBacks.forEach(actionBack => {
         const result = handleActionBack(actionBack)
-        instancesToDestroy = instancesToDestroy.concat(result.instanceClassesToDestroy)
+        instancesToDestroy = instancesToDestroy.concat(result.instancesToDestroy)
         instancesToCreate = instancesToCreate.concat(result.instancesToCreate)
         if (typeof result.imageToSet === 'string') {
           i.setImage(result.imageToSet, eventContext.resourceContainers)
@@ -284,6 +306,7 @@ const handleEventStart = (instances, spaceContainer, resourceContainers, variabl
     resourceContainers,
     variables
   }
+  console.warn('eventContext', eventContext)
   return handleEvent('Create', eventContext, instances, instances)
 }
 
@@ -295,7 +318,7 @@ const handleEventStep = (instances, spaceContainer, resourceContainers, variable
     resourceContainers,
     variables
   }
-  return this.handleEvent('Step', eventContext, instances, instances)
+  return handleEvent('Step', eventContext, instances, instances)
 }
 
 const RenderGameSpace = (
@@ -324,13 +347,13 @@ const RenderGameSpace = (
   c.style.display = 'block'
   c.style.backgroundColor = 'black'
   // stop blurred lines from https://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
-  ctx.imageSmoothingEnabled = false
-  ctx.translate(0.5, 0.5)
-  //
+  // ctx.imageSmoothingEnabled = false
+  // ctx.translate(0.5, 0.5)
 
   // sorry
   const domBoundsX = c.getBoundingClientRect().x
   const domBoundsY = c.getBoundingClientRect().y
+  let requestAnimationFrameHandle
 
   // let because it can be spliced
   let instances = instanceDefinitionsToInstances(spaceContainer.resource.instances, resourceContainers)
@@ -370,51 +393,47 @@ const RenderGameSpace = (
     })
     addEventListener(c, 'touchend', () => {
       const timeDifference = Date.now() - jInputs.touch.time
+      const normalisedCoords = normaliseCoords(spaceContainer, designMode, gridOn, gridWidth, gridHeight, jInputs.touch.coords)
+      const instancesAtCoords = instances.filter(i => isInstanceIntersecting(i, normalisedCoords))
       // console.warn('[touchend] jInputs.touch.time', jInputs.touch.time)
       // console.warn('[touchend] timeDifference', timeDifference)
       if (designMode === true) {
         if (timeDifference <= 1000) {
-          onTouch(normaliseCoords(jInputs.touch.coords))
+          onTouch(normalisedCoords)
         } else {
-          // const indicesAtCoords = instancesAtCoords.map(ic => {
-          //   return instanceClasses.indexOf(ic)
-          // })
-          // onTouchSecondary(indicesAtCoords)
+          const indicesAtCoords = instancesAtCoords.map(i => instances.indexOf(i))
+          onTouchSecondary(indicesAtCoords)
         }
       } else {
-        // const instancesAtCoords = getInstancesAtCoords(instances, normaliseCoords(touchStartCoords))
-        // const eventContext = {
-        //   instances,
-        //   spaceContainer: spaceContainer,
-        //   resourceContainers: resourceContainers,
-        //   variables: variables
-        // }
-        // instances = this.handleEvent('Touch', eventContext, instances, instancesAtCoords)
+        const eventContext = {
+          instances,
+          spaceContainer,
+          resourceContainers,
+          variables
+        }
+        instances = handleEvent('Touch', eventContext, instances, instancesAtCoords)
       }
     })
     addEventListener(c, 'mousedown', (e) => {
       e.preventDefault()
       const coords = getMouseData(domBoundsX, domBoundsY, e)
-      console.warn('mousedown!', coords)
+      const normalisedCoords = normaliseCoords(spaceContainer, designMode, gridOn, gridWidth, gridHeight, coords)
+      const instancesAtCoords = instances.filter(i => isInstanceIntersecting(i, normalisedCoords))
       if (designMode === true) {
         if (e.which === 1) {
-          console.warn('calling onTouch?')
-          onTouch(normaliseCoords(coords))
+          onTouch(normalisedCoords)
         } else {
-          // const indicesAtCoords = instancesAtCoords.map(ic => {
-          //   return instanceClasses.indexOf(ic)
-          // })
-          // onTouchSecondary(indicesAtCoords)
+          const indicesAtCoords = instancesAtCoords.map(i => instances.indexOf(i))
+          onTouchSecondary(indicesAtCoords)
         }
       } else {
-        // const instancesAtCoords = getInstancesAtCoords(instances, normaliseCoords(coords))
-        // const eventContext = {
-        //   instances,
-        //   spaceContainer: this.props.spaceContainer,
-        //   resourceContainers: this.props.resourceContainers,
-        //   variables
-        // }
-        // instances = this.handleEvent('Touch', eventContext, instances, instancesAtCoords)
+        const eventContext = {
+          instances,
+          spaceContainer,
+          resourceContainers,
+          variables
+        }
+        instances = handleEvent('Touch', eventContext, instances, instancesAtCoords)
       }
     })
     const currentTouchCoords = typeof jInputs.touch.coords === 'object' ? normaliseCoords(spaceContainer, false, gridOn, gridWidth, gridHeight, jInputs.touch.coords) : null
@@ -423,12 +442,9 @@ const RenderGameSpace = (
     } else {
       const doGameLoopNotDesignMode = () => {
         instances = gameLoopNotDesignMode(ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables)
-        // window.requestAnimationFrame(doGameLoopNotDesignMode)
-        // if (designMode === false) {
-        //   window.requestAnimationFrame(doGameLoopNotDesignMode)
-        // }
+        requestAnimationFrameHandle = window.requestAnimationFrame(doGameLoopNotDesignMode)
       }
-      instances = handleEventStart(instances)
+      instances = handleEventStart(instances, spaceContainer, resourceContainers, variables)
       doGameLoopNotDesignMode()
     }
   }
@@ -439,15 +455,17 @@ const RenderGameSpace = (
   ctx.fillText('Loading...', 16, 24)
   loadResources(resourceContainers, spaceContainer)
     .then(onLoadedResources)
-    .catch(() => {
+    .catch(error => {
+      console.error(error)
       clear(ctx, designMode, spaceContainer)
       ctx.fillStyle = '#ffffff'
       ctx.font = '16px Arial'
-      ctx.fillText('This game could not be loaded.', 16, 24)
+      ctx.fillText('This game could not be loaded.', 12, 24)
     })
 
   const free = () => {
     console.warn('[RenderGameSpace] [free]')
+    window.cancelAnimationFrame(requestAnimationFrameHandle)
     eventListeners.forEach(event => {
       event.element.removeEventListener(event.name, event.logic)
     })
