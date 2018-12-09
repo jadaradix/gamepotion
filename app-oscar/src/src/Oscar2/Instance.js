@@ -29,11 +29,11 @@ class Instance {
   }
 
   bumpFrame() {
-    if (typeof this.imageContainer === 'object' && this.props.frame < this.imageContainer.resource.frameCount - 1) {
-      this.props.frame += 1 // frameSpeedToIncrements[this.imageContainer.resource.frameSpeed]
-    } else {
-      this.props.frame = 0
-    }
+    // if (typeof this.imageContainer === 'object' && this.props.frame < this.imageContainer.resource.frameCount - 1) {
+    //   this.props.frame += 1 // frameSpeedToIncrements[this.imageContainer.resource.frameSpeed]
+    // } else {
+    //   this.props.frame = 0
+    // }
   }
 
   onStep() {

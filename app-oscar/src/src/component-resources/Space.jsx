@@ -8,6 +8,8 @@ import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 import Image from '../components/Image/Image'
 
+import Oscar2 from '../Oscar2'
+
 const getAtomDropperResources = (resources) => {
   return resources
     .filter(r => r.type === 'atom')
@@ -226,18 +228,6 @@ class ResourceSpace extends PureComponent {
     // console.warn('[Space] [render] foundAtomResource', foundAtomResource)
     // console.warn('[Space] [render] foundImageResource', foundImageResource)
 
-    const resourceContainers = this.props.resources.map(resource => {
-      return {
-        resource,
-        extras: {}
-      }
-    })
-    const spaceContainer = {
-      resource: this.props.resource,
-      extras: {}
-    }
-    const variables = new Map()
-
     return (
       <StyledResource>
         <section className='settings-plot-info'>
@@ -271,15 +261,19 @@ class ResourceSpace extends PureComponent {
         </section>
         <section className='canvas'>
           <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>
-          <GameSpace
-            spaceContainer={spaceContainer}
-            resourceContainers={resourceContainers}
-            variables={variables}
+          <div id='oscar2-container' />
+          <Oscar2
+            containerElementId='oscar2-container'
+            project={this.props.project}
+            resources={this.props.resources}
+            spaceId={this.props.project.startSpace}
             designMode={!this.state.isPlaying}
             gridOn={this.props.localSettings['grid-on'] && !this.state.isPlaying}
             gridWidth={this.props.localSettings['grid-width']}
             gridHeight={this.props.localSettings['grid-height']}
-            onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords}
+            onTouch={this.plotAtom}
+            onTouchSecondary={this.unplotAtoms}
+            onTouchMove={this.updateTouchCoords}
           />
         </section>
       </StyledResource>

@@ -9,11 +9,7 @@ import CustomHelmet from '../../component-instances/CustomHelmet'
 import Oscar2 from '../../Oscar2'
 
 const StyledState = styled.div`
-  padding-top: 1rem;
-  padding-left: 1rem;
-  #oscar2-container {
-    margin-top: 1rem;
-  }
+  padding: 1rem;
 `
 
 class StateProjectPlay extends PureComponent {
@@ -61,6 +57,8 @@ class StateProjectPlay extends PureComponent {
                 containerElementId='oscar2-container'
                 project={this.state.currentProject.project}
                 resources={this.state.currentProject.resources}
+                designMode={false}
+                gridOn={false}
               />
             </Fragment>
           }
