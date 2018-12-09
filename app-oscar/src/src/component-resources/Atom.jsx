@@ -122,10 +122,10 @@ class ResourceAtom extends Component {
     })
   }
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate(nextProps) {
     if (this.state.currentEventIndex === undefined) {
       this.setState({
-        currentEventIndex: 0
+        currentEventIndex: nextProps.resource.events.length - 1
       })
     }
     return true
@@ -258,10 +258,11 @@ class ResourceAtom extends Component {
   }
 
   onEventModalGood(id, configuration) {
-    // console.warn('[component-resource-Atom] [onEventModalGood]', id, configuration)
+    // console.warn('[component-resource-Atom] [onEventModalGood] id/configuration', id, configuration)
     this.setState(
       {
-        isEventDialogShowing: false
+        isEventDialogShowing: false,
+        currentEventIndex: undefined
       },
       () => {
         this.onUpdate({
@@ -340,7 +341,7 @@ class ResourceAtom extends Component {
             <List emptyText='There aren&rsquo;t any events.'>
               {this.props.resource.events.map((event, eventIndex) => {
                 // console.warn('[component-resource-Atom] [render] event.id', event.id)
-                const eventClass = new events[event.id](event.configuration)
+                const eventClass = new events[event.id]({configuration: event.configuration})
                 return <ListItem
                   id={eventIndex}
                   key={eventIndex}
