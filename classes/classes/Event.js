@@ -1,5 +1,5 @@
 class Event {
-  constructor ({defaultConfiguration = [], configuration = []}) {
+  constructor ({defaultConfiguration = [], configuration = []} = {}) {
     // DO NOT CREATE INSTANCES OF THIS ABSTRACT CLASS (always extended) IN USERLAND...
     // ALWAYS USE THE CLASS FACTORY!
     this.id = 'event-bad-news'
