@@ -195,7 +195,7 @@ const loadResources = (resourceContainers, spaceContainer) => {
         r.extras.events = r.resource.events.map(e => {
           return {
             id: e.id,
-            configuration: e.configuration,
+            configurationString: e.configuration.join('-'),
             actions: e.actions.map(a => {
               const actionClassInstance = actionClasses.get(a.id)
               const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
@@ -249,23 +249,27 @@ const gameLoopDesignMode = (ctx, spaceContainer, gridOn, gridWidth, gridHeight, 
   })
 }
 
-const gameLoopNotDesignMode = (ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables) => {
+const gameLoopNotDesignMode = (ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace) => {
   draw({ctx, spaceContainer, designMode: false, gridOn, gridWidth, gridHeight})
   instances.forEach(instance => {
     instance.onStep()
     const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance, currentTouchCoords)
     drawInstance(ctx, spaceContainer, false, instance)
   })
-  instances = handleEventStep(instances, spaceContainer, resourceContainers, variables)
+  instances = handleEventStep(instances, spaceContainer, resourceContainers, variables, onSwitchSpace)
   return instances
 }
 
-const handleEvent = (eventId, eventContext, instances, appliesToInstances) => {
-  console.warn('eventContext', eventContext)
+const getMatchingEvents = (events, eventId, requiredConfigurationString) => {
+  return events.filter(e => e.id === eventId && e.configurationString === requiredConfigurationString)
+}
+
+const handleEvent = (eventId, requiredConfiguration = [], eventContext, instances, appliesToInstances) => {
+  const requiredConfigurationString = requiredConfiguration.join('-')
   let instancesToDestroy = []
   let instancesToCreate = []
   appliesToInstances.forEach(i => {
-    i.atomContainer.extras.events.filter(e => e.id === eventId).forEach(e => {
+    getMatchingEvents(i.atomContainer.extras.events, eventId, requiredConfigurationString).forEach(e => {
       const actions = e.actions
       const actionBacks = i.onEvent(actions, eventContext).filter(ab => typeof ab === 'object' && ab !== null)
       actionBacks.forEach(actionBack => {
@@ -276,20 +280,20 @@ const handleEvent = (eventId, eventContext, instances, appliesToInstances) => {
           i.setImage(result.imageToSet, eventContext.resourceContainers)
         }
         if (typeof result.spaceToGoTo === 'string') {
-          this.props.onSwitchSpace(result.spaceToGoTo)
+          eventContext.onSwitchSpace(result.spaceToGoTo)
         }
       })
     })
   })
   if (instancesToDestroy.length > 0) {
     console.log('[handleEvent] instancesToDestroy', instancesToDestroy)
-    instances = handleEvent('Destroy', eventContext, instances, instancesToDestroy)
+    instances = handleEvent('Destroy', undefined, eventContext, instances, instancesToDestroy)
   }
   const createdInstances = instanceDefinitionsToInstances(instancesToCreate, eventContext.resourceContainers)
   instances = instances.concat(createdInstances)
   if (createdInstances.length > 0) {
     console.log('[handleEvent] createdInstances', createdInstances)
-    instances = handleEvent('Create', eventContext, instances, createdInstances)
+    instances = handleEvent('Create', undefined, eventContext, instances, createdInstances)
   }
   instances = instances.filter(ic => {
     const willDestroy = instancesToDestroy.includes(ic)
@@ -298,27 +302,30 @@ const handleEvent = (eventId, eventContext, instances, appliesToInstances) => {
   return instances
 }
 
-const handleEventStart = (instances, spaceContainer, resourceContainers, variables) => {
-  // console.warn('[handleEventStart] instances', instances)
+const handleEventStart = (instances, spaceContainer, resourceContainers, variables, onSwitchSpace) => {
   const eventContext = {
     instances,
     spaceContainer,
     resourceContainers,
-    variables
+    variables,
+    onSwitchSpace
   }
-  console.warn('eventContext', eventContext)
-  return handleEvent('Create', eventContext, instances, instances)
+  // console.warn('[handleEventStart] instances', instances)
+  // console.warn('[handleEventStart] eventContext', eventContext)
+  return handleEvent('Create', undefined, eventContext, instances, instances)
 }
 
-const handleEventStep = (instances, spaceContainer, resourceContainers, variables) => {
-  // console.warn('[handleEventStep] instances', instances)
+const handleEventStep = (instances, spaceContainer, resourceContainers, variables, onSwitchSpace) => {
   const eventContext = {
     instances,
     spaceContainer,
     resourceContainers,
-    variables
+    variables,
+    onSwitchSpace
   }
-  return handleEvent('Step', eventContext, instances, instances)
+  // console.warn('[handleEventStep] instances', instances)
+  // console.warn('[handleEventStep] eventContext', eventContext)
+  return handleEvent('Step', undefined, eventContext, instances, instances)
 }
 
 const RenderGameSpace = (
@@ -357,7 +364,7 @@ const RenderGameSpace = (
 
   // let because it can be spliced
   let instances = instanceDefinitionsToInstances(spaceContainer.resource.instances, resourceContainers)
-  console.warn('booting, instances', instances)
+  console.warn('[RenderGameSpace] instances', instances)
 
   const onLoadedResources = () => {
     let jInputs = {
@@ -366,12 +373,8 @@ const RenderGameSpace = (
         coords: undefined,
         time: 0
       },
-      keys: {
-        'x': {
-          on: false,
-          time: 0
-        }
-      }
+      keys: {},
+      keyCount: 0
     }
 
     addEventListener(c, 'touchmove', (e) => {
@@ -384,6 +387,40 @@ const RenderGameSpace = (
       e.preventDefault()
       return false
     })
+    if (designMode === false) {
+      addEventListener(document, 'keypress', (e) => {
+        const eventContext = {
+          instances,
+          spaceContainer,
+          resourceContainers,
+          variables,
+          onSwitchSpace
+        }
+        const eventConfiguration = ['press', e.key]
+        instances = handleEvent('Input', eventConfiguration, eventContext, instances, instances)
+      })
+      addEventListener(document, 'keydown', (e) => {
+        const eventContext = {
+          instances,
+          spaceContainer,
+          resourceContainers,
+          variables,
+          onSwitchSpace
+        }
+        const eventConfiguration = ['hold', e.key]
+        console.warn('eventConfiguration', eventConfiguration)
+        instances = handleEvent('Input', eventConfiguration, eventContext, instances, instances)
+        // jInputs.keys[e.key] = {
+        //   on: true,
+        //   time: Date.now()
+        // }
+        // jInputs.keyCount += 1
+      })
+    }
+    // addEventListener(c, 'keyup', (e) => {
+    //   jInputs.keys[e.key].on = false
+    //   jInputs.keyCount -= 1
+    // })
     addEventListener(c, 'touchstart', (e) => {
       jInputs.touch = {
         primary: true,
@@ -409,9 +446,10 @@ const RenderGameSpace = (
           instances,
           spaceContainer,
           resourceContainers,
-          variables
+          variables,
+          onSwitchSpace
         }
-        instances = handleEvent('Touch', eventContext, instances, instancesAtCoords)
+        instances = handleEvent('Touch', undefined, eventContext, instances, instancesAtCoords)
       }
     })
     addEventListener(c, 'mousedown', (e) => {
@@ -431,9 +469,10 @@ const RenderGameSpace = (
           instances,
           spaceContainer,
           resourceContainers,
-          variables
+          variables,
+          onSwitchSpace
         }
-        instances = handleEvent('Touch', eventContext, instances, instancesAtCoords)
+        instances = handleEvent('Touch', undefined, eventContext, instances, instancesAtCoords)
       }
     })
     const currentTouchCoords = typeof jInputs.touch.coords === 'object' ? normaliseCoords(spaceContainer, false, gridOn, gridWidth, gridHeight, jInputs.touch.coords) : null
@@ -441,10 +480,10 @@ const RenderGameSpace = (
       gameLoopDesignMode(ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances, currentTouchCoords)
     } else {
       const doGameLoopNotDesignMode = () => {
-        instances = gameLoopNotDesignMode(ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables)
+        instances = gameLoopNotDesignMode(ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace)
         requestAnimationFrameHandle = window.requestAnimationFrame(doGameLoopNotDesignMode)
       }
-      instances = handleEventStart(instances, spaceContainer, resourceContainers, variables)
+      instances = handleEventStart(instances, spaceContainer, resourceContainers, variables, onSwitchSpace)
       doGameLoopNotDesignMode()
     }
   }

@@ -227,6 +227,7 @@ class ResourceSpace extends PureComponent {
 
     // console.warn('[Space] [render] foundAtomResource', foundAtomResource)
     // console.warn('[Space] [render] foundImageResource', foundImageResource)
+    console.warn('[Space] [render] this.props.localSettings', this.props.localSettings)
 
     return (
       <StyledResource>
@@ -254,8 +255,8 @@ class ResourceSpace extends PureComponent {
             </div>
             <Switch checked={this.props.localSettings['grid-on']} onChange={(v) => this.props.onUpdateLocalSetting('grid-on', v)}>Grid</Switch>
             <div className='grid-properties'>
-              <Input label='Grid Width' value={this.props.localSettings['grid-width']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-width', v)} />
-              <Input label='Grid Height' value={this.props.localSettings['grid-height']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-height', v)} />
+              <Input label='Grid Width' value={this.props.localSettings['grid-width']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-width', parseInt(v, 10))} />
+              <Input label='Grid Height' value={this.props.localSettings['grid-height']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-height', parseInt(v, 10))} />
             </div>
           </Box>
         </section>

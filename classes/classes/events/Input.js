@@ -34,11 +34,19 @@ class Input extends Event {
               name: 'Secondary'
             },
             {
-              id: 'left',
+              id: 'ArrowUp',
+              name: 'Up'
+            },
+            {
+              id: 'ArrowDown',
+              name: 'Down'
+            },
+            {
+              id: 'ArrowLeft',
               name: 'Left'
             },
             {
-              id: 'right',
+              id: 'ArrowRight',
               name: 'Right'
             }
           ]
