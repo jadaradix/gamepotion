@@ -52,9 +52,10 @@ const middleware = (publicRoutes, request, response, next) => {
               return next()
             } catch (error) {
               if (skipPasswordCheck === true) {
-                console.error('[middleware-auth] skipPasswordCheck is true')
+                console.log('[middleware-auth] skipPasswordCheck is true (this is good)')
                 request.authorization.user = user
                 request.authorization.method = 'basic'
+                return next()
               } else {
                 console.error('[middleware-auth] bad password', error)
                 if (isThisRoutePublic === false) {
