@@ -8,7 +8,7 @@ const actionClasses = new Map(
   })
 )
 
-const drawBackgroundImage = (ctx, spaceContainer, designMode) => {
+const drawBackgroundImage = (ctx, spaceContainer, camera, designMode) => {
   if (typeof spaceContainer.extras.backgroundImage !== 'object') {
     return
   }
@@ -18,8 +18,8 @@ const drawBackgroundImage = (ctx, spaceContainer, designMode) => {
   } = spaceContainer.extras.backgroundImage.resource
   const xCount = (spaceContainer.resource.width + (spaceContainer.resource.width % frameWidth)) / frameWidth
   const yCount = (spaceContainer.resource.height + (spaceContainer.resource.height % frameHeight)) / frameHeight
-  const offsetX = (!designMode ? spaceContainer.resource.camera.x : 0)
-  const offsetY = (!designMode ? spaceContainer.resource.camera.y : 0)
+  const offsetX = (!designMode ? camera.x : 0)
+  const offsetY = (!designMode ? camera.y : 0)
   for (let x = 0; x < xCount; x++) {
     for (let y = 0; y < yCount; y++) {
       const actualX = x * frameWidth - offsetX
@@ -36,11 +36,11 @@ const drawForegroundImage = (ctx, spaceContainer) => {
   ctx.drawImage(spaceContainer.extras.foregroundImage.extras.element, 0, 0)
 }
 
-const drawInstance = (ctx, spaceContainer, designMode, instance) => {
+const drawInstance = (ctx, camera, designMode, instance) => {
   const frame = parseInt(instance.props.frame, 10)
   const image = instance.getImage()
-  const x = instance.props.x - (!designMode ? spaceContainer.resource.camera.x : 0)
-  const y = instance.props.y - (!designMode ? spaceContainer.resource.camera.y : 0)
+  const x = instance.props.x - (!designMode ? camera.x : 0)
+  const y = instance.props.y - (!designMode ? camera.y : 0)
   const width = instance.getWidth()
   const height = instance.getHeight()
   // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
@@ -86,18 +86,18 @@ const drawCamera = (ctx, spaceContainer) => {
   ctx.globalAlpha = 1
 }
 
-const clear = (ctx, designMode, spaceContainer) => {
+const clear = (ctx, designMode, spaceContainer, camera) => {
   ctx.clearRect(
     0,
     0,
-    (designMode ? spaceContainer.resource.width : spaceContainer.resource.camera.width),
-    (designMode ? spaceContainer.resource.height : spaceContainer.resource.camera.height)
+    (designMode ? spaceContainer.resource.width : camera.width),
+    (designMode ? spaceContainer.resource.height : camera.height)
   )
 }
 
-const draw = ({ctx, spaceContainer, designMode, gridOn, gridWidth, gridHeight}) => {
-  clear(ctx, designMode, spaceContainer)
-  drawBackgroundImage(ctx, spaceContainer, designMode)
+const draw = ({ctx, spaceContainer, camera, designMode, gridOn, gridWidth, gridHeight}) => {
+  clear(ctx, designMode, spaceContainer, camera)
+  drawBackgroundImage(ctx, spaceContainer, camera, designMode)
   drawForegroundImage(ctx, spaceContainer)
   if (designMode === true) {
     drawCamera(ctx, spaceContainer)
@@ -125,14 +125,14 @@ const getMouseData = (domBoundsX, domBoundsY, e) => {
   return { x, y, z }
 }
 
-const normaliseCoords = (spaceContainer, designMode, gridOn, gridWidth, gridHeight, coords) => {
+const normaliseCoords = (camera, designMode, gridOn, gridWidth, gridHeight, coords) => {
   // console.error('[normaliseCoords] designMode', designMode)
   const normalisedCoords = {
     ...coords
   }
   if (designMode === false) {
-    normalisedCoords.x = normalisedCoords.x + spaceContainer.resource.camera.x
-    normalisedCoords.y = normalisedCoords.y + spaceContainer.resource.camera.y
+    normalisedCoords.x = normalisedCoords.x + camera.x
+    normalisedCoords.y = normalisedCoords.y + camera.y
   }
   if (gridOn === true) {
     normalisedCoords.x = normalisedCoords.x - (normalisedCoords.x % gridWidth)
@@ -230,7 +230,7 @@ const addEventListener = (element, name, logic) => {
 }
 
 const isInstanceIntersecting = (instance, coords) => {
-  console.warn('instance, coords', instance, coords)
+  console.warn('[isInstanceIntersecting] instance/coords', instance, coords)
   const w = instance.getWidth()
   const h = instance.getHeight()
   const isIntersecting = (
@@ -242,21 +242,21 @@ const isInstanceIntersecting = (instance, coords) => {
   return isIntersecting
 }
 
-const gameLoopDesignMode = (ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances) => {
-  draw({ctx, spaceContainer, designMode: true, gridOn, gridWidth, gridHeight})
+const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances) => {
+  draw({ctx, spaceContainer, camera, designMode: true, gridOn, gridWidth, gridHeight})
   instances.forEach(instance => {
-    drawInstance(ctx, spaceContainer, true, instance)
+    drawInstance(ctx, camera, true, instance)
   })
 }
 
-const gameLoopNotDesignMode = (ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace) => {
-  draw({ctx, spaceContainer, designMode: false, gridOn, gridWidth, gridHeight})
+const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace) => {
+  draw({ctx, spaceContainer, camera, designMode: false, gridOn, gridWidth, gridHeight})
   instances.forEach(instance => {
     instance.onStep()
-    const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance, currentTouchCoords)
-    drawInstance(ctx, spaceContainer, false, instance)
+    // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance, currentTouchCoords)
+    drawInstance(ctx, camera, false, instance)
   })
-  instances = handleEventStep(instances, spaceContainer, resourceContainers, variables, onSwitchSpace)
+  instances = handleEventStep(instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace)
   return instances
 }
 
@@ -302,10 +302,11 @@ const handleEvent = (eventId, requiredConfiguration = [], eventContext, instance
   return instances
 }
 
-const handleEventStart = (instances, spaceContainer, resourceContainers, variables, onSwitchSpace) => {
+const handleEventStart = (instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace) => {
   const eventContext = {
     instances,
     spaceContainer,
+    camera,
     resourceContainers,
     variables,
     onSwitchSpace
@@ -315,10 +316,11 @@ const handleEventStart = (instances, spaceContainer, resourceContainers, variabl
   return handleEvent('Create', undefined, eventContext, instances, instances)
 }
 
-const handleEventStep = (instances, spaceContainer, resourceContainers, variables, onSwitchSpace) => {
+const handleEventStep = (instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace) => {
   const eventContext = {
     instances,
     spaceContainer,
+    camera,
     resourceContainers,
     variables,
     onSwitchSpace
@@ -348,9 +350,13 @@ const RenderGameSpace = (
   gridWidth = parseInt(gridWidth, 10)
   gridHeight = parseInt(gridHeight, 10)
 
+  const camera = {
+    ...spaceContainer.resource.camera
+  }
+
   const [c, ctx] = [canvasElement, canvasElement.getContext('2d')]
-  c.width = (designMode ? spaceContainer.resource.width : spaceContainer.resource.camera.width)
-  c.height = (designMode ? spaceContainer.resource.height : spaceContainer.resource.camera.height)
+  c.width = (designMode ? spaceContainer.resource.width : camera.width)
+  c.height = (designMode ? spaceContainer.resource.height : camera.height)
   c.style.display = 'block'
   c.style.backgroundColor = 'black'
   // stop blurred lines from https://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
@@ -392,6 +398,7 @@ const RenderGameSpace = (
         const eventContext = {
           instances,
           spaceContainer,
+          camera,
           resourceContainers,
           variables,
           onSwitchSpace
@@ -400,27 +407,42 @@ const RenderGameSpace = (
         instances = handleEvent('Input', eventConfiguration, eventContext, instances, instances)
       })
       addEventListener(document, 'keydown', (e) => {
+        e.preventDefault()
         const eventContext = {
           instances,
           spaceContainer,
+          camera,
           resourceContainers,
           variables,
           onSwitchSpace
         }
         const eventConfiguration = ['hold', e.key]
-        console.warn('eventConfiguration', eventConfiguration)
         instances = handleEvent('Input', eventConfiguration, eventContext, instances, instances)
-        // jInputs.keys[e.key] = {
-        //   on: true,
-        //   time: Date.now()
-        // }
-        // jInputs.keyCount += 1
+        if (jInputs.keys[e.key] === undefined || jInputs.keys[e.key].on === false) {
+          jInputs.keyCount += 1
+        }
+        jInputs.keys[e.key] = {
+          on: true,
+          time: Date.now()
+        }
+      })
+      addEventListener(document, 'keyup', (e) => {
+        jInputs.keyCount -= 1
+        jInputs.keys[e.key].on = false
+        // console.warn('jInputs.keyCount', jInputs.keyCount)
+        if (jInputs.keyCount === 0) {
+          const eventContext = {
+            instances,
+            spaceContainer,
+            camera,
+            resourceContainers,
+            variables,
+            onSwitchSpace
+          }
+          instances = handleEvent('NoInput', undefined, eventContext, instances, instances)
+        }
       })
     }
-    // addEventListener(c, 'keyup', (e) => {
-    //   jInputs.keys[e.key].on = false
-    //   jInputs.keyCount -= 1
-    // })
     addEventListener(c, 'touchstart', (e) => {
       jInputs.touch = {
         primary: true,
@@ -430,7 +452,7 @@ const RenderGameSpace = (
     })
     addEventListener(c, 'touchend', () => {
       const timeDifference = Date.now() - jInputs.touch.time
-      const normalisedCoords = normaliseCoords(spaceContainer, designMode, gridOn, gridWidth, gridHeight, jInputs.touch.coords)
+      const normalisedCoords = normaliseCoords(camera, designMode, gridOn, gridWidth, gridHeight, jInputs.touch.coords)
       const instancesAtCoords = instances.filter(i => isInstanceIntersecting(i, normalisedCoords))
       // console.warn('[touchend] jInputs.touch.time', jInputs.touch.time)
       // console.warn('[touchend] timeDifference', timeDifference)
@@ -445,6 +467,7 @@ const RenderGameSpace = (
         const eventContext = {
           instances,
           spaceContainer,
+          camera,
           resourceContainers,
           variables,
           onSwitchSpace
@@ -455,7 +478,7 @@ const RenderGameSpace = (
     addEventListener(c, 'mousedown', (e) => {
       e.preventDefault()
       const coords = getMouseData(domBoundsX, domBoundsY, e)
-      const normalisedCoords = normaliseCoords(spaceContainer, designMode, gridOn, gridWidth, gridHeight, coords)
+      const normalisedCoords = normaliseCoords(camera, designMode, gridOn, gridWidth, gridHeight, coords)
       const instancesAtCoords = instances.filter(i => isInstanceIntersecting(i, normalisedCoords))
       if (designMode === true) {
         if (e.which === 1) {
@@ -468,6 +491,7 @@ const RenderGameSpace = (
         const eventContext = {
           instances,
           spaceContainer,
+          camera,
           resourceContainers,
           variables,
           onSwitchSpace
@@ -475,20 +499,20 @@ const RenderGameSpace = (
         instances = handleEvent('Touch', undefined, eventContext, instances, instancesAtCoords)
       }
     })
-    const currentTouchCoords = typeof jInputs.touch.coords === 'object' ? normaliseCoords(spaceContainer, false, gridOn, gridWidth, gridHeight, jInputs.touch.coords) : null
+    const currentTouchCoords = typeof jInputs.touch.coords === 'object' ? normaliseCoords(camera, false, gridOn, gridWidth, gridHeight, jInputs.touch.coords) : null
     if (designMode === true) {
-      gameLoopDesignMode(ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances, currentTouchCoords)
+      gameLoopDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords)
     } else {
       const doGameLoopNotDesignMode = () => {
-        instances = gameLoopNotDesignMode(ctx, spaceContainer, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace)
+        instances = gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace)
         requestAnimationFrameHandle = window.requestAnimationFrame(doGameLoopNotDesignMode)
       }
-      instances = handleEventStart(instances, spaceContainer, resourceContainers, variables, onSwitchSpace)
+      instances = handleEventStart(instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace)
       doGameLoopNotDesignMode()
     }
   }
 
-  clear(ctx, designMode, spaceContainer)
+  clear(ctx, designMode, spaceContainer, camera)
   ctx.fillStyle = '#ffffff'
   ctx.font = '16px Arial'
   ctx.fillText('Loading...', 16, 24)
@@ -496,7 +520,7 @@ const RenderGameSpace = (
     .then(onLoadedResources)
     .catch(error => {
       console.error(error)
-      clear(ctx, designMode, spaceContainer)
+      clear(ctx, designMode, spaceContainer, camera)
       ctx.fillStyle = '#ffffff'
       ctx.font = '16px Arial'
       ctx.fillText('This game could not be loaded.', 12, 24)

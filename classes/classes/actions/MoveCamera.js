@@ -21,8 +21,8 @@ class MoveCamera extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      context.eventContext.spaceContainer.resource.camera.x = runArguments[0]
-      context.eventContext.spaceContainer.resource.camera.y = runArguments[1]
+      context.eventContext.camera.x = runArguments[0]
+      context.eventContext.camera.y = runArguments[1]
       return null
     case 'nds':
       return ''

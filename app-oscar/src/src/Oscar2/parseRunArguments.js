@@ -143,7 +143,7 @@ const parseToken = (token, typeHint, parseContext) => {
         height: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameHeight : 0),
       },
       space: parseContext.eventContext.spaceContainer.resource,
-      camera: parseContext.eventContext.spaceContainer.resource.camera
+      camera: parseContext.eventContext.camera
     }
     return foundParser(j, parseContext, memberExpressions)
   } else {
