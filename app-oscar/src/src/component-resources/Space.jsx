@@ -8,7 +8,7 @@ import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 import Image from '../components/Image/Image'
 
-import GameSpace from '../component-instances/Oscar/GameSpace'
+import Oscar2 from '../Oscar2'
 
 const getAtomDropperResources = (resources) => {
   return resources
@@ -86,7 +86,7 @@ const StyledResource = styled.div`
     margin-top: 1rem;
     overflow: scroll;
     // background-color: red;
-    .component--switch + .component--oscar-engine-space {
+    .component--switch + #oscar2-container {
       margin-top: 1rem;
     }
   }
@@ -227,18 +227,7 @@ class ResourceSpace extends PureComponent {
 
     // console.warn('[Space] [render] foundAtomResource', foundAtomResource)
     // console.warn('[Space] [render] foundImageResource', foundImageResource)
-
-    const resourceContainers = this.props.resources.map(resource => {
-      return {
-        resource,
-        extras: {}
-      }
-    })
-    const spaceContainer = {
-      resource: this.props.resource,
-      extras: {}
-    }
-    const variables = new Map()
+    console.warn('[Space] [render] this.props.localSettings', this.props.localSettings)
 
     return (
       <StyledResource>
@@ -266,22 +255,26 @@ class ResourceSpace extends PureComponent {
             </div>
             <Switch checked={this.props.localSettings['grid-on']} onChange={(v) => this.props.onUpdateLocalSetting('grid-on', v)}>Grid</Switch>
             <div className='grid-properties'>
-              <Input label='Grid Width' value={this.props.localSettings['grid-width']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-width', v)} />
-              <Input label='Grid Height' value={this.props.localSettings['grid-height']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-height', v)} />
+              <Input label='Grid Width' value={this.props.localSettings['grid-width']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-width', parseInt(v, 10))} />
+              <Input label='Grid Height' value={this.props.localSettings['grid-height']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-height', parseInt(v, 10))} />
             </div>
           </Box>
         </section>
         <section className='canvas'>
           <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>
-          <GameSpace
-            spaceContainer={spaceContainer}
-            resourceContainers={resourceContainers}
-            variables={variables}
+          <div id='oscar2-container' />
+          <Oscar2
+            containerElementId='oscar2-container'
+            project={this.props.project}
+            resources={this.props.resources}
+            spaceId={this.props.resource.id}
             designMode={!this.state.isPlaying}
             gridOn={this.props.localSettings['grid-on'] && !this.state.isPlaying}
             gridWidth={this.props.localSettings['grid-width']}
             gridHeight={this.props.localSettings['grid-height']}
-            onTouch={this.plotAtom} onTouchSecondary={this.unplotAtoms} onTouchMove={this.updateTouchCoords}
+            onTouch={this.plotAtom}
+            onTouchSecondary={this.unplotAtoms}
+            onTouchMove={this.updateTouchCoords}
           />
         </section>
       </StyledResource>

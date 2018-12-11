@@ -53,20 +53,7 @@ class StateProjectProject extends Component {
       resourceToLoadId: null,
       localSettings: getState().localSettings
     }
-  }
-
-  doLoadResource(projectId, resourceId) {
-    this.props.history.replace(`/projects/${projectId}/resources/${resourceId}`, {resourceId})
-  }
-  
-  tryLoadResource(props) {
-    const resourceId = props.match.params.resourceId
-    if (typeof resourceId === 'string') {
-      const foundResource = this.state.currentProject.resources.find(r => r.id === resourceId)
-      if (foundResource !== undefined) {
-        this.onLoadResource(foundResource)
-      }
-    }
+    this.onLoadResource = this.onLoadResource.bind(this)
   }
 
   componentDidMount() {
@@ -76,24 +63,25 @@ class StateProjectProject extends Component {
           moduleIds: state.user.modules.map(m => m.id)
         })
       }),
-      subscribe('PROJECTS_LOAD', (state) => {
-        this.setState({
-          currentProject: state.currentProject
+      subscribe('PROJECTS_START_LOAD', () => {
+        dispatch({
+          name: 'PROJECTS_LOAD',
+          data: {
+            id: this.props.match.params.id
+          }
         })
-        if (this.props.match.params.resourceId === undefined && state.currentProject.resources.length > 0) {
-          return this.doLoadResource(state.currentProject.project.id, state.currentProject.resources[0].id)
+      }),
+      subscribe('PROJECTS_LOAD', (state) => {
+        if (this.props.match.params.resourceId !== 'load') {
+          this.onLoadResource(this.props.match.params.resourceId)
+        } else {
+          this.onLoadResource(state.currentProject.resources[0].id)
         }
-        this.tryLoadResource(this.props)
       }),
       subscribe('PROJECTS_RESOURCES_LOAD', (state) => {
         this.setState({
           currentProject: state.currentProject
         })
-        // IF THIS WERE A PURE COMPONENT...
-        // this is because PROJECTS_RESOURCES_LOAD updates a sub property
-        // (currentResource) and this is a PureComponent which doesn't do
-        // deep equality checks
-        // this.forceUpdate()
       }),
       subscribe('PROJECTS_RESOURCES_CREATE', (state) => {
         this.setState({
@@ -122,16 +110,6 @@ class StateProjectProject extends Component {
     dispatch({
       name: 'PROJECTS_START_LOAD'
     })
-    dispatch({
-      name: 'PROJECTS_LOAD',
-      data: {
-        id: this.props.match.params.id
-      }
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.tryLoadResource(nextProps)
   }
 
   componentWillUnmount() {
@@ -147,11 +125,12 @@ class StateProjectProject extends Component {
   //   })
   // }
 
-  onLoadResource(resource) {
+  onLoadResource(id) {
+    this.props.history.replace(`/projects/${this.props.match.params.id}/resources/${id}`)
     dispatch({
       name: 'PROJECTS_RESOURCES_LOAD',
       data: {
-        id: resource.id
+        id
       }
     })
   }
@@ -191,12 +170,10 @@ class StateProjectProject extends Component {
         id: resource.id
       }
     })
-    // why?
-    // .catch(() => {})
   }
 
   onUpdateLocalSetting(name, value) {
-    console.log('onUpdateLocalSetting!!!')
+    console.log('[onUpdateLocalSetting] name/value', name, value)
     dispatch({
       name: 'LOCAL_SETTINGS_UPDATE',
       data: {
@@ -224,7 +201,7 @@ class StateProjectProject extends Component {
                   resources={this.state.currentProject.resources}
                   currentResource={this.state.currentProject.currentResource}
                   // onAdd={this.onAddResource}
-                  onLoad={(r) => this.doLoadResource(this.state.currentProject.project.id, r.id)}
+                  onLoad={this.onLoadResource}
                   onRename={this.onRenameResource}
                   onDelete={this.onDeleteResource}
                 />

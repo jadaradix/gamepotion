@@ -1,6 +1,6 @@
 {
   "name": "gmc-app-oscar",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "Game Maker Club",
   "dependencies": {
     "axios": "^0.18.0",

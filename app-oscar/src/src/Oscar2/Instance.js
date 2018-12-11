@@ -1,4 +1,4 @@
-import parseRunArguments from './parseRunArguments/parseRunArguments'
+import parseRunArguments from './parseRunArguments'
 
 const frameSpeedToIncrements = {
   '0': 0,
@@ -7,7 +7,7 @@ const frameSpeedToIncrements = {
   '3': 0.3
 }
 
-class GameAtomInstance {
+class Instance {
   constructor(props, atomContainer) {
     this.props = props
     this.atomContainer = atomContainer
@@ -57,6 +57,7 @@ class GameAtomInstance {
         eventContext,
         instanceClass: this
       }
+      // console.warn('[onEvent] parseContext', parseContext)
       const runArguments = parseRunArguments(action.argumentTypes, action.runArguments, parseContext)
       const runContext = {
         platform: 'html5',
@@ -105,4 +106,4 @@ class GameAtomInstance {
   }
 }
 
-export default GameAtomInstance
+export default Instance

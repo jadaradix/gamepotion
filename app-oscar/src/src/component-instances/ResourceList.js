@@ -48,7 +48,7 @@ const ResourceList = ({ resources, currentResource, onAdd, onLoad, onRename, onD
             <Fragment key={`rt-${rt.type}`}>
               <ListItem onAction={onResourceTypeAction} actions={[]} id={rt.type} icon={icons.generic.folder}>{rt.namePlural}</ListItem>
               <List>
-                {resources.filter(r => r.type === rt.type).map(r => <ListItem onChoose={(id) => onLoad(resources.find(r => r.id === id))} key={r.id} id={r.id} icon={icons.resources[rt.type]} selected={r === currentResource} actions={['rename', 'delete']} onAction={onResourceAction}>{r.name}</ListItem>)}
+                {resources.filter(r => r.type === rt.type).map(r => <ListItem onChoose={onLoad} key={r.id} id={r.id} icon={icons.resources[rt.type]} selected={r === currentResource} actions={['rename', 'delete']} onAction={onResourceAction}>{r.name}</ListItem>)}
               </List>
             </Fragment>
           )

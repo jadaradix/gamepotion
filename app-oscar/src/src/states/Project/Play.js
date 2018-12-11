@@ -5,11 +5,11 @@ import { getState, dispatch, subscribe } from '../../state'
 
 import MainToolbarContainer from '../../component-instances/MainToolbarContainer'
 import CustomHelmet from '../../component-instances/CustomHelmet'
-import Game from '../../component-instances/Oscar/Game'
+
+import Oscar2 from '../../Oscar2'
 
 const StyledState = styled.div`
-  padding-top: 1rem;
-  padding-left: 1rem;
+  padding: 1rem;
 `
 
 class StateProjectPlay extends PureComponent {
@@ -52,9 +52,14 @@ class StateProjectPlay extends PureComponent {
               <CustomHelmet
                 title={this.state.currentProject.project.name}
               />
-              <Game
+              <div id='oscar2-container' />
+              <Oscar2
+                containerElementId='oscar2-container'
                 project={this.state.currentProject.project}
                 resources={this.state.currentProject.resources}
+                spaceId={this.state.currentProject.project.startSpace}
+                designMode={false}
+                gridOn={false}
               />
             </Fragment>
           }

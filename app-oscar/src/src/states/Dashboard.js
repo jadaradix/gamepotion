@@ -46,7 +46,7 @@ class StateDashboard extends Component {
       // projects
       projects: null,
       currentProject: null,
-      projectToLoadId: null,
+      projectToLoad: undefined,
       // feeds
       feeds: getState().feeds,
       // feedItemToLoadId: null
@@ -92,14 +92,14 @@ class StateDashboard extends Component {
     ]
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.subscriptions.forEach(s => s.unsubscribe())
   }
 
-  loadProject (projectToLoadId) {
-    console.warn('[state-Dashboard] [loadProject]', projectToLoadId)
+  loadProject(projectToLoad) {
+    console.warn('[state-Dashboard] [loadProject] projectToLoad', projectToLoad)
     this.setState({
-      projectToLoadId
+      projectToLoad
     })
   }
 
@@ -115,7 +115,7 @@ class StateDashboard extends Component {
     const actions = {
       'load': () => {
         console.warn('[state-Dashboard] [actOnProject] load', id)
-        this.loadProject(id)
+        this.loadProject(project)
       },
       'rename': () => {
         console.warn('[state-Dashboard] [actOnProject] rename', id)
@@ -152,8 +152,8 @@ class StateDashboard extends Component {
   }
 
   render() {
-    if (this.state.projectToLoadId !== null) {
-      return <Redirect to={`/projects/${this.state.projectToLoadId}`} />
+    if (typeof this.state.projectToLoad === 'object') {
+      return <Redirect to={`/projects/${this.state.projectToLoad.project.id}/resources/load`} />
     }
 
     const newsFeed = this.state.feeds.get('news')
@@ -177,7 +177,7 @@ class StateDashboard extends Component {
                           id={p.project.id}
                           icon={icons.generic.project.project}
                           actions={['load', 'rename', 'delete']}
-                          onChoose={(id) => this.loadProject(id)}
+                          onChoose={() => this.loadProject(p)}
                           onAction={this.actOnProject}
                         >
                           {p.project.name}

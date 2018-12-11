@@ -1,7 +1,7 @@
 import Event from '../Event.js'
 
 class Create extends Event {
-  constructor(json = {}) {
+  constructor(json) {
     super(json)
     this.id = 'Create'
     this.name = 'Create'

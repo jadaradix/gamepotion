@@ -65,9 +65,13 @@ class EventModal extends PureComponent {
 
   onChooseEvent(id) {
     const eventClass = this.eventClasses.find(ec => ec.id === id)
-    eventClass.configuration = eventClass.defaultConfiguration.map(dc => dc.defaultValue)
+    const configuration = eventClass.defaultConfiguration.map(dc => dc.defaultValue)
+    if (configuration.length === 0) {
+      return this.props.onGood(eventClass.id, configuration)
+    }
     this.setState({
-      eventClass
+      eventClass,
+      configuration
     })
   }
 

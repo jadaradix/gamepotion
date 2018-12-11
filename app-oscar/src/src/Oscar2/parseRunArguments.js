@@ -62,19 +62,67 @@ const OPERATORS_BINARY_EXPRESSION = {
 const OPERATORS_UNARY_EXPRESSION = {
   '-'(v) {
     return -v
+  },
+  '+'(v) {
+    return +v
+  }
+}
+
+const parsers = {
+  'Literal'(j, parseContext, memberExpressions) {
+    return j.value
+  },
+  'UnaryExpression'(j, parseContext, memberExpressions) {
+    const foundOperator = OPERATORS_UNARY_EXPRESSION[j.operator]
+    if (typeof foundOperator === 'function') {
+      return foundOperator(j.argument.value)
+    } else {
+      throw new Error(`found UnaryExpression with unsupported operator ${j.operator}!`)
+    }
+  },
+  'Identifier'(j, parseContext, memberExpressions) {
+    const foundVariable = parseContext.eventContext.variables.get(j.name)
+    if (foundVariable !== undefined) {
+      return foundVariable
+    } else {
+      throw new Error(`variable ${j.name} unknown`)
+    }
+  },
+  'MemberExpression'(j, parseContext, memberExpressions) {
+    const foundMemberExpression = memberExpressions[j.object.name]
+    if (foundMemberExpression !== undefined) {
+      return foundMemberExpression[j.property.name]
+    } else {
+      throw new Error(`member ${j.object.name} unknown`)
+    }
+  },
+  'BinaryExpression'(j, parseContext, memberExpressions) {
+    const foundOperator = OPERATORS_BINARY_EXPRESSION[j.operator]
+    if (typeof foundOperator === 'function') {
+      return foundOperator(
+        parseToken(j.left, 'generic', parseContext),
+        parseToken(j.right, 'generic', parseContext)
+      )
+    } else {
+      throw new Error(`operator ${j.operator} unsupported`)
+    }
+  },
+  'CallExpression'(j, parseContext, memberExpressions) {
+    const foundFunction = FUNCTIONS.get(j.callee.name)
+    if (foundFunction === undefined) {
+      throw new Error(`you tried to call function ${j.callee.name}() which doesnt exist!`)
+    }
+    if (foundFunction.argumentsNeeded !== j.arguments.length) {
+      throw new Error(`you tried to call function ${j.callee.name}() with ${j.arguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
+    }
+    const parsedArguments = j.arguments.map(jArgument => {
+      return parseToken(jArgument.raw, 'generic', parseContext)
+    })
+    return foundFunction.logic(parsedArguments)
   }
 }
 
 const parseToken = (token, typeHint, parseContext) => {
-  const memberExpressions = {
-    instance: {
-      ...parseContext.instanceClass.props,
-      width: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameWidth : 0),
-      height: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameHeight : 0),
-    },
-    space: parseContext.eventContext.spaceContainer.resource,
-    camera: parseContext.eventContext.spaceContainer.resource.camera
-  }
   if (typeHint === 'variable') {
     return token
   }
@@ -90,65 +138,22 @@ const parseToken = (token, typeHint, parseContext) => {
   } else {
     j = jsep(token)
   }
-  if (j.type === 'Literal') {
-    return j.value
-  }
-  if (j.type === 'UnaryExpression') {
-    if (j.operator === '-') {
-      return j.argument.value * -1
-    } else {
-      throw new Error(`found UnaryExpression with unsupported operator ${j.operator}!`)
+  const foundParser = parsers[j.type]
+  if (typeof foundParser === 'function') {
+    const memberExpressions = {
+      instance: {
+        ...parseContext.instanceClass.props,
+        width: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameWidth : 0),
+        height: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameHeight : 0),
+      },
+      space: parseContext.eventContext.spaceContainer.resource,
+      camera: parseContext.eventContext.camera
     }
+    return foundParser(j, parseContext, memberExpressions)
+  } else {
+    throw new Error(`could not parse ${token}`)
   }
-  if (j.type === 'Identifier') {
-    const foundVariable = parseContext.eventContext.variables.get(j.name)
-    if (foundVariable !== undefined) {
-      return foundVariable
-    } else {
-      throw new Error(`variable ${j.name} unknown`)
-    }
-  }
-  if (j.type === 'CallExpression') {
-    const foundFunction = FUNCTIONS.get(j.callee.name)
-    if (foundFunction === undefined) {
-      throw new Error(`you tried to call function ${j.callee.name}() which doesnt exist!`)
-    }
-    if (foundFunction.argumentsNeeded !== j.arguments.length) {
-      throw new Error(`you tried to call function ${j.callee.name}() with ${j.arguments.length} arguments instead of ${foundFunction.argumentsNeeded}`)
-    }
-    const parsedArguments = j.arguments.map(jArgument => {
-      return parseToken(jArgument.raw, 'generic', parseContext)
-    })
-    return foundFunction.logic(parsedArguments)
-  }
-  if (j.type === 'MemberExpression') {
-    const foundMemberExpression = memberExpressions[j.object.name]
-    if (foundMemberExpression !== undefined) {
-      return foundMemberExpression[j.property.name]
-    } else {
-      throw new Error(`member ${j.object.name} unknown`)
-    }
-  }
-  if (j.type === 'BinaryExpression') {
-    const foundOperator = OPERATORS_BINARY_EXPRESSION[j.operator]
-    if (typeof foundOperator === 'function') {
-      return foundOperator(
-        parseToken(j.left, 'generic', parseContext),
-        parseToken(j.right, 'generic', parseContext)
-      )
-    } else {
-      throw new Error(`operator ${j.operator} unsupported`)
-    }
-  }
-  if (j.type === 'UnaryExpression') {
-    const foundOperator = OPERATORS_UNARY_EXPRESSION[j.operator]
-    if (typeof foundOperator === 'function') {
-      return foundOperator(j.argument.value)
-    } else {
-      throw new Error(`operator ${j.operator} unsupported`)
-    }
-  }
-  throw new Error(`could not parse ${token}`)
+  
 }
 
 const parseRunArguments = (argumentTypes, runArguments, parseContext) => {

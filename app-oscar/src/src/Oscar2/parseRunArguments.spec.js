@@ -15,12 +15,12 @@ const parseContext = {
     spaceContainer: {
       resource: {
         width: 100,
-        height: 200,
-        camera: {
-          x: 300,
-          y: 400
-        },
+        height: 200
       }
+    },
+    camera: {
+      x: 300,
+      y: 400
     }
   }
 }

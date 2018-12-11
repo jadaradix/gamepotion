@@ -83,7 +83,7 @@ class StateProjectNew extends PureComponent {
 
   render() {
     if (this.state.currentProject.project.id !== undefined) {
-      return <Redirect to={`/projects/${this.state.currentProject.project.id}`} />
+      return <Redirect to={`/projects/${this.state.currentProject.project.id}/resources/load`} />
     }
     return (
       <Fragment>
