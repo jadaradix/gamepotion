@@ -256,8 +256,8 @@ const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, g
     // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance, currentTouchCoords)
     drawInstance(ctx, camera, false, instance)
   })
-  instances = handleEventStep(instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace)
-  return instances
+  // instances = handleEventStep(instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace)
+  // return instances
 }
 
 const getMatchingEvents = (events, eventId, requiredConfigurationString) => {
@@ -504,7 +504,7 @@ const RenderGameSpace = (
       gameLoopDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords)
     } else {
       const doGameLoopNotDesignMode = () => {
-        instances = gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace)
+        gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace)
         requestAnimationFrameHandle = window.requestAnimationFrame(doGameLoopNotDesignMode)
       }
       instances = handleEventStart(instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace)

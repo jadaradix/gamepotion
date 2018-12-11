@@ -1,5 +1,12 @@
 import parseRunArguments from './parseRunArguments'
 
+const frameSpeedToIncrements = {
+  '0': 0,
+  '1': 0.1,
+  '2': 0.2,
+  '3': 0.3
+}
+
 class Instance {
   constructor(props, atomContainer) {
     this.props = props
@@ -28,18 +35,15 @@ class Instance {
     return (this.imageContainer && this.imageContainer.resource.frameHeight) || 0
   }
 
-  bumpFrame() {
-    // if (typeof this.imageContainer === 'object' && this.props.frame < this.imageContainer.resource.frameCount - 1) {
-    //   this.props.frame += 1 // frameSpeedToIncrements[this.imageContainer.resource.frameSpeed]
-    // } else {
-    //   this.props.frame = 0
-    // }
-  }
-
   onStep() {
     this.props.x += this.props.vx
     this.props.y += this.props.vy
     this.props.z += this.props.vz
+    if (typeof this.imageContainer === 'object' && this.props.frame < this.imageContainer.resource.frameCount - 1) {
+      this.props.frame += frameSpeedToIncrements[this.imageContainer.resource.frameSpeed]
+    } else {
+      this.props.frame = 0
+    }
   }
 
   onEvent(actions, eventContext) {

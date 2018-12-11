@@ -61,9 +61,9 @@ class Input extends Event {
   }
 
   toString() {
-    console.warn('[action-Input] [toString] this.defaultConfiguration', this.defaultConfiguration)
-    console.warn('[action-Input] [toString] this.configuration', this.configuration)
-    console.warn('[action-Input] [toString] this.stateConfigurationValues', this.stateConfigurationValues)
+    // console.warn('[event-Input] [toString] this.defaultConfiguration', this.defaultConfiguration)
+    // console.warn('[event-Input] [toString] this.configuration', this.configuration)
+    // console.warn('[event-Input] [toString] this.stateConfigurationValues', this.stateConfigurationValues)
     const state = this.stateConfigurationValues.find(v => v.id === this.configuration[0]).name
     const key = this.keyConfigurationValues.find(v => v.id === this.configuration[1]).name
     return `${state} ${key}`
