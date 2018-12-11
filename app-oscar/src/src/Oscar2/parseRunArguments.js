@@ -62,6 +62,9 @@ const OPERATORS_BINARY_EXPRESSION = {
 const OPERATORS_UNARY_EXPRESSION = {
   '-'(v) {
     return -v
+  },
+  '+'(v) {
+    return +v
   }
 }
 
@@ -70,8 +73,9 @@ const parsers = {
     return j.value
   },
   'UnaryExpression'(j, parseContext, memberExpressions) {
-    if (j.operator === '-') {
-      return j.argument.value * -1
+    const foundOperator = OPERATORS_UNARY_EXPRESSION[j.operator]
+    if (typeof foundOperator === 'function') {
+      return foundOperator(j.argument.value)
     } else {
       throw new Error(`found UnaryExpression with unsupported operator ${j.operator}!`)
     }
