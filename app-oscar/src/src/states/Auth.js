@@ -67,6 +67,14 @@ const stages = new Map([
                 password: 'dummy-password'
               }
             })
+              .then(() => {
+                // this only runs when skipPasswordCheck in api middleware is true
+                // or if the user's password is genuinely 'dummy-password'
+                return setStateCallback({
+                  stage: 'log-in',
+                  ...stages.get('log-in').init(state)
+                })
+              })
               .catch(error => {
                 if (error.response === undefined) {
                   return setStateCallback({
