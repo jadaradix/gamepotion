@@ -7,17 +7,30 @@ class If extends Action {
     this.name = 'If'
     this.description = 'Conditionally runs actions.'
     this.defaultRunArguments = new Map([
-      ['Expression 1', {
+      ['Expression1', {
+        name: 'If',
         type: 'generic',
         value: ''
       }],
-      ['Expression 2', {
+      ['Operator', {
+        name: '',
+        type: 'options',
+        value: 'is',
+        options: [
+          {
+            id: 'is',
+            name: 'is'
+          },
+          {
+            id: 'isNot',
+            name: 'is not'
+          }
+        ]
+      }],
+      ['Expression2', {
+        name: '',
         type: 'generic',
         value: ''
-      }],
-      ['Not', {
-        type: 'boolean',
-        value: false
       }]
     ])
     this.indentation = 1
