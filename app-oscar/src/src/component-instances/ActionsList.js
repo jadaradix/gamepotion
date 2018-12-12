@@ -2,16 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import classes from '../classes'
+import isActionConfigurable from '../isActionConfigurable'
 
 import resourceTypes from '../resourceTypes'
 import icons from '../icons'
 
 import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
-
-const isActionConfigurable = (actionClassInstance) => {
-  return actionClassInstance.defaultRunArguments.size > 0 || actionClassInstance.caresAboutAppliesTo === true
-}
 
 const getLabel = (resourceTypeTypes, resources, actionClassInstance, action) => {
   const runArguments = Array.from(actionClassInstance.defaultRunArguments.values()).map((dra, i) => {

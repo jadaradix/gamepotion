@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { events, actions } from '../classes'
 import icons from '../icons'
+import isActionConfigurable from '../isActionConfigurable'
 
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
@@ -80,10 +81,6 @@ const StyledResource = styled.div`
     }
   }
 `
-
-const isActionConfigurable = (actionClassInstance) => {
-  return actionClassInstance.defaultRunArguments.size > 0 || actionClassInstance.caresAboutAppliesTo === true
-}
 
 class ResourceAtom extends Component {
   constructor(props) {
@@ -202,8 +199,10 @@ class ResourceAtom extends Component {
     const thingsThatCouldHappen = {
       'edit': () => {
         const actualAction = this.props.resource.events[this.state.currentEventIndex].actions[id]
-        const actionClassInstance = new actions[actualAction.id]()
-        actionClassInstance.runArguments = actualAction.runArguments
+        const actionClassInstance = new actions[actualAction.id]({
+          runArguments: actualAction.runArguments,
+          appliesTo: actualAction.appliesTo
+        })
         // console.warn('[component-resource-Atom] [actOnAction] id/thingThatCouldHappen', id, thingThatCouldHappen)
         // console.warn('[component-resource-Atom] [actOnAction] actualAction', actualAction)
         if (!isActionConfigurable(actionClassInstance)) {
