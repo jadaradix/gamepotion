@@ -81,6 +81,10 @@ const StyledResource = styled.div`
   }
 `
 
+const isActionConfigurable = (actionClassInstance) => {
+  return actionClassInstance.defaultRunArguments.size > 0 || actionClassInstance.caresAboutAppliesTo === true
+}
+
 class ResourceAtom extends Component {
   constructor(props) {
     super(props)
@@ -134,11 +138,10 @@ class ResourceAtom extends Component {
   onChooseAddAction(id) {
     const actionClassInstance = new actions[id]()
     // console.log('[component-resource-Atom] [onChooseAddAction] actionClassInstance', actionClassInstance)
-    const argumentsCount = actionClassInstance.defaultRunArguments.size
     actionClassInstance.defaultRunArguments.forEach((v) => {
       actionClassInstance.runArguments.push(v.value)
     })
-    if (argumentsCount === 0 && actionClassInstance.caresAboutAppliesTo === false) {
+    if (!isActionConfigurable(actionClassInstance)) {
       return this.setState(
         {
           actionClassInstanceIsAdding: true
@@ -198,10 +201,14 @@ class ResourceAtom extends Component {
     id = parseInt(id, 10)
     const thingsThatCouldHappen = {
       'edit': () => {
-        // console.warn('[component-resource-Atom] [actOnAction] id/thingThatCouldHappen', id, thingThatCouldHappen)
         const actualAction = this.props.resource.events[this.state.currentEventIndex].actions[id]
         const actionClassInstance = new actions[actualAction.id]()
         actionClassInstance.runArguments = actualAction.runArguments
+        // console.warn('[component-resource-Atom] [actOnAction] id/thingThatCouldHappen', id, thingThatCouldHappen)
+        // console.warn('[component-resource-Atom] [actOnAction] actualAction', actualAction)
+        if (!isActionConfigurable(actionClassInstance)) {
+          return
+        }
         // console.log('[component-resource-Atom] [actOnAction] actionClassInstance', actionClassInstance)
         this.setState({
           actionClassInstance,
@@ -221,10 +228,7 @@ class ResourceAtom extends Component {
         })
       }
     }
-    const foundThingThatCouldHappen = thingsThatCouldHappen[thingThatCouldHappen]
-    if (typeof foundThingThatCouldHappen === 'function') {
-      thingsThatCouldHappen[thingThatCouldHappen]()
-    }
+    thingsThatCouldHappen[thingThatCouldHappen]()
   }
 
   onChooseAddEvent() {

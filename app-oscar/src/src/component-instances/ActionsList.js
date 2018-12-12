@@ -46,7 +46,7 @@ const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => 
           const label = getLabel(resourceTypeTypes, resources, actionClassInstance, action)
           const argumentsCount = actionClassInstance.defaultRunArguments.size
           const actionActions = [...(argumentsCount === 0 ? [] : ['edit']), 'delete']
-          return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={actionActions} onChoose={() => onAction(i, 'edit')} onAction={onAction} indentation={indentation32}>{label}</ListItem>)
+          return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={actionActions} indentation={indentation32} onChoose={() => onAction(i, 'edit')} onAction={onAction}>{label}</ListItem>)
         })}
       </List>
     )
