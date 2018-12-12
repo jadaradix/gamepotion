@@ -366,13 +366,13 @@ class ResourceAtom extends Component {
           <section className='actions'>
             <Box className='actions'>
               <Heading2>Actions</Heading2>
-              <ActionsList resources={this.props.resources} actions={currentEvent.actions} actionClassInstances={this.actionClassInstances} onAction={this.actOnAction} />
+              <ActionsList resources={this.props.resources} actions={currentEvent.actions} onAction={this.actOnAction} />
             </Box>
             <Box className='add-action'>
               <Heading2>Add an action</Heading2>
               <FilterableList>
                 {this.actionClassInstances.map(a => {
-                  return <ListItem id={a.id} key={a.id} actions={['add']} onAction={(id, action) => this.onChooseAddAction(id)} icon={icons.actions[a.id]} onChoose={this.onChooseAddAction}>{a.name}</ListItem>
+                  return <ListItem id={a.id} key={a.id} actions={['add']} onAction={(id) => this.onChooseAddAction(id)} icon={icons.actions[a.id]} onChoose={this.onChooseAddAction}>{a.name}</ListItem>
                 })}
               </FilterableList>
             </Box>
