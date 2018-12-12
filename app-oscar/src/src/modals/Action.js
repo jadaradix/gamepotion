@@ -68,7 +68,7 @@ const ActionModal = ({ actionClassInstance, resources, onUpdateArgument, onGood,
     onUpdateArgument()
   }
 
-  const getArgument = (index, name, type, value) => {
+  const getArgument = (index, name, type, options, value) => {
     if (resourcesByType.hasOwnProperty(type) && actionClassInstance.runArguments[index].length === 0) {
       if (resourcesByType[type].length > 0) {
         actionClassInstance.runArguments[index] = resourcesByType[type][0].id
@@ -82,6 +82,8 @@ const ActionModal = ({ actionClassInstance, resources, onUpdateArgument, onGood,
     switch (type) {
     case 'boolean':
       return <Switch onChange={(v) => updateArgument(index, v)} checked={value}>{name}</Switch>
+    case 'options':
+      return <Dropper onChoose={(v) => updateArgument(index, v)} label={name} value={value} options={options} />
     case 'generic':
     default:
       return <Input onChange={(v) => updateArgument(index, v)} label={name} value={value} onDone={() => onGood(actionClassInstance)} />
@@ -101,11 +103,13 @@ const ActionModal = ({ actionClassInstance, resources, onUpdateArgument, onGood,
         <div className='arguments'>
           {Array.from(actionClassInstance.defaultRunArguments.keys()).map((k, i) => {
             const {
-              type
+              name,
+              type,
+              options = []
             } = actionClassInstance.defaultRunArguments.get(k)
             return (
               <div className='argument' key={k}>
-                {getArgument(i, k, type, actionClassInstance.runArguments[i])}
+                {getArgument(i, name, type, options, actionClassInstance.runArguments[i])}
               </div>
             )
           })}
