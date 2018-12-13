@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { events, actions } from '../classes'
 import icons from '../icons'
+import isActionConfigurable from '../isActionConfigurable'
 
 import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
@@ -134,11 +135,10 @@ class ResourceAtom extends Component {
   onChooseAddAction(id) {
     const actionClassInstance = new actions[id]()
     // console.log('[component-resource-Atom] [onChooseAddAction] actionClassInstance', actionClassInstance)
-    const argumentsCount = actionClassInstance.defaultRunArguments.size
     actionClassInstance.defaultRunArguments.forEach((v) => {
       actionClassInstance.runArguments.push(v.value)
     })
-    if (argumentsCount === 0 && actionClassInstance.caresAboutAppliesTo === false) {
+    if (!isActionConfigurable(actionClassInstance)) {
       return this.setState(
         {
           actionClassInstanceIsAdding: true
@@ -198,10 +198,16 @@ class ResourceAtom extends Component {
     id = parseInt(id, 10)
     const thingsThatCouldHappen = {
       'edit': () => {
-        // console.warn('[component-resource-Atom] [actOnAction] id/thingThatCouldHappen', id, thingThatCouldHappen)
         const actualAction = this.props.resource.events[this.state.currentEventIndex].actions[id]
-        const actionClassInstance = new actions[actualAction.id]()
-        actionClassInstance.runArguments = actualAction.runArguments
+        const actionClassInstance = new actions[actualAction.id]({
+          runArguments: actualAction.runArguments,
+          appliesTo: actualAction.appliesTo
+        })
+        // console.warn('[component-resource-Atom] [actOnAction] id/thingThatCouldHappen', id, thingThatCouldHappen)
+        // console.warn('[component-resource-Atom] [actOnAction] actualAction', actualAction)
+        if (!isActionConfigurable(actionClassInstance)) {
+          return
+        }
         // console.log('[component-resource-Atom] [actOnAction] actionClassInstance', actionClassInstance)
         this.setState({
           actionClassInstance,
@@ -221,10 +227,7 @@ class ResourceAtom extends Component {
         })
       }
     }
-    const foundThingThatCouldHappen = thingsThatCouldHappen[thingThatCouldHappen]
-    if (typeof foundThingThatCouldHappen === 'function') {
-      thingsThatCouldHappen[thingThatCouldHappen]()
-    }
+    thingsThatCouldHappen[thingThatCouldHappen]()
   }
 
   onChooseAddEvent() {
@@ -362,13 +365,13 @@ class ResourceAtom extends Component {
           <section className='actions'>
             <Box className='actions'>
               <Heading2>Actions</Heading2>
-              <ActionsList resources={this.props.resources} actions={currentEvent.actions} actionClassInstances={this.actionClassInstances} onAction={this.actOnAction} />
+              <ActionsList resources={this.props.resources} actions={currentEvent.actions} onAction={this.actOnAction} />
             </Box>
             <Box className='add-action'>
               <Heading2>Add an action</Heading2>
               <FilterableList>
                 {this.actionClassInstances.map(a => {
-                  return <ListItem id={a.id} key={a.id} actions={['add']} onAction={(id, action) => this.onChooseAddAction(id)} icon={icons.actions[a.id]} onChoose={this.onChooseAddAction}>{a.name}</ListItem>
+                  return <ListItem id={a.id} key={a.id} actions={['add']} onAction={(id) => this.onChooseAddAction(id)} icon={icons.actions[a.id]} onChoose={this.onChooseAddAction}>{a.name}</ListItem>
                 })}
               </FilterableList>
             </Box>

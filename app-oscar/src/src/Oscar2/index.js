@@ -7,7 +7,6 @@ import RenderGameSpace from './RenderGameSpace.js'
 class Oscar2 extends Component {
   constructor(props) {
     super(props)
-    console.warn('constructor', this.props.spaceId)
     this.loadGameSpace(this.props.spaceId, this.props.resources)
       .then(gameSpaceFunctions => {
         this.gameSpaceFunctions = gameSpaceFunctions 
@@ -23,7 +22,6 @@ class Oscar2 extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    console.warn('next this.props.spaceId', nextProps.spaceId)
     this.debouncedShouldComponentUpdate(nextProps.spaceId, nextProps.resources)
     return false
   }
@@ -43,10 +41,6 @@ class Oscar2 extends Component {
   }
 
   loadGameSpace(spaceId, resources) {
-    if (typeof this.gameSpaceFunctions === 'object') {
-      this.gameSpaceFunctions.free()
-    }
-
     const foundSpace = resources.find(r => {
       return (r.type === 'space' && r.id === spaceId)
     })
@@ -96,7 +90,11 @@ class Oscar2 extends Component {
 
   onSwitchSpace(id) {
     console.warn('[Oscar2] [onSwitchSpace]', id)
-    this.gameSpaceFunctions = this.loadGameSpace(id, this.props.resources)
+    this.free()
+    this.loadGameSpace(id, this.props.resources)
+      .then(gameSpaceFunctions => {
+        this.gameSpaceFunctions = gameSpaceFunctions
+      })
   }
 
   render() {

@@ -1,6 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import classes from '../classes'
+import isActionConfigurable from '../isActionConfigurable'
+
 import resourceTypes from '../resourceTypes'
 import icons from '../icons'
 
@@ -18,7 +21,7 @@ const getLabel = (resourceTypeTypes, resources, actionClassInstance, action) => 
   return actionClassInstance.toString(runArguments, action.appliesTo)
 }
 
-const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => {
+const ActionsList = ({ resources, actions, onAction }) => {
 
   const resourceTypeTypes = resourceTypes.map(r => r.type)
 
@@ -28,8 +31,8 @@ const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => 
     return (
       <List emptyText='There aren&rsquo;t any actions for this event.'>
         {actions.map((action, i) => {
-          const actionClassInstance = actionClassInstances.find(actionClassInstance => actionClassInstance.id === action.id)
-          const previousActionClassInstance = actions[i - 1] ? actionClassInstances.find(actionClassInstance => actionClassInstance.id === actions[i - 1].id) : undefined
+          const actionClassInstance = new classes.actions[action.id]()
+          const previousActionClassInstance = actions[i - 1] ? new classes.actions[actions[i - 1].id]() : undefined
           if (actionClassInstance.invertIndentation === true && indentation > 0) {
             indentation -= 1
           }
@@ -39,14 +42,13 @@ const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => 
           if (previousActionClassInstance !== undefined && previousActionClassInstance.invertIndentation === true) {
             indentation += 1
           }
-          indentation32 = indentation * 32
+          indentation32 = 4 + (indentation * 32)
           if (actionClassInstance.indentation === 1) {
             indentation += 1
           }
           const label = getLabel(resourceTypeTypes, resources, actionClassInstance, action)
-          const argumentsCount = actionClassInstance.defaultRunArguments.size
-          const actionActions = [...(argumentsCount === 0 ? [] : ['edit']), 'delete']
-          return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={actionActions} onChoose={() => onAction(i, 'edit')} onAction={onAction} indentation={indentation32}>{label}</ListItem>)
+          const actionActions = [...(isActionConfigurable(actionClassInstance) ? ['edit'] : []), 'delete']
+          return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={actionActions} indentation={indentation32} onChoose={() => onAction(i, 'edit')} onAction={onAction}>{label}</ListItem>)
         })}
       </List>
     )
@@ -58,7 +60,6 @@ const ActionsList = ({ resources, actions, actionClassInstances, onAction }) => 
 ActionsList.propTypes = {
   resources: PropTypes.array.isRequired,
   actions: PropTypes.array.isRequired,
-  actionClassInstances: PropTypes.array.isRequired,
   onAction: PropTypes.func
 }
 
