@@ -289,9 +289,9 @@ const handleEvent = (eventId, requiredConfiguration = [], eventContext, instance
     console.log('[handleEvent] instancesToDestroy', instancesToDestroy)
     instances = handleEvent('Destroy', undefined, eventContext, instances, instancesToDestroy)
   }
-  const createdInstances = instanceDefinitionsToInstances(instancesToCreate, eventContext.resourceContainers)
-  instances = instances.concat(createdInstances)
-  if (createdInstances.length > 0) {
+  if (instancesToCreate.length > 0) {
+    const createdInstances = instanceDefinitionsToInstances(instancesToCreate, eventContext.resourceContainers)
+    instances = instances.concat(createdInstances)
     console.log('[handleEvent] createdInstances', createdInstances)
     instances = handleEvent('Create', undefined, eventContext, instances, createdInstances)
   }

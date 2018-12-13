@@ -12,10 +12,7 @@ class ResourceAtom extends Resource {
       }
     ]
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : null
-  }
-
-  setEvents(events) {
-    this.events = events
+    this.angle = (typeof json.angle === 'number') ? json.angle : 0
   }
 
   getDefaultName() {
@@ -27,7 +24,8 @@ class ResourceAtom extends Resource {
     return {
       ...r,
       events: this.events,
-      imageId: this.imageId
+      imageId: this.imageId,
+      angle: this.angle
     }
   }
 
@@ -36,7 +34,8 @@ class ResourceAtom extends Resource {
     return {
       ...r,
       events: this.events,
-      imageId: this.imageId
+      imageId: this.imageId,
+      angle: this.angle
     }
   }
 
@@ -44,18 +43,21 @@ class ResourceAtom extends Resource {
     super.fromApiPost(json)
     this.events = (Array.isArray(json.events)) ? json.events : this.events
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : this.imageId
+    this.angle = (typeof json.angle === 'number') ? json.angle : this.angle
   }
 
   fromApiPatch(json) {
     super.fromApiPatch(json)
     this.events = (Array.isArray(json.events)) ? json.events : this.events
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : this.imageId
+    this.angle = (typeof json.angle === 'number') ? json.angle : this.angle
   }
 
   clientFromApiGet(json) {
     super.clientFromApiGet(json)
     this.events = json.events
     this.imageId = json.imageId
+    this.angle = json.angle
   }
 }
 

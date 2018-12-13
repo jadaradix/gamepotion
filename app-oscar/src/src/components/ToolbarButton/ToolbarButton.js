@@ -65,7 +65,7 @@ const StyledToolbarButton = styled.li`
     &[disabled]:not(.fixed-width) {
       cursor: not-allowed;
     }
-    &:hover:not([disabled]):not(.significant) {
+    &:hover:not([disabled]):not(.significant):not(.fixed-width) {
       background-color: #6c7a89;
     }
   }

@@ -4,6 +4,7 @@
     "teamId": "team-hack-fatquack",
     "createdAt": 100,
     "name": "Aggressive Avians",
-    "startSpace": "resource-hack-space-bird"
+    "startSpace": "resource-hack-space-bird",
+    "isExternallyPlayable": true
   }
 ]

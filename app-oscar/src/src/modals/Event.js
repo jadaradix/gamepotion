@@ -37,11 +37,11 @@ const StyledModal = styled.div`
   }
 `
 
-const getConfiguration = (name, type, options = [], value, onUpdate, onGood) => {
+const getConfiguration = (name, type, values = [], value, onUpdate, onGood) => {
   const key = `${type}-${name}`
   switch (type) {
   case 'options':
-    return <Dropper key={key} options={options} value={value} label={name} onChoose={onUpdate} />
+    return <Dropper key={key} options={values} value={value} label={name} onChoose={onUpdate} />
   default:
     return <Input key={key} label={name} value={value} onChange={onUpdate} onDone={onGood} />
   }
