@@ -7,7 +7,7 @@ Be the game boss.
   . scripts/build.sh
 ```
 
-## hosts file
+## /etc/hosts file
 ```
 167.99.203.136	oscar-production
 127.0.0.1	api-core.gamemaker.club
@@ -17,7 +17,7 @@ Be the game boss.
 127.0.0.1	play.gamemaker.club
 ```
 
-## container ports
+## Container ports
 ```
 1024 container-router
 1025 api-core
@@ -27,5 +27,7 @@ Be the game boss.
 1029 app-play (not done)
 ```
 
-## Refactoring to do:
- - get rid of oscarErrored so we can optimise getImage AtomInstance method. it is called a LOT.
+## Credits
+ - Ciléin Kearns (cilein@artibiotics.com)
+ - Reiner "Tiles" Prokein (reiner.prokein@t-online.de)
+ - Rollo, for supporting me in building an architecture which inspired this one

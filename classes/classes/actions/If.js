@@ -1,5 +1,24 @@
 import Action from '../Action.js'
 
+const operators = {
+  '=': {
+    'html5'(e1, e2) {
+      return (e1 === e2)
+    },
+    'nds'(e1, e2) {
+      return `if (${e1} == ${e2}) {`
+    }
+  },
+  '!=': {
+    'html5'(e1, e2) {
+      return (e1 !== e2)
+    },
+    'nds'(e1, e2) {
+      return `if (${e1} != ${e2}) {`
+    }
+  }
+}
+
 class If extends Action {
   constructor(json = {}) {
     super(json)
@@ -8,21 +27,21 @@ class If extends Action {
     this.description = 'Conditionally runs actions.'
     this.defaultRunArguments = new Map([
       ['Expression1', {
-        name: 'If',
+        name: '',
         type: 'generic',
         value: ''
       }],
       ['Operator', {
         name: '',
         type: 'options',
-        value: 'is',
-        options: [
+        value: '=',
+        values: [
           {
-            id: 'is',
+            id: '=',
             name: 'is'
           },
           {
-            id: 'isNot',
+            id: '!=',
             name: 'is not'
           }
         ]
@@ -34,27 +53,16 @@ class If extends Action {
       }]
     ])
     this.indentation = 1
+    this.operatorConfigurationValues = this.defaultRunArguments.get('Operator').values
   }
 
   run(context, runArguments, appliesTo) {
-    switch(context.platform) {
-    case 'html5':
-      if (runArguments[2]) {
-        return (runArguments[0] !== runArguments[1])
-      } else {
-        return (runArguments[0] === runArguments[1])
-      }
-      
-    case 'nds':
-      return `if(${runArguments[0]} ${runArguments[2] ? '!=' : '=='} ${runArguments[1]}) {`
-    default:
-      return null
-    }
+    return operators[runArguments[1]][context.platform](runArguments[0], runArguments[2])
   }
 
   toString(runArguments, appliesTo) {
-    const comparator = (runArguments[2] ? 'is not' : 'is')
-    return `If ${runArguments[0]} ${comparator} ${runArguments[1]}`
+    const comparator = this.operatorConfigurationValues.find(v => v.id === runArguments[1]).name
+    return `If ${runArguments[0]} ${comparator} ${runArguments[2]}`
   }
 }
 

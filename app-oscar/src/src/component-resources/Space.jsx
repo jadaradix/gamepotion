@@ -162,7 +162,7 @@ class ResourceSpace extends PureComponent {
     })
   }
 
-  plotAtom(coords) {
+  plotAtom(coords, angle = 0) {
     const atomId = this.props.localSettings['atom-to-plot']
     console.warn('[plotAtom] atomId', atomId, 'at', coords)
     if (atomId === 'none') {
@@ -173,7 +173,8 @@ class ResourceSpace extends PureComponent {
         ...this.props.resource.instances,
         {
           atomId,
-          ...coords
+          ...coords,
+          angle
         }
       ]
     })
@@ -181,9 +182,7 @@ class ResourceSpace extends PureComponent {
 
   unplotAtoms(indicesAtCoords) {
     // console.warn('[unplotAtoms]', 'of', indicesAtCoords)
-    const instances = this.props.resource.instances.filter((ic, i) => {
-      return (!indicesAtCoords.includes(i))
-    })
+    const instances = this.props.resource.instances.filter((ic, i) => !indicesAtCoords.includes(i))
     this.props.onUpdate({
       instances
     })

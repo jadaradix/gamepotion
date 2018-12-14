@@ -7,6 +7,7 @@ class Project {
     this.createdAt = json.createdAt || Math.floor(new Date() / 1000)
     this.name = json.name || 'New Project'
     this.startSpace = (typeof json.startSpace === 'string') ? json.startSpace : null
+    this.isExternallyPlayable = (typeof json.isExternallyPlayable === 'boolean') ? json.isExternallyPlayable : false
   }
 
   toApi () {
@@ -15,7 +16,8 @@ class Project {
       teamId: this.teamId,
       createdAt: this.createdAt,
       name: this.name,
-      startSpace: this.startSpace
+      startSpace: this.startSpace,
+      isExternallyPlayable: this.isExternallyPlayable
     }
     return JSON.parse(JSON.stringify(json))
   }
@@ -26,7 +28,8 @@ class Project {
       teamId: this.teamId,
       createdAt: this.createdAt,
       name: this.name,
-      startSpace: this.startSpace
+      startSpace: this.startSpace,
+      isExternallyPlayable: this.isExternallyPlayable
     }
     return JSON.parse(JSON.stringify(json))
   }
@@ -46,6 +49,9 @@ class Project {
         this.startSpace = json.startSpace
       }
     }
+    if (typeof json.isExternallyPlayable === 'boolean') {
+      this.isExternallyPlayable = json.isExternallyPlayable
+    }
   }
 
   fromApiPatch (json) {
@@ -63,6 +69,9 @@ class Project {
         this.startSpace = json.startSpace
       }
     }
+    if (typeof json.isExternallyPlayable === 'boolean') {
+      this.isExternallyPlayable = json.isExternallyPlayable
+    }
   }
 
   clientFromApiGet (json) {
@@ -71,6 +80,7 @@ class Project {
     this.createdAt = json.createdAt
     this.name = json.name
     this.startSpace = json.startSpace
+    this.isExternallyPlayable = json.isExternallyPlayable
   }
 }
 

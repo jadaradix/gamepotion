@@ -3,14 +3,13 @@ import Sound from './component-resources/Sound'
 import Atom from './component-resources/Atom'
 import Space from './component-resources/Space'
 
-export default [
-  {
-    type: 'image',
-    nameSingular: 'image',
-    namePlural: 'Images',
-    component: Image,
-    getFixed(purchasedImagePackModule = false) {
-      const fixed = [
+const fixedResourceCollectionsByType = {
+  'image': [
+    {
+      'id': 'oscar',
+      'requiresPurchasedResourcePackModule': false,
+      'credit': 'James Garner',
+      'resources': [
         {
           id: 'ball',
           width: 64,
@@ -32,35 +31,63 @@ export default [
           height: 240
         }
       ]
-      return [
-        ...fixed,
-        ...(purchasedImagePackModule === true
-          ?
-          [
-            {
-              id: 'reiners-tilesets-gold-sacks',
-              width: 64,
-              height: 64
-            },
-            {
-              id: 'reiners-tilesets-logs',
-              width: 64,
-              height: 64
-            }
-          ]
-          :
-          []  
-        )
+    },
+    {
+      'id': 'reiners-tilesets',
+      'requiresPurchasedResourcePackModule': false,
+      'credit': 'Reiner "Tiles" Prokein',
+      'resources': [
+        {
+          id: 'reiners-tilesets-grass',
+          name: 'Grass Texture (Reiner\'s Tilesets)',
+          width: 32,
+          height: 32
+        },
+        {
+          id: 'reiners-tilesets-sand',
+          name: 'Sand Texture (Reiner\'s Tilesets)',
+          width: 32,
+          height: 32
+        },
+        {
+          id: 'reiners-tilesets-rocks',
+          name: 'Rocks (Reiner\'s Tilesets)',
+          width: 64,
+          height: 64
+        },
+        {
+          id: 'reiners-tilesets-rock',
+          name: 'Rock (Reiner\'s Tilesets)',
+          width: 64,
+          height: 64
+        },
+        {
+          id: 'reiners-tilesets-logs',
+          name: 'Logs (Reiner\'s Tilesets)',
+          width: 64,
+          height: 64
+        },
+        {
+          id: 'reiners-tilesets-mushroom-blue',
+          name: 'Mushroom (blue) (Reiner\'s Tilesets)',
+          width: 32,
+          height: 32
+        },
+        {
+          id: 'reiners-tilesets-mushroom-pink',
+          name: 'Mushroom (pink) (Reiner\'s Tilesets)',
+          width: 32,
+          height: 32
+        }
       ]
     }
-  },
-  {
-    type: 'sound',
-    nameSingular: 'sound',
-    namePlural: 'Sounds',
-    component: Sound,
-    getFixed(purchasedImagePackModule = false) {
-      const fixed = [
+  ],
+  'sound': [
+    {
+      'id': 'oscar',
+      'requiresPurchasedResourcePackModule': false,
+      'credit': 'James Garner',
+      'resources': [
         {
           id: 'click'
         },
@@ -74,21 +101,52 @@ export default [
           id: 'zap'
         }
       ]
-      return fixed
+    }
+
+  ]
+}
+
+export default [
+  {
+    type: 'image',
+    nameSingular: 'image',
+    namePlural: 'Images',
+    component: Image,
+    getFixed(purchasedResourcePackModule = false) {
+      const availableFixedImageResourceCollections = fixedResourceCollectionsByType['image'].filter(ic => {
+        return (ic.requiresPurchasedResourcePackModule ? purchasedResourcePackModule : true)
+      })
+      return availableFixedImageResourceCollections.reduce(
+        (finalCollections, currentCollection) => finalCollections.concat(currentCollection.resources),
+        []
+      )
+    }
+  },
+  {
+    type: 'sound',
+    nameSingular: 'sound',
+    namePlural: 'Sounds',
+    component: Sound,
+    getFixed(purchasedResourcePackModule = false) {
+      const availableFixedImageResourceCollections = fixedResourceCollectionsByType['sound'].filter(ic => {
+        return (ic.requiresPurchasedResourcePackModule ? purchasedResourcePackModule : true)
+      })
+      return availableFixedImageResourceCollections.reduce(
+        (finalCollections, currentCollection) => finalCollections.concat(currentCollection.resources),
+        []
+      )
     }
   },
   {
     type: 'atom',
     nameSingular: 'atom',
     namePlural: 'Atoms',
-    component: Atom,
-    fixed: []
+    component: Atom
   },
   {
     type: 'space',
     nameSingular: 'space',
     namePlural: 'Spaces',
-    component: Space,
-    fixed: []
+    component: Space
   }
 ]

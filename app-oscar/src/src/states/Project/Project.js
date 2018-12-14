@@ -53,6 +53,7 @@ class StateProjectProject extends Component {
       resourceToLoadId: null,
       localSettings: getState().localSettings
     }
+    this.hackUrlResourceId = 'load'
     this.onLoadResource = this.onLoadResource.bind(this)
   }
 
@@ -73,9 +74,10 @@ class StateProjectProject extends Component {
       }),
       subscribe('PROJECTS_LOAD', (state) => {
         if (this.props.match.params.resourceId !== 'load') {
-          this.onLoadResource(this.props.match.params.resourceId)
-        } else {
-          this.onLoadResource(state.currentProject.resources[0].id)
+          return this.onLoadResource(this.props.match.params.resourceId)
+        }
+        if (this.props.match.params.resourceId === 'load' && state.currentProject.resources.length > 0) {
+          return this.onLoadResource(state.currentProject.resources[0].id)
         }
       }),
       subscribe('PROJECTS_RESOURCES_LOAD', (state) => {
@@ -84,6 +86,7 @@ class StateProjectProject extends Component {
         })
       }),
       subscribe('PROJECTS_RESOURCES_CREATE', (state) => {
+        this.hackSwitchUrl(state.currentProject.currentResource.id)
         this.setState({
           currentProject: state.currentProject
         })
@@ -94,6 +97,7 @@ class StateProjectProject extends Component {
         })
       }),
       subscribe('PROJECTS_RESOURCES_DELETE', (state) => {
+        state.currentProject.currentResource === null && this.hackSwitchUrl('load')
         this.setState({
           currentProject: state.currentProject
         })
@@ -112,27 +116,39 @@ class StateProjectProject extends Component {
     })
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.match.params.resourceId === 'load' && this.hackUrlResourceId !== 'load') {
+      this.hackSwitchUrl(this.hackUrlResourceId)
+    }
+    return true
+  }
+
   componentWillUnmount() {
     this.subscriptions.forEach(s => s.unsubscribe())
   }
 
-  // onAddResource(type) {
-  //   dispatch({
-  //     name: 'PROJECTS_RESOURCES_CREATE',
-  //     data: {
-  //       type
-  //     }
-  //   })
-  // }
+  onAddResource(type) {
+    dispatch({
+      name: 'PROJECTS_RESOURCES_CREATE',
+      data: {
+        type
+      }
+    })
+  }
 
   onLoadResource(id) {
-    this.props.history.replace(`/projects/${this.props.match.params.id}/resources/${id}`)
+    this.hackSwitchUrl(id)
     dispatch({
       name: 'PROJECTS_RESOURCES_LOAD',
       data: {
         id
       }
     })
+  }
+
+  hackSwitchUrl(resourceId) {
+    this.hackUrlResourceId = resourceId
+    this.props.history.replace(`/projects/${this.props.match.params.id}/resources/${resourceId}`)
   }
 
   onRenameResource(resource) {
@@ -173,7 +189,7 @@ class StateProjectProject extends Component {
   }
 
   onUpdateLocalSetting(name, value) {
-    console.log('[onUpdateLocalSetting] name/value', name, value)
+    // console.log('[state-Project] [onUpdateLocalSetting] name/value', name, value)
     dispatch({
       name: 'LOCAL_SETTINGS_UPDATE',
       data: {
@@ -185,7 +201,7 @@ class StateProjectProject extends Component {
 
   render() {
     // if (this.state.currentProject && this.state.currentProject.currentResource) {
-    //   console.warn('[state-Project] this.state.currentProject.currentResource', this.state.currentProject.currentResource)
+    //   console.warn('[state-Project] [render] this.state.currentProject.currentResource', this.state.currentProject.currentResource)
     // }
     return (
       <Fragment>
@@ -200,7 +216,7 @@ class StateProjectProject extends Component {
                 <ResourceList
                   resources={this.state.currentProject.resources}
                   currentResource={this.state.currentProject.currentResource}
-                  // onAdd={this.onAddResource}
+                  onAdd={this.onAddResource}
                   onLoad={this.onLoadResource}
                   onRename={this.onRenameResource}
                   onDelete={this.onDeleteResource}

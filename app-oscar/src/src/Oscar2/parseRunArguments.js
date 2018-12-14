@@ -123,7 +123,7 @@ const parsers = {
 }
 
 const parseToken = (token, typeHint, parseContext) => {
-  if (typeHint === 'variable') {
+  if (['variable', 'options'].includes(typeHint)) {
     return token
   }
   if (RESOURCE_TYPES.includes(typeHint)) {
