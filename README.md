@@ -31,3 +31,8 @@ Be the game boss.
  - Ciléin Kearns (cilein@artibiotics.com)
  - Reiner "Tiles" Prokein (reiner.prokein@t-online.de)
  - Rollo, for supporting me in building an architecture which inspired this one
+
+### Ciléin Kearns origin license
+```
+All work is original, created by Ciléin Kearns, hand made from scratch, not to be used, edited, or distributed in any manner other than that agreed in the commission contract. Such permissions are bound to the terms of the contract and will not be active until agreement and signing of said document by both parties, Ciléin Kearns and the client, James Garner.
+```
