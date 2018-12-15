@@ -6,7 +6,6 @@ import SetImage from './files/SetImage.svg'
 import Destroy from './files/Destroy.svg'
 
 import PlaySound from './files/PlaySound.svg'
-import ShowMessage from './files/ShowMessage.svg'
 
 import GoToSpace from './files/GoToSpace.svg'
 import GoToNextSpace from './files/GoToNextSpace.svg'
@@ -15,6 +14,8 @@ import MoveCamera from './files/MoveCamera.svg'
 import SetSpaceBackgroundImage from './files/SetSpaceBackgroundImage.svg'
 import SetSpaceForegroundImage from './files/SetSpaceForegroundImage.svg'
 
+import ShowMessage from './files/ShowMessage.svg'
+import IfPlayerConfirms from './files/IfPlayerConfirms.svg'
 import If from './files/If.svg'
 import IfInstances from './files/IfInstances.svg'
 import IfNextSpace from './files/IfNextSpace.svg'
@@ -32,7 +33,6 @@ export default {
   Destroy,
 
   PlaySound,
-  ShowMessage,
 
   GoToSpace,
   GoToNextSpace,
@@ -41,6 +41,8 @@ export default {
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
+  ShowMessage,
+  IfPlayerConfirms,
   If,
   IfInstances,
   IfNextSpace,

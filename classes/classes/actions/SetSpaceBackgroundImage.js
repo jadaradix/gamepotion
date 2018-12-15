@@ -4,7 +4,7 @@ class SetSpaceBackgroundImage extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'SetSpaceBackgroundImage'
-    this.name = 'Set Background Image'
+    this.name = 'Set background Image'
     this.description = 'Sets the space background image.'
     this.defaultRunArguments = new Map([
       ['Image', {

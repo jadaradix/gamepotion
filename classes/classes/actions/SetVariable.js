@@ -4,7 +4,7 @@ class SetVariable extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'SetVariable'
-    this.name = 'Set Variable'
+    this.name = 'Set variable'
     this.description = 'Sets a variable.'
     this.defaultRunArguments = new Map([
       ['Variable', {

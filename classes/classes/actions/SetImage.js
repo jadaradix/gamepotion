@@ -4,7 +4,7 @@ class SetImage extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'SetImage'
-    this.name = 'Set Image'
+    this.name = 'Set image'
     this.description = 'Sets the instance image.'
     this.defaultRunArguments = new Map([
       ['Image', {

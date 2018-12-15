@@ -4,7 +4,7 @@ class MoveCamera extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'MoveCamera'
-    this.name = 'Move Camera'
+    this.name = 'Move Space camera'
     this.description = 'Moves the camera.'
     this.defaultRunArguments = new Map([
       ['X', {

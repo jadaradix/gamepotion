@@ -6,7 +6,6 @@ import SetImage from './SetImage.js'
 import Destroy from './Destroy.js'
 
 import PlaySound from './PlaySound.js'
-import ShowMessage from './ShowMessage.js'
 
 import GoToSpace from './GoToSpace.js'
 import GoToNextSpace from './GoToNextSpace.js'
@@ -15,6 +14,8 @@ import MoveCamera from './MoveCamera.js'
 import SetSpaceBackgroundImage from './SetSpaceBackgroundImage.js'
 import SetSpaceForegroundImage from './SetSpaceForegroundImage.js'
 
+import ShowMessage from './ShowMessage.js'
+import IfPlayerConfirms from './IfPlayerConfirms.js'
 import If from './If.js'
 import IfInstances from './IfInstances.js'
 import IfNextSpace from './IfNextSpace.js'
@@ -32,7 +33,6 @@ export default {
   Destroy,
 
   PlaySound,
-  ShowMessage,
 
   GoToSpace,
   GoToNextSpace,
@@ -41,6 +41,8 @@ export default {
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
+  ShowMessage,
+  IfPlayerConfirms,
   If,
   IfInstances,
   IfNextSpace,
