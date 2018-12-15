@@ -68,7 +68,10 @@ class StateAccount extends Component {
       }),
       subscribe('USER_UPDATE', (state) => {
         this.setState({
-          user: state.user
+          user: state.user,
+          newPassword: '',
+          showingChangeUserlandId: false,
+          showingChangePassword: false
         })
       }),
       subscribe('USER_LOG_OUT', () => {
@@ -113,11 +116,6 @@ class StateAccount extends Component {
 
   onChangeUserlandId() {
     this.onUpdateProp('userlandId', this.state.newUserlandId)
-      .then(() => {
-        this.setState({
-          showingChangeUserlandId: false
-        })
-      })
   }
 
   onCancelChangeUserlandId() {
@@ -135,12 +133,6 @@ class StateAccount extends Component {
 
   onChangePassword() {
     this.onUpdateProp('password', this.state.newPassword)
-      .then(() => {
-        this.setState({
-          newPassword: '',
-          showingChangePassword: false
-        })
-      })
   }
 
   onCancelChangePassword() {

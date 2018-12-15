@@ -23,9 +23,9 @@ cd api-bin/src;
   npm i;
 cd ../..;
 
-cd app-oscar;
+cd app-oscar/src;
   npm i;
-cd ..;
+cd ../..;
 
 cd classes;
   npm i;

@@ -25,7 +25,6 @@ class IfInstances extends Action {
 
   run(context, runArguments, appliesTo) {
     const instanceCount = context.eventContext.getInstanceCount(runArguments[0])
-    console.warn('instanceCount is', instanceCount)
     switch(context.platform) {
     case 'html5':
       if (runArguments[2]) {

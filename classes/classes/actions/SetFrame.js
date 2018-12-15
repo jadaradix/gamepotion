@@ -18,7 +18,6 @@ class SetFrame extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      console.warn('runArguments[0]', runArguments[0])
       context.instance.props.frame = runArguments[0]
       return null
     case 'nds':
