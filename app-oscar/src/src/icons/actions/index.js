@@ -1,8 +1,9 @@
 import Create from './files/Create.svg'
 import Move from './files/Move.svg'
-import Destroy from './files/Destroy.svg'
 import MoveInADirection from './files/MoveInADirection.svg'
+import Rotate from './files/Rotate.svg'
 import SetImage from './files/SetImage.svg'
+import Destroy from './files/Destroy.svg'
 
 import PlaySound from './files/PlaySound.svg'
 import ShowMessage from './files/ShowMessage.svg'
@@ -25,10 +26,10 @@ import Debug from './files/Debug.svg'
 export default {
   Create,
   Move,
-  Destroy,
   MoveInADirection,
-  IfInstances,
+  Rotate,
   SetImage,
+  Destroy,
 
   PlaySound,
   ShowMessage,
@@ -37,11 +38,12 @@ export default {
   GoToNextSpace,
   GoToPreviousSpace,
   MoveCamera,
-  IfNextSpace,
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
   If,
+  IfInstances,
+  IfNextSpace,
   Else,
   EndIf,
   SetVariable,

@@ -39,13 +39,17 @@ const drawForegroundImage = (ctx, spaceContainer) => {
 const drawInstance = (ctx, camera, designMode, instance) => {
   const frame = parseInt(instance.props.frame, 10)
   const image = instance.getImage()
-  const x = instance.props.x - (!designMode ? camera.x : 0)
-  const y = instance.props.y - (!designMode ? camera.y : 0)
+  const offsetX =(designMode ? 0 : camera.x)
+  const offsetY = (designMode ? 0 : camera.y)
   const width = instance.getWidth()
   const height = instance.getHeight()
-  // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
   if (image !== null) {
-    ctx.drawImage(image, 0, frame * height, width, height, x, y, width, height) 
+    ctx.save()
+    ctx.translate(instance.props.x + (width / 2) - offsetX, instance.props.y + (height / 2) - offsetY)
+    ctx.rotate(instance.props.angle)
+    // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
+    ctx.drawImage(image, 0, frame * height, width, height, (-width / 2), (-height / 2), width, height)
+    ctx.restore()
   }
 }
 

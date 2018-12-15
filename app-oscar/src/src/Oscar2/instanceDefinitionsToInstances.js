@@ -12,7 +12,8 @@ const instanceDefinitionsToInstances = (instances, resourceContainers) => {
         vx: 0,
         vy: 0,
         vz: 0,
-        frame: 0
+        frame: 0,
+        angle: 0
       }
       const newInstance = new Instance(props, atomContainer)
       newInstance.setImage(atomContainer.resource.imageId, resourceContainers)
