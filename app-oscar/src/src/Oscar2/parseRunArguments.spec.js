@@ -12,6 +12,7 @@ const parseContext = {
       ['name', 'James'],
       ['speed', 2]
     ]),
+    alarms: new Map([]),
     spaceContainer: {
       resource: {
         width: 100,

@@ -59,6 +59,7 @@ class Oscar2 extends Component {
       }
     })
     const variables = new Map()
+    const alarms = new Map()
 
     // http://localhost:3000/projects/6b5bee91-26c2-4200-90bf-dcc8596547c4/resources/616b76c2-bbbb-44cc-a286-e6ed41b2cd73
     const logic = () => {
@@ -73,6 +74,7 @@ class Oscar2 extends Component {
         spaceContainer,
         resourceContainers,
         variables,
+        alarms,
         onSwitchSpace: this.onSwitchSpace,
         designMode: this.props.designMode,
         gridOn: this.props.gridOn,

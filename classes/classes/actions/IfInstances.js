@@ -24,12 +24,8 @@ class IfInstances extends Action {
   }
 
   run(context, runArguments, appliesTo) {
-    const getInstanceCount = (atomId) => {
-      return context.eventContext.instanceClasses
-        .filter(ic => (ic.atomContainer.resource.id === atomId))
-        .length
-    }
-    const instanceCount = getInstanceCount(runArguments[0])
+    const instanceCount = context.eventContext.getInstanceCount(runArguments[0])
+    console.warn('instanceCount is', instanceCount)
     switch(context.platform) {
     case 'html5':
       if (runArguments[2]) {
