@@ -1,14 +1,14 @@
 import Action from '../Action.js'
 
-class SetImage extends Action {
+class SetFrame extends Action {
   constructor(json = {}) {
     super(json)
-    this.id = 'SetImage'
-    this.name = 'Set Image'
-    this.description = 'Sets the instance image.'
+    this.id = 'SetFrame'
+    this.name = 'Set frame'
+    this.description = 'Sets the instance frame.'
     this.defaultRunArguments = new Map([
-      ['Image', {
-        type: 'image',
+      ['Frame', {
+        type: 'generic',
         value: ''
       }]
     ])
@@ -18,13 +18,9 @@ class SetImage extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      return {
-        actionBack: 'INSTANCE_SET_IMAGE',
-        actionBackArguments: [
-          runArguments[0]
-        ],
-        appliesTo
-      }
+      console.warn('runArguments[0]', runArguments[0])
+      context.instance.props.frame = runArguments[0]
+      return null
     case 'nds':
       return ''
     default:
@@ -33,8 +29,8 @@ class SetImage extends Action {
   }
 
   toString(runArguments, appliesTo) {
-    return `Set image to ${runArguments[0]}`
+    return `Set frame to ${runArguments[0]}`
   }
 }
 
-export default SetImage
+export default SetFrame

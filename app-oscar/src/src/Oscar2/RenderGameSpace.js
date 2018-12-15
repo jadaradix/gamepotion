@@ -234,7 +234,7 @@ const addEventListener = (element, name, logic) => {
 }
 
 const isInstanceIntersecting = (instance, coords) => {
-  console.warn('[isInstanceIntersecting] instance/coords', instance, coords)
+  // console.warn('[isInstanceIntersecting] instance/coords', instance, coords)
   const w = instance.getWidth()
   const h = instance.getHeight()
   const isIntersecting = (

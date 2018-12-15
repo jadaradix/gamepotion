@@ -3,6 +3,7 @@ import Move from './Move.js'
 import MoveInADirection from './MoveInADirection.js'
 import Rotate from './Rotate.js'
 import SetImage from './SetImage.js'
+import SetFrame from './SetFrame.js'
 import Destroy from './Destroy.js'
 
 import PlaySound from './PlaySound.js'
@@ -30,6 +31,7 @@ export default {
   MoveInADirection,
   Rotate,
   SetImage,
+  SetFrame,
   Destroy,
 
   PlaySound,

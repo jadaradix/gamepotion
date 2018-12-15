@@ -39,7 +39,7 @@ class Instance {
     this.props.x += this.props.vx
     this.props.y += this.props.vy
     this.props.z += this.props.vz
-    if (typeof this.imageContainer === 'object' && this.props.frame < this.imageContainer.resource.frameCount - 1) {
+    if (typeof this.imageContainer === 'object' && this.props.frame <= this.imageContainer.resource.frameCount - 1) {
       this.props.frame += frameSpeedToIncrements[this.imageContainer.resource.frameSpeed]
     } else {
       this.props.frame = 0
