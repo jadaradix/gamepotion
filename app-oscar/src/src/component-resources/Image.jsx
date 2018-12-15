@@ -85,7 +85,8 @@ class ResourceImage extends PureComponent {
         fixed,
         extension: 'png',
         frameWidth: width,
-        frameHeight: height
+        frameHeight: width,
+        frameCount: parseInt(Math.ceil(height / width), 10)
       })
     }
   }
