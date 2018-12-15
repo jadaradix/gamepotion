@@ -1,4 +1,5 @@
 import symbol from './files/symbol.png'
+import home from './files/home.png'
 import folder from './files/folder.svg'
 import account from './files/account.svg'
 import store from './files/store.svg'
@@ -25,6 +26,7 @@ import resourceSoundStop from './files/resource-sound-stop.svg'
 
 export default {
   symbol,
+  home,
   folder,
   account,
   store,
