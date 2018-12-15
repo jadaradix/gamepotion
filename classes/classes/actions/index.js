@@ -1,8 +1,7 @@
 import Create from './Create.js'
 import Move from './Move.js'
 import Destroy from './Destroy.js'
-import SetXSpeed from './SetXSpeed.js'
-import SetYSpeed from './SetYSpeed.js'
+import MoveInADirection from './MoveInADirection.js'
 import IfInstances from './IfInstances.js'
 import SetImage from './SetImage.js'
 
@@ -27,8 +26,7 @@ export default {
   Create,
   Move,
   Destroy,
-  SetXSpeed,
-  SetYSpeed,
+  MoveInADirection,
   IfInstances,
   SetImage,
 

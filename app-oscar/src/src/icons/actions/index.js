@@ -1,8 +1,7 @@
 import Create from './files/Create.svg'
 import Move from './files/Move.svg'
 import Destroy from './files/Destroy.svg'
-import SetXSpeed from './files/SetXSpeed.svg'
-import SetYSpeed from './files/SetYSpeed.svg'
+import MoveInADirection from './files/MoveInADirection.svg'
 import SetImage from './files/SetImage.svg'
 
 import PlaySound from './files/PlaySound.svg'
@@ -27,8 +26,7 @@ export default {
   Create,
   Move,
   Destroy,
-  SetXSpeed,
-  SetYSpeed,
+  MoveInADirection,
   IfInstances,
   SetImage,
 
