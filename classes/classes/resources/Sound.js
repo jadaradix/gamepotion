@@ -49,7 +49,6 @@ class ResourceSound extends Resource {
   fromApiPatch(json) {
     super.fromApiPatch(json)
     this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
-    this.extension = (typeof json.extension === 'string') ? json.extension : this.extension // apis go away
   }
 
   clientFromApiGet(json) {

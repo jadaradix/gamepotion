@@ -103,13 +103,12 @@ const ActionModal = ({ actionClassInstance, resources, onUpdateArgument, onGood,
         <div className='arguments'>
           {Array.from(actionClassInstance.defaultRunArguments.keys()).map((k, i) => {
             const {
-              name,
               type,
               values = []
             } = actionClassInstance.defaultRunArguments.get(k)
             return (
               <div className='argument' key={k}>
-                {getArgument(i, name, type, values, actionClassInstance.runArguments[i])}
+                {getArgument(i, k, type, values, actionClassInstance.runArguments[i])}
               </div>
             )
           })}
