@@ -5,7 +5,7 @@ class ResourceImage extends Resource {
     super(json)
     this.type = 'image'
     this.extension = json.extension || 'png'
-    this.fixed = ((typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : 'ball')
+    this.fixed = ((typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : 'ball-red')
     this.frameWidth = (typeof json.frameWidth === 'number' ? json.frameWidth : 64)
     this.frameHeight = (typeof json.frameHeight === 'number' ? json.frameHeight : 64)
     this.frameSpeed = (typeof json.frameSpeed === 'number' ? json.frameSpeed : 1)

@@ -16,13 +16,11 @@ const listFilesInDirectory = (directory) => {
 }
 
 (async () => {
-  const files = await listFilesInDirectory(path.join(DIRECTORY, process.argv[2]))
+  const files = await listFilesInDirectory(DIRECTORY)
   const bashLines = files.map(file => {
-    let newName = ''
-    file.split('').forEach(c => {
-      newName += c
-    })
-    return `mv "${path.join(DIRECTORY, process.argv[2], file)}" "${path.join(DIRECTORY, process.argv[2], '..', 'fixed-image-cilein-kearns-' + process.argv[2] + '-' + newName)}";`
+    // fixed-module-cilein-kearns-PacMan Pack-GhostEyes.png
+    let newName = 'fixed-image-' + file.substring('fixed-module-'.length)
+    return `mv "${path.join(DIRECTORY, file)}" "${path.join(DIRECTORY, newName)}";`
   })
   const bash = bashLines.join(os.EOL)
   console.log(bash)

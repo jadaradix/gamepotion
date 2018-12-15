@@ -1,0 +1,12 @@
+{
+  "name": "gmc-cilein-kearns-renamer",
+  "version": "1.0.0",
+  "description": "gmc-cilein-kearns-renamer",
+  "main": "rename.js",
+  "dependencies": {
+    "humanize-string": "^1.0.2",
+    "image-size": "^0.6.3"
+  },
+  "devDependencies": {},
+  "scripts": {}
+}
