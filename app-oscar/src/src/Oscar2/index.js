@@ -80,6 +80,7 @@ class Oscar2 extends Component {
         gridHeight: this.props.gridHeight,
         onTouch: this.props.onTouch,
         onTouchSecondary: this.props.onTouchSecondary,
+        onTouchMove: this.props.onTouchMove
       })
     }
 
