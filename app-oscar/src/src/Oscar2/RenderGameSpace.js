@@ -256,8 +256,8 @@ const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, g
     // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance, currentTouchCoords)
     drawInstance(ctx, camera, false, instance)
   })
-  // instances = handleEventStep(instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace)
-  // return instances
+  instances = handleEventStep(instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace)
+  return instances
 }
 
 const getMatchingEvents = (events, eventId, requiredConfigurationString) => {
