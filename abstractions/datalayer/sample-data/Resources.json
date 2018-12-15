@@ -4,7 +4,7 @@
     "projectId": "project-hack-aggressive-avians",
     "createdAt": 100,
     "type": "image",
-    "fixed": "ball",
+    "fixed": "ball-red",
     "extension": "png",
     "name": "Ball"
   },

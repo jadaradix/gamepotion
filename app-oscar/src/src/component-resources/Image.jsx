@@ -123,7 +123,7 @@ class ResourceImage extends PureComponent {
       ...resourceTypes.find(rt => rt.type === 'image').getFixed(purchasedResourcePackModule).map(o => {
         return {
           id: o.id,
-          name: o.id
+          name: o.name
         }
       })
     ]
