@@ -51,7 +51,7 @@ const drawInstance = (ctx, camera, designMode, instance) => {
     ctx.translate(translateX, translateY)
     ctx.rotate(instance.props.angle)
     // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
-    ctx.drawImage(image, 0, frame * height, width, height, (-width / 2), (-height / 2), width, height)
+    ctx.drawImage(image, 0, frame * height, width, height, -(width / 2), -(height / 2), width, height)
     ctx.rotate(-instance.props.angle)
     ctx.translate(-translateX, -translateY)
   }
@@ -352,7 +352,10 @@ const RenderGameSpace = (
   gridHeight = parseInt(gridHeight, 10)
 
   const camera = {
-    ...spaceContainer.resource.camera
+    ...spaceContainer.resource.camera,
+    vx: 0,
+    vy: 0,
+    vz: 0
   }
 
   const [c, ctx] = [canvasElement, canvasElement.getContext('2d')]
