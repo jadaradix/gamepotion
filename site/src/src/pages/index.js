@@ -7,8 +7,12 @@ const TITLE = 'Page 1'
 const ThisPage = () => (
   <Page title={TITLE}>
     <h1>Hi!</h1>
-    <p>Welcome to the website.</p>
-    <Link to="/page-2/">Go to page 2</Link>
+    <p>
+      Welcome to the website.
+    </p>
+    <p>
+      <Link to="/page-2/">Go to page 2</Link>
+    </p>
   </Page>
 )
 
