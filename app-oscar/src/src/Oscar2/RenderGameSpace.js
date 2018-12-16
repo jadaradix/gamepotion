@@ -257,17 +257,20 @@ const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, grid
 
 const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext) => {
   draw({ctx, spaceContainer, camera, designMode: false, gridOn, gridWidth, gridHeight})
+  camera.x += camera.vx
+  camera.y += camera.vy
+  camera.z += camera.vz
   instances.forEach(instance1 => {
     instance1.onStep()
-    // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance1, currentTouchCoords)
     drawInstance(ctx, camera, false, instance1)
-    instances
-      .filter(instance2 => isInstanceIntersectingInstance(instance1, instance2))
-      .forEach(is => {
-        const requiredConfiguration = [is.atomContainer.resource.id]
-        console.warn('requiredConfiguration', requiredConfiguration)
-        instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
-      })
+    // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance1, currentTouchCoords)
+    // instances
+    //   .filter(instance2 => isInstanceIntersectingInstance(instance1, instance2))
+    //   .forEach(is => {
+    //     const requiredConfiguration = [is.atomContainer.resource.id]
+    //     console.warn('requiredConfiguration', requiredConfiguration)
+    //     instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
+    //   })
   })
   // instances = handleEventStep(instances, eventContext)
   return instances
