@@ -82,11 +82,20 @@ const StyledResource = styled.div`
   }
 `
 
+const getDefaultCurrentEventIndex = (resourceId, localSettings, events) => {
+  const currentIndex = localSettings[`atom-event-current-index-${resourceId}`]
+  if (typeof currentIndex === 'number') {
+    return currentIndex
+  } else {
+    return (events.length > 0 ? events.length - 1 : undefined)
+  }
+}
+
 class ResourceAtom extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentEventIndex: (props.resource.events.length > 0 ? 0 : undefined),
+      currentEventIndex: getDefaultCurrentEventIndex(props.resource.id, props.localSettings, props.resource.events),
       isEventDialogShowing: false,
       actionClassInstance: null,
       actionClassInstanceIsAdding: false
@@ -123,13 +132,12 @@ class ResourceAtom extends Component {
     })
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (this.state.currentEventIndex === undefined) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props.resource.id !== nextProps.resource.id) {
       this.setState({
-        currentEventIndex: nextProps.resource.events.length - 1
+        currentEventIndex: getDefaultCurrentEventIndex(nextProps.resource.id, nextProps.localSettings, nextProps.resource.events)
       })
     }
-    return true
   }
 
   onChooseAddAction(id) {
@@ -238,6 +246,7 @@ class ResourceAtom extends Component {
 
   onChooseEvent(id) {
     id = parseInt(id, 10)
+    this.props.onUpdateLocalSetting(`atom-event-current-index-${this.props.resource.id}`, id)
     this.setState({
       currentEventIndex: id
     })
@@ -385,7 +394,9 @@ class ResourceAtom extends Component {
 ResourceAtom.propTypes = {
   resources: PropTypes.array,
   resource: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func
+  localSettings: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func,
+  onUpdateLocalSetting: PropTypes.func.isRequired
 }
 
 ResourceAtom.defaultProps = {

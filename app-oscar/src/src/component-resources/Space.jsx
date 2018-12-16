@@ -291,12 +291,11 @@ ResourceSpace.propTypes = {
   resource: PropTypes.object.isRequired,
   localSettings: PropTypes.object.isRequired,
   onUpdate: PropTypes.func,
-  onUpdateLocalSetting: PropTypes.func,
+  onUpdateLocalSetting: PropTypes.func.isRequired,
 }
 
 ResourceSpace.defaultProps = {
-  onUpdate: () => {},
-  onUpdateLocalSetting: () => {}
+  onUpdate: () => {}
 }
 
 export default ResourceSpace
