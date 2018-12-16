@@ -118,15 +118,11 @@ class ResourceAtom extends Component {
     this.actOnAction = this.actOnAction.bind(this)
   }
 
-  onUpdate(data) {
-    this.props.onUpdate(data)
-  }
-
   onChooseImage(imageId) {
     if (imageId === 'none') {
       imageId = null
     }
-    this.onUpdate({
+    this.props.onUpdate({
       imageId
     })
   }
@@ -170,7 +166,7 @@ class ResourceAtom extends Component {
         appliesTo: actionClassInstance.appliesTo
       }
       // console.warn('[component-resource-Atom] [onActionModalGood] actionObject', actionObject)
-      this.onUpdate({
+      this.props.onUpdate({
         events: this.props.resource.events.map((e, index) => {
           if (index === this.state.currentEventIndex) {
             e.actions.push(actionObject)
@@ -179,7 +175,7 @@ class ResourceAtom extends Component {
         })
       })
     } else {
-      this.onUpdate({
+      this.props.onUpdate({
         events
       })
     }
@@ -215,7 +211,7 @@ class ResourceAtom extends Component {
         })
       },
       'delete': () => {
-        this.onUpdate({
+        this.props.onUpdate({
           events: this.props.resource.events.map((e, index) => {
             if (index === this.state.currentEventIndex) {
               e.actions = e.actions.filter((a, i) => {
@@ -248,7 +244,7 @@ class ResourceAtom extends Component {
     id = parseInt(id, 10)
     const thingsThatCouldHappen = {
       'delete': () => {
-        this.onUpdate({
+        this.props.onUpdate({
           events: this.props.resource.events.filter((e, i) => {
             return (i !== id)
           })
@@ -265,11 +261,13 @@ class ResourceAtom extends Component {
     // console.warn('[component-resource-Atom] [onEventModalGood] id/configuration', id, configuration)
     this.setState(
       {
-        isEventDialogShowing: false,
-        currentEventIndex: undefined
+        isEventDialogShowing: false
       },
       () => {
-        this.onUpdate({
+        this.setState({
+          currentEventIndex: this.props.resource.events.length
+        })
+        this.props.onUpdate({
           events: [
             ...this.props.resource.events,
             {
