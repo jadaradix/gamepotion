@@ -46,7 +46,7 @@ class Instance {
     }
   }
 
-  onEvent(actions, eventContext) {
+  onEvent(actions, eventContext, otherInstance = null) {
     const instance = this
     const results = []
     let i = 0
@@ -63,7 +63,7 @@ class Instance {
         platform: 'html5',
         eventContext,
         instance,
-        otherInstance: null
+        otherInstance
       }
       const result = action.run(runContext, runArguments, action.appliesTo)
 
