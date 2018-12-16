@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import Page from '../../Page'
+import Page from '../Page'
 
 const TITLE = 'Page 2'
 
