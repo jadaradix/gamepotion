@@ -1,11 +1,13 @@
 import React from 'react'
-import Layout from '../components/layout'
+import Page from '../../Page'
 
-const NotFoundPage = () => (
-  <Layout>
+const TITLE = 'Not Found'
+
+const ThisPage = () => (
+  <Page title={TITLE}>
     <h1>NOT FOUND</h1>
-    <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
-  </Layout>
+    <p>You just hit a route that doesn&#39;t exist.</p>
+  </Page>
 )
 
-export default NotFoundPage
+export default ThisPage

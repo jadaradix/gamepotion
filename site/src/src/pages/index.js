@@ -1,18 +1,15 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import Page from '../../Page'
 
-import Layout from '../components/layout'
-import Image from '../components/image'
+const TITLE = 'Page 1'
 
-const IndexPage = () => (
-  <Layout>
+const ThisPage = () => (
+  <Page title={TITLE}>
     <h1>Hi!</h1>
     <p>Welcome to the website.</p>
-    <div style={{ maxWidth: '300px', marginBottom: '1.45rem' }}>
-      <Image />
-    </div>
     <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
+  </Page>
 )
 
-export default IndexPage
+export default ThisPage
