@@ -115,7 +115,6 @@ class ResourceAtom extends Component {
     this.onChooseAddAction = this.onChooseAddAction.bind(this)
     this.onActionModalGood = this.onActionModalGood.bind(this)
     this.onActionModalBad = this.onActionModalBad.bind(this)
-    this.onActionModalUpdateArgument = this.onActionModalUpdateArgument.bind(this)
     this.actOnAction = this.actOnAction.bind(this)
   }
 
@@ -195,13 +194,6 @@ class ResourceAtom extends Component {
     })
   }
 
-  onActionModalUpdateArgument() {
-    const { actionClassInstance } = this.state
-    this.setState({
-      actionClassInstance
-    })
-  }
-
   actOnAction(id, thingThatCouldHappen) {
     id = parseInt(id, 10)
     const thingsThatCouldHappen = {
@@ -213,9 +205,9 @@ class ResourceAtom extends Component {
         })
         // console.warn('[component-resource-Atom] [actOnAction] id/thingThatCouldHappen', id, thingThatCouldHappen)
         // console.warn('[component-resource-Atom] [actOnAction] actualAction', actualAction)
-        if (!isActionConfigurable(actionClassInstance)) {
-          return
-        }
+        // if (!isActionConfigurable(actionClassInstance)) {
+        //   return
+        // }
         // console.log('[component-resource-Atom] [actOnAction] actionClassInstance', actionClassInstance)
         this.setState({
           actionClassInstance,
@@ -333,7 +325,7 @@ class ResourceAtom extends Component {
     return (
       <StyledResource>
         {this.state.actionClassInstance !== null &&
-          <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.onActionModalGood} onBad={this.onActionModalBad} onUpdateArgument={this.onActionModalUpdateArgument} />
+          <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.onActionModalGood} onBad={this.onActionModalBad} />
         }
         {this.state.isEventDialogShowing &&
           <EventModal
