@@ -354,7 +354,7 @@ class ResourceAtom extends Component {
                   onChoose={this.onChooseEvent}
                   onAction={this.actOnEvent}
                 >
-                  {eventClass.toString()}
+                  {eventClass.toString(this.props.resources)}
                 </ListItem>
               })}
             </List>

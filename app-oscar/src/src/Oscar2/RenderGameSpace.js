@@ -2,6 +2,8 @@ import classes from '../classes'
 import instanceDefinitionsToInstances from './instanceDefinitionsToInstances'
 import handleActionBack from './handleActionBack'
 
+import isInstanceIntersectingInstance from './isInstanceIntersectingInstance'
+
 const actionClasses = new Map(
   Object.keys(classes.actions).map(k => {
     return [k, new classes.actions[k]()]
@@ -255,12 +257,19 @@ const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, grid
 
 const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext) => {
   draw({ctx, spaceContainer, camera, designMode: false, gridOn, gridWidth, gridHeight})
-  instances.forEach(instance => {
-    instance.onStep()
-    // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance, currentTouchCoords)
-    drawInstance(ctx, camera, false, instance)
+  instances.forEach(instance1 => {
+    instance1.onStep()
+    // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance1, currentTouchCoords)
+    drawInstance(ctx, camera, false, instance1)
+    instances
+      .filter(instance2 => isInstanceIntersectingInstance(instance1, instance2))
+      .forEach(is => {
+        const requiredConfiguration = [is.atomContainer.resource.id]
+        console.warn('requiredConfiguration', requiredConfiguration)
+        instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
+      })
   })
-  instances = handleEventStep(instances, eventContext)
+  // instances = handleEventStep(instances, eventContext)
   return instances
 }
 
@@ -291,6 +300,10 @@ const handleEvent = (eventId, requiredConfiguration = [], eventContext, instance
   })
   if (instancesToDestroy.length > 0) {
     console.log('[handleEvent] instancesToDestroy', instancesToDestroy)
+    instances = instances.filter(ic => {
+      const willDestroy = instancesToDestroy.includes(ic)
+      return (!willDestroy)
+    })
     instances = handleEvent('Destroy', undefined, eventContext, instances, instancesToDestroy)
   }
   if (instancesToCreate.length > 0) {
@@ -299,10 +312,6 @@ const handleEvent = (eventId, requiredConfiguration = [], eventContext, instance
     console.log('[handleEvent] createdInstances', createdInstances)
     instances = handleEvent('Create', undefined, eventContext, instances, createdInstances)
   }
-  instances = instances.filter(ic => {
-    const willDestroy = instancesToDestroy.includes(ic)
-    return (!willDestroy)
-  })
   return instances
 }
 
@@ -467,6 +476,7 @@ const RenderGameSpace = (
     } else {
       const doGameLoopNotDesignMode = () => {
         gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext)
+        // setTimeout(doGameLoopNotDesignMode, 100)
         requestAnimationFrameHandle = window.requestAnimationFrame(doGameLoopNotDesignMode)
       }
       instances = handleEventStart(instances, eventContext)
