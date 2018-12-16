@@ -1,4 +1,4 @@
-import { get } from '../localStorage'
+import { get, getAll } from '../localStorage'
 
 import notify from '../notify.js'
 
@@ -31,12 +31,7 @@ let state = {
   projects: null,
   currentProject: null,
   feeds: new Map(),
-  localSettings: {
-    'atom-to-plot': get('atom-to-plot'),
-    'grid-on': get('grid-on'),
-    'grid-width': get('grid-width'),
-    'grid-height': get('grid-height')
-  }
+  localSettings: getAll(['credentials-userlandId', 'credentials-password'])
 }
 
 const actions = new Map([

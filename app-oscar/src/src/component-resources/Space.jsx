@@ -164,6 +164,11 @@ class ResourceSpace extends PureComponent {
 
   plotAtom(coords, angle = 0) {
     const atomId = this.props.localSettings['atom-to-plot']
+    // const atom = this.props.resources.find(r => r.id === atomId)
+    // const image = this.props.resources.find(r => r.id === atom.imageId)
+    if (coords.x < 0 || coords.y < 0 || coords.x > this.props.resource.width || coords.y > this.props.resource.height) {
+      return console.error('out ot bounds coords', coords)
+    }
     console.warn('[plotAtom] atomId', atomId, 'at', coords)
     if (atomId === 'none') {
       return
@@ -286,12 +291,11 @@ ResourceSpace.propTypes = {
   resource: PropTypes.object.isRequired,
   localSettings: PropTypes.object.isRequired,
   onUpdate: PropTypes.func,
-  onUpdateLocalSetting: PropTypes.func,
+  onUpdateLocalSetting: PropTypes.func.isRequired,
 }
 
 ResourceSpace.defaultProps = {
-  onUpdate: () => {},
-  onUpdateLocalSetting: () => {}
+  onUpdate: () => {}
 }
 
 export default ResourceSpace

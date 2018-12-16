@@ -45,13 +45,15 @@ const drawInstance = (ctx, camera, designMode, instance) => {
   const offsetY = (designMode ? 0 : camera.y)
   const width = instance.getWidth()
   const height = instance.getHeight()
+  const translateX = instance.props.x + (width / 2) - offsetX
+  const translateY = instance.props.y + (height / 2) - offsetY
   if (image !== null) {
-    ctx.save()
-    ctx.translate(instance.props.x + (width / 2) - offsetX, instance.props.y + (height / 2) - offsetY)
+    ctx.translate(translateX, translateY)
     ctx.rotate(instance.props.angle)
     // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
-    ctx.drawImage(image, 0, frame * height, width, height, (-width / 2), (-height / 2), width, height)
-    ctx.restore()
+    ctx.drawImage(image, 0, frame * height, width, height, -(width / 2), -(height / 2), width, height)
+    ctx.rotate(-instance.props.angle)
+    ctx.translate(-translateX, -translateY)
   }
 }
 
@@ -257,17 +259,20 @@ const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, grid
 
 const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext) => {
   draw({ctx, spaceContainer, camera, designMode: false, gridOn, gridWidth, gridHeight})
+  camera.x += camera.vx
+  camera.y += camera.vy
+  camera.z += camera.vz
   instances.forEach(instance1 => {
     instance1.onStep()
-    // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance1, currentTouchCoords)
     drawInstance(ctx, camera, false, instance1)
-    instances
-      .filter(instance2 => isInstanceIntersectingInstance(instance1, instance2))
-      .forEach(is => {
-        const requiredConfiguration = [is.atomContainer.resource.id]
-        console.warn('requiredConfiguration', requiredConfiguration)
-        instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
-      })
+    // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance1, currentTouchCoords)
+    // instances
+    //   .filter(instance2 => isInstanceIntersectingInstance(instance1, instance2))
+    //   .forEach(is => {
+    //     const requiredConfiguration = [is.atomContainer.resource.id]
+    //     console.warn('requiredConfiguration', requiredConfiguration)
+    //     instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
+    //   })
   })
   // instances = handleEventStep(instances, eventContext)
   return instances
@@ -347,7 +352,10 @@ const RenderGameSpace = (
   gridHeight = parseInt(gridHeight, 10)
 
   const camera = {
-    ...spaceContainer.resource.camera
+    ...spaceContainer.resource.camera,
+    vx: 0,
+    vy: 0,
+    vz: 0
   }
 
   const [c, ctx] = [canvasElement, canvasElement.getContext('2d')]

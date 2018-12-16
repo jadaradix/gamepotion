@@ -71,6 +71,15 @@ export function remove (name) {
   }
 }
 
+export function getAll (exludeKeys = []) {
+  return Object.keys(localStorage)
+    .filter(k => !exludeKeys.includes(k))
+    .reduce((obj, str) => {
+      obj[str] = get(str)
+      return obj
+    }, {})
+}
+
 export function clear () {
   console.log('[localStorage] [clear]')
   localLocalStorage = {}

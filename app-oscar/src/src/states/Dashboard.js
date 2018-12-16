@@ -119,7 +119,7 @@ class StateDashboard extends Component {
       },
       'rename': () => {
         console.warn('[state-Dashboard] [actOnProject] rename', id)
-        const name = window.prompt(`What would you like to call ${project.project.name}`, project.project.name)
+        const name = window.prompt(`What would you like to call ${project.project.name}?`, project.project.name)
         if (name === null || name.length === 0) {
           return
         }

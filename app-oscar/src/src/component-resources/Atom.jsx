@@ -82,11 +82,20 @@ const StyledResource = styled.div`
   }
 `
 
+const getDefaultCurrentEventIndex = (resourceId, localSettings, events) => {
+  const currentIndex = localSettings[`atom-event-current-index-${resourceId}`]
+  if (typeof currentIndex === 'number') {
+    return currentIndex
+  } else {
+    return (events.length > 0 ? events.length - 1 : undefined)
+  }
+}
+
 class ResourceAtom extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentEventIndex: (props.resource.events.length > 0 ? 0 : undefined),
+      currentEventIndex: getDefaultCurrentEventIndex(props.resource.id, props.localSettings, props.resource.events),
       isEventDialogShowing: false,
       actionClassInstance: null,
       actionClassInstanceIsAdding: false
@@ -106,30 +115,24 @@ class ResourceAtom extends Component {
     this.onChooseAddAction = this.onChooseAddAction.bind(this)
     this.onActionModalGood = this.onActionModalGood.bind(this)
     this.onActionModalBad = this.onActionModalBad.bind(this)
-    this.onActionModalUpdateArgument = this.onActionModalUpdateArgument.bind(this)
     this.actOnAction = this.actOnAction.bind(this)
-  }
-
-  onUpdate(data) {
-    this.props.onUpdate(data)
   }
 
   onChooseImage(imageId) {
     if (imageId === 'none') {
       imageId = null
     }
-    this.onUpdate({
+    this.props.onUpdate({
       imageId
     })
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (this.state.currentEventIndex === undefined) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props.resource.id !== nextProps.resource.id) {
       this.setState({
-        currentEventIndex: nextProps.resource.events.length - 1
+        currentEventIndex: getDefaultCurrentEventIndex(nextProps.resource.id, nextProps.localSettings, nextProps.resource.events)
       })
     }
-    return true
   }
 
   onChooseAddAction(id) {
@@ -163,7 +166,7 @@ class ResourceAtom extends Component {
         appliesTo: actionClassInstance.appliesTo
       }
       // console.warn('[component-resource-Atom] [onActionModalGood] actionObject', actionObject)
-      this.onUpdate({
+      this.props.onUpdate({
         events: this.props.resource.events.map((e, index) => {
           if (index === this.state.currentEventIndex) {
             e.actions.push(actionObject)
@@ -172,7 +175,7 @@ class ResourceAtom extends Component {
         })
       })
     } else {
-      this.onUpdate({
+      this.props.onUpdate({
         events
       })
     }
@@ -187,13 +190,6 @@ class ResourceAtom extends Component {
     })
   }
 
-  onActionModalUpdateArgument() {
-    const { actionClassInstance } = this.state
-    this.setState({
-      actionClassInstance
-    })
-  }
-
   actOnAction(id, thingThatCouldHappen) {
     id = parseInt(id, 10)
     const thingsThatCouldHappen = {
@@ -205,9 +201,9 @@ class ResourceAtom extends Component {
         })
         // console.warn('[component-resource-Atom] [actOnAction] id/thingThatCouldHappen', id, thingThatCouldHappen)
         // console.warn('[component-resource-Atom] [actOnAction] actualAction', actualAction)
-        if (!isActionConfigurable(actionClassInstance)) {
-          return
-        }
+        // if (!isActionConfigurable(actionClassInstance)) {
+        //   return
+        // }
         // console.log('[component-resource-Atom] [actOnAction] actionClassInstance', actionClassInstance)
         this.setState({
           actionClassInstance,
@@ -215,7 +211,7 @@ class ResourceAtom extends Component {
         })
       },
       'delete': () => {
-        this.onUpdate({
+        this.props.onUpdate({
           events: this.props.resource.events.map((e, index) => {
             if (index === this.state.currentEventIndex) {
               e.actions = e.actions.filter((a, i) => {
@@ -238,6 +234,7 @@ class ResourceAtom extends Component {
 
   onChooseEvent(id) {
     id = parseInt(id, 10)
+    this.props.onUpdateLocalSetting(`atom-event-current-index-${this.props.resource.id}`, id)
     this.setState({
       currentEventIndex: id
     })
@@ -247,7 +244,7 @@ class ResourceAtom extends Component {
     id = parseInt(id, 10)
     const thingsThatCouldHappen = {
       'delete': () => {
-        this.onUpdate({
+        this.props.onUpdate({
           events: this.props.resource.events.filter((e, i) => {
             return (i !== id)
           })
@@ -264,11 +261,13 @@ class ResourceAtom extends Component {
     // console.warn('[component-resource-Atom] [onEventModalGood] id/configuration', id, configuration)
     this.setState(
       {
-        isEventDialogShowing: false,
-        currentEventIndex: undefined
+        isEventDialogShowing: false
       },
       () => {
-        this.onUpdate({
+        this.setState({
+          currentEventIndex: this.props.resource.events.length
+        })
+        this.props.onUpdate({
           events: [
             ...this.props.resource.events,
             {
@@ -324,7 +323,7 @@ class ResourceAtom extends Component {
     return (
       <StyledResource>
         {this.state.actionClassInstance !== null &&
-          <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.onActionModalGood} onBad={this.onActionModalBad} onUpdateArgument={this.onActionModalUpdateArgument} />
+          <ActionModal actionClassInstance={this.state.actionClassInstance} resources={this.props.resources} onGood={this.onActionModalGood} onBad={this.onActionModalBad} />
         }
         {this.state.isEventDialogShowing &&
           <EventModal
@@ -385,7 +384,9 @@ class ResourceAtom extends Component {
 ResourceAtom.propTypes = {
   resources: PropTypes.array,
   resource: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func
+  localSettings: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func,
+  onUpdateLocalSetting: PropTypes.func.isRequired
 }
 
 ResourceAtom.defaultProps = {

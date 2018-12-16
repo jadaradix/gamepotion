@@ -22,8 +22,10 @@ const parseContext = {
     camera: {
       x: 300,
       y: 400,
+      z: 0,
       vx: 0,
-      vy: 0
+      vy: 0,
+      vz: 0
     }
   }
 }
