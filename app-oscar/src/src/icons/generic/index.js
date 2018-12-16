@@ -1,5 +1,5 @@
 import symbol from './files/symbol.png'
-import home from './files/home.png'
+import home from './files/home.svg'
 import folder from './files/folder.svg'
 import account from './files/account.svg'
 import store from './files/store.svg'
@@ -17,7 +17,8 @@ import actionAdd from './files/action-add.svg'
 import actionEdit from './files/action-edit.svg'
 import actionDelete from './files/action-delete.svg'
 
-import project from './files/project.png'
+import project from './files/project.svg'
+import projectNew from './files/project-new.svg'
 import projectRun from './files/project-run.svg'
 import projectShare from './files/project-share.svg'
 
@@ -45,6 +46,7 @@ export default {
   },
   project: {
     project,
+    new: projectNew,
     run: projectRun,
     share: projectShare
   },

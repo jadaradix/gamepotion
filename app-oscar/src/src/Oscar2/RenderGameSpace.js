@@ -45,13 +45,15 @@ const drawInstance = (ctx, camera, designMode, instance) => {
   const offsetY = (designMode ? 0 : camera.y)
   const width = instance.getWidth()
   const height = instance.getHeight()
+  const translateX = instance.props.x + (width / 2) - offsetX
+  const translateY = instance.props.y + (height / 2) - offsetY
   if (image !== null) {
-    ctx.save()
-    ctx.translate(instance.props.x + (width / 2) - offsetX, instance.props.y + (height / 2) - offsetY)
+    ctx.translate(translateX, translateY)
     ctx.rotate(instance.props.angle)
     // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
     ctx.drawImage(image, 0, frame * height, width, height, (-width / 2), (-height / 2), width, height)
-    ctx.restore()
+    ctx.rotate(-instance.props.angle)
+    ctx.translate(-translateX, -translateY)
   }
 }
 
