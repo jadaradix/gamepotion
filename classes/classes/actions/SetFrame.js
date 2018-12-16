@@ -1,15 +1,15 @@
 import Action from '../Action.js'
 
-class SetYSpeed extends Action {
+class SetFrame extends Action {
   constructor(json = {}) {
     super(json)
-    this.id = 'SetYSpeed'
-    this.name = 'Set Y Speed'
-    this.description = 'Sets the Y speed.'
+    this.id = 'SetFrame'
+    this.name = 'Set frame'
+    this.description = 'Sets the instance frame.'
     this.defaultRunArguments = new Map([
-      ['Speed', {
+      ['Frame', {
         type: 'generic',
-        value: '1'
+        value: ''
       }]
     ])
     this.caresAboutAppliesTo = true
@@ -18,7 +18,7 @@ class SetYSpeed extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      context.instance.props.vy = runArguments[0]
+      context.instance.props.frame = runArguments[0]
       return null
     case 'nds':
       return ''
@@ -28,11 +28,8 @@ class SetYSpeed extends Action {
   }
 
   toString(runArguments, appliesTo) {
-    if (appliesTo === 'other') {
-      return `Set other instance Y speed to ${runArguments[0]}`
-    }
-    return `Set Y speed to ${runArguments[0]}`
+    return `Set frame to ${runArguments[0]}`
   }
 }
 
-export default SetYSpeed
+export default SetFrame

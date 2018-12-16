@@ -1,12 +1,12 @@
 import Create from './files/Create.svg'
 import Move from './files/Move.svg'
-import Destroy from './files/Destroy.svg'
-import SetXSpeed from './files/SetXSpeed.svg'
-import SetYSpeed from './files/SetYSpeed.svg'
+import MoveInADirection from './files/MoveInADirection.svg'
+import Rotate from './files/Rotate.svg'
 import SetImage from './files/SetImage.svg'
+import SetFrame from './files/SetFrame.svg'
+import Destroy from './files/Destroy.svg'
 
 import PlaySound from './files/PlaySound.svg'
-import ShowMessage from './files/ShowMessage.svg'
 
 import GoToSpace from './files/GoToSpace.svg'
 import GoToNextSpace from './files/GoToNextSpace.svg'
@@ -15,6 +15,8 @@ import MoveCamera from './files/MoveCamera.svg'
 import SetSpaceBackgroundImage from './files/SetSpaceBackgroundImage.svg'
 import SetSpaceForegroundImage from './files/SetSpaceForegroundImage.svg'
 
+import ShowMessage from './files/ShowMessage.svg'
+import IfPlayerConfirms from './files/IfPlayerConfirms.svg'
 import If from './files/If.svg'
 import IfInstances from './files/IfInstances.svg'
 import IfNextSpace from './files/IfNextSpace.svg'
@@ -26,24 +28,26 @@ import Debug from './files/Debug.svg'
 export default {
   Create,
   Move,
-  Destroy,
-  SetXSpeed,
-  SetYSpeed,
-  IfInstances,
+  MoveInADirection,
+  Rotate,
   SetImage,
+  SetFrame,
+  Destroy,
 
   PlaySound,
-  ShowMessage,
 
   GoToSpace,
   GoToNextSpace,
   GoToPreviousSpace,
   MoveCamera,
-  IfNextSpace,
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
+  ShowMessage,
+  IfPlayerConfirms,
   If,
+  IfInstances,
+  IfNextSpace,
   Else,
   EndIf,
   SetVariable,

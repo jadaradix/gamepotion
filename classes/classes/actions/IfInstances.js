@@ -4,7 +4,7 @@ class IfInstances extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'IfInstances'
-    this.name = 'If Number of Instances'
+    this.name = 'If number of instances'
     this.description = 'Conditionally runs actions when there is a number of instances.'
     this.defaultRunArguments = new Map([
       ['Atom', {
@@ -24,12 +24,7 @@ class IfInstances extends Action {
   }
 
   run(context, runArguments, appliesTo) {
-    const getInstanceCount = (atomId) => {
-      return context.eventContext.instanceClasses
-        .filter(ic => (ic.atomContainer.resource.id === atomId))
-        .length
-    }
-    const instanceCount = getInstanceCount(runArguments[0])
+    const instanceCount = context.eventContext.getInstanceCount(runArguments[0])
     switch(context.platform) {
     case 'html5':
       if (runArguments[2]) {

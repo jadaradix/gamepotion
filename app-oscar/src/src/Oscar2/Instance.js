@@ -39,14 +39,14 @@ class Instance {
     this.props.x += this.props.vx
     this.props.y += this.props.vy
     this.props.z += this.props.vz
-    if (typeof this.imageContainer === 'object' && this.props.frame < this.imageContainer.resource.frameCount - 1) {
+    if (typeof this.imageContainer === 'object' && this.props.frame <= this.imageContainer.resource.frameCount - 1) {
       this.props.frame += frameSpeedToIncrements[this.imageContainer.resource.frameSpeed]
     } else {
       this.props.frame = 0
     }
   }
 
-  onEvent(actions, eventContext) {
+  onEvent(actions, eventContext, otherInstance = null) {
     const instance = this
     const results = []
     let i = 0
@@ -63,7 +63,7 @@ class Instance {
         platform: 'html5',
         eventContext,
         instance,
-        otherInstance: null
+        otherInstance
       }
       const result = action.run(runContext, runArguments, action.appliesTo)
 

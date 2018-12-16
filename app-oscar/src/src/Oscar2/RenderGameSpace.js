@@ -2,6 +2,8 @@ import classes from '../classes'
 import instanceDefinitionsToInstances from './instanceDefinitionsToInstances'
 import handleActionBack from './handleActionBack'
 
+import isInstanceIntersectingInstance from './isInstanceIntersectingInstance'
+
 const actionClasses = new Map(
   Object.keys(classes.actions).map(k => {
     return [k, new classes.actions[k]()]
@@ -39,13 +41,17 @@ const drawForegroundImage = (ctx, spaceContainer) => {
 const drawInstance = (ctx, camera, designMode, instance) => {
   const frame = parseInt(instance.props.frame, 10)
   const image = instance.getImage()
-  const x = instance.props.x - (!designMode ? camera.x : 0)
-  const y = instance.props.y - (!designMode ? camera.y : 0)
+  const offsetX =(designMode ? 0 : camera.x)
+  const offsetY = (designMode ? 0 : camera.y)
   const width = instance.getWidth()
   const height = instance.getHeight()
-  // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
   if (image !== null) {
-    ctx.drawImage(image, 0, frame * height, width, height, x, y, width, height) 
+    ctx.save()
+    ctx.translate(instance.props.x + (width / 2) - offsetX, instance.props.y + (height / 2) - offsetY)
+    ctx.rotate(instance.props.angle)
+    // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
+    ctx.drawImage(image, 0, frame * height, width, height, (-width / 2), (-height / 2), width, height)
+    ctx.restore()
   }
 }
 
@@ -230,7 +236,7 @@ const addEventListener = (element, name, logic) => {
 }
 
 const isInstanceIntersecting = (instance, coords) => {
-  console.warn('[isInstanceIntersecting] instance/coords', instance, coords)
+  // console.warn('[isInstanceIntersecting] instance/coords', instance, coords)
   const w = instance.getWidth()
   const h = instance.getHeight()
   const isIntersecting = (
@@ -249,14 +255,21 @@ const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, grid
   })
 }
 
-const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace) => {
+const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext) => {
   draw({ctx, spaceContainer, camera, designMode: false, gridOn, gridWidth, gridHeight})
-  instances.forEach(instance => {
-    instance.onStep()
-    // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance, currentTouchCoords)
-    drawInstance(ctx, camera, false, instance)
+  instances.forEach(instance1 => {
+    instance1.onStep()
+    // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance1, currentTouchCoords)
+    drawInstance(ctx, camera, false, instance1)
+    instances
+      .filter(instance2 => isInstanceIntersectingInstance(instance1, instance2))
+      .forEach(is => {
+        const requiredConfiguration = [is.atomContainer.resource.id]
+        console.warn('requiredConfiguration', requiredConfiguration)
+        instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
+      })
   })
-  instances = handleEventStep(instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace)
+  // instances = handleEventStep(instances, eventContext)
   return instances
 }
 
@@ -287,6 +300,10 @@ const handleEvent = (eventId, requiredConfiguration = [], eventContext, instance
   })
   if (instancesToDestroy.length > 0) {
     console.log('[handleEvent] instancesToDestroy', instancesToDestroy)
+    instances = instances.filter(ic => {
+      const willDestroy = instancesToDestroy.includes(ic)
+      return (!willDestroy)
+    })
     instances = handleEvent('Destroy', undefined, eventContext, instances, instancesToDestroy)
   }
   if (instancesToCreate.length > 0) {
@@ -295,37 +312,15 @@ const handleEvent = (eventId, requiredConfiguration = [], eventContext, instance
     console.log('[handleEvent] createdInstances', createdInstances)
     instances = handleEvent('Create', undefined, eventContext, instances, createdInstances)
   }
-  instances = instances.filter(ic => {
-    const willDestroy = instancesToDestroy.includes(ic)
-    return (!willDestroy)
-  })
   return instances
 }
 
-const handleEventStart = (instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace) => {
-  const eventContext = {
-    instances,
-    spaceContainer,
-    camera,
-    resourceContainers,
-    variables,
-    onSwitchSpace
-  }
-  // console.warn('[handleEventStart] instances', instances)
+const handleEventStart = (instances, eventContext) => {
   // console.warn('[handleEventStart] eventContext', eventContext)
   return handleEvent('Create', undefined, eventContext, instances, instances)
 }
 
-const handleEventStep = (instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace) => {
-  const eventContext = {
-    instances,
-    spaceContainer,
-    camera,
-    resourceContainers,
-    variables,
-    onSwitchSpace
-  }
-  // console.warn('[handleEventStep] instances', instances)
+const handleEventStep = (instances, eventContext) => {
   // console.warn('[handleEventStep] eventContext', eventContext)
   return handleEvent('Step', undefined, eventContext, instances, instances)
 }
@@ -336,6 +331,7 @@ const RenderGameSpace = (
     spaceContainer,
     resourceContainers,
     variables,
+    alarms,
     designMode = false,
     gridOn = false,
     gridWidth = 16,
@@ -383,6 +379,21 @@ const RenderGameSpace = (
       keyCount: 0
     }
 
+    const eventContext = {
+      instances,
+      spaceContainer,
+      camera,
+      resourceContainers,
+      variables,
+      alarms,
+      onSwitchSpace,
+      getInstanceCount(atomId) {
+        return instances
+          .filter(i => (i.atomContainer.resource.id === atomId))
+          .length
+      }
+    }
+
     addEventListener(c, 'touchmove', (e) => {
       onTouchMove(getTouchData(domBoundsX, domBoundsY, e))
     })
@@ -395,27 +406,11 @@ const RenderGameSpace = (
     })
     if (designMode === false) {
       addEventListener(document, 'keypress', (e) => {
-        const eventContext = {
-          instances,
-          spaceContainer,
-          camera,
-          resourceContainers,
-          variables,
-          onSwitchSpace
-        }
         const eventConfiguration = ['press', e.key]
         instances = handleEvent('Input', eventConfiguration, eventContext, instances, instances)
       })
       addEventListener(document, 'keydown', (e) => {
         e.preventDefault()
-        const eventContext = {
-          instances,
-          spaceContainer,
-          camera,
-          resourceContainers,
-          variables,
-          onSwitchSpace
-        }
         const eventConfiguration = ['hold', e.key]
         instances = handleEvent('Input', eventConfiguration, eventContext, instances, instances)
         if (jInputs.keys[e.key] === undefined || jInputs.keys[e.key].on === false) {
@@ -431,14 +426,6 @@ const RenderGameSpace = (
         jInputs.keys[e.key].on = false
         // console.warn('jInputs.keyCount', jInputs.keyCount)
         if (jInputs.keyCount === 0) {
-          const eventContext = {
-            instances,
-            spaceContainer,
-            camera,
-            resourceContainers,
-            variables,
-            onSwitchSpace
-          }
           instances = handleEvent('NoInput', undefined, eventContext, instances, instances)
         }
       })
@@ -464,14 +451,6 @@ const RenderGameSpace = (
           onTouchSecondary(indicesAtCoords)
         }
       } else {
-        const eventContext = {
-          instances,
-          spaceContainer,
-          camera,
-          resourceContainers,
-          variables,
-          onSwitchSpace
-        }
         instances = handleEvent('Touch', undefined, eventContext, instances, instancesAtCoords)
       }
     })
@@ -488,14 +467,6 @@ const RenderGameSpace = (
           onTouchSecondary(indicesAtCoords)
         }
       } else {
-        const eventContext = {
-          instances,
-          spaceContainer,
-          camera,
-          resourceContainers,
-          variables,
-          onSwitchSpace
-        }
         instances = handleEvent('Touch', undefined, eventContext, instances, instancesAtCoords)
       }
     })
@@ -504,10 +475,11 @@ const RenderGameSpace = (
       gameLoopDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords)
     } else {
       const doGameLoopNotDesignMode = () => {
-        gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, resourceContainers, variables, onSwitchSpace)
+        gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext)
+        // setTimeout(doGameLoopNotDesignMode, 100)
         requestAnimationFrameHandle = window.requestAnimationFrame(doGameLoopNotDesignMode)
       }
-      instances = handleEventStart(instances, spaceContainer, camera, resourceContainers, variables, onSwitchSpace)
+      instances = handleEventStart(instances, eventContext)
       doGameLoopNotDesignMode()
     }
   }

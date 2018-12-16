@@ -57,9 +57,14 @@ ShallowWrapper {
   -webkit-font-smoothing: antialiased;
 ",
           "
+    font-size: 80%;
+    line-height: 1.5;
     color: ",
           "#2e3131",
           ";
+    a {
+      color: inherit;
+    }
   }
   ",
         ],
@@ -117,9 +122,14 @@ ShallowWrapper {
   -webkit-font-smoothing: antialiased;
 ",
             "
+    font-size: 80%;
+    line-height: 1.5;
     color: ",
             "#2e3131",
             ";
+    a {
+      color: inherit;
+    }
   }
   ",
           ],

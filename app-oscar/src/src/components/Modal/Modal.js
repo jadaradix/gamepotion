@@ -34,6 +34,7 @@ const StyledModal = styled.div`
     transform: translate(-50%, -50%);
     background-color: ${colours.back};
     border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.75);
     .icon--close {
       position: absolute;
       top: 0.5rem;

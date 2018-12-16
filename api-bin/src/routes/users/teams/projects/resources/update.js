@@ -73,7 +73,7 @@ const route = async (request, response, next) => {
     } = await inspectImage(file.path)
     resourceClass.frameWidth = width
     resourceClass.frameHeight = width
-    resourceClass.frameCount = parseInt(height / width, 10)
+    resourceClass.frameCount = parseInt(Math.ceil(height / width), 10)
   }
 
   Promise.all([

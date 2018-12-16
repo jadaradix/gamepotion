@@ -4,7 +4,7 @@ class ShowMessage extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'ShowMessage'
-    this.name = 'Show Message'
+    this.name = 'Show message'
     this.description = 'Shows a message.'
     this.defaultRunArguments = new Map([
       ['Message', {

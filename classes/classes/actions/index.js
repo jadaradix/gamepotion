@@ -1,23 +1,25 @@
 import Create from './Create.js'
 import Move from './Move.js'
-import Destroy from './Destroy.js'
-import SetXSpeed from './SetXSpeed.js'
-import SetYSpeed from './SetYSpeed.js'
-import IfInstances from './IfInstances.js'
+import MoveInADirection from './MoveInADirection.js'
+import Rotate from './Rotate.js'
 import SetImage from './SetImage.js'
+import SetFrame from './SetFrame.js'
+import Destroy from './Destroy.js'
 
 import PlaySound from './PlaySound.js'
-import ShowMessage from './ShowMessage.js'
 
 import GoToSpace from './GoToSpace.js'
 import GoToNextSpace from './GoToNextSpace.js'
 import GoToPreviousSpace from './GoToPreviousSpace.js'
 import MoveCamera from './MoveCamera.js'
-import IfNextSpace from './IfNextSpace.js'
 import SetSpaceBackgroundImage from './SetSpaceBackgroundImage.js'
 import SetSpaceForegroundImage from './SetSpaceForegroundImage.js'
 
+import ShowMessage from './ShowMessage.js'
+import IfPlayerConfirms from './IfPlayerConfirms.js'
 import If from './If.js'
+import IfInstances from './IfInstances.js'
+import IfNextSpace from './IfNextSpace.js'
 import Else from './Else.js'
 import EndIf from './EndIf.js'
 import SetVariable from './SetVariable.js'
@@ -26,24 +28,26 @@ import Debug from './Debug.js'
 export default {
   Create,
   Move,
-  Destroy,
-  SetXSpeed,
-  SetYSpeed,
-  IfInstances,
+  MoveInADirection,
+  Rotate,
   SetImage,
+  SetFrame,
+  Destroy,
 
   PlaySound,
-  ShowMessage,
 
   GoToSpace,
   GoToNextSpace,
   GoToPreviousSpace,
   MoveCamera,
-  IfNextSpace,
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
+  ShowMessage,
+  IfPlayerConfirms,
   If,
+  IfInstances,
+  IfNextSpace,
   Else,
   EndIf,
   SetVariable,

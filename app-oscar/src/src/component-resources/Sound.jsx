@@ -50,30 +50,18 @@ class ResourceSound extends PureComponent {
     this.onUploadDone = this.onUploadDone.bind(this)
   }
 
-  onUpdate(data) {
-    this.props.onUpdate(data)
-  }
-
   onChooseFixed(fixed) {
     if (fixed === 'none') {
       fixed = null
     }
-    this.onUpdate({
+    this.props.onUpdate({
       fixed,
       extension: 'wav'
     })
   }
 
-  onUploadDone(data) {
-    // apis go away
-    const {
-      fixed,
-      extension
-    } = data
-    this.onUpdate({
-      fixed,
-      extension
-    })
+  onUploadDone() {
+    this.props.onUpdate({}, true)
   }
 
   render() {

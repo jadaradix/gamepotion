@@ -12,6 +12,7 @@ const parseContext = {
       ['name', 'James'],
       ['speed', 2]
     ]),
+    alarms: new Map([]),
     spaceContainer: {
       resource: {
         width: 100,
@@ -20,7 +21,9 @@ const parseContext = {
     },
     camera: {
       x: 300,
-      y: 400
+      y: 400,
+      vx: 0,
+      vy: 0
     }
   }
 }

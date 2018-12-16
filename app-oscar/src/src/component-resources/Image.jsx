@@ -64,19 +64,15 @@ class ResourceImage extends PureComponent {
     this.onUploadDone = this.onUploadDone.bind(this)
   }
 
-  onUpdate(data) {
-    this.props.onUpdate(data)
-  }
-
-  onUpdateProp (prop, value) {
-    this.onUpdate({
+  onUpdateProp(prop, value) {
+    this.props.onUpdate({
       [prop]: parseInt(value, 10)
     })
   }
 
   onChooseFixed(fixed) {
     if (fixed === 'none') {
-      this.onUpdate({
+      this.props.onUpdate({
         fixed: null,
         extension: 'png'
       })
@@ -85,31 +81,18 @@ class ResourceImage extends PureComponent {
         width,
         height
       } = resourceTypes.find(rt => rt.type === 'image').getFixed().find(o => o.id === fixed)
-      this.onUpdate({
+      this.props.onUpdate({
         fixed,
         extension: 'png',
         frameWidth: width,
-        frameHeight: height
+        frameHeight: width,
+        frameCount: parseInt(Math.ceil(height / width), 10)
       })
     }
   }
 
-  onUploadDone(data) {
-    // apis go away
-    const {
-      fixed,
-      extension,
-      frameWidth,
-      frameHeight,
-      frameCount
-    } = data
-    this.onUpdate({
-      fixed,
-      extension,
-      frameWidth,
-      frameHeight,
-      frameCount
-    })
+  onUploadDone() {
+    this.props.onUpdate({}, true)
   }
 
   render() {

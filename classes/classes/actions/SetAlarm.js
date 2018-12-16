@@ -1,19 +1,19 @@
 import Action from '../Action.js'
 
-class MoveCamera extends Action {
+class SetAlarm extends Action {
   constructor(json = {}) {
     super(json)
-    this.id = 'MoveCamera'
-    this.name = 'Move Space camera'
-    this.description = 'Moves the camera.'
+    this.id = 'SetAlarm'
+    this.name = 'Set alarm'
+    this.description = 'Sets an alarm.'
     this.defaultRunArguments = new Map([
-      ['X', {
+      ['Name', {
         type: 'generic',
         value: ''
       }],
-      ['Y', {
+      ['Time (seconds)', {
         type: 'generic',
-        value: ''
+        value: '5'
       }]
     ])
   }
@@ -21,19 +21,18 @@ class MoveCamera extends Action {
   run(context, runArguments, appliesTo) {
     switch(context.platform) {
     case 'html5':
-      context.eventContext.camera.x = runArguments[0]
-      context.eventContext.camera.y = runArguments[1]
+      context.eventContext.alarms.set(runArguments[0], runArguments[1])
       return null
     case 'nds':
-      return ''
+      return `alarms[${runArguments[0]}] = ${runArguments[1]};`
     default:
       return null
     }
   }
 
   toString(runArguments, appliesTo) {
-    return `Move camera to ${runArguments[0]}, ${runArguments[1]}`
+    return `Set alarm "${runArguments[0]}" to ${runArguments[1]}s`
   }
 }
 
-export default MoveCamera
+export default SetAlarm

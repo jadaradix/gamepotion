@@ -63,15 +63,15 @@ const StyledResource = styled.div`
       .image-container + .component--dropper {
         margin-top: 1rem;
       }
-    }
-    .component--box.info {
-      margin-bottom: 1rem;
       .touches {
         display: grid;
         grid-template-columns: 2fr 2fr;
         grid-gap: 1rem;
-        margin-bottom: 2rem;
+        margin-top: 2rem;
       }
+    }
+    .component--box.info {
+      margin-bottom: 1rem;
       .component--switch {
         margin-bottom: 1rem;
       }
@@ -236,6 +236,10 @@ class ResourceSpace extends PureComponent {
               <Image src={imageSrc} />
             </div>
             <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
+            <div className='touches'>
+              <Input label='Touch X' onRef={(r) => { this.thisRefs.touchCoordsX = r; this.thisRefs.touchCoordsX.value = 0 }} type='number' disabled />
+              <Input label='Touch Y' onRef={(r) => { this.thisRefs.touchCoordsY = r; this.thisRefs.touchCoordsY.value = 0 }} type='number' disabled />
+            </div>
           </Box>
           <Box className='settings'>
             <div className='coords'>
@@ -248,10 +252,6 @@ class ResourceSpace extends PureComponent {
             <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
           </Box>
           <Box className='info'>
-            <div className='touches'>
-              <Input label='Touch X' onRef={(r) => { this.thisRefs.touchCoordsX = r; this.thisRefs.touchCoordsX.value = 0 }} type='number' disabled />
-              <Input label='Touch Y' onRef={(r) => { this.thisRefs.touchCoordsY = r; this.thisRefs.touchCoordsY.value = 0 }} type='number' disabled />
-            </div>
             <Switch checked={this.props.localSettings['grid-on']} onChange={(v) => this.props.onUpdateLocalSetting('grid-on', v)}>Grid</Switch>
             <div className='grid-properties'>
               <Input label='Grid Width' value={this.props.localSettings['grid-width']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-width', parseInt(v, 10))} />

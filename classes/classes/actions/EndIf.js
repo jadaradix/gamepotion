@@ -4,7 +4,7 @@ class EndIf extends Action {
   constructor(json = {}) {
     super(json)
     this.id = 'EndIf'
-    this.name = 'End If'
+    this.name = 'End if'
     this.description = 'Ends conditionally running actions.'
     this.defaultRunArguments = new Map([
     ])

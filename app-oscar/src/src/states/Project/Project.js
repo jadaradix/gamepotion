@@ -165,11 +165,12 @@ class StateProjectProject extends Component {
     })
   }
 
-  onUpdateResource(resource, data) {
+  onUpdateResource(resource, data, forceWaitForResponse = false) {
     dispatch({
       name: 'PROJECTS_RESOURCES_UPDATE',
       data: {
         id: resource.id,
+        forceWaitForResponse,
         ...data
       }
     })
@@ -232,7 +233,7 @@ class StateProjectProject extends Component {
                 resources={this.state.currentProject.resources}
                 resource={this.state.currentProject.currentResource}
                 localSettings={this.state.localSettings}
-                onUpdate={(data) => this.onUpdateResource(this.state.currentProject.currentResource, data)}
+                onUpdate={(data, forceWaitForResponse) => this.onUpdateResource(this.state.currentProject.currentResource, data, forceWaitForResponse)}
                 onUpdateLocalSetting={this.onUpdateLocalSetting}
               />
             }

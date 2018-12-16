@@ -61,7 +61,6 @@ class ResourceImage extends Resource {
   fromApiPatch(json) {
     super.fromApiPatch(json)
     this.fixed = (typeof json.fixed === 'string' || json.fixed === null) ? json.fixed : this.fixed
-    this.extension = (typeof json.extension === 'string') ? json.extension : this.extension // apis go away
     this.frameWidth = (typeof json.frameWidth === 'number' ? json.frameWidth : this.frameWidth)
     this.frameHeight = (typeof json.frameHeight === 'number' ? json.frameHeight : this.frameHeight)
     this.frameSpeed = (typeof json.frameSpeed === 'number' ? json.frameSpeed : this.frameSpeed)

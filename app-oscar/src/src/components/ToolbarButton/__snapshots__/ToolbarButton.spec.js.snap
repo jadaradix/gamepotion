@@ -80,7 +80,7 @@ exports[`renders 1`] = `
   cursor: not-allowed;
 }
 
-.c0 button:hover:not([disabled]):not(.significant) {
+.c0 button:hover:not([disabled]):not(.significant):not(.fixed-width) {
   background-color: #6c7a89;
 }
 
