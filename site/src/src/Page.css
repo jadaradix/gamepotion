@@ -21,10 +21,6 @@ body {
   background-color: #c0cdd1;
 }
 
-a {
-  color: #2e3131;
-}
-
 h1 {
   font-size: 200%;
   font-weight: 800;
@@ -34,6 +30,14 @@ h1 {
 p {
   padding: 0.25rem 0 0.25rem 0;
   background-color: orange;
+}
+
+strong {
+  font-weight: 800;
+}
+
+a {
+  color: #2e3131;
 }
 
 h1 + p {
@@ -55,6 +59,6 @@ main > div {
   padding: 2rem;
 }
 
-strong {
-  font-weight: 800;
+.component--left-right + .component--left-right {
+  margin-top: 2rem;
 }

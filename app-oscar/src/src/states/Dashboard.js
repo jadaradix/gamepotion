@@ -63,7 +63,7 @@ class StateDashboard extends Component {
     this.actOnProject = this.actOnProject.bind(this)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.subscriptions = [
       subscribe('PROJECTS_GET', (state) => {
         this.setState({
@@ -103,7 +103,7 @@ class StateDashboard extends Component {
     })
   }
 
-  loadFeedItem (feedId, feedItemToLoadId) {
+  loadFeedItem(feedId, feedItemToLoadId) {
     console.warn('[state-Dashboard] [loadFeedItem] feedId/feedItemToLoadId', feedId, feedItemToLoadId)
     // this.setState({
     //   feedItemToLoadId
@@ -164,7 +164,7 @@ class StateDashboard extends Component {
           <StyledState>
             <section className='split-two'>
               <Box>
-                {this.state.projects === null ? 
+                {!Array.isArray(this.state.projects) ?
                   <Loading />
                   :
                   <Fragment>
@@ -189,7 +189,7 @@ class StateDashboard extends Component {
                 }
               </Box>
               <Box>
-                {newsFeed === undefined ? 
+                {newsFeed === undefined ?
                   <Loading />
                   :
                   <Fragment>
