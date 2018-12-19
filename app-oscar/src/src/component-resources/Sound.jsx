@@ -74,7 +74,7 @@ class ResourceSound extends PureComponent {
       ...resourceTypes.find(rt => rt.type === 'sound').getFixed(purchasedResourcePackModule).map(o => {
         return {
           id: o.id,
-          name: o.id
+          name: o.name
         }
       })
     ]

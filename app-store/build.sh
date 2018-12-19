@@ -1,7 +1,7 @@
-# cd src;
-#   npm i;
-#   npm run build;
-# cd ..;
+cd src;
+  npm i;
+  npm run build;
+cd ..;
 
 docker stop oscar-production-app-store;
 docker rm oscar-production-app-store;

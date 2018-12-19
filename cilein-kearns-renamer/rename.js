@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const os = require('os')
 
-const DIRECTORY = '/Users/james/Dropbox/Projects/gmc/kearns sheets'
+const DIRECTORY = '/Users/james.garner/Dropbox/Projects/gmc/resource sets/Cilein Kearns'
 
 const listFilesInDirectory = (directory) => {
   return new Promise((resolve, reject) => {

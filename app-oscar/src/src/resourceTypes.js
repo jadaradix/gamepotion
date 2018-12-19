@@ -305,28 +305,16 @@ const fixedResourceCollectionsByType = {
       'credit': 'Reiner "Tiles" Prokein',
       'resources': [
         {
+          id: 'reiners-tilesets-gold-sacks',
+          name: 'Reiner\'s Tilesets > Gold sacks',
+          width: 32,
+          height: 32
+        },
+        {
           id: 'reiners-tilesets-grass',
           name: 'Reiner\'s Tilesets > Grass texture',
           width: 32,
           height: 32
-        },
-        {
-          id: 'reiners-tilesets-sand',
-          name: 'Reiner\'s Tilesets > Sand texture',
-          width: 32,
-          height: 32
-        },
-        {
-          id: 'reiners-tilesets-rocks',
-          name: 'Reiner\'s Tilesets > Rocks',
-          width: 64,
-          height: 64
-        },
-        {
-          id: 'reiners-tilesets-rock',
-          name: 'Reiner\'s Tilesets > Rock',
-          width: 64,
-          height: 64
         },
         {
           id: 'reiners-tilesets-logs',
@@ -336,15 +324,69 @@ const fixedResourceCollectionsByType = {
         },
         {
           id: 'reiners-tilesets-mushroom-blue',
-          name: 'Reiner\'s Tilesets > Mushroom blue',
+          name: 'Reiner\'s Tilesets > Mushroom (blue)',
           width: 32,
           height: 32
         },
         {
           id: 'reiners-tilesets-mushroom-pink',
-          name: 'Reiner\'s Tilesets > Mushroom pink',
+          name: 'Reiner\'s Tilesets > Mushroom (pink)',
           width: 32,
           height: 32
+        },
+        {
+          id: 'reiners-tilesets-ogre-left',
+          name: 'Reiner\'s Tilesets > Ogre (left)',
+          width: 96,
+          height: 768
+        },
+        {
+          id: 'reiners-tilesets-ogre-right',
+          name: 'Reiner\'s Tilesets > Ogre (right)',
+          width: 96,
+          height: 768
+        },
+        {
+          id: 'reiners-tilesets-ogre-up',
+          name: 'Reiner\'s Tilesets > Ogre (up)',
+          width: 96,
+          height: 768
+        },
+        {
+          id: 'reiners-tilesets-ogre-down',
+          name: 'Reiner\'s Tilesets > Ogre (down)',
+          width: 96,
+          height: 768
+        },
+        {
+          id: 'reiners-tilesets-rock',
+          name: 'Reiner\'s Tilesets > Rock',
+          width: 64,
+          height: 64
+        },
+        {
+          id: 'reiners-tilesets-rocks',
+          name: 'Reiner\'s Tilesets > Rocks',
+          width: 64,
+          height: 64
+        },
+        {
+          id: 'reiners-tilesets-ruins',
+          name: 'Reiner\'s Tilesets > Ruins',
+          width: 194,
+          height: 182
+        },
+        {
+          id: 'reiners-tilesets-sand',
+          name: 'Reiner\'s Tilesets > Sand texture',
+          width: 32,
+          height: 32
+        },
+        {
+          id: 'reiners-tilesets-shack',
+          name: 'Reiner\'s Tilesets > Shack',
+          width: 238,
+          height: 219
         }
       ]
     }
@@ -356,16 +398,20 @@ const fixedResourceCollectionsByType = {
       'credit': 'James Garner',
       'resources': [
         {
-          id: 'click'
+          id: 'click',
+          name: 'Starter Pack > Click'
         },
         {
-          id: 'explosion'
+          id: 'explosion',
+          name: 'Starter Pack > Explosion'
         },
         {
-          id: 'gun'
+          id: 'gun',
+          name: 'Starter Pack > Gun'
         },
         {
-          id: 'zap'
+          id: 'zap',
+          name: 'Starter Pack > Zap'
         }
       ]
     }
