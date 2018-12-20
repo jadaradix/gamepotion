@@ -2,13 +2,13 @@ import Action from '../Action.js'
 
 const functions = {
   'up'(instance, speed) {
-    instance.props.vy = speed
+    instance.props.vy = -speed
   },
   'down'(instance, speed) {
     instance.props.vy = speed
   },
   'left'(instance, speed) {
-    instance.props.vx = speed
+    instance.props.vx = -speed
   },
   'right'(instance, speed) {
     instance.props.vx = speed
