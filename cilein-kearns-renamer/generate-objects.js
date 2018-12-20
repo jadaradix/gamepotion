@@ -4,7 +4,7 @@ const os = require('os')
 const humanizeString = require('humanize-string')
 const imageSize = require('image-size')
 
-const DIRECTORY = '/Users/james/Dropbox/Projects/gmc/kearns sheets'
+const DIRECTORY = '/Users/james.garner/Dropbox/Projects/gmc/resource sets/Cilein Kearns'
 
 const getImageSize = (file) => {
   return new Promise((resolve, reject) => {

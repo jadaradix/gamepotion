@@ -274,7 +274,7 @@ const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, g
     //     instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
     //   })
   })
-  // instances = handleEventStep(instances, eventContext)
+  instances = handleEventStep(instances, eventContext)
   return instances
 }
 

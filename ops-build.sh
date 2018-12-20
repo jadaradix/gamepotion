@@ -15,3 +15,7 @@ cd ..;
 cd app-oscar;
   . build.sh;
 cd ..;
+
+cd app-store;
+  . build.sh;
+cd ..;

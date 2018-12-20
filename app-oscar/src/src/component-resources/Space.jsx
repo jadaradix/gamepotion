@@ -8,6 +8,8 @@ import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 import Image from '../components/Image/Image'
 
+import { font, colours } from '../styleAbstractions'
+
 import Oscar2 from '../Oscar2'
 
 const getAtomDropperResources = (resources) => {
@@ -39,7 +41,7 @@ const getImageDropperResources = (resources) => {
 }
 
 const StyledResource = styled.div`
-  section.settings-plot-info {
+  section.settings-info {
     .component--box.settings {
       margin-bottom: 1rem;
       .coords {
@@ -50,24 +52,6 @@ const StyledResource = styled.div`
       }
       .component--dropper:not(:last-child) {
         margin-bottom: 1rem;
-      }
-    }
-    .component--box.plot {
-      margin-bottom: 1rem;
-      .image-container {
-        position: relative;
-        height: 128px;
-        border: 1px solid #dadfe1;
-        border-radius: 4px;
-      }
-      .image-container + .component--dropper {
-        margin-top: 1rem;
-      }
-      .touches {
-        display: grid;
-        grid-template-columns: 2fr 2fr;
-        grid-gap: 1rem;
-        margin-top: 2rem;
       }
     }
     .component--box.info {
@@ -82,29 +66,52 @@ const StyledResource = styled.div`
       }
     }
   }
-  section.canvas {
+  section.game {
     margin-top: 1rem;
-    overflow: scroll;
-    // background-color: red;
-    .component--switch + #oscar2-container {
+    // background-color: yellow;
+    .play-touches {
+      position: relative;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+      // background-color: blue;
+      .touches {
+        position: absolute;
+        top: 0;
+        left: 112px;
+        height: 2rem;
+        line-height: 2rem;
+        // background-color: red;
+        ${font}
+        font-size: 80%;
+        color: #6c7a89;
+      }
+    }
+  }
+  .component--box.plot {
+    max-width: 176px;
+    margin-top: 1rem;
+    .image-container {
+      position: relative;
+      height: 128px;
+      border: 1px solid #dadfe1;
+      border-radius: 4px;
+    }
+    .image-container + .component--dropper {
       margin-top: 1rem;
     }
   }
   @media screen and (min-width: 960px) {
-    section.settings-plot-info {
+    section.settings-info {
       float: left;
       width: 240px;
       .component--box.settings {
-        margin-bottom: 2rem;
-      }
-      .component--box.plot {
         margin-bottom: 2rem;
       }
       .component--box.info {
         margin-bottom: 2rem;
       }
     }
-    section.canvas {
+    section.game {
       margin-top: 0;
       margin-left: calc(240px + 2rem);
     }
@@ -195,8 +202,8 @@ class ResourceSpace extends PureComponent {
 
   updateTouchCoords(coords) {
     // console.warn('[updateTouchCoords] coords', coords, this.thisRefs.touchCoordsX)
-    this.thisRefs.touchCoordsX.value = coords.x
-    this.thisRefs.touchCoordsY.value = coords.y
+    this.thisRefs.touchCoordsX.innerHTML = coords.x.toString()
+    this.thisRefs.touchCoordsY.innerHTML = coords.y.toString()
   }
 
   updatePlaying(isPlaying) {
@@ -235,17 +242,7 @@ class ResourceSpace extends PureComponent {
 
     return (
       <StyledResource>
-        <section className='settings-plot-info'>
-          <Box className='plot'>
-            <div className='image-container'>
-              <Image src={imageSrc} />
-            </div>
-            <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
-            <div className='touches'>
-              <Input label='Touch X' onRef={(r) => { this.thisRefs.touchCoordsX = r; this.thisRefs.touchCoordsX.value = 0 }} type='number' disabled />
-              <Input label='Touch Y' onRef={(r) => { this.thisRefs.touchCoordsY = r; this.thisRefs.touchCoordsY.value = 0 }} type='number' disabled />
-            </div>
-          </Box>
+        <section className='settings-info'>
           <Box className='settings'>
             <div className='coords'>
               <Input label='Width' type='number' value={this.props.resource.width} onChange={(v) => this.onChangeMasterProp('width', v)} min='0' max='4096' />
@@ -264,8 +261,7 @@ class ResourceSpace extends PureComponent {
             </div>
           </Box>
         </section>
-        <section className='canvas'>
-          <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>
+        <section className='game'>
           <div id='oscar2-container' />
           <Oscar2
             containerElementId='oscar2-container'
@@ -280,6 +276,18 @@ class ResourceSpace extends PureComponent {
             onTouchSecondary={this.unplotAtoms}
             onTouchMove={this.updateTouchCoords}
           />
+          <div className='play-touches'>
+            <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>
+            <div className='touches'>
+              <span ref={(r) => { this.thisRefs.touchCoordsX = r }}>0</span>&times;<span ref={(r) => { this.thisRefs.touchCoordsY = r }}>0</span>
+            </div>
+          </div>
+          <Box className='plot'>
+            <div className='image-container'>
+              <Image src={imageSrc} />
+            </div>
+            <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
+          </Box>
         </section>
       </StyledResource>
     )

@@ -110,59 +110,59 @@ const fixedResourceCollectionsByType = {
           width: 32,
           height: 32 },
         { id: 'cilein-kearns-Asteroids Pack-Space 1',
-          name: 'Asteroids Pack > Space 1',
+          name: 'Asteroids Pack > Space (purple) 1',
           width: 256,
           height: 192 },
         { id: 'cilein-kearns-Asteroids Pack-Space 2',
-          name: 'Asteroids Pack > Space 2',
+          name: 'Asteroids Pack > Space (purple) 2',
           width: 256,
           height: 192 },
         { id: 'cilein-kearns-Asteroids Pack-SpaceRed 1',
-          name: 'Asteroids Pack > Space red 1',
+          name: 'Asteroids Pack > Space (red) 1',
           width: 256,
           height: 192 },
         { id: 'cilein-kearns-Asteroids Pack-SpaceRed 2',
-          name: 'Asteroids Pack > Space red 2',
+          name: 'Asteroids Pack > Space (red) 2',
           width: 256,
           height: 192 },
         { id: 'cilein-kearns-PacMan Pack-Food',
-          name: 'PacMan Pack > Food',
+          name: 'Gobble Maze Pack > Food',
           width: 16,
           height: 208 },
         { id: 'cilein-kearns-PacMan Pack-GhostCyan',
-          name: 'PacMan Pack > Ghost cyan',
+          name: 'Gobble Maze Pack > Ghost cyan',
           width: 16,
           height: 256 },
         { id: 'cilein-kearns-PacMan Pack-GhostEdible',
-          name: 'PacMan Pack > Ghost edible',
+          name: 'Gobble Maze Pack > Ghost edible',
           width: 16,
           height: 64 },
         { id: 'cilein-kearns-PacMan Pack-GhostEyes',
-          name: 'PacMan Pack > Ghost eyes',
+          name: 'Gobble Maze Pack > Ghost eyes',
           width: 16,
           height: 64 },
         { id: 'cilein-kearns-PacMan Pack-GhostOrange',
-          name: 'PacMan Pack > Ghost orange',
+          name: 'Gobble Maze Pack > Ghost orange',
           width: 16,
           height: 256 },
         { id: 'cilein-kearns-PacMan Pack-GhostPink',
-          name: 'PacMan Pack > Ghost pink',
+          name: 'Gobble Maze Pack > Ghost pink',
           width: 16,
           height: 256 },
         { id: 'cilein-kearns-PacMan Pack-GhostRed',
-          name: 'PacMan Pack > Ghost red',
+          name: 'Gobble Maze Pack > Ghost red',
           width: 16,
           height: 256 },
         { id: 'cilein-kearns-PacMan Pack-Map 1',
-          name: 'PacMan Pack > Map 1',
+          name: 'Gobble Maze Pack > Map 1',
           width: 256,
           height: 192 },
         { id: 'cilein-kearns-PacMan Pack-Map 2',
-          name: 'PacMan Pack > Map 2',
+          name: 'Gobble Maze Pack > Map 2',
           width: 256,
           height: 192 },
         { id: 'cilein-kearns-PacMan Pack-PacMan',
-          name: 'PacMan Pack > Pac man',
+          name: 'Gobble Maze Pack > Pac man',
           width: 16,
           height: 496 },
         { id: 'cilein-kearns-Shooter Pack-AmmoBig',
@@ -178,23 +178,23 @@ const fixedResourceCollectionsByType = {
           width: 32,
           height: 192 },
         { id: 'cilein-kearns-Shooter Pack-Bottle_Blue',
-          name: 'Shooter Pack > Bottle blue',
+          name: 'Shooter Pack > Bottle (blue)',
           width: 32,
           height: 96 },
         { id: 'cilein-kearns-Shooter Pack-Bottle_Brown',
-          name: 'Shooter Pack > Bottle brown',
+          name: 'Shooter Pack > Bottle (brown)',
           width: 32,
           height: 96 },
         { id: 'cilein-kearns-Shooter Pack-Bottle_Green',
-          name: 'Shooter Pack > Bottle green',
+          name: 'Shooter Pack > Bottle (green)',
           width: 32,
           height: 96 },
         { id: 'cilein-kearns-Shooter Pack-Bottle_Red',
-          name: 'Shooter Pack > Bottle red',
+          name: 'Shooter Pack > Bottle (red)',
           width: 32,
           height: 96 },
         { id: 'cilein-kearns-Shooter Pack-Bottle_Yellow',
-          name: 'Shooter Pack > Bottle yellow',
+          name: 'Shooter Pack > Bottle (yellow)',
           width: 32,
           height: 96 },
         { id: 'cilein-kearns-Shooter Pack-BulletHoles',
@@ -305,28 +305,16 @@ const fixedResourceCollectionsByType = {
       'credit': 'Reiner "Tiles" Prokein',
       'resources': [
         {
+          id: 'reiners-tilesets-gold-sacks',
+          name: 'Reiner\'s Tilesets > Gold sacks',
+          width: 32,
+          height: 32
+        },
+        {
           id: 'reiners-tilesets-grass',
           name: 'Reiner\'s Tilesets > Grass texture',
           width: 32,
           height: 32
-        },
-        {
-          id: 'reiners-tilesets-sand',
-          name: 'Reiner\'s Tilesets > Sand texture',
-          width: 32,
-          height: 32
-        },
-        {
-          id: 'reiners-tilesets-rocks',
-          name: 'Reiner\'s Tilesets > Rocks',
-          width: 64,
-          height: 64
-        },
-        {
-          id: 'reiners-tilesets-rock',
-          name: 'Reiner\'s Tilesets > Rock',
-          width: 64,
-          height: 64
         },
         {
           id: 'reiners-tilesets-logs',
@@ -336,15 +324,69 @@ const fixedResourceCollectionsByType = {
         },
         {
           id: 'reiners-tilesets-mushroom-blue',
-          name: 'Reiner\'s Tilesets > Mushroom blue',
+          name: 'Reiner\'s Tilesets > Mushroom (blue)',
           width: 32,
           height: 32
         },
         {
           id: 'reiners-tilesets-mushroom-pink',
-          name: 'Reiner\'s Tilesets > Mushroom pink',
+          name: 'Reiner\'s Tilesets > Mushroom (pink)',
           width: 32,
           height: 32
+        },
+        {
+          id: 'reiners-tilesets-ogre-left',
+          name: 'Reiner\'s Tilesets > Ogre (left)',
+          width: 96,
+          height: 768
+        },
+        {
+          id: 'reiners-tilesets-ogre-right',
+          name: 'Reiner\'s Tilesets > Ogre (right)',
+          width: 96,
+          height: 768
+        },
+        {
+          id: 'reiners-tilesets-ogre-up',
+          name: 'Reiner\'s Tilesets > Ogre (up)',
+          width: 96,
+          height: 768
+        },
+        {
+          id: 'reiners-tilesets-ogre-down',
+          name: 'Reiner\'s Tilesets > Ogre (down)',
+          width: 96,
+          height: 768
+        },
+        {
+          id: 'reiners-tilesets-rock',
+          name: 'Reiner\'s Tilesets > Rock',
+          width: 64,
+          height: 64
+        },
+        {
+          id: 'reiners-tilesets-rocks',
+          name: 'Reiner\'s Tilesets > Rocks',
+          width: 64,
+          height: 64
+        },
+        {
+          id: 'reiners-tilesets-ruins',
+          name: 'Reiner\'s Tilesets > Ruins',
+          width: 194,
+          height: 182
+        },
+        {
+          id: 'reiners-tilesets-sand',
+          name: 'Reiner\'s Tilesets > Sand texture',
+          width: 32,
+          height: 32
+        },
+        {
+          id: 'reiners-tilesets-shack',
+          name: 'Reiner\'s Tilesets > Shack',
+          width: 238,
+          height: 219
         }
       ]
     }
@@ -356,16 +398,20 @@ const fixedResourceCollectionsByType = {
       'credit': 'James Garner',
       'resources': [
         {
-          id: 'click'
+          id: 'click',
+          name: 'Starter Pack > Click'
         },
         {
-          id: 'explosion'
+          id: 'explosion',
+          name: 'Starter Pack > Explosion'
         },
         {
-          id: 'gun'
+          id: 'gun',
+          name: 'Starter Pack > Gun'
         },
         {
-          id: 'zap'
+          id: 'zap',
+          name: 'Starter Pack > Zap'
         }
       ]
     }

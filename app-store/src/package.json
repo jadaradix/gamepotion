@@ -17,8 +17,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom --setupFiles=$(pwd)/jest.setup.js"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "browserslist": [
     ">0.2%",
     "not dead",
