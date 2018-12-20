@@ -72,7 +72,7 @@ const route = async (request, response, next) => {
       height
     } = await inspectImage(file.path)
     resourceClass.frameWidth = width
-    resourceClass.frameHeight = width
+    resourceClass.frameHeight = (height < width ? height : width)
     resourceClass.frameCount = parseInt(Math.ceil(height / width), 10)
   }
 

@@ -13,12 +13,17 @@ const StyledImage = styled.div`
     max-height: calc(100% - 1rem);
   }
   > p {
+    width: 100%;
     ${font}
     color: ${colours.fore};
     opacity: 0.5;
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    transform: translate(0, -50%);
     // background-color: orange;
   }
-  > img, > p {
+  > img {
     position: absolute;
     top: 50%;
     left: 50%;

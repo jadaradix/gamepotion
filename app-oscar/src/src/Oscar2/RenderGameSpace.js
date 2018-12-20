@@ -492,10 +492,10 @@ const RenderGameSpace = (
     }
   }
 
-  clear(ctx, designMode, spaceContainer, camera)
-  ctx.fillStyle = '#ffffff'
-  ctx.font = '16px Arial'
-  ctx.fillText('Loading...', 16, 24)
+  // clear(ctx, designMode, spaceContainer, camera)
+  // ctx.fillStyle = '#ffffff'
+  // ctx.font = '16px Arial'
+  // ctx.fillText('Loading...', 16, 24)
   loadResources(resourceContainers, spaceContainer)
     .then(onLoadedResources)
     .catch(error => {
