@@ -6,7 +6,6 @@ import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
-import Heading2 from '../components/Heading2/Heading2'
 import ImageChooser from '../components/ImageChooser/ImageChooser'
 
 import { font, colours } from '../styleAbstractions'
@@ -98,9 +97,6 @@ const StyledResource = styled.div`
   .component--box.plot {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    > .component--heading2 {
-      margin-bottom: 1rem;
-    }
   }
   @media screen and (min-width: 960px) {
     section.settings-info {
@@ -284,8 +280,7 @@ class ResourceSpace extends PureComponent {
             </div>
           </div>
           <Box className='plot'>
-            <Heading2>Atom to plot</Heading2>
-            <ImageChooser images={atomsToPlot} currentImage={atomToPlot} onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
+            <ImageChooser title='Atom to plot' images={atomsToPlot} currentImage={atomToPlot} onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
           </Box>
         </section>
       </StyledResource>

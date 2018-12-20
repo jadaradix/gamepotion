@@ -31,6 +31,7 @@ class StateProjectNew extends PureComponent {
     super(props)
     this.state = {
       currentProject: {
+        inProgress: false,
         project: {
           name: 'My game'
         }
@@ -45,6 +46,7 @@ class StateProjectNew extends PureComponent {
     this.subscriptions = [
       subscribe('PROJECTS_CREATE', (state) => {
         this.setState({
+          inProgress: false,
           currentProject: state.currentProject
         })
       })
@@ -68,17 +70,35 @@ class StateProjectNew extends PureComponent {
   }
 
   createProject() {
-    dispatch({
-      name: 'PROJECTS_CREATE',
-      data: {
-        name: this.state.currentProject.project.name
+    this.setState(
+      {
+        inProgress: true
+      },
+      () => {
+        dispatch({
+          name: 'PROJECTS_CREATE',
+          data: {
+            name: this.state.currentProject.project.name
+          },
+          pleaseThrow: true
+        })
+          .catch(() => {
+            this.setState({
+              inProgress: false
+            })
+          })
       }
-    })
+    )
   }
 
   canCreateProject () {
     const isNameValid = (this.state.currentProject.project.name.length > 0)
-    return (isNameValid)
+    const isInProgress = this.state.inProgress
+    return (isNameValid && !isInProgress)
+  }
+
+  getCreateButtonText() {
+    return (!this.state.inProgress ? 'Create' : 'Creating...')
   }
 
   render() {
@@ -96,8 +116,8 @@ class StateProjectNew extends PureComponent {
             <Box>
               <Heading1>Create a game</Heading1>
               <Input label='What would you like to call your game?' autoFocus value={this.state.currentProject.project.name} onChange={(v) => this.update('name', v)} onDone={this.createProject} />
-              <Button disabled={!this.canCreateProject()} onClick={this.createProject}>Create</Button>
-              <Button onClick={this.createProject} route='/dashboard' flavour='weak'>Cancel</Button>
+              <Button disabled={!this.canCreateProject()} onClick={this.createProject}>{this.getCreateButtonText()}</Button>
+              <Button route='/dashboard' flavour='weak'>Cancel</Button>
             </Box>
           </StyledState>
         </ResponsiveContainer>

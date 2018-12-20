@@ -19,7 +19,7 @@ const MainToolbar = ({ currentProject, onClick, disabled }) => {
   // console.warn('[MainToolbar] currentProject/disabled', currentProject, disabled)
   return (
     <Toolbar>
-      <ToolbarButton route='/dashboard' disabled={disabled} icon={icons.generic.home} hint='Dashboard' significant />
+      <ToolbarButton route='/dashboard' disabled={disabled} icon={icons.generic.home} hint='Games' significant />
       <ToolbarButton route='/projects/new' disabled={disabled} icon={icons.generic.project.new} hint='Create a game' />
       {currentProject !== null &&
         <ToolbarButton fixedWidth='180' route={`/projects/${currentProject.project.id}/resources/load`} hint={currentProject.project.name}>
