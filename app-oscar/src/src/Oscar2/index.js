@@ -31,7 +31,7 @@ class Oscar2 extends Component {
       this.gameSpaceFunctions.free()
     }
     const containerElement = document.getElementById(this.props.containerElementId)
-    while (containerElement.firstChild) {
+    while (containerElement !== null && containerElement.firstChild !== null) {
       containerElement.removeChild(containerElement.firstChild)
     }
   }
