@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+.c1 > img {
+  display: block;
+  max-width: calc(100% - 1rem);
+  max-height: calc(100% - 1rem);
+}
+
+.c1 > p {
+  width: 100%;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  color: #2e3131;
+  opacity: 0.5;
+  position: absolute;
+  top: 50%;
+  text-align: center;
+  -webkit-transform: translate(0,-50%);
+  -ms-transform: translate(0,-50%);
+  transform: translate(0,-50%);
+}
+
+.c1 > img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+
+.c0 > .component--heading2 {
+  margin-bottom: 1rem;
+}
+
+.c0 > div {
+  border: 1px solid #dadfe1;
+  border-radius: 4px;
+  overflow-y: scroll;
+}
+
+.c0 > div > div.inner {
+  height: 10rem;
+  padding: 1rem;
+}
+
+.c0 > div > div.inner > div {
+  position: relative;
+  float: left;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 4px;
+}
+
+.c0 > div > div.inner > div span {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 8rem;
+  text-align: center;
+  width: 8rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  font-size: 80%;
+  color: #2e3131;
+  cursor: default;
+}
+
+.c0 > div > div.inner > div + div {
+  margin-left: 1rem;
+}
+
+.c0 > div > div.inner > div.selected {
+  background-color: #dadfe1;
+}
+
+<div
+  className="c0"
+>
+  <div>
+    <div
+      className="inner"
+      style={
+        Object {
+          "width": "128px",
+        }
+      }
+    >
+      <div
+        className="selected"
+        onClick={[Function]}
+      >
+        <div
+          className="component--image c1"
+        />
+        <span>
+          Xyz
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -6,22 +6,11 @@ import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
-import Image from '../components/Image/Image'
+import ImageChooser from '../components/ImageChooser/ImageChooser'
 
 import { font, colours } from '../styleAbstractions'
 
 import Oscar2 from '../Oscar2'
-
-const getAtomDropperResources = (resources) => {
-  return resources
-    .filter(r => r.type === 'atom')
-    .map(r => {
-      return {
-        id: r.id,
-        name: r.name
-      }
-    })
-}
 
 const getImageDropperResources = (resources) => {
   return [
@@ -38,6 +27,24 @@ const getImageDropperResources = (resources) => {
       name: '<None>'
     }
   ]
+}
+
+const getAtomsToPlot = (resources) => {
+  return resources
+    .filter(r => r.type === 'atom')
+    .map(r => {
+      const foundImage = resources.find(i => i.id === r.imageId)
+      const url = (foundImage !== undefined ?
+        foundImage.getRemoteUrl()
+        :
+        null
+      )
+      return {
+        id: r.id,
+        name: r.name,
+        url
+      }
+    })
 }
 
 const StyledResource = styled.div`
@@ -66,7 +73,7 @@ const StyledResource = styled.div`
       }
     }
   }
-  section.game {
+  section.main {
     margin-top: 1rem;
     // background-color: yellow;
     .play-touches {
@@ -88,17 +95,8 @@ const StyledResource = styled.div`
     }
   }
   .component--box.plot {
-    max-width: 176px;
     margin-top: 1rem;
-    .image-container {
-      position: relative;
-      height: 128px;
-      border: 1px solid #dadfe1;
-      border-radius: 4px;
-    }
-    .image-container + .component--dropper {
-      margin-top: 1rem;
-    }
+    margin-bottom: 1rem;
   }
   @media screen and (min-width: 960px) {
     section.settings-info {
@@ -111,9 +109,15 @@ const StyledResource = styled.div`
         margin-bottom: 2rem;
       }
     }
-    section.game {
+    section.main {
       margin-top: 0;
       margin-left: calc(240px + 2rem);
+      .game {
+        // 1125 x 2436
+        width: 610px;
+        height: 280px;
+        overflow: scroll;
+      }
     }
   }
 `
@@ -215,7 +219,7 @@ class ResourceSpace extends PureComponent {
   render() {
     console.warn('[component-resource-Space] [render]')
 
-    const atomDropperResources = getAtomDropperResources(this.props.resources)
+    const atomsToPlot = getAtomsToPlot(this.props.resources)
     const imageDropperResources = getImageDropperResources(this.props.resources)
 
     const backgroundImage = (this.props.resource.backgroundImage === null ? 'none' : this.props.resource.backgroundImage)
@@ -223,21 +227,12 @@ class ResourceSpace extends PureComponent {
 
     let atomToPlot = this.props.localSettings['atom-to-plot']
     if (
-      (atomToPlot === 'none' || atomDropperResources.find(r => r.id === atomToPlot) === undefined)
-      && atomDropperResources.length > 0)
+      (atomToPlot === 'none' || atomsToPlot.find(r => r.id === atomToPlot) === undefined)
+      && atomsToPlot.length > 0)
     {
-      this.props.onUpdateLocalSetting('atom-to-plot', atomDropperResources[0].id)
+      this.props.onUpdateLocalSetting('atom-to-plot', atomsToPlot[0].id)
     }
-    const foundAtomResource = this.props.resources.find(r => r.id === atomToPlot)
-    const foundImageResource = (foundAtomResource !== undefined ? this.props.resources.find(r => r.id === foundAtomResource.imageId) : undefined)
-    const imageSrc = (foundImageResource !== undefined ?
-      foundImageResource.getRemoteUrl()
-      :
-      null
-    )
 
-    // console.warn('[Space] [render] foundAtomResource', foundAtomResource)
-    // console.warn('[Space] [render] foundImageResource', foundImageResource)
     console.warn('[Space] [render] this.props.localSettings', this.props.localSettings)
 
     return (
@@ -261,21 +256,23 @@ class ResourceSpace extends PureComponent {
             </div>
           </Box>
         </section>
-        <section className='game'>
-          <div id='oscar2-container' />
-          <Oscar2
-            containerElementId='oscar2-container'
-            project={this.props.project}
-            resources={this.props.resources}
-            spaceId={this.props.resource.id}
-            designMode={!this.state.isPlaying}
-            gridOn={this.props.localSettings['grid-on'] && !this.state.isPlaying}
-            gridWidth={this.props.localSettings['grid-width']}
-            gridHeight={this.props.localSettings['grid-height']}
-            onTouch={this.plotAtom}
-            onTouchSecondary={this.unplotAtoms}
-            onTouchMove={this.updateTouchCoords}
-          />
+        <section className='main'>
+          <div className='game'>
+            <div id='oscar2-container' />
+            <Oscar2
+              containerElementId='oscar2-container'
+              project={this.props.project}
+              resources={this.props.resources}
+              spaceId={this.props.resource.id}
+              designMode={!this.state.isPlaying}
+              gridOn={this.props.localSettings['grid-on'] && !this.state.isPlaying}
+              gridWidth={this.props.localSettings['grid-width']}
+              gridHeight={this.props.localSettings['grid-height']}
+              onTouch={this.plotAtom}
+              onTouchSecondary={this.unplotAtoms}
+              onTouchMove={this.updateTouchCoords}
+            />          
+          </div>
           <div className='play-touches'>
             <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>
             <div className='touches'>
@@ -283,10 +280,7 @@ class ResourceSpace extends PureComponent {
             </div>
           </div>
           <Box className='plot'>
-            <div className='image-container'>
-              <Image src={imageSrc} />
-            </div>
-            <Dropper options={atomDropperResources} value={atomToPlot} label='Atom to plot' onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
+            <ImageChooser title='Atom to plot' images={atomsToPlot} currentImage={atomToPlot} onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
           </Box>
         </section>
       </StyledResource>

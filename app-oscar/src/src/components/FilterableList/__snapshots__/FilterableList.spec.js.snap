@@ -203,7 +203,7 @@ input.c1::-moz-placeholder {
   >
     <input
       disabled={false}
-      id="component-Input-e394c125-ba91-4ce6-b05e-7abc99bcd4b0"
+      id="component-Input-id"
       onChange={[Function]}
       onKeyDown={[Function]}
       placeholder="Filter..."
