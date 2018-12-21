@@ -59,7 +59,7 @@ const ImageChooser = ({ title, images, currentImage, onChoose }) => {
         <div className='inner' style={{width: `${(images.length * 144) - 16}px`}}>
           {images.map(i => {
             return (
-              <div className={currentImage === i.id ? 'selected' : ''} onClick={() => onChoose(i.id)}>
+              <div key={i.id} className={currentImage === i.id ? 'selected' : ''} onClick={() => onChoose(i.id)}>
                 <Image src={i.url} alt={i.name} />
                 <span>{i.name}</span>
               </div>

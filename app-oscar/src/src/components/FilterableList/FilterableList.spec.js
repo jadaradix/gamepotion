@@ -4,6 +4,8 @@ import 'jest-styled-components'
 import FilterableList from './FilterableList'
 import ListItem from '../ListItem/ListItem'
 
+jest.mock('uuid', () => jest.fn().mockReturnValue('id'))
+
 it('renders', () => {
   const tree = renderer
     .create(
