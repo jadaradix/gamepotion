@@ -49,7 +49,7 @@ class GridModal extends PureComponent {
     return (
       <StyledModal>
         <Modal onClose={this.props.onBad}>
-          <Switch checked={this.state.on} onChange={(v) => this.props.onChangeProp('on', v)}>Grid</Switch>
+          <Switch checked={this.state.on} onChange={(v) => this.onChangeProp('on', v)}>Grid</Switch>
           <div className='grid-properties'>
             <Input label='Width' value={this.state.width} disabled={!this.state.on} type='number' min='4' max='256' onChange={(v) => this.onChangeProp('width', parseInt(v, 10))} />
             <Input label='Height' value={this.state.height} disabled={!this.state.on} type='number' min='4' max='256' onChange={(v) => this.onChangeProp('height', parseInt(v, 10))} />

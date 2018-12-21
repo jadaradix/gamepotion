@@ -50,22 +50,7 @@ const getAtomsToPlot = (resources) => {
 }
 
 const StyledResource = styled.div`
-  section.settings-info {
-    .component--box.settings {
-      margin-bottom: 1rem;
-      .coords {
-        display: grid;
-        grid-template-columns: 2fr 2fr;
-        grid-gap: 1rem;
-        margin-bottom: 2rem;
-      }
-      .component--dropper:not(:last-child) {
-        margin-bottom: 1rem;
-      }
-    }
-  }
   section.main {
-    margin-top: 1rem;
     // background-color: yellow;
     .play-touches-grid {
       position: relative;
@@ -99,28 +84,43 @@ const StyledResource = styled.div`
     .game {
       background-color: #dadfe1;
     }
-    .component--box.plot {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
+  }
+  section.settings-info {
+    .component--box.settings {
+      .coords {
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+        grid-gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .component--dropper:not(:last-child) {
+        margin-bottom: 1rem;
+      }
     }
   }
+  section.atom-to-plot {
+    margin-top: 1rem;
+  }
   @media screen and (min-width: 960px) {
-    section.settings-info {
+    section.main {
       float: left;
+      width: 610px;
+      .game {
+        // 1125 x 2436
+        height: 280px;
+        overflow: scroll;
+      }
+    }
+    section.settings-info {
+      margin-top: 0;
       width: 240px;
+      margin-left: calc(610px + 2rem);
       .component--box.settings {
         margin-bottom: 2rem;
       }
     }
-    section.main {
-      margin-top: 0;
-      margin-left: calc(240px + 2rem);
-      .game {
-        // 1125 x 2436
-        width: 610px;
-        height: 280px;
-        overflow: scroll;
-      }
+    section.atom-to-plot {
+      width: 610px;
     }
   }
 `
@@ -275,18 +275,6 @@ class ResourceSpace extends PureComponent {
           onGood={this.gridModalGood}
           onBad={this.gridModalBad}
         />}
-        <section className='settings-info'>
-          <Box className='settings'>
-            <div className='coords'>
-              <Input label='Width' type='number' value={this.props.resource.width} onChange={(v) => this.onChangeMasterProp('width', v)} min='0' max='4096' />
-              <Input label='Height' type='number' value={this.props.resource.height} onChange={(v) => this.onChangeMasterProp('height', v)} min='0' max='4096' />
-              <Input label='Cam Width' type='number' value={this.props.resource.camera.width} onChange={(v) => this.onChangeCameraProp('width', v)} min='0' max='4096' />
-              <Input label='Cam Height' type='number' value={this.props.resource.camera.height} onChange={(v) => this.onChangeCameraProp('height', v)} min='0' max='4096' />
-            </div>
-            <Dropper options={imageDropperResources} value={backgroundImage} onChoose={this.onChooseBackgroundImage} label='Background image' />
-            <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
-          </Box>
-        </section>
         <section className='main'>
           <div className='game'>
             <div id='oscar2-container' />
@@ -313,7 +301,21 @@ class ResourceSpace extends PureComponent {
               <span ref={(r) => { this.thisRefs.touchCoordsX = r }}>0</span>&times;<span ref={(r) => { this.thisRefs.touchCoordsY = r }}>0</span>
             </div>
           </div>
-          <Box className='plot'>
+        </section>
+        <section className='settings-info'>
+          <Box className='settings'>
+            <div className='coords'>
+              <Input label='Width' type='number' value={this.props.resource.width} onChange={(v) => this.onChangeMasterProp('width', v)} min='0' max='4096' />
+              <Input label='Height' type='number' value={this.props.resource.height} onChange={(v) => this.onChangeMasterProp('height', v)} min='0' max='4096' />
+              <Input label='Cam Width' type='number' value={this.props.resource.camera.width} onChange={(v) => this.onChangeCameraProp('width', v)} min='0' max='4096' />
+              <Input label='Cam Height' type='number' value={this.props.resource.camera.height} onChange={(v) => this.onChangeCameraProp('height', v)} min='0' max='4096' />
+            </div>
+            <Dropper options={imageDropperResources} value={backgroundImage} onChoose={this.onChooseBackgroundImage} label='Background image' />
+            <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
+          </Box>
+        </section>
+        <section className='atom-to-plot'>
+          <Box>
             <ImageChooser title='Atom to plot' images={atomsToPlot} currentImage={atomToPlot} onChoose={(v) => this.props.onUpdateLocalSetting({'atom-to-plot': v})} />
           </Box>
         </section>
