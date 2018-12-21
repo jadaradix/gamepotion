@@ -234,7 +234,7 @@ class ResourceAtom extends Component {
 
   onChooseEvent(id) {
     id = parseInt(id, 10)
-    this.props.onUpdateLocalSetting(`atom-event-current-index-${this.props.resource.id}`, id)
+    this.props.onUpdateLocalSetting({[`atom-event-current-index-${this.props.resource.id}`]: id})
     this.setState({
       currentEventIndex: id
     })

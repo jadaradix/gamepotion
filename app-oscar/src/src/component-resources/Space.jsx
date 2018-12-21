@@ -7,6 +7,8 @@ import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 import ImageChooser from '../components/ImageChooser/ImageChooser'
+import Button from '../components/Button/Button'
+import GridModal from '../modals/Grid'
 
 import { font, colours } from '../styleAbstractions'
 
@@ -61,31 +63,32 @@ const StyledResource = styled.div`
         margin-bottom: 1rem;
       }
     }
-    .component--box.info {
-      margin-bottom: 1rem;
-      .component--switch {
-        margin-bottom: 1rem;
-      }
-      .grid-properties {
-        display: grid;
-        grid-template-columns: 2fr 2fr;
-        grid-gap: 1rem;
-      }
-    }
   }
   section.main {
     margin-top: 1rem;
     // background-color: yellow;
-    .play-touches {
+    .play-touches-grid {
       position: relative;
+      height: 2rem;
       margin-top: 1rem;
       margin-bottom: 2rem;
       // background-color: blue;
+      .component--switch {
+        float: left;
+      }
+      .grid-settings {
+        margin-left: 1rem;
+        float: left;
+        .component--button {
+          font-size: 80%;
+          height: 2rem;
+          line-height: 2rem;
+          padding: 0 0.4rem 0 0.4rem;
+        }
+      }
       .touches {
-        position: absolute;
-        top: 0;
-        left: 112px;
-        height: 2rem;
+        margin-left: 1rem;
+        float: left;
         line-height: 2rem;
         // background-color: red;
         ${font}
@@ -93,19 +96,19 @@ const StyledResource = styled.div`
         color: #6c7a89;
       }
     }
-  }
-  .component--box.plot {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    .game {
+      background-color: #dadfe1;
+    }
+    .component--box.plot {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
   }
   @media screen and (min-width: 960px) {
     section.settings-info {
       float: left;
       width: 240px;
       .component--box.settings {
-        margin-bottom: 2rem;
-      }
-      .component--box.info {
         margin-bottom: 2rem;
       }
     }
@@ -126,7 +129,8 @@ class ResourceSpace extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      isPlaying: false
+      isPlaying: false,
+      showingGridModal: false
     }
     this.thisRefs = {
       touchCoordsX: null,
@@ -134,10 +138,13 @@ class ResourceSpace extends PureComponent {
     }
     this.onChooseBackgroundImage = this.onChooseBackgroundImage.bind(this)
     this.onChooseForegroundImage = this.onChooseForegroundImage.bind(this)
+    this.updatePlaying = this.updatePlaying.bind(this)
+    this.updateTouchCoords = this.updateTouchCoords.bind(this)
+    this.showGridModal = this.showGridModal.bind(this)
+    this.gridModalGood = this.gridModalGood.bind(this)
+    this.gridModalBad = this.gridModalBad.bind(this)
     this.plotAtom = this.plotAtom.bind(this)
     this.unplotAtoms = this.unplotAtoms.bind(this)
-    this.updateTouchCoords = this.updateTouchCoords.bind(this)
-    this.updatePlaying = this.updatePlaying.bind(this)
   }
 
   onChangeMasterProp(prop, v) {
@@ -216,6 +223,29 @@ class ResourceSpace extends PureComponent {
     })
   }
 
+  showGridModal() {
+    this.setState({
+      showingGridModal: true
+    })
+  }
+
+  gridModalGood(state) {
+    this.props.onUpdateLocalSetting({
+      'grid-on': state.on,
+      'grid-width': state.width,
+      'grid-height': state.height
+    })
+    this.setState({
+      showingGridModal: false
+    })
+  }
+
+  gridModalBad() {
+    this.setState({
+      showingGridModal: false
+    })
+  }
+
   render() {
     console.warn('[component-resource-Space] [render]')
 
@@ -230,13 +260,21 @@ class ResourceSpace extends PureComponent {
       (atomToPlot === 'none' || atomsToPlot.find(r => r.id === atomToPlot) === undefined)
       && atomsToPlot.length > 0)
     {
-      this.props.onUpdateLocalSetting('atom-to-plot', atomsToPlot[0].id)
+      this.props.onUpdateLocalSetting({'atom-to-plot': atomsToPlot[0].id})
     }
 
     console.warn('[Space] [render] this.props.localSettings', this.props.localSettings)
 
     return (
       <StyledResource>
+        {this.state.showingGridModal &&
+        <GridModal
+          on={this.props.localSettings['grid-on']}
+          width={this.props.localSettings['grid-width']}
+          height={this.props.localSettings['grid-height']}
+          onGood={this.gridModalGood}
+          onBad={this.gridModalBad}
+        />}
         <section className='settings-info'>
           <Box className='settings'>
             <div className='coords'>
@@ -247,13 +285,6 @@ class ResourceSpace extends PureComponent {
             </div>
             <Dropper options={imageDropperResources} value={backgroundImage} onChoose={this.onChooseBackgroundImage} label='Background image' />
             <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
-          </Box>
-          <Box className='info'>
-            <Switch checked={this.props.localSettings['grid-on']} onChange={(v) => this.props.onUpdateLocalSetting('grid-on', v)}>Grid</Switch>
-            <div className='grid-properties'>
-              <Input label='Grid Width' value={this.props.localSettings['grid-width']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-width', parseInt(v, 10))} />
-              <Input label='Grid Height' value={this.props.localSettings['grid-height']} disabled={!this.props.localSettings['grid-on']} type='number' min='4' max='256' onChange={(v) => this.props.onUpdateLocalSetting('grid-height', parseInt(v, 10))} />
-            </div>
           </Box>
         </section>
         <section className='main'>
@@ -273,14 +304,17 @@ class ResourceSpace extends PureComponent {
               onTouchMove={this.updateTouchCoords}
             />          
           </div>
-          <div className='play-touches'>
+          <div className='play-touches-grid'>
             <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>
+            <div className='grid-settings'>
+              <Button onClick={this.showGridModal}>Grid settings</Button>
+            </div>
             <div className='touches'>
               <span ref={(r) => { this.thisRefs.touchCoordsX = r }}>0</span>&times;<span ref={(r) => { this.thisRefs.touchCoordsY = r }}>0</span>
             </div>
           </div>
           <Box className='plot'>
-            <ImageChooser title='Atom to plot' images={atomsToPlot} currentImage={atomToPlot} onChoose={(v) => this.props.onUpdateLocalSetting('atom-to-plot', v)} />
+            <ImageChooser title='Atom to plot' images={atomsToPlot} currentImage={atomToPlot} onChoose={(v) => this.props.onUpdateLocalSetting({'atom-to-plot': v})} />
           </Box>
         </section>
       </StyledResource>
@@ -293,7 +327,7 @@ ResourceSpace.propTypes = {
   resource: PropTypes.object.isRequired,
   localSettings: PropTypes.object.isRequired,
   onUpdate: PropTypes.func,
-  onUpdateLocalSetting: PropTypes.func.isRequired,
+  onUpdateLocalSetting: PropTypes.func.isRequired
 }
 
 ResourceSpace.defaultProps = {

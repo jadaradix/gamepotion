@@ -189,13 +189,12 @@ class StateProjectProject extends Component {
     })
   }
 
-  onUpdateLocalSetting(name, value) {
-    // console.log('[state-Project] [onUpdateLocalSetting] name/value', name, value)
+  onUpdateLocalSetting(object) {
+    // console.log('[state-Project] [onUpdateLocalSetting] object', object)
     dispatch({
       name: 'LOCAL_SETTINGS_UPDATE',
       data: {
-        name,
-        value
+        object
       }
     })
   }
