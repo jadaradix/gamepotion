@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import icons from '../icons'
 
+import CollapsibleList from '../components/CollapsibleList/CollapsibleList'
 import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
 
@@ -42,7 +43,7 @@ const ResourceList = ({ resources, currentResource, onAdd, onLoad, onRename, onD
 
   return (
     <StyledResourceList className='component--resource-list'>
-      <List>
+      <CollapsibleList label='resources'>
         {resourceTypes.map(rt => {
           return (
             <Fragment key={`rt-${rt.type}`}>
@@ -53,7 +54,7 @@ const ResourceList = ({ resources, currentResource, onAdd, onLoad, onRename, onD
             </Fragment>
           )
         })}
-      </List>
+      </CollapsibleList>
     </StyledResourceList>
   )
 }

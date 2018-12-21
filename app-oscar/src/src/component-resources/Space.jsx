@@ -98,10 +98,10 @@ const StyledResource = styled.div`
       }
     }
   }
-  section.atom-to-plot {
+  section.atom-to-place {
     margin-top: 1rem;
   }
-  @media screen and (min-width: 960px) {
+  @media screen and (min-width: 1202px) {
     section.main {
       float: left;
       width: 610px;
@@ -119,8 +119,8 @@ const StyledResource = styled.div`
         margin-bottom: 2rem;
       }
     }
-    section.atom-to-plot {
-      width: 610px;
+    section.atom-to-place {
+      width: 882px;
     }
   }
 `
@@ -314,9 +314,9 @@ class ResourceSpace extends PureComponent {
             <Dropper options={imageDropperResources} value={foregroundImage} onChoose={this.onChooseForegroundImage} label='Foreground image' />
           </Box>
         </section>
-        <section className='atom-to-plot'>
+        <section className='atom-to-place'>
           <Box>
-            <ImageChooser title='Atom to plot' images={atomsToPlot} currentImage={atomToPlot} onChoose={(v) => this.props.onUpdateLocalSetting({'atom-to-plot': v})} />
+            <ImageChooser title='Atom to place' images={atomsToPlot} currentImage={atomToPlot} onChoose={(v) => this.props.onUpdateLocalSetting({'atom-to-plot': v})} />
           </Box>
         </section>
       </StyledResource>
