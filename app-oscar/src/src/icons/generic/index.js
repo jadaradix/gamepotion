@@ -2,6 +2,8 @@ import symbol from './files/symbol.png'
 import home from './files/home.svg'
 import folder from './files/folder.svg'
 import account from './files/account.svg'
+import team from './files/team.svg'
+import teamMember from './files/team-member.svg'
 import store from './files/store.svg'
 import preferences from './files/preferences.svg'
 import loading from './files/loading.svg'
@@ -30,6 +32,8 @@ export default {
   home,
   folder,
   account,
+  team,
+  teamMember,
   store,
   preferences,
   loading,

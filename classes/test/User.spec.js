@@ -16,6 +16,7 @@ test('can be created from an API call', () => {
   expect(user.id).toHaveLength(36)
   expect(user.accessToken).toHaveLength(36)
   expect(user.name).toBe('James')
+  expect(user.isTeamAdmin).toBe(true)
   expect(user.userlandId).toBe('james@gamemaker.club')
 })
 

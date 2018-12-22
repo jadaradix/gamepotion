@@ -7,6 +7,7 @@ import getUser from './actions/user/get'
 import logIn from './actions/user/logIn'
 import logOut from './actions/user/logOut'
 import updateUser from './actions/user/update'
+import updateTeam from './actions/team/update'
 
 import createProject from './actions/projects/create'
 import getProjects from './actions/projects/get'
@@ -40,6 +41,7 @@ const actions = new Map([
   ['USER_LOG_IN', logIn],
   ['USER_LOG_OUT', logOut],
   ['USER_UPDATE', updateUser],
+  ['TEAM_UPDATE', updateTeam],
   ['PROJECTS_CREATE', createProject],
   ['PROJECTS_GET', getProjects],
   ['PROJECTS_UPDATE', updateProject],

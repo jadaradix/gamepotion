@@ -40,6 +40,7 @@ const MainToolbar = ({ currentProject, onClick, disabled }) => {
       <ToolbarGap />
       <ToolbarButton route={'/store'} disabled={disabled} icon={icons.generic.store} hint='Store' />
       <ToolbarButton route={'/account'} disabled={disabled} icon={icons.generic.account} hint='Account' />
+      <ToolbarButton route={'/team'} disabled={disabled} icon={icons.generic.team} hint='Team' />
     </Toolbar>
   )
 }
