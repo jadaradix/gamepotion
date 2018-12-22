@@ -15,7 +15,7 @@ class Rotate extends Action {
     this.name = 'Rotate'
     this.description = 'Rotates an instance.'
     this.defaultRunArguments = new Map([
-      ['Degrees (-360 -> 360)', {
+      ['Angle (-360 -> 360)', {
         type: 'generic',
         value: '0'
       }],

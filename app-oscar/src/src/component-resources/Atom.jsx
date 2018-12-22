@@ -14,6 +14,7 @@ import ListItem from '../components/ListItem/ListItem'
 import Image from '../components/Image/Image'
 import Heading2 from '../components/Heading2/Heading2'
 import Button from '../components/Button/Button'
+import Input from '../components/Input/Input'
 
 import ActionModal from '../modals/Action'
 import EventModal from '../modals/Event'
@@ -22,6 +23,9 @@ import ActionsList from '../component-instances/ActionsList'
 const StyledResource = styled.div`
   section.image-events {
     .component--box.image {
+      .component--heading2 {
+        margin-bottom: 1rem;
+      }
       .image-container {
         position: relative;
         height: 128px;
@@ -34,7 +38,6 @@ const StyledResource = styled.div`
     }
     .component--box.events {
       margin-top: 1rem;
-      margin-bottom: 2rem;
       padding: 1rem;
       .component--heading2 {
         margin-bottom: 1rem;
@@ -46,6 +49,10 @@ const StyledResource = styled.div`
         width: 100%;
       }
       // background-color: yellow;
+    }
+    .component--box.settings {
+      margin-top: 1rem;
+      margin-bottom: 2rem;
     }
   }
   section.actions {
@@ -69,6 +76,9 @@ const StyledResource = styled.div`
       float: left;
       width: 240px;
       .component--box.events {
+        margin-top: 2rem;
+      }
+      .component--box.settings {
         margin-top: 2rem;
       }
     }
@@ -333,6 +343,7 @@ class ResourceAtom extends Component {
         }
         <section className='image-events'>
           <Box className='image'>
+            <Heading2>Image</Heading2>
             <div className='image-container'>
               <Image src={imageSrc} />
             </div>
@@ -358,6 +369,9 @@ class ResourceAtom extends Component {
               })}
             </List>
             <Button onClick={this.onChooseAddEvent}>Add event</Button>
+          </Box>
+          <Box className='settings'>
+            <Input label='Angle (-360 -> 360)' value={this.props.resource.angle} type='number' min='-360' max='360' onChange={(v) => this.props.onUpdate({'angle': parseInt(v, 10)})} />
           </Box>
         </section>
         {currentEvent &&
