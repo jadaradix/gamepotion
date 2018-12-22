@@ -29,6 +29,9 @@ app-oscar/src/coverage
 app-store/src/build
 app-store/src/coverage
 
+app-play/src/build
+app-play/src/coverage
+
 api-core/files
 
 api-bin/files

@@ -14,18 +14,18 @@ export function storeHome(environment, accessToken) {
   return environments[environment]
 }
 
-export function siteHome(environment) {
+export function playProject(environment, projectId) {
   const environments = {
-    'development': 'http://localhost:3002',
-    'production': 'https://gamemaker.club'
+    'development': `http://localhost:3002/${projectId}`,
+    'production': `https://play.gamemaker.club/${projectId}`
   }
   return environments[environment]
 }
 
-export function playProject(environment, projectId) {
+export function siteHome(environment) {
   const environments = {
-    'development': `http://localhost:3003/${projectId}`,
-    'production': `https://play.gamemaker.club/${projectId}`
+    'development': 'http://localhost:3003',
+    'production': 'https://gamemaker.club'
   }
   return environments[environment]
 }

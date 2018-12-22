@@ -19,3 +19,7 @@ cd ..;
 cd app-store;
   . build.sh;
 cd ..;
+
+cd app-play;
+  . build.sh;
+cd ..;

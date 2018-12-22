@@ -10,6 +10,7 @@ const StyledFooter = styled.footer`
     margin: 0 auto 0 auto;
   }
   ul {
+    padding-left: 0;
     list-style-type: none;
     background-color: red;
     li {
@@ -44,14 +45,9 @@ const Footer = () => {
     <StyledFooter>
       <div>
         <ul>
-          <li><Link to='/page1'>Page 1</Link></li>
-          <li><Link to='/page2'>Page 2</Link></li>
-          <li><Link to='/page3'>Page 3</Link></li>
+          <li><Link to='/credits'>Credits</Link></li>
         </ul>
         <ul>
-          <li><Link to='/page4'>Page 4</Link></li>
-          <li><Link to='/page5'>Page 5</Link></li>
-          <li><Link to='/page6'>Page 6</Link></li>
         </ul>
       </div>
     </StyledFooter>
