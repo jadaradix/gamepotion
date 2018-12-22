@@ -23,3 +23,7 @@ cd ..;
 cd app-play;
   . build.sh;
 cd ..;
+
+cd site;
+  . build.sh;
+cd ..;
