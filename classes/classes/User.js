@@ -8,6 +8,7 @@ class User {
     this.teamId = json.teamId || null
     this.createdAt = json.createdAt || Math.floor(new Date() / 1000)
     this.name = json.name || null
+    this.isTeamAdmin = (typeof json.isTeamAdmin === 'boolean' ? json.isTeamAdmin : true)
     this.userlandId = json.userlandId || 'a@b.c'
     this.passwordHash = json.passwordHash || null
     this.modules = json.modules || []
@@ -30,6 +31,7 @@ class User {
       teamId: this.teamId,
       createdAt: this.createdAt,
       name: this.name,
+      isTeamAdmin: this.isTeamAdmin,
       userlandId: this.userlandId,
       modules: this.modules
     }
@@ -39,7 +41,8 @@ class User {
   toApiList () {
     const json = {
       id: this.id,
-      name: this.name
+      name: this.name,
+      isTeamAdmin: this.isTeamAdmin
     }
     return JSON.parse(JSON.stringify(json))
   }
@@ -51,6 +54,7 @@ class User {
       teamId: this.teamId,
       createdAt: this.createdAt,
       name: this.name,
+      isTeamAdmin: this.isTeamAdmin,
       userlandId: this.userlandId,
       passwordHash: this.passwordHash,
       modules: this.modules
@@ -97,6 +101,7 @@ class User {
     this.accessToken = json.accessToken
     this.teamId = json.teamId
     this.name = json.name
+    this.isTeamAdmin = json.isTeamAdmin
     this.userlandId = json.userlandId
     this.modules = json.modules
   }

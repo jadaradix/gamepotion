@@ -18,7 +18,7 @@ const StyledImageChooser = styled.div`
     overflow-y: scroll;
     > div.inner {
       height: 10rem;
-      padding: 1rem;
+      padding: 1rem 1rem 0 1rem;
       > div {
         position: relative;
         float: left;

@@ -13,6 +13,7 @@ import ProjectPlay from './states/Project/Play.js'
 import ProjectPreferences from './states/Project/Preferences.js'
 import Auth from './states/Auth.js'
 import Account from './states/Account.js'
+import Team from './states/Team.js'
 import Store from './states/Store.js'
 
 import './index.css'
@@ -34,6 +35,7 @@ const app = (
         <Route path='/auth' exact strict component={Auth} />
         <PrivateRoute path='/dashboard' exact strict WhichComponent={Dashboard} />
         <PrivateRoute path='/account' exact strict WhichComponent={Account} />
+        <PrivateRoute path='/team' exact strict WhichComponent={Team} />
         <PrivateRoute path='/store' exact strict WhichComponent={Store} />
         <PrivateRoute path='/projects/new' exact strict WhichComponent={ProjectNew} />
         <PrivateRoute path='/projects/:id/play' exact strict WhichComponent={ProjectPlay} />

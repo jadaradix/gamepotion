@@ -59,7 +59,7 @@ Resource.propTypes = {
   resource: PropTypes.object.isRequired,
   localSettings: PropTypes.object.isRequired,
   onUpdate: PropTypes.func,
-  onUpdateLocalSetting: PropTypes.func,
+  onUpdateLocalSetting: PropTypes.func
 }
 
 Resource.defaultProps = {

@@ -140,6 +140,7 @@ test('gets the teams users', (done) => {
     .then(response => {
       expect(response.status).toBe(200)
       expect(response.data).toHaveLength(1)
+      expect(Object.keys(response.data[0])).toHaveLength(3)
       expect(response.data[0].id).toBe(user.id)
       return done()
     })

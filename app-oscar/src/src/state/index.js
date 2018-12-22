@@ -7,6 +7,8 @@ import getUser from './actions/user/get'
 import logIn from './actions/user/logIn'
 import logOut from './actions/user/logOut'
 import updateUser from './actions/user/update'
+import updateTeam from './actions/team/update'
+import getTeamUsers from './actions/team/users/get'
 
 import createProject from './actions/projects/create'
 import getProjects from './actions/projects/get'
@@ -28,6 +30,7 @@ let state = {
   },
   user: null,
   team: null,
+  teamUsers: null,
   projects: null,
   currentProject: null,
   feeds: new Map(),
@@ -40,6 +43,8 @@ const actions = new Map([
   ['USER_LOG_IN', logIn],
   ['USER_LOG_OUT', logOut],
   ['USER_UPDATE', updateUser],
+  ['TEAM_UPDATE', updateTeam],
+  ['TEAM_USERS_GET', getTeamUsers],
   ['PROJECTS_CREATE', createProject],
   ['PROJECTS_GET', getProjects],
   ['PROJECTS_UPDATE', updateProject],
@@ -75,6 +80,19 @@ const AUTH_FAILED_MESSAGES = [
   'unknown e-mail address',
   'wrong password'
 ]
+
+async function asyncForEach (array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
+}
+
+export async function dispatchMany (array) {
+  console.warn('hi! using dispatchMany is a code smell and it is not good at error handling. please reconsider your life choices.')
+  await asyncForEach(array, async (ai) => {
+    state = await dispatch(ai)
+  })
+}
 
 export function dispatch ({ name, pleaseThrow = false, data = {} }) {
   const foundAction = actions.get(name)

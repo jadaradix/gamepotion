@@ -27,7 +27,7 @@ const MainToolbar = ({ currentProject, onClick, disabled }) => {
         </ToolbarButton>
       }
       {currentProject === null &&
-        <ToolbarButton fixedWidth='180' disabled hint='Loading...' />
+        <ToolbarButton fixedWidth='180' disabled />
       }
       <ToolbarGap />
       <ToolbarButton route={getProjectRoute('play', currentProject)} disabled={disabled || currentProject === null} icon={icons.generic.project.run} hint='Play game' />
@@ -40,6 +40,7 @@ const MainToolbar = ({ currentProject, onClick, disabled }) => {
       <ToolbarGap />
       <ToolbarButton route={'/store'} disabled={disabled} icon={icons.generic.store} hint='Store' />
       <ToolbarButton route={'/account'} disabled={disabled} icon={icons.generic.account} hint='Account' />
+      <ToolbarButton route={'/team'} disabled={disabled} icon={icons.generic.team} hint='Team' />
     </Toolbar>
   )
 }

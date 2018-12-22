@@ -7,10 +7,22 @@ const patch = debounce((projectId, payload) => {
 
 export default async function (state, payload) {
   patch(payload.id, payload)
-  const currentProject = state.currentProject
-  currentProject.project.fromApiPatch(payload)
-  return {
+  return Promise.resolve({
     ...state,
-    currentProject
-  }
+    projects: state.projects.map(p => {
+      if (p.project.id === payload.id) {
+        p.project.fromApiPatch(payload)
+      }
+      return p
+    }),
+    currentProject: (() => {
+      if (state.currentProject === null) {
+        return null
+      }
+      if (state.currentProject.project.id === payload.id) {
+        state.currentProject.project.fromApiPatch(payload)
+      }
+      return state.currentProject
+    })()
+  })
 }

@@ -5,10 +5,10 @@ import styled from 'styled-components'
 import { getState, dispatch, subscribe } from '../state'
 
 import Loading from '../components/Loading/Loading'
-import Button from '../components/Button/Button'
 import Box from '../components/Box/Box'
 import Heading1 from '../components/Heading1/Heading1'
 import Input from '../components/Input/Input'
+import Button from '../components/Button/Button'
 
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
@@ -80,11 +80,9 @@ class StateAccount extends Component {
         })
       })
     ]
-    if (this.state.user === null) {
-      dispatch({
-        name: 'USER_GET'
-      })
-    }
+    dispatch({
+      name: 'USER_GET'
+    })
   }
 
   componentWillUnmount () {
@@ -92,10 +90,9 @@ class StateAccount extends Component {
   }
 
   onUpdateProp(prop, value) {
-    return dispatch({
+    dispatch({
       name: 'USER_UPDATE',
       data: {
-        id: this.props.match.params.id,
         [prop]: value
       }
     })
