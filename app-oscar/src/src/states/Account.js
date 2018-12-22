@@ -80,11 +80,9 @@ class StateAccount extends Component {
         })
       })
     ]
-    if (this.state.user === null) {
-      dispatch({
-        name: 'USER_GET'
-      })
-    }
+    dispatch({
+      name: 'USER_GET'
+    })
   }
 
   componentWillUnmount () {

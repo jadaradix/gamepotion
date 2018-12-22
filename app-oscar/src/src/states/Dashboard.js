@@ -15,7 +15,7 @@ import Box from '../components/Box/Box'
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
 
-import { getState, dispatch, subscribe } from '../state'
+import { getState, dispatch, dispatchMany, subscribe } from '../state'
 
 const StyledState = styled.div`
   section.split-two {
@@ -51,15 +51,17 @@ class StateDashboard extends Component {
       feeds: getState().feeds,
       // feedItemToLoadId: null
     }
-    dispatch({
-      name: 'PROJECTS_GET'
-    })
-    dispatch({
-      name: 'FEEDS_GET',
-      data: {
-        id: 'news'
+    dispatchMany([
+      {
+        name: 'PROJECTS_GET'
+      },
+      {
+        name: 'FEEDS_GET',
+        data: {
+          id: 'news'
+        }
       }
-    })
+    ])
     this.actOnProject = this.actOnProject.bind(this)
   }
 

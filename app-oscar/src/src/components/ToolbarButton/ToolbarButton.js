@@ -99,7 +99,7 @@ ToolbarButton.propTypes = {
   route: PropTypes.string,
   onClick: PropTypes.func,
   icon: PropTypes.string,
-  hint: PropTypes.string.isRequired,
+  hint: PropTypes.string,
   significant: PropTypes.bool.isRequired,
   disabled: PropTypes.bool,
   fixedWidth: PropTypes.string

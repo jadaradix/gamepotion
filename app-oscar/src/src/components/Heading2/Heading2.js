@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { font, colours } from '../../styleAbstractions'
 
-const StyledHeading2 = styled.h1`
+const StyledHeading2 = styled.h2`
   ${font}
   font-size: 120%;
   font-weight: 800;
