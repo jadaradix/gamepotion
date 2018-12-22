@@ -105,11 +105,11 @@ class StateTeam extends Component {
         <ResponsiveContainer>
           <StyledState>
             <Box>
-              <section className='settings'>
+              <section>
                 <Heading1>Team</Heading1>
                 <Input label='Name' value={this.state.team.name} onChange={(v) => this.onUpdateProp('name', v)} />
               </section>
-              <section className='members'>
+              <section>
                 <Heading2>Members</Heading2>
                 <List>
                   {this.state.teamUsers.map(tu => {

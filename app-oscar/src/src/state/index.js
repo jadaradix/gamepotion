@@ -30,7 +30,7 @@ let state = {
   },
   user: null,
   team: null,
-  teamMembers: null,
+  teamUsers: null,
   projects: null,
   currentProject: null,
   feeds: new Map(),
