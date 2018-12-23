@@ -81,17 +81,14 @@ const AUTH_FAILED_MESSAGES = [
   'wrong password'
 ]
 
-async function asyncForEach (array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
-  }
-}
-
 export async function dispatchMany (array) {
-  console.warn('hi! using dispatchMany is a code smell and it is not good at error handling. please reconsider your life choices.')
-  await asyncForEach(array, async (ai) => {
-    state = await dispatch(ai)
-  })
+  for (let index = 0; index < array.length; index++) {
+    try {
+      state = await dispatch(array[index])
+    } catch (error) {
+      break
+    }
+  }
 }
 
 export function dispatch ({ name, pleaseThrow = false, data = {} }) {
