@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
@@ -28,7 +28,7 @@ const StyledImageChooser = styled.div`
     border-radius: 4px;
     overflow-y: scroll;
     > div.inner {
-      height: 10rem;
+      height: 11rem;
       padding: 1rem 1rem 0 1rem;
       > div {
         position: relative;
@@ -45,7 +45,8 @@ const StyledImageChooser = styled.div`
           text-align: center;
           width: 8rem;
           height: 2rem;
-          line-height: 2rem;
+          padding-top: 0.25rem;
+          line-height: 0.75rem;
           ${font}
           font-size: 80%;
           color: ${colours.fore};
@@ -62,11 +63,11 @@ const StyledImageChooser = styled.div`
   }
 `
 
-class ImageChooser extends PureComponent {
+class ImageChooser extends Component {
   constructor(props) {
     super(props)
-    let currentImage = get(`component--image-chooser-current-image-${props.id}`)
-    if (currentImage === null && props.images.length > 0) {
+    let currentImage = this.props.currentImage || get(`component--image-chooser-current-image-${props.id}`)
+    if (!currentImage && props.images.length > 0) {
       currentImage = props.images[0].id
       set(`component--image-chooser-current-image-${props.id}`, currentImage)
     }
@@ -76,6 +77,14 @@ class ImageChooser extends PureComponent {
     }
     this.props.onChoose(currentImage)
     this.onUpdateFilter = this.onUpdateFilter.bind(this)
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.currentImage !== this.props.currentImage) {
+      this.setState({
+        currentImage: nextProps.currentImage
+      })
+    }
   }
 
   onChoose(currentImage) {
@@ -94,7 +103,6 @@ class ImageChooser extends PureComponent {
   }
 
   render() {
-    
     const { filter } = this.state
     const images = (() => {
       if (filter === '') {
@@ -108,7 +116,7 @@ class ImageChooser extends PureComponent {
     })()
 
     return (
-      <StyledImageChooser>
+      <StyledImageChooser className='component--image-chooser'>
         {this.props.title.length > 0 && <Heading2>{this.props.title}</Heading2>}
         <Input value={filter} onChange={this.onUpdateFilter} placeholder='Filter...' />
         <div className='outer'>
@@ -132,6 +140,7 @@ ImageChooser.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string,
   images: PropTypes.array.isRequired,
+  currentImage: PropTypes.string,
   onChoose: PropTypes.func
 }
 

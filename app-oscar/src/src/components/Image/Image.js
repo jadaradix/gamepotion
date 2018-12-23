@@ -21,6 +21,7 @@ const StyledImage = styled.div`
     top: 50%;
     text-align: center;
     transform: translate(0, -50%);
+    cursor: default;
     // background-color: orange;
   }
   > img {
@@ -100,10 +101,11 @@ class Image extends Component {
 
   render() {
     console.warn('[component-Image] this.props.src', this.props.src)
+    const src = (this.props.dontCache ? src : this.ifOnLoadFiresNoCacheSrc)
     return (
       <StyledImage className='component--image'>
         {(this.state.hasErrored || this.props.src === null) && <p>No image.</p>}
-        {this.state.hasLoaded && <img src={this.ifOnLoadFiresNoCacheSrc} alt={this.props.string} />}
+        {this.state.hasLoaded && <img src={src} alt={this.props.string} />}
       </StyledImage>
     )
   }
@@ -112,12 +114,14 @@ class Image extends Component {
 Image.propTypes = {
   src: PropTypes.string,
   alt: PropTypes.string,
-  onLoad: PropTypes.func
+  onLoad: PropTypes.func,
+  dontCache: PropTypes.bool
 }
 
 Image.defaultProps = {
   alt: '',
-  onLoad: () => {}
+  onLoad: () => {},
+  dontCache: false
 }
 
 export default Image
