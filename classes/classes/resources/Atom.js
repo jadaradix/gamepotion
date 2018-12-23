@@ -13,6 +13,7 @@ class ResourceAtom extends Resource {
     ]
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : null
     this.angle = (typeof json.angle === 'number') ? json.angle : 0
+    this.depth = (typeof json.depth === 'number') ? json.depth : 0
   }
 
   getDefaultName() {
@@ -25,7 +26,8 @@ class ResourceAtom extends Resource {
       ...r,
       events: this.events,
       imageId: this.imageId,
-      angle: this.angle
+      angle: this.angle,
+      depth: this.depth
     }
   }
 
@@ -35,7 +37,8 @@ class ResourceAtom extends Resource {
       ...r,
       events: this.events,
       imageId: this.imageId,
-      angle: this.angle
+      angle: this.angle,
+      depth: this.depth
     }
   }
 
@@ -44,6 +47,7 @@ class ResourceAtom extends Resource {
     this.events = (Array.isArray(json.events)) ? json.events : this.events
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : this.imageId
     this.angle = (typeof json.angle === 'number') ? json.angle : this.angle
+    this.depth = (typeof json.depth === 'number') ? json.depth : this.depth
   }
 
   fromApiPatch(json) {
@@ -51,6 +55,7 @@ class ResourceAtom extends Resource {
     this.events = (Array.isArray(json.events)) ? json.events : this.events
     this.imageId = (typeof json.imageId === 'string' || json.imageId === null) ? json.imageId : this.imageId
     this.angle = (typeof json.angle === 'number') ? json.angle : this.angle
+    this.depth = (typeof json.depth === 'number') ? json.depth : this.depth
   }
 
   clientFromApiGet(json) {
@@ -58,6 +63,7 @@ class ResourceAtom extends Resource {
     this.events = json.events
     this.imageId = json.imageId
     this.angle = json.angle
+    this.depth = json.depth
   }
 }
 

@@ -51,6 +51,9 @@ const StyledResource = styled.div`
       // background-color: yellow;
     }
     .component--box.settings {
+      display: grid;
+      grid-template-columns: 2fr 2fr;
+      grid-gap: 1rem;
       margin-top: 1rem;
       margin-bottom: 2rem;
     }
@@ -371,7 +374,8 @@ class ResourceAtom extends Component {
             <Button onClick={this.onChooseAddEvent}>Add event</Button>
           </Box>
           <Box className='settings'>
-            <Input label='Angle (-360 -> 360)' value={this.props.resource.angle} type='number' min='-360' max='360' onChange={(v) => this.props.onUpdate({'angle': parseInt(v, 10)})} />
+          <Input label='Angle (&plusmn;360)' value={this.props.resource.angle} type='number' min='-360' max='360' onChange={(v) => this.props.onUpdate({'angle': parseInt(v, 10)})} />
+          <Input label='Depth (0-5)' value={this.props.resource.depth} type='number' min='0' max='5' onChange={(v) => this.props.onUpdate({'depth': parseInt(v, 10)})} />
           </Box>
         </section>
         {currentEvent &&
