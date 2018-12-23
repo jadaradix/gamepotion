@@ -74,11 +74,13 @@ class ImageChooser extends PureComponent {
       currentImage,
       filter: get(`component--image-chooser-filter-${props.id}`) || ''
     }
+    this.props.onChoose(currentImage)
     this.onUpdateFilter = this.onUpdateFilter.bind(this)
   }
 
   onChoose(currentImage) {
     set(`component--image-chooser-current-image-${this.props.id}`, currentImage)
+    this.props.onChoose(currentImage)
     this.setState({
       currentImage
     })
@@ -101,8 +103,6 @@ class ImageChooser extends PureComponent {
       return this.props.images.filter(i => {
         return (
           i.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0
-          ||
-          i.id.toLowerCase().indexOf(filter.toLowerCase()) >= 0
         )
       })
     })()
