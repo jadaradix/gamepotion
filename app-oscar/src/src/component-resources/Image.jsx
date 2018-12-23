@@ -51,6 +51,7 @@ const StyledResource = styled.div`
     grid-gap: 1rem;
   }
   .file {
+    padding-top: 1rem;
     .component--dropper + p {
       margin-top: 1rem;
     }
@@ -59,11 +60,11 @@ const StyledResource = styled.div`
       font-size: 80%;
       color: #bdc3c7;
     }
-    .component--banner + .component--image-chooser {
+    .component--image-chooser + p {
       margin-top: 1rem;
     }
-    .component--image-chooser + p {
-      margin-top: 0.5rem;
+    p + .component--banner {
+      margin-top: 1rem;
     }
   }
 `
@@ -146,6 +147,15 @@ class ResourceImage extends PureComponent {
         <section className='resource'>
           <Image src={remoteUrl} onLoad={this.onImageLoad} dontCache={true} />
         </section>
+        <section>
+          <Box className='file'>
+            <ImageChooser title='Choose an included file' id='image-fixed' images={fixedOptions} currentImage={fixedValue} onChoose={this.onChooseFixed} />
+            <p>Choosing an included file won&rsquo;t erase a file you have uploaded.</p>
+            {purchasedResourcePackModule === false &&
+              <BuyModuleBanner moduleId='resource-pack' moduleName='Resource Pack' verb='get more included files' />
+            }
+          </Box>
+        </section>
         <section className='split-two'>
           <Box>
             <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['image/png', 'image/gif', 'image/bmp']} onDone={this.onUploadDone} />
@@ -158,15 +168,6 @@ class ResourceImage extends PureComponent {
               <Input label='Speed' value={this.props.resource.frameSpeed} type='number' min='0' max='3' onChange={(v) => this.onUpdateProp('frameSpeed', v)} />
               <Input label='Count' value={this.props.resource.frameCount} type='number' disabled />
             </div>
-          </Box>
-        </section>
-        <section>
-          <Box className='file'>
-            {purchasedResourcePackModule === false &&
-              <BuyModuleBanner moduleId='resource-pack' moduleName='Resource Pack' verb='get more included files' />
-            }
-            <ImageChooser title='Choose an included file' id='image-fixed' images={fixedOptions} currentImage={fixedValue} onChoose={this.onChooseFixed} />
-            <p>Choosing an included file won&rsquo;t erase a file you have uploaded.</p>
           </Box>
         </section>
       </StyledResource>
