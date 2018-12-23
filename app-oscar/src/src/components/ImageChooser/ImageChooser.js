@@ -1,10 +1,11 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Heading2 from '../Heading2/Heading2'
 import Image from '../Image/Image'
 
+import { get, set } from '../../localStorage'
 import { font, colours } from '../../styleAbstractions'
 
 const StyledImageChooser = styled.div`
@@ -51,30 +52,51 @@ const StyledImageChooser = styled.div`
   }
 `
 
-const ImageChooser = ({ title, images, currentImage, onChoose }) => {
-  return (
-    <StyledImageChooser>
-      {title.length > 0 && <Heading2>{title}</Heading2>}
-      <div>
-        <div className='inner' style={{width: `${(images.length * 144) - 16}px`}}>
-          {images.map(i => {
-            return (
-              <div key={i.id} className={currentImage === i.id ? 'selected' : ''} onClick={() => onChoose(i.id)}>
-                <Image src={i.url} alt={i.name} />
-                <span>{i.name}</span>
-              </div>
-            )
-          })}
+class ImageChooser extends PureComponent {
+  constructor(props) {
+    super(props)
+    let currentImage = get(`component--image-chooser-current-image-${props.id}`)
+    if (currentImage === null && props.images.length > 0) {
+      currentImage = props.images[0].id
+      set(`component--image-chooser-current-image-${props.id}`, currentImage)
+    }
+    this.state = {
+      currentImage
+    }
+  }
+
+  onChoose(currentImage) {
+    set(`component--image-chooser-current-image-${this.props.id}`, currentImage)
+    this.setState({
+      currentImage
+    })
+  }
+
+  render() {
+    return (
+      <StyledImageChooser>
+        {this.props.title.length > 0 && <Heading2>{this.props.title}</Heading2>}
+        <div>
+          <div className='inner' style={{width: `${(this.props.images.length * 144) - 16}px`}}>
+            {this.props.images.map(i => {
+              return (
+                <div key={i.id} className={this.state.currentImage === i.id ? 'selected' : ''} onClick={() => this.onChoose(i.id)}>
+                  <Image src={i.url} alt={i.name} />
+                  <span>{i.name}</span>
+                </div>
+              )
+            })}
+          </div>
         </div>
-      </div>
-    </StyledImageChooser>
-  )
+      </StyledImageChooser>
+    )
+  }
 }
 
 ImageChooser.propTypes = {
+  id: PropTypes.string.isRequired,
   title: PropTypes.string,
   images: PropTypes.array.isRequired,
-  currentImage: PropTypes.string,
   onChoose: PropTypes.func
 }
 

@@ -131,7 +131,8 @@ class ResourceSpace extends PureComponent {
     super(props)
     this.state = {
       isPlaying: false,
-      showingGridModal: false
+      showingGridModal: false,
+      atomToPlot: null
     }
     this.thisRefs = {
       touchCoordsX: null,
@@ -182,7 +183,7 @@ class ResourceSpace extends PureComponent {
   }
 
   plotAtom(coords, angle) {
-    const atomId = this.props.localSettings['atom-to-plot']
+    const atomId = this.state.atomToPlot
     if (typeof angle !== 'number') {
       const atom = this.props.resources.find(r => r.id === atomId)
       angle = atom.angle
@@ -258,14 +259,6 @@ class ResourceSpace extends PureComponent {
     const backgroundImage = (this.props.resource.backgroundImage === null ? 'none' : this.props.resource.backgroundImage)
     const foregroundImage = (this.props.resource.foregroundImage === null ? 'none' : this.props.resource.foregroundImage)
 
-    let atomToPlot = this.props.localSettings['atom-to-plot']
-    if (
-      (atomToPlot === 'none' || atomsToPlot.find(r => r.id === atomToPlot) === undefined)
-      && atomsToPlot.length > 0)
-    {
-      this.props.onUpdateLocalSetting({'atom-to-plot': atomsToPlot[0].id})
-    }
-
     console.warn('[Space] [render] this.props.localSettings', this.props.localSettings)
 
     return (
@@ -319,7 +312,7 @@ class ResourceSpace extends PureComponent {
         </section>
         <section className='atom-to-place'>
           <Box>
-            <ImageChooser title='Atom to place' images={atomsToPlot} currentImage={atomToPlot} onChoose={(v) => this.props.onUpdateLocalSetting({'atom-to-plot': v})} />
+            <ImageChooser id='atom-to-place' title='Atom to place' images={atomsToPlot} onChoose={(atomToPlot) => this.setState({atomToPlot})} />
           </Box>
         </section>
       </StyledResource>

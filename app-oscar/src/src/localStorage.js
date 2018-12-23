@@ -1,10 +1,9 @@
 const defaults = new Map([
   ['credentials-userlandId', ''],
   ['credentials-password', ''],
-  ['grid-on', false],
+  ['grid-on', true],
   ['grid-width', 16],
-  ['grid-height', 16],
-  ['atom-to-plot', 'none']
+  ['grid-height', 16]
 ])
 
 let localLocalStorage = {}
