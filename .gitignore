@@ -37,6 +37,7 @@ api-core/files
 api-bin/files
 
 app-oscar/src/src/inter-router
+site/src/src/inter-router
 
 site/src/.cache
 site/src/public

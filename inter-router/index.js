@@ -1,3 +1,11 @@
+export function appDashboard(environment) {
+  const environments = {
+    'development': 'http://localhost:3000/dashboard',
+    'production': 'https://app.gamemaker.club/dashboard'
+  }
+  return environments[environment]
+}
+
 export function appProject(environment, projectId) {
   const environments = {
     'development': `http://localhost:3000/projects/${projectId}`,

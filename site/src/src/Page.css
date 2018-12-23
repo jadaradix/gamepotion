@@ -63,9 +63,9 @@ main {
 }
 
 main > div {
-  max-width: 984px;
+  max-width: 1080px;
   margin: 0 auto 0 auto;
-  padding: 2rem;
+  padding: 4rem 2rem 4rem 2rem;
 }
 
 .component--left-right + .component--left-right {

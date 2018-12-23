@@ -6,103 +6,109 @@ import logo from '../images/logo.png'
 import menu from '../images/menu.svg'
 
 const StyledHeader = styled.header`
-  padding: 1rem 2rem 0 2rem;
   background-color: white;
-  .logo {
-    display: block;
-    width: 100%;
-    max-width: 156px;
-    margin: 0 auto 1rem auto;
-    img {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .menu {
-    display: block;
-    position: absolute;
-    top: 1.5rem;
-    left: 2rem;
-    width: 2rem;
-    height: 2rem;
-    background-color: transparent;
-    border: 0;
-    outline: 0;
-    // background-color: pink;
-    img {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  nav {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.5s ease;
-    // background-color: red;
-    ul {
-      padding: 0;
-      padding-bottom: 1rem;
-      list-style-type: none;
-      // background-color: blue;
-      li {
-        // background-color: yellow;
-        a {
-          display: inline-block;
-          padding: 0.5rem 0.5rem 0.5rem 0;
-          text-decoration: none;
-        }
-        a.current {
-          color: #11998E;
-        }
-      }
-      li.important {
-        a {
-          padding: 0.5rem 0.75rem 0.5rem 0.75rem;
-          border-radius: 4px;
-          color: white;
-          background: linear-gradient(#38EF7D, #11998E);
-        }
-      }
-      li + li {
-        margin-top: 0.25rem;
-      }
-      li + li.important {
-        margin-top: 0.5rem;
-      }
-    }
-  }
-  nav.open {
-    max-height: 12.5rem;
-  }
-  @media screen and (min-width: 720px) {
-    padding-bottom: 1rem;
-    .menu {
-      display: none;
-    }
+  > div {
+    max-width: 1080px;
+    margin: 0 auto 0 auto;
+    position: relative;
+    padding: 1rem 2rem 0 2rem;
     .logo {
-      max-width: 256px;
-      margin-left: 0;
-      margin-right: 0;
-      margin-bottom: 0;
+      display: block;
+      width: 100%;
+      max-width: 156px;
+      margin: 0 auto 1rem auto;
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .menu {
+      display: block;
+      position: absolute;
+      top: 1.5rem;
+      left: 2rem;
+      width: 2rem;
+      height: 2rem;
+      background-color: transparent;
+      border: 0;
+      outline: 0;
+      // background-color: pink;
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
     }
     nav {
-      overflow: visible;
-      max-height: none;
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.5s ease;
+      // background-color: red;
       ul {
+        padding: 0;
+        padding-bottom: 1rem;
+        list-style-type: none;
+        // background-color: blue;
         li {
-          float: left;
+          // background-color: yellow;
+          a {
+            display: inline-block;
+            padding: 0.5rem 0.5rem 0.5rem 0;
+            text-decoration: none;
+            font-size: 110%;
+          }
+          a.current {
+            color: #11998E;
+          }
+        }
+        li.important {
+          a {
+            padding: 0.5rem 0.8rem 0.6rem 0.8rem;
+            border-radius: 6px;
+            color: white;
+            background: linear-gradient(#38EF7D, #11998E);
+          }
         }
         li + li {
-          margin-top: 0;
-          margin-left: 0.5rem;
+          margin-top: 0.25rem;
         }
         li + li.important {
-          margin-top: 0;
+          margin-top: 0.5rem;
+        }
+      }
+    }
+    nav.open {
+      max-height: 12.5rem;
+    }
+    @media screen and (min-width: 720px) {
+      padding-bottom: 1rem;
+      .menu {
+        display: none;
+      }
+      .logo {
+        max-width: 256px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+      nav {
+        overflow: visible;
+        max-height: none;
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        ul {
+          li {
+            float: left;
+          }
+          li + li {
+            margin-top: 0;
+            margin-left: 0.5rem;
+          }
+          li + li.important {
+            margin-top: 0;
+          }
         }
       }
     }
@@ -144,21 +150,23 @@ class Header extends PureComponent {
   render() {
     return (
       <StyledHeader>
-        <Link to='/' className='logo'>
-          <img src={logo} alt='Game Maker Club' />
-        </Link>
-        <button className='menu' onClick={this.onClickMenu}>
-          <img src={menu} alt='' />
-        </button>
-        <nav className={this.state.isMenuOpen ? 'open' : ''}>
-          <ul>
-            <CustomLink to='/games'>Games</CustomLink>
-            <CustomLink to='/store'>Store</CustomLink>
-            <CustomLink to='/tutorials'>Tutorials</CustomLink>
-            <CustomLink to='/about'>About</CustomLink>
-            <CustomLink to='/join' important>Join</CustomLink>
-          </ul>
-        </nav>
+        <div>
+          <Link to='/' className='logo'>
+            <img src={logo} alt='Game Maker Club' />
+          </Link>
+          <button className='menu' onClick={this.onClickMenu}>
+            <img src={menu} alt='' />
+          </button>
+          <nav className={this.state.isMenuOpen ? 'open' : ''}>
+            <ul>
+              <CustomLink to='/games'>Games</CustomLink>
+              <CustomLink to='/store'>Store</CustomLink>
+              <CustomLink to='/tutorials'>Tutorials</CustomLink>
+              <CustomLink to='/about'>About</CustomLink>
+              <CustomLink to='/join' important>Join</CustomLink>
+            </ul>
+          </nav>
+        </div>
       </StyledHeader>
     )
   }

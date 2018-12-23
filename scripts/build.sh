@@ -33,3 +33,8 @@ cd app-oscar/src;
   rm -rf src/classes; cp -R ../../classes src/classes; rm -rf src/classes/node_modules;
   rm -rf src/inter-router; cp -R ../../inter-router src/inter-router; rm -rf src/inter-router/node_modules;
 cd ../..;
+
+cd site/src;
+  rm src/inter-router;
+  ln -s ../../../inter-router src/inter-router;
+cd ../..;
