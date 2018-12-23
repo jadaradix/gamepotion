@@ -103,18 +103,6 @@ const clear = (ctx, designMode, spaceContainer, camera) => {
   )
 }
 
-const draw = ({ctx, spaceContainer, camera, designMode, gridOn, gridWidth, gridHeight}) => {
-  clear(ctx, designMode, spaceContainer, camera)
-  drawBackgroundImage(ctx, spaceContainer, camera, designMode)
-  drawForegroundImage(ctx, spaceContainer)
-  if (designMode === true) {
-    drawCamera(ctx, spaceContainer)
-  }
-  if (gridOn === true) {
-    drawGrid(ctx, spaceContainer, gridWidth, gridHeight)
-  }
-}
-
 const getTouchData = (domBoundsX, domBoundsY, e) => {
   e.preventDefault()
   // console.error('[getTouchData]', e.touches[0].clientY, domBoundsY, window.scrollY)
@@ -159,13 +147,13 @@ const loadResources = (resourceContainers, spaceContainer) => {
 
   return new Promise((resolve, reject) => {
 
-    const depths = new Set()
+    const depthValues = new Set()
 
     const loadBack = () => {
       resourceContainersLoadedSoFar += 1
       console.warn(`[loadBack] done ${resourceContainersLoadedSoFar}/${totalResourceContainersToLoad}`)
       if (resourceContainersLoadedSoFar === totalResourceContainersToLoad) {
-        return resolve({ depths })
+        return resolve({ depthValues })
       }
     }
 
@@ -175,7 +163,7 @@ const loadResources = (resourceContainers, spaceContainer) => {
 
     resourcesAtoms
       .forEach(r => {
-        depths.add(r.resource.depth)
+        depthValues.add(r.resource.depth)
         r.extras.events = r.resource.events.map(e => {
           return {
             id: e.id,
@@ -223,7 +211,7 @@ const loadResources = (resourceContainers, spaceContainer) => {
     })
 
     if (resourcesImages.length === 0 && resourcesSounds.length === 0) {
-      resolve({ depths })
+      resolve({ depthValues })
     }
 
   })
@@ -253,21 +241,32 @@ const isInstanceIntersecting = (instance, coords) => {
   return isIntersecting
 }
 
-const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances) => {
-  draw({ctx, spaceContainer, camera, designMode: true, gridOn, gridWidth, gridHeight})
+const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, depths) => {
+  clear(ctx, true, spaceContainer, camera)
+  drawBackgroundImage(ctx, spaceContainer, camera, true)
   instances.forEach(instance => {
-    drawInstance(ctx, camera, true, instance)
+    const thisDepth = instance.atomContainer.resource.depth
+    depths.get(thisDepth).push(instance)
   })
+  depths.forEach((value) => {
+    value.forEach(instance => {
+      drawInstance(ctx, camera, true, instance)
+    })
+  })
+  drawForegroundImage(ctx, spaceContainer)
+  if (gridOn === true) {
+    drawGrid(ctx, spaceContainer, gridWidth, gridHeight)
+  }
+  drawCamera(ctx, spaceContainer)
 }
 
-const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext) => {
-  draw({ctx, spaceContainer, camera, designMode: false, gridOn, gridWidth, gridHeight})
-  camera.x += camera.vx
-  camera.y += camera.vy
-  camera.z += camera.vz
+const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext, depths) => {
+  clear(ctx, true, spaceContainer, camera)
+  drawBackgroundImage(ctx, spaceContainer, camera, true)
   instances.forEach(instance1 => {
+    const thisDepth = instance1.atomContainer.resource.depth
+    depths.get(thisDepth).push(instance1)
     instance1.onStep()
-    drawInstance(ctx, camera, false, instance1)
     // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance1, currentTouchCoords)
     // instances
     //   .filter(instance2 => isInstanceIntersectingInstance(instance1, instance2))
@@ -277,6 +276,15 @@ const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, g
     //     instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
     //   })
   })
+  depths.forEach((value) => {
+    value.forEach(instance => {
+      drawInstance(ctx, camera, true, instance)
+    })
+  })
+  drawForegroundImage(ctx, spaceContainer)
+  camera.x += camera.vx
+  camera.y += camera.vy
+  camera.z += camera.vz
   instances = handleEventStep(instances, eventContext)
   return instances
 }
@@ -379,9 +387,7 @@ const RenderGameSpace = (
   let instances = instanceDefinitionsToInstances(spaceContainer.resource.instances, resourceContainers)
   console.warn('[RenderGameSpace] instances', instances)
 
-  const onLoadedResources = ({ depths }) => {
-
-    console.warn('depths', depths)
+  const onLoadedResources = ({ depthValues }) => {
 
     let jInputs = {
       touch: {
@@ -485,11 +491,19 @@ const RenderGameSpace = (
       }
     })
     const currentTouchCoords = typeof jInputs.touch.coords === 'object' ? normaliseCoords(camera, false, gridOn, gridWidth, gridHeight, jInputs.touch.coords) : null
+    const depths = new Map()
+    Array.from(depthValues.entries())
+      .sort((a, b) => {
+        return a[0] - b[0]
+      })
+      .forEach(dv => {
+        depths.set(dv[0], [])
+      })
     if (designMode === true) {
-      gameLoopDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords)
+      gameLoopDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, depths)
     } else {
       const doGameLoopNotDesignMode = () => {
-        gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext)
+        gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext, depths)
         // setTimeout(doGameLoopNotDesignMode, 100)
         requestAnimationFrameHandle = window.requestAnimationFrame(doGameLoopNotDesignMode)
       }
