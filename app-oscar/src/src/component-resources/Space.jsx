@@ -312,7 +312,7 @@ class ResourceSpace extends PureComponent {
         </section>
         <section className='atom-to-place'>
           <Box>
-            <ImageChooser id='atom-to-place' title='Atom to place' images={atomsToPlot} onChoose={(atomToPlot) => this.setState({atomToPlot})} />
+            <ImageChooser id='atom-to-place' title='Choose an Atom to place' images={atomsToPlot} onChoose={(atomToPlot) => this.setState({atomToPlot})} />
           </Box>
         </section>
       </StyledResource>
