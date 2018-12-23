@@ -17,11 +17,19 @@ const StyledImageChooser = styled.div`
     line-height: 3rem;
   }
   > .component--input {
-    position: absolute;
-    top: 0.5rem;
-    right: 0;
-    width: 12rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
     // background-color: blue;
+  }
+  @media screen and (min-width: 840px) {
+    > .component--input {
+      position: absolute;
+      top: 0.25rem;
+      right: 0;
+      width: 12rem;
+      margin-bottom: 0;
+      // background-color: blue;
+    }
   }
   > div.outer {
     border: 1px solid #dadfe1;
