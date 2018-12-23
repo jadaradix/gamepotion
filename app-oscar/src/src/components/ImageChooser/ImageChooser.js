@@ -3,17 +3,27 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import Heading2 from '../Heading2/Heading2'
+import Input from '../Input/Input'
 import Image from '../Image/Image'
 
 import { get, set } from '../../localStorage'
 import { font, colours } from '../../styleAbstractions'
 
 const StyledImageChooser = styled.div`
+  position: relative;
   // background-color: yellow;
   > .component--heading2 {
-    margin-bottom: 1rem;
+    height: 3rem;
+    line-height: 3rem;
   }
-  > div {
+  > .component--input {
+    position: absolute;
+    top: 0.5rem;
+    right: 0;
+    width: 12rem;
+    // background-color: blue;
+  }
+  > div.outer {
     border: 1px solid #dadfe1;
     border-radius: 4px;
     overflow-y: scroll;
@@ -61,8 +71,10 @@ class ImageChooser extends PureComponent {
       set(`component--image-chooser-current-image-${props.id}`, currentImage)
     }
     this.state = {
-      currentImage
+      currentImage,
+      filter: get(`component--image-chooser-filter-${props.id}`) || ''
     }
+    this.onUpdateFilter = this.onUpdateFilter.bind(this)
   }
 
   onChoose(currentImage) {
@@ -72,13 +84,36 @@ class ImageChooser extends PureComponent {
     })
   }
 
+  onUpdateFilter(filter) {
+    set(`component--image-chooser-filter-${this.props.id}`, filter)
+    this.setState({
+      filter
+    })
+  }
+
   render() {
+    
+    const { filter } = this.state
+    const images = (() => {
+      if (filter === '') {
+        return this.props.images
+      }
+      return this.props.images.filter(i => {
+        return (
+          i.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0
+          ||
+          i.id.toLowerCase().indexOf(filter.toLowerCase()) >= 0
+        )
+      })
+    })()
+
     return (
       <StyledImageChooser>
         {this.props.title.length > 0 && <Heading2>{this.props.title}</Heading2>}
-        <div>
-          <div className='inner' style={{width: `${(this.props.images.length * 144) - 16}px`}}>
-            {this.props.images.map(i => {
+        <Input value={filter} onChange={this.onUpdateFilter} placeholder='Filter...' />
+        <div className='outer'>
+          <div className='inner' style={{width: `${(images.length * 144) - 16}px`}}>
+            {images.map(i => {
               return (
                 <div key={i.id} className={this.state.currentImage === i.id ? 'selected' : ''} onClick={() => this.onChoose(i.id)}>
                   <Image src={i.url} alt={i.name} />
