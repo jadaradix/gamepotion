@@ -100,12 +100,11 @@ class Image extends Component {
   }
 
   render() {
-    console.warn('[component-Image] this.props.src', this.props.src)
-    const src = (this.props.dontCache ? src : this.ifOnLoadFiresNoCacheSrc)
+    // console.warn('[component-Image] this.image', this.image)
     return (
       <StyledImage className='component--image'>
-        {(this.state.hasErrored || this.props.src === null) && <p>No image.</p>}
-        {this.state.hasLoaded && <img src={src} alt={this.props.string} />}
+        {(this.state.hasErrored || this.image === undefined) && <p>No image.</p>}
+        {(this.state.hasLoaded && this.image !== undefined) && <img src={(this.props.dontCache ? this.image.src : this.ifOnLoadFiresNoCacheSrc)} alt={this.props.string} />}
       </StyledImage>
     )
   }
