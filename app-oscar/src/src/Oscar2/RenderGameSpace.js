@@ -491,14 +491,18 @@ const RenderGameSpace = (
       }
     })
     const currentTouchCoords = typeof jInputs.touch.coords === 'object' ? normaliseCoords(camera, false, gridOn, gridWidth, gridHeight, jInputs.touch.coords) : null
-    const depths = new Map()
-    Array.from(depthValues.entries())
-      .sort((a, b) => {
-        return a[0] - b[0]
-      })
-      .forEach(dv => {
-        depths.set(dv[0], [])
-      })
+    const depths = new Map(
+      Array.from(depthValues.entries())
+        .sort((a, b) => {
+          return a[0] - b[0]
+        })
+        .map(dv => {
+          return [
+            dv[0],
+            []
+          ]
+        })
+    )
     if (designMode === true) {
       gameLoopDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, depths)
     } else {

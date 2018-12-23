@@ -115,11 +115,11 @@ export function dispatch ({ name, pleaseThrow = false, data = {} }) {
         if (error.message === 'Network Error') {
           return 'Our API looks to be down. Are you connected to the Internet?'
         } else if (error.hasOwnProperty('response')) {
-          return `That didn&rsquo;t work (${error.response.data.message}). Please try again.`
+          return `That didn&rsquo;t work (${error.response.data.message}).`
         } else if (error.hasOwnProperty('message')) {
           return `That didn&rsquo;t work (${error.message}).`
         } else {
-          return 'That didn&rsquo;t work. That&rsquo;s all we know. Please try again later.'
+          return 'That didn&rsquo;t work. That&rsquo;s all we know.'
         }
       })()
       notify.bad(errorMessage)
