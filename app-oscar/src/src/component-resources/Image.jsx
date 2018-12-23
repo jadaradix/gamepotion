@@ -61,6 +61,15 @@ class ResourceImage extends PureComponent {
     super(props)
     this.onChooseFixed = this.onChooseFixed.bind(this)
     this.onUploadDone = this.onUploadDone.bind(this)
+    this.imageHeight = null
+    this.onImageLoad = this.onImageLoad.bind(this)
+  }
+
+  onUpdateFrameHeight(value) {
+    this.props.onUpdate({
+      frameHeight: parseInt(value, 10),
+      frameCount: parseInt(Math.ceil(this.imageHeight / value), 10)
+    })
   }
 
   onUpdateProp(prop, value) {
@@ -80,18 +89,23 @@ class ResourceImage extends PureComponent {
         width,
         height
       } = resourceTypes.find(rt => rt.type === 'image').getFixed().find(o => o.id === fixed)
+      const frameHeight = (height < width ? height : width)
       this.props.onUpdate({
         fixed,
         extension: 'png',
         frameWidth: width,
-        frameHeight: (height < width ? height : width),
-        frameCount: parseInt(Math.ceil(height / width), 10)
+        frameHeight,
+        frameCount: parseInt(Math.ceil(height / frameHeight), 10)
       })
     }
   }
 
   onUploadDone() {
     this.props.onUpdate({}, true)
+  }
+
+  onImageLoad({ height }) {
+    this.imageHeight = height
   }
 
   render() {
@@ -116,7 +130,7 @@ class ResourceImage extends PureComponent {
     return (
       <StyledResource>
         <section className='resource'>
-          <Image src={remoteUrl} />
+          <Image src={remoteUrl} onLoad={this.onImageLoad} />
         </section>
         <section className='split-two'>
           <Box>
@@ -125,7 +139,7 @@ class ResourceImage extends PureComponent {
           <Box>
             <div className='frame-stuff'>
               <Input label='Frame Width' value={this.props.resource.frameWidth} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameWidth', v)} />
-              <Input label='Frame Height' value={this.props.resource.frameHeight} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameHeight', v)} />
+              <Input label='Frame Height' value={this.props.resource.frameHeight} type='number' min='0' max='4096' onChange={(v) => this.onUpdateFrameHeight(v)} />
               <Input label='Frame Speed' value={this.props.resource.frameSpeed} type='number' min='0' max='3' onChange={(v) => this.onUpdateProp('frameSpeed', v)} />
               <Input label='Frame Count' value={this.props.resource.frameCount} type='number' disabled />
             </div>

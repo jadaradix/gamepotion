@@ -68,7 +68,10 @@ class Image extends Component {
       return
     }
     this.image = new window.Image()
-    const onLoad = () => this.onLoad()
+    const onLoad = (event) => {
+      const { width, height } = event.path[0]
+      this.onLoad({ width, height })
+    }
     const onError = () => this.onError()
     this.eventListeners = new Map([
       ['load', onLoad],
@@ -80,11 +83,12 @@ class Image extends Component {
     this.ifOnLoadFiresNoCacheSrc = getNoCacheSrc(src)
   }
 
-  onLoad() {
+  onLoad({ width, height }) {
     this.setState({
       hasLoaded: true,
       hasErrored: false
     })
+    this.props.onLoad({ width, height })
   }
 
   onError() {
@@ -107,11 +111,13 @@ class Image extends Component {
 
 Image.propTypes = {
   src: PropTypes.string,
-  alt: PropTypes.string
+  alt: PropTypes.string,
+  onLoad: PropTypes.func
 }
 
 Image.defaultProps = {
-  alt: ''
+  alt: '',
+  onLoad: () => {}
 }
 
 export default Image
