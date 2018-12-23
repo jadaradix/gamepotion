@@ -59,7 +59,6 @@ const StyledResource = styled.div`
 class ResourceImage extends PureComponent {
   constructor(props) {
     super(props)
-    this.onUpdateProp = this.onUpdateProp.bind(this)
     this.onChooseFixed = this.onChooseFixed.bind(this)
     this.onUploadDone = this.onUploadDone.bind(this)
   }

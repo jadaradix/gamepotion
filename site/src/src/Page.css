@@ -27,6 +27,12 @@ h1 {
   background-color: peachpuff;
 }
 
+h2 {
+  font-size: 150%;
+  font-weight: 800;
+  background-color: peachpuff;
+}
+
 p {
   padding: 0.25rem 0 0.25rem 0;
   background-color: orange;
@@ -40,13 +46,16 @@ a {
   color: #2e3131;
 }
 
-h1 + p {
+h1 + *, h2 + *, * + h1, * + h2 {
   margin-top: 1rem;
 }
 
 p + p {
   margin-top: 0.5rem;
-  
+}
+
+ul {
+  padding-left: 2rem;
 }
 
 main {

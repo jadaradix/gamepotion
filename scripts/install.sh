@@ -26,6 +26,15 @@ cd ../..;
 cd app-oscar/src;
   npm i;
 cd ../..;
+cd app-store/src;
+  npm i;
+cd ../..;
+cd app-play/src;
+  npm i;
+cd ../..;
+cd site/src;
+  npm i;
+cd ../..;
 
 cd classes;
   npm i;

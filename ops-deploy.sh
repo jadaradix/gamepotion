@@ -27,6 +27,18 @@ docker stop oscar-production-app-store;
 docker rm oscar-production-app-store;
 docker run --name oscar-production-app-store --net container-router -p 1028:1028 -d eu.gcr.io/thegmc-219013/oscar-production-app-store;
 
+echo "5 running app-play";
+docker pull eu.gcr.io/thegmc-219013/oscar-production-app-play:latest;
+docker stop oscar-production-app-play;
+docker rm oscar-production-app-play;
+docker run --name oscar-production-app-play --net container-router -p 1029:1029 -d eu.gcr.io/thegmc-219013/oscar-production-app-play;
+
+echo "5 running site";
+docker pull eu.gcr.io/thegmc-219013/oscar-production-site:latest;
+docker stop oscar-production-site;
+docker rm oscar-production-site;
+docker run --name oscar-production-site --net container-router -p 1030:1030 -d eu.gcr.io/thegmc-219013/oscar-production-site;
+
 echo "6 running container-router";
 docker pull eu.gcr.io/thegmc-219013/oscar-production-container-router:latest;
 docker stop oscar-production-container-router;

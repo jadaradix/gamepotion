@@ -159,17 +159,41 @@ const loadResources = (resourceContainers, spaceContainer) => {
 
   return new Promise((resolve, reject) => {
 
+    const depths = new Set()
+
     const loadBack = () => {
       resourceContainersLoadedSoFar += 1
       console.warn(`[loadBack] done ${resourceContainersLoadedSoFar}/${totalResourceContainersToLoad}`)
       if (resourceContainersLoadedSoFar === totalResourceContainersToLoad) {
-        return resolve()
+        return resolve({ depths })
       }
     }
 
     const errBack = (e) => {
       return reject(e)
     }
+
+    resourcesAtoms
+      .forEach(r => {
+        depths.add(r.resource.depth)
+        r.extras.events = r.resource.events.map(e => {
+          return {
+            id: e.id,
+            configurationString: e.configuration.join('-'),
+            actions: e.actions.map(a => {
+              const actionClassInstance = actionClasses.get(a.id)
+              const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
+              return {
+                id: actionClassInstance.id,
+                run: actionClassInstance.run,
+                runArguments: a.runArguments,
+                appliesTo: a.appliesTo,
+                argumentTypes
+              }
+            })
+          }
+        })
+      })
 
     resourcesImages.forEach(resource => {
       const element = new window.Image()
@@ -198,29 +222,8 @@ const loadResources = (resourceContainers, spaceContainer) => {
       element.load()
     })
 
-    resourcesAtoms
-      .forEach(r => {
-        r.extras.events = r.resource.events.map(e => {
-          return {
-            id: e.id,
-            configurationString: e.configuration.join('-'),
-            actions: e.actions.map(a => {
-              const actionClassInstance = actionClasses.get(a.id)
-              const argumentTypes = Array.from(actionClassInstance.defaultRunArguments.values()).map(ar => ar.type)
-              return {
-                id: actionClassInstance.id,
-                run: actionClassInstance.run,
-                runArguments: a.runArguments,
-                appliesTo: a.appliesTo,
-                argumentTypes
-              }
-            })
-          }
-        })
-      })
-
     if (resourcesImages.length === 0 && resourcesSounds.length === 0) {
-      resolve()
+      resolve({ depths })
     }
 
   })
@@ -376,7 +379,10 @@ const RenderGameSpace = (
   let instances = instanceDefinitionsToInstances(spaceContainer.resource.instances, resourceContainers)
   console.warn('[RenderGameSpace] instances', instances)
 
-  const onLoadedResources = () => {
+  const onLoadedResources = ({ depths }) => {
+
+    console.warn('depths', depths)
+
     let jInputs = {
       touch: {
         primary: false,

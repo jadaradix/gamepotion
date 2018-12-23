@@ -82,6 +82,7 @@ const StyledResource = styled.div`
       }
     }
     .game {
+      min-height: 280px;
       background-color: #dadfe1;
     }
   }
@@ -180,10 +181,12 @@ class ResourceSpace extends PureComponent {
     })
   }
 
-  plotAtom(coords, angle = 0) {
+  plotAtom(coords, angle) {
     const atomId = this.props.localSettings['atom-to-plot']
-    // const atom = this.props.resources.find(r => r.id === atomId)
-    // const image = this.props.resources.find(r => r.id === atom.imageId)
+    if (typeof angle !== 'number') {
+      const atom = this.props.resources.find(r => r.id === atomId)
+      angle = atom.angle
+    }
     if (coords.x < 0 || coords.y < 0 || coords.x > this.props.resource.width || coords.y > this.props.resource.height) {
       return console.error('out ot bounds coords', coords)
     }

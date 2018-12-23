@@ -7,8 +7,8 @@ const CORS_ORIGINS = (() => {
   return [
     'http://localhost:3000', 'https://app.gamemaker.club',
     'http://localhost:3001', 'https://store.gamemaker.club',
-    'http://localhost:3002', 'https://gamemaker.club',
-    'http://localhost:3003', 'https://play.gamemaker.club',
+    'http://localhost:3002', 'https://play.gamemaker.club',
+    'http://localhost:3003', 'https://gamemaker.club'
   ]
 })()
 
