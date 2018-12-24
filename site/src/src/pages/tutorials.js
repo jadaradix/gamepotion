@@ -1,6 +1,7 @@
 import React from 'react'
 import Page from '../Page'
 import Grid from '../components/Grid'
+import Video from '../components/Video'
 
 import videos from '../videos.json' 
 
@@ -13,10 +14,18 @@ const ThisPage = () => {
     <Page title={TITLE}>
       <Grid>
         {tutorials.map(tutorial => {
+          const {
+            id,
+            name,
+            description
+          } = tutorial
           return (
-            <div key={tutorial.id}>
-              <h1>{tutorial.name}</h1>
-            </div>
+            <Video
+              key={id}
+              id={id}
+              name={name}
+              description={description}
+            />
           )
         })}
       </Grid>
