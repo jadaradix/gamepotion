@@ -13,7 +13,7 @@ it('renders', () => {
   ]
   const tree = renderer
     .create(
-      <ImageChooser images={images} currentImage='xyz' />
+      <ImageChooser id='test' images={images} currentImage='xyz' />
     )
     .toJSON()
   expect(tree).toMatchSnapshot()

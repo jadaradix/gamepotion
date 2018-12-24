@@ -24,18 +24,18 @@ body {
 h1 {
   font-size: 200%;
   font-weight: 800;
-  background-color: peachpuff;
+  /* background-color: peachpuff; */
 }
 
 h2 {
   font-size: 150%;
   font-weight: 800;
-  background-color: peachpuff;
+  /* background-color: purple; */
 }
 
 p {
   padding: 0.25rem 0 0.25rem 0;
-  background-color: orange;
+  /* background-color: orange; */
 }
 
 strong {
@@ -54,6 +54,10 @@ p + p {
   margin-top: 0.5rem;
 }
 
+p + .component--button {
+  margin-top: 1rem;
+}
+
 ul {
   padding-left: 2rem;
 }
@@ -63,9 +67,9 @@ main {
 }
 
 main > div {
-  max-width: 984px;
+  max-width: 1080px;
   margin: 0 auto 0 auto;
-  padding: 2rem;
+  padding: 4rem 2rem 4rem 2rem;
 }
 
 .component--left-right + .component--left-right {

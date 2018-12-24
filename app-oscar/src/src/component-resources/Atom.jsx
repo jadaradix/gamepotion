@@ -348,7 +348,7 @@ class ResourceAtom extends Component {
           <Box className='image'>
             <Heading2>Image</Heading2>
             <div className='image-container'>
-              <Image src={imageSrc} />
+              <Image src={imageSrc} dontCache={true} />
             </div>
             <Dropper options={imageResources} value={imageId} onChoose={this.onChooseImage} />
           </Box>

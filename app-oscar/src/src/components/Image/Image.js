@@ -21,6 +21,7 @@ const StyledImage = styled.div`
     top: 50%;
     text-align: center;
     transform: translate(0, -50%);
+    cursor: default;
     // background-color: orange;
   }
   > img {
@@ -68,7 +69,10 @@ class Image extends Component {
       return
     }
     this.image = new window.Image()
-    const onLoad = () => this.onLoad()
+    const onLoad = (event) => {
+      const { width, height } = event.path[0]
+      this.onLoad({ width, height })
+    }
     const onError = () => this.onError()
     this.eventListeners = new Map([
       ['load', onLoad],
@@ -80,11 +84,12 @@ class Image extends Component {
     this.ifOnLoadFiresNoCacheSrc = getNoCacheSrc(src)
   }
 
-  onLoad() {
+  onLoad({ width, height }) {
     this.setState({
       hasLoaded: true,
       hasErrored: false
     })
+    this.props.onLoad({ width, height })
   }
 
   onError() {
@@ -95,11 +100,11 @@ class Image extends Component {
   }
 
   render() {
-    console.warn('[component-Image] this.props.src', this.props.src)
+    // console.warn('[component-Image] this.image', this.image)
     return (
       <StyledImage className='component--image'>
-        {(this.state.hasErrored || this.props.src === null) && <p>No image.</p>}
-        {this.state.hasLoaded && <img src={this.ifOnLoadFiresNoCacheSrc} alt={this.props.string} />}
+        {(this.state.hasErrored || this.image === undefined) && <p>No image.</p>}
+        {(this.state.hasLoaded && this.image !== undefined) && <img src={(this.props.dontCache ? this.image.src : this.ifOnLoadFiresNoCacheSrc)} alt={this.props.string} />}
       </StyledImage>
     )
   }
@@ -107,11 +112,15 @@ class Image extends Component {
 
 Image.propTypes = {
   src: PropTypes.string,
-  alt: PropTypes.string
+  alt: PropTypes.string,
+  onLoad: PropTypes.func,
+  dontCache: PropTypes.bool
 }
 
 Image.defaultProps = {
-  alt: ''
+  alt: '',
+  onLoad: () => {},
+  dontCache: false
 }
 
 export default Image

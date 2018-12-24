@@ -6,16 +6,16 @@ const StyledFooter = styled.footer`
   padding: 2rem;
   background-color: #c0cdd1;
   div {
-    max-width: 984px;
+    max-width: 1080px;
     margin: 0 auto 0 auto;
   }
   ul {
     padding-left: 0;
     list-style-type: none;
-    background-color: red;
+    // background-color: red;
     li {
       padding: 0.25rem;
-      background-color: pink;
+      // background-color: pink;
       a {
         color: #2e3131;
         text-decoration: none;
@@ -28,7 +28,7 @@ const StyledFooter = styled.footer`
   ul + ul {
     margin-top: 2rem;
   }
-  @media screen and (min-width: 540px) {
+  @media screen and (min-width: 840px) {
     ul {
       display: inline-block;
       width: 214px;

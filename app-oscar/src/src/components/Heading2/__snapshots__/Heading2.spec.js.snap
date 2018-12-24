@@ -12,9 +12,9 @@ exports[`renders 1`] = `
   color: #2e3131;
 }
 
-<h1
+<h2
   className="component--heading2 c0"
 >
   Hello, World
-</h1>
+</h2>
 `;

@@ -1,0 +1,26 @@
+[
+  {
+    "type": "tutorial",
+    "id": "tutorial-1",
+    "name": "Tutorial 1",
+    "description": "Tutorial 1"
+  },
+  {
+    "type": "tutorial",
+    "id": "tutorial-2",
+    "name": "Tutorial 2",
+    "description": "Tutorial 2"
+  },
+  {
+    "type": "tutorial",
+    "id": "tutorial-3",
+    "name": "Tutorial 3",
+    "description": "Tutorial 3"
+  },
+  {
+    "type": "tutorial",
+    "id": "tutorial-4",
+    "name": "Tutorial 4",
+    "description": "Tutorial 4"
+  }
+]

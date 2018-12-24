@@ -65,6 +65,7 @@ class ResourceImage extends Resource {
     this.frameHeight = (typeof json.frameHeight === 'number' ? json.frameHeight : this.frameHeight)
     this.frameSpeed = (typeof json.frameSpeed === 'number' ? json.frameSpeed : this.frameSpeed)
     this.frameCount = (typeof json.frameCount === 'number' ? json.frameCount : this.frameCount)
+    this.extension = (typeof json.extension === 'string' ? json.extension : this.extension)
   }
 
   clientFromApiGet(json) {
