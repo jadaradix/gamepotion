@@ -12,10 +12,10 @@ const StyledFooter = styled.footer`
   ul {
     padding-left: 0;
     list-style-type: none;
-    background-color: red;
+    // background-color: red;
     li {
       padding: 0.25rem;
-      background-color: pink;
+      // background-color: pink;
       a {
         color: #2e3131;
         text-decoration: none;

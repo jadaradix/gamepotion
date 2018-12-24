@@ -11,7 +11,7 @@ const StyledHeader = styled.header`
     max-width: 1080px;
     margin: 0 auto 0 auto;
     position: relative;
-    padding: 1rem 2rem 0 2rem;
+    padding: 1rem 2rem 0 1rem;
     .logo {
       display: block;
       width: 100%;
@@ -32,7 +32,6 @@ const StyledHeader = styled.header`
       height: 2rem;
       background-color: transparent;
       border: 0;
-      outline: 0;
       // background-color: pink;
       img {
         display: block;
@@ -46,15 +45,17 @@ const StyledHeader = styled.header`
       transition: max-height 0.5s ease;
       // background-color: red;
       ul {
+        margin-top: 4px;
         padding: 0;
         padding-bottom: 1rem;
         list-style-type: none;
         // background-color: blue;
         li {
+          margin-left: 4px;
           // background-color: yellow;
           a {
+            padding: 0.6rem 0.8rem 0.6rem 0.8rem;
             display: inline-block;
-            padding: 0.5rem 0.5rem 0.5rem 0;
             text-decoration: none;
             font-size: 110%;
           }
@@ -64,7 +65,6 @@ const StyledHeader = styled.header`
         }
         li.important {
           a {
-            padding: 0.5rem 0.8rem 0.6rem 0.8rem;
             border-radius: 6px;
             color: white;
             background: linear-gradient(#38EF7D, #11998E);
@@ -75,11 +75,12 @@ const StyledHeader = styled.header`
         }
         li + li.important {
           margin-top: 0.5rem;
+          margin-left: 1rem;
         }
       }
     }
     nav.open {
-      max-height: 12.5rem;
+      max-height: 14.5rem;
     }
     @media screen and (min-width: 720px) {
       padding-bottom: 1rem;
@@ -99,8 +100,10 @@ const StyledHeader = styled.header`
         top: 2rem;
         right: 2rem;
         ul {
+          margin-top: 0;
           li {
             float: left;
+            margin-left: 0;
           }
           li + li {
             margin-top: 0;

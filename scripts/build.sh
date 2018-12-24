@@ -36,5 +36,7 @@ cd ../..;
 
 cd site/src;
   rm src/inter-router;
+  rm src/videos.json;
   ln -s ../../../inter-router src/inter-router;
+  ln -s ../../../videos.json src/videos.json;
 cd ../..;

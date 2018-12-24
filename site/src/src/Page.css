@@ -24,18 +24,18 @@ body {
 h1 {
   font-size: 200%;
   font-weight: 800;
-  background-color: peachpuff;
+  /* background-color: peachpuff; */
 }
 
 h2 {
   font-size: 150%;
   font-weight: 800;
-  background-color: peachpuff;
+  /* background-color: purple; */
 }
 
 p {
   padding: 0.25rem 0 0.25rem 0;
-  background-color: orange;
+  /* background-color: orange; */
 }
 
 strong {
@@ -52,6 +52,10 @@ h1 + *, h2 + *, * + h1, * + h2 {
 
 p + p {
   margin-top: 0.5rem;
+}
+
+p + .component--button {
+  margin-top: 1rem;
 }
 
 ul {

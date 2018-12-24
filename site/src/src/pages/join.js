@@ -1,6 +1,7 @@
 import React from 'react'
 import Page from '../Page'
 import LeftRight from '../components/LeftRight'
+import Button from '../components/Button'
 
 import { appDashboard } from '../inter-router' 
 
@@ -26,9 +27,7 @@ const ThisPage = () => (
         <p>
           Are you ready to make your own games and become the game boss?
         </p>
-        <p>
-          <a href={appDashboard(process.env.NODE_ENV)} target='_blank'>Join now</a> for free.
-        </p>
+        <Button route={appDashboard(process.env.NODE_ENV)}>Join now</Button>
       </div>
     </LeftRight>
   </Page>
