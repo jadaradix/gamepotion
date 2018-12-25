@@ -9,7 +9,7 @@ const StyledLeftRight = styled.section`
   @media screen and (min-width: 840px) {
     display: grid;
     grid-template-columns: 2fr 2fr;
-    grid-gap: 2rem;
+    grid-gap: 3rem;
     h1 {
       margin-top: 2rem;
     }

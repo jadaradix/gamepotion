@@ -2,11 +2,13 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import {Link} from 'gatsby'
 
+import { appDashboard } from '../inter-router'
+
 import logo from '../images/logo.png'
 import menu from '../images/menu.svg'
 
 const StyledHeader = styled.header`
-  background-color: white;
+  background-color: #ecf0f1;
   > div {
     max-width: 1080px;
     margin: 0 auto 0 auto;
@@ -162,11 +164,11 @@ class Header extends PureComponent {
           </button>
           <nav className={this.state.isMenuOpen ? 'open' : ''}>
             <ul>
-              <CustomLink to='/games'>Games</CustomLink>
-              <CustomLink to='/store'>Store</CustomLink>
-              <CustomLink to='/tutorials'>Tutorials</CustomLink>
+              {/* <CustomLink to='/games'>Games</CustomLink> */}
+              {/* <CustomLink to='/store'>Store</CustomLink> */}
+              {/* <CustomLink to='/tutorials'>Tutorials</CustomLink> */}
               <CustomLink to='/about'>About</CustomLink>
-              <CustomLink to='/join' important>Join</CustomLink>
+              <li className='important'><a href={appDashboard(process.env.NODE_ENV)}>Join</a></li>
             </ul>
           </nav>
         </div>
