@@ -4,7 +4,7 @@ import {Link} from 'gatsby'
 
 const StyledFooter = styled.footer`
   padding: 2rem;
-  background-color: #c0cdd1;
+  background-color: #ecf0f1;
   div {
     max-width: 1080px;
     margin: 0 auto 0 auto;

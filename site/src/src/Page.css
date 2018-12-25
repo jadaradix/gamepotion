@@ -5,7 +5,7 @@
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
-  line-height: 1;
+  line-height: 18px;
 }
 
 html {
@@ -18,28 +18,35 @@ body {
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   color: #2e3131;
-  background-color: #c0cdd1;
+  background-color: #ecf0f1;
 }
 
 h1 {
   font-size: 200%;
   font-weight: 800;
+  line-height: 32px;
   /* background-color: peachpuff; */
 }
 
 h2 {
   font-size: 150%;
   font-weight: 800;
+  line-height: 24px;
   /* background-color: purple; */
 }
 
 p {
+  text-align: justify;
   padding: 0.25rem 0 0.25rem 0;
   /* background-color: orange; */
 }
 
 strong {
   font-weight: 800;
+}
+
+em {
+  font-style: italic;
 }
 
 a {
@@ -58,12 +65,20 @@ p + .component--button {
   margin-top: 1rem;
 }
 
+p + .component--left-right {
+  margin-top: 3rem;
+}
+
+.component--button + h2 {
+  margin-top: 3rem;
+}
+
 ul {
   padding-left: 2rem;
 }
 
 main {
-  background-color: #ecf0f1;
+  background-color: white;
 }
 
 main > div {
