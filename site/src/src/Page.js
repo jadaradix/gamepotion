@@ -7,12 +7,14 @@ import Footer from './components/Footer'
 
 import './Page.css'
 
-const Page = ({ title, children }) => (
+const Page = ({ title = undefined, metaTags = [], metaDescription = undefined, children }) => (
   <Fragment>
     <Helmet
-      title={`${title} - Game Maker Club`}
+      title={typeof title === 'string' ? `${title} - Game Maker Club` : 'Game Maker Club'}
     >
-      <html lang="en" />
+      <html lang='en' />
+      {Array.isArray(metaTags) && metaTags.length > 0 && <meta name='keywords' content={metaTags.join(', ')} />}
+      {typeof metaDescription === 'string' && <meta name='description' content={metaDescription} />}
     </Helmet>
     <Header />
     <main>
@@ -25,8 +27,10 @@ const Page = ({ title, children }) => (
 )
 
 Page.propTypes = {
-  title: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
+  title: PropTypes.string,
+  metaTags: PropTypes.array,
+  metaDescription: PropTypes.string,
+  children: PropTypes.node.isRequired
 }
 
 export default Page

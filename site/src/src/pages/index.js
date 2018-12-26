@@ -11,7 +11,10 @@ import screenshotSpace from '../images/screenshot-space.png'
 const TITLE = 'Game Maker Club'
 
 const ThisPage = () => (
-  <Page title={TITLE}>
+  <Page
+    metaTags={['game maker']}
+    metaDescription='Free online game maker'
+  >
     <LeftRight>
       <div>
         <img
