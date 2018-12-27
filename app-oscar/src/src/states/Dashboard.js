@@ -31,10 +31,23 @@ const StyledState = styled.div`
     margin-top: 1rem;
   }
   p {
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
     ${font}
     color: ${colours.fore};
+  }
+  .component--box {
+    p {
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+  .welcome {
+    padding: 2rem 0 0 1rem;
+    .component--heading1 + p {
+      margin-top: 1rem;
+    }
+    p + p {
+      margin-top: 1rem;
+    }
   }
 `
 
@@ -190,8 +203,11 @@ class StateDashboard extends Component {
                   </Fragment>
                 }
               </Box>
-              <Box>
-                {newsFeed === undefined ?
+              <div className='welcome'>
+                <Heading1>Welcome</Heading1>
+                <p>Are you ready to make your own games and become the game boss?</p>
+                <p>Choose 'Create a game' to get started!</p>
+                {/* <Box>{newsFeed === undefined ?
                   <Loading />
                   :
                   <Fragment>
@@ -209,8 +225,8 @@ class StateDashboard extends Component {
                       ))}
                     </List>
                   </Fragment>
-                }
-              </Box>
+                }</Box> */}
+              </div>
             </section>
           </StyledState>
         </ResponsiveContainer>

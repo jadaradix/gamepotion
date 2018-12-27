@@ -28,16 +28,16 @@ const StyledFooter = styled.footer`
   ul + ul {
     margin-top: 2rem;
   }
-  @media screen and (min-width: 840px) {
-    ul {
-      display: inline-block;
-      width: 214px;
-    }
-    ul + ul {
-      margin-top: 0;
-      margin-left: 2rem;
-    }
-  }
+  // @media screen and (min-width: 840px) {
+  //   ul {
+  //     display: inline-block;
+  //     width: 214px;
+  //   }
+  //   ul + ul {
+  //     margin-top: 0;
+  //     margin-left: 2rem;
+  //   }
+  // }
 `
 
 const Footer = () => {
@@ -45,9 +45,8 @@ const Footer = () => {
     <StyledFooter>
       <div>
         <ul>
+          <li>&copy; <a href='https://jada.io'>James Garner</a> and <a href='https://euphoricadventur.es'>Euphoric Adventures</a>, 2018 &mdash;</li>
           <li><Link to='/credits'>Credits</Link></li>
-        </ul>
-        <ul>
         </ul>
       </div>
     </StyledFooter>

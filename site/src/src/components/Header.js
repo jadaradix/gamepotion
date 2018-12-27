@@ -82,7 +82,8 @@ const StyledHeader = styled.header`
       }
     }
     nav.open {
-      max-height: 14.5rem;
+      // max-height: 14.5rem;
+      max-height: 6.5rem;
     }
     @media screen and (min-width: 720px) {
       padding-bottom: 1rem;
