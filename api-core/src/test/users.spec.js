@@ -49,6 +49,8 @@ test('creates a user', (done) => {
       expect(response.status).toBe(201)
       expect(response.data.teamId).toBe(null)
       expect(response.data.name).toBe(`Xxx${id}`)
+      expect(typeof response.data.modules.find(m => m.id === 'free')).toBe('object')
+      expect(typeof response.data.modules.find(m => m.id === 'pro')).toBe('object')
       configs.auth.auth.password = response.data.password
       return done()
     })

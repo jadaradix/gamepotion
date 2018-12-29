@@ -28,11 +28,13 @@ const route = async (request, response, next) => {
   let resourceClass
   try {
     await findProject(request.params.projectId, request.authorization.user.teamId)
+    const resourcesOfThisType = await countResouresOfThisType(request.params.projectId, request.body.type)
     resourceClass = classFactory.resource({
       type: request.body.type
     })
-    const resourcesOfThisType = await countResouresOfThisType(request.params.projectId, resourceClass.type)
-    if (resourcesOfThisType >= MAX_RESOURCES_BEFORE_PURCHASE_PRO) {
+    const hasBoughtPro = request.authorization.user.modules.find(m => m.id === 'pro')
+    const isOverResourceOfThisTypeLimit = (resourcesOfThisType >= MAX_RESOURCES_BEFORE_PURCHASE_PRO)
+    if (!hasBoughtPro && isOverResourceOfThisTypeLimit) {
       response.send(new errors.BadRequestError(`you need to buy Pro in the Store to add more than ${MAX_RESOURCES_BEFORE_PURCHASE_PRO} ${resourceClass.type}s`))
       return next(false)
     }
