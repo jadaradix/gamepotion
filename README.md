@@ -5,6 +5,7 @@ Be the game boss.
 ```
   . scripts/install.sh
   . scripts/build.sh
+  . scripts/build-classes.sh
 ```
 
 ## /etc/hosts file
