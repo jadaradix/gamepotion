@@ -25,3 +25,8 @@ cd site/src;
   ln -s ../../../inter-router src/inter-router;
   ln -s ../../../videos.json src/videos.json;
 cd ../..;
+
+cd app-play/src;
+  rm -rf src/Oscar2;
+  cp -R ../../app-oscar/src/src/Oscar2 src;
+cd ../..;

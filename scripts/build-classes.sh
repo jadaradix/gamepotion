@@ -7,7 +7,13 @@ cd classes;
 cd ..;
 
 cd app-oscar/src;
-  rm -rf src/classes; cp -R ../../classes src/classes; rm -rf src/classes/node_modules; # how can we avoid copying node_modules?
+  # how can we avoid copying node_modules?
+  rm -rf src/classes; cp -R ../../classes src/classes; rm -rf src/classes/node_modules;
+cd ../..;
+
+cd app-play/src;
+  # how can we avoid copying node_modules?
+  rm -rf src/classes; cp -R ../../classes src/classes; rm -rf src/classes/node_modules;
 cd ../..;
 
 cd api-core/src;

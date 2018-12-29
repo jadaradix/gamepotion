@@ -13,14 +13,5 @@ html {
 }
 
 body {
-}
-
-#root {
-  padding: 1rem;
-  border-radius: 4px;
-  background-color: white;
-}
-
-strong {
-  font-weight: 800;
+  background-color: black;
 }
