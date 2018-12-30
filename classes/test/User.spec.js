@@ -45,9 +45,8 @@ test('can be updated from an API call', () => {
   expect(user.id).not.toBe('should-not-be-persisted')
 })
 
-test('can add a module', () => {
+test('has Pro by default', () => {
   const user = new User()
   expect(user.modules[0].id).toBe('free')
-  user.addModule('pro')
   expect(user.modules[1].id).toBe('pro')
 })

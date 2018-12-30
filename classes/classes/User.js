@@ -13,13 +13,15 @@ class User {
     this.passwordHash = json.passwordHash || null
     this.modules = json.modules || []
     if (this.modules.length === 0) {
-      this.addModule('free')
+      this.addModule('free', 'none')
+      this.addModule('pro', 'none')
     }
   }
 
-  addModule (id) {
+  addModule (id, transactionId) {
     this.modules.push({
       id,
+      transactionId,
       when: Math.floor(new Date() / 1000)
     })
   }

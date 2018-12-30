@@ -9,7 +9,7 @@
     "eslint-plugin-react": "^7.11.1"
   },
   "scripts": {
-    "build": ". scripts/build.sh",
+    "build": ". scripts/build.sh; . scripts/build-classes.sh",
     "clean": ". scripts/clean.sh"
   },
   "repository": {

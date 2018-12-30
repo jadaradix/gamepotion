@@ -1,4 +1,5 @@
 . scripts/build.sh;
+. scripts/build-classes.sh;
 
 cd container-router;
   . build.sh;
