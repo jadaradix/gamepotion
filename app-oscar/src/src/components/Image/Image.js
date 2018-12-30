@@ -70,7 +70,7 @@ class Image extends Component {
     }
     this.image = new window.Image()
     const onLoad = (event) => {
-      const { width, height } = event.path[0]
+      const { width, height } = (event.path ? event.path[0] : event.target)
       this.onLoad({ width, height })
     }
     const onError = () => this.onError()
