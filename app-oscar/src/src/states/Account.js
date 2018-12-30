@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import { Redirect } from 'react-router'
 import styled from 'styled-components'
 
 import { getState, dispatch, subscribe } from '../state'
@@ -46,8 +45,7 @@ class StateAccount extends Component {
       showingChangePassword: false,
       newPassword: '',
       showingChangeUserlandId: false,
-      newUserlandId: '',
-      loggedOut: false
+      newUserlandId: ''
     }
 
     this.changeUserlandId = this.changeUserlandId.bind(this)
@@ -73,11 +71,6 @@ class StateAccount extends Component {
           showingChangeUserlandId: false,
           showingChangePassword: false
         })
-      }),
-      subscribe('USER_LOG_OUT', () => {
-        this.setState({
-          loggedOut: true
-        })
       })
     ]
     dispatch({
@@ -95,12 +88,6 @@ class StateAccount extends Component {
       data: {
         [prop]: value
       }
-    })
-  }
-
-  logOut() {
-    dispatch({
-      name: 'USER_LOG_OUT'
     })
   }
 
@@ -140,10 +127,6 @@ class StateAccount extends Component {
   }
 
   render() {
-    if (this.state.loggedOut === true) {
-      return <Redirect to='/auth' />
-    }
-
     if (this.state.user === null) {
       return (
         <Fragment>
@@ -194,7 +177,6 @@ class StateAccount extends Component {
                     <Button onClick={this.changePassword}>Change password</Button>
                   </Fragment>
                 }
-                <Button onClick={this.logOut} flavour='weak'>Log out</Button>
               </section>
             </Box>
           </StyledState>

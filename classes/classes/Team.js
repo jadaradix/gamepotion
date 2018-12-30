@@ -4,7 +4,7 @@ class Team {
   constructor (json = {}) {
     this.id = json.id || uuid()
     this.createdAt = json.createdAt || Math.floor(new Date() / 1000)
-    this.name = json.name || 'My Team'
+    this.name = json.name || 'My team'
   }
 
   toApi () {

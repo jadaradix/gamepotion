@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router'
 
 import { getState, dispatch, subscribe } from '../state'
 
@@ -8,7 +9,9 @@ class MainToolbarContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentProject: getState().currentProject
+      currentProject: getState().currentProject,
+      isAccountDropdownShowing: false,
+      loggedOut: false
     }
     this.handleOnClick = this.handleOnClick.bind(this)
     this.addResource = this.addResource.bind(this)
@@ -35,6 +38,19 @@ class MainToolbarContainer extends Component {
         this.setState({
           currentProject: state.currentProject
         })
+      }),
+      subscribe('USER_LOG_OUT', () => {
+        this.setState(
+          {
+            loggedOut: true
+          },
+          () => {
+            // im so sorry
+            this.setState({
+              loggedOut: false
+            })
+          }
+        )
       })
     ]
   }
@@ -49,7 +65,21 @@ class MainToolbarContainer extends Component {
       const resourceType = action.substring('add-resource-'.length)
       return this.addResource(resourceType)
     }
+    const updateIsAccountDropdownShowing = () => {
+      this.setState({
+        isAccountDropdownShowing: !this.state.isAccountDropdownShowing
+      })
+    }
+    const setState = this.setState.bind(this)
     const actions = {
+      'account'() {
+        updateIsAccountDropdownShowing()
+      },
+      'log-out'() {
+        dispatch({
+          name: 'USER_LOG_OUT'
+        })
+      }
     }
     const foundAction = actions[action]
     if (typeof foundAction === 'function') {
@@ -67,8 +97,11 @@ class MainToolbarContainer extends Component {
   }
 
   render() {
+    if (this.state.loggedOut === true) {
+      return <Redirect to='/auth' />
+    }
     return (
-      <MainToolbar currentProject={this.state.currentProject} onClick={this.handleOnClick} disabled={this.props.disabled} />
+      <MainToolbar currentProject={this.state.currentProject} onClick={this.handleOnClick} disabled={this.props.disabled} isAccountDropdownShowing={this.state.isAccountDropdownShowing} />
     )
   }
 }

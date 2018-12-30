@@ -6,8 +6,7 @@ const StyledToolbar = styled.ul`
   flex-direction: row;
   list-style-type: none;
   background-color: #2e3131;
-  overflow: scroll;
-  box-shadow: 0 2px 4px rgb(172, 172, 172);
+  // overflow: scroll;
   // box-shadow: 0 2px 4px red;
 `
 

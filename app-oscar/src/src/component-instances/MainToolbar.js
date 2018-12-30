@@ -15,7 +15,7 @@ const getProjectRoute = (route, currentProject) => {
   return `/projects/${currentProject.project.id}/${route}`
 }
 
-const MainToolbar = ({ currentProject, onClick, disabled }) => {
+const MainToolbar = ({ currentProject, onClick, disabled, isAccountDropdownShowing }) => {
   // console.warn('[MainToolbar] currentProject/disabled', currentProject, disabled)
   return (
     <Toolbar>
@@ -39,8 +39,29 @@ const MainToolbar = ({ currentProject, onClick, disabled }) => {
       }
       <ToolbarGap />
       <ToolbarButton route={'/store'} disabled={disabled} icon={icons.generic.store} hint='Store' />
-      <ToolbarButton route={'/account'} disabled={disabled} icon={icons.generic.account} hint='Account' />
-      <ToolbarButton route={'/team'} disabled={disabled} icon={icons.generic.team} hint='Team' />
+      <ToolbarButton
+        onClick={() => onClick('account')}
+        isDropdownShowing={isAccountDropdownShowing}
+        disabled={disabled}
+        icon={icons.generic.account}
+        hint='My account'
+        dropdownItems={
+          [
+            {
+              route: '/account',
+              name: 'My account'
+            },
+            {
+              route: '/team',
+              name: 'My team'
+            },
+            {
+              onClick: () => onClick('log-out'),
+              name: 'Log out'
+            }
+          ]
+        }
+      />
     </Toolbar>
   )
 }
@@ -48,13 +69,15 @@ const MainToolbar = ({ currentProject, onClick, disabled }) => {
 MainToolbar.propTypes = {
   currentProject: PropTypes.object,
   onClick: PropTypes.func,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  isAccountDropdownShowing: PropTypes.bool
 }
 
 MainToolbar.defaultProps = {
   currentProject: null,
   onClick: () => {},
-  disabled: false
+  disabled: false,
+  isAccountDropdownShowing: false
 }
 
 export default MainToolbar

@@ -19,3 +19,10 @@ body {
 strong {
   font-weight: 800;
 }
+
+#root {
+  background: linear-gradient(rgb(172, 172, 172), #ecf0f1);
+  background-position: 0 calc(3rem + 4px);
+  background-size: 100% 4px;
+  background-repeat: no-repeat;
+}
