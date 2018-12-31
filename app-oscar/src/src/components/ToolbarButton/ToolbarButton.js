@@ -7,12 +7,37 @@ import { withRouter } from 'react-router-dom'
 import { font, colours } from '../../styleAbstractions'
 
 const StyledToolbarButton = styled.li`
+  position: relative;
   display: flex;
   flex-shrink: 0;
   height: calc(3rem + 4px);
   background-color: #2e3131;
   &.fixed-width {
 
+  }
+  ul {
+    position: absolute;
+    top: calc(3rem + 4px);
+    right: 0;
+    min-width: 128px;
+    list-style-type: none;
+    background-color: red;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 2px 4px rgb(172, 172, 172);
+    li {
+      padding: 0.75rem;
+      ${font}
+      background-color: white;
+      cursor: default;
+    }
+    li + li {
+      border-top: 1px solid rgb(220, 220, 200);
+    }
+    li:last-of-type {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
   }
   button {
     display: block;
@@ -79,14 +104,24 @@ const handleOnClick = (history, route, onClick) => {
   }
 }
 
-const ToolbarButton = ({ match, history, route, onClick, icon, hint, significant, disabled, fixedWidth, children }) => {
+const ToolbarButton = ({ match, history, route, onClick, icon, hint, significant, disabled, fixedWidth, children, dropdownItems, isDropdownShowing }) => {
   const fixedWithStyle = {}
   if (typeof fixedWidth === 'string') {
     fixedWithStyle.width = `${fixedWidth}px`
   }
-  const buttonClassName = classnames({'significant': significant, 'selected': (match.url === route), 'disabled': disabled, 'fixed-width': fixedWidth})
+  const selected = (match.url === route)
+  const buttonClassName = classnames({'significant': significant, selected, 'disabled': disabled, 'fixed-width': fixedWidth})
   return (
     <StyledToolbarButton title={hint}>
+      {isDropdownShowing && dropdownItems.length > 0 &&
+        <ul>
+          {dropdownItems.map(di => {
+            return (
+              <li key={di.name} onClick={() => handleOnClick(history, di.route, di.onClick)}>{di.name}</li>
+            )
+          })}
+        </ul>
+      }
       <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={buttonClassName} style={fixedWithStyle}>
         {icon && <img src={icon} alt={hint} className={`icon-${icon}`} />}
         {children && <span>{children}</span>}
@@ -102,13 +137,17 @@ ToolbarButton.propTypes = {
   hint: PropTypes.string,
   significant: PropTypes.bool.isRequired,
   disabled: PropTypes.bool,
-  fixedWidth: PropTypes.string
+  fixedWidth: PropTypes.string,
+  dropdownItems: PropTypes.array,
+  isDropdownShowing: PropTypes.bool
 }
 
 ToolbarButton.defaultProps = {
   onClick: null,
   significant: false,
-  disabled: false
+  disabled: false,
+  dropdownItems: [],
+  isDropdownShowing: false
 }
 
 export default withRouter(ToolbarButton)

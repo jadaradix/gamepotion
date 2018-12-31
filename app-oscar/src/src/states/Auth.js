@@ -13,6 +13,7 @@ import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'
 
 import { getState, dispatch } from '../state'
+import { get } from '../localStorage'
 
 const StyledState = styled.div`
   .component--box {
@@ -260,7 +261,8 @@ class StateDashboard extends PureComponent {
 
   render() {
     if (this.state.authenticated === true) {
-      return <Redirect to={'/dashboard'} />
+      const to = get('log-in-redirect') || '/dashboard'
+      return <Redirect to={to} />
     }
     return (
       <Fragment>

@@ -2,7 +2,9 @@ import React, { Fragment } from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import ReactDOM from 'react-dom'
 
-import api from './api.js'
+import api from './api'
+import { set } from './localStorage'
+
 import CustomHelmet from './component-instances/CustomHelmet.js'
 import Version from './component-instances/Version.js'
 
@@ -19,11 +21,18 @@ import Store from './states/Store.js'
 import './index.css'
 
 const PrivateRoute = ({ WhichComponent, ...rest }) => (
-  <Route {...rest} render={(props) => (
-    api.isLoggedIn() === true
-      ? <WhichComponent {...props} />
-      : <Redirect to='/auth' />
-  )} />
+  <Route
+    {...rest}
+    render={
+      (props) => {
+        if (!api.isLoggedIn()) {
+          set('log-in-redirect', window.location.pathname)
+          return <Redirect to='/auth' />
+        }
+        return <WhichComponent {...props} />
+      }
+    } 
+  />
 )
 
 const app = (
