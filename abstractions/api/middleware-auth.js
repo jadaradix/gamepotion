@@ -34,6 +34,21 @@ const middleware = (publicRoutes, request, response, next) => {
     }
   })
 
+  if (request.authorization.hasOwnProperty('scheme') && request.authorization.scheme === 'Bearer') {
+    const accessToken = request.authorization.credentials
+    return datalayer.readOne('Users', {accessToken})
+      .then(object => {
+        const user = new classes.User(object)
+        request.authorization.user = user
+        request.authorization.method = 'basic'
+        return next()
+      })
+      .catch(() => {
+        response.send(new errors.UnauthorizedError('unknown access token'))
+        return next(false)
+      })
+  }
+
   if (request.authorization.hasOwnProperty('scheme') && request.authorization.scheme === 'Basic') {
     if (request.authorization.basic.username === null || request.authorization.basic.password === null) {
       response.send(new errors.UnauthorizedError('basic auth does not support empty values (probably a zero length password)'))
@@ -41,7 +56,7 @@ const middleware = (publicRoutes, request, response, next) => {
     } else {
       let userlandId = request.authorization.basic.username
       let password = request.authorization.basic.password
-      datalayer.readOne('Users', {userlandId})
+      return datalayer.readOne('Users', {userlandId})
         .then(object => {
           const user = new classes.User(object);
           (async () => {
@@ -69,23 +84,18 @@ const middleware = (publicRoutes, request, response, next) => {
           })()
         })
         .catch((error) => {
-          if (isThisRoutePublic) {
-            return next()
-          } else {
-            console.error('[middleware-auth] potentially major catch', error)
-            response.send(new errors.UnauthorizedError('unknown e-mail address'))
-            return next(false)
-          }
+          console.error('[middleware-auth] potentially major catch', error)
+          response.send(new errors.UnauthorizedError('unknown e-mail address'))
+          return next(false)
         })
     }
+  }
+
+  if (isThisRoutePublic) {
+    return next()
   } else {
-    if (isThisRoutePublic) {
-      request.authorization.isAdmin = false
-      return next()
-    } else {
-      response.send(new errors.UnauthorizedError('authentication was not attempted - does your bearer token start with "public:" or "private:"?'))
-      return next(false)
-    }
+    response.send(new errors.UnauthorizedError('authentication was not attempted!'))
+    return next(false)
   }
 }
 
