@@ -145,7 +145,7 @@ class StateAccount extends Component {
     return (
       <Fragment>
         <CustomHelmet
-          title='Account'
+          title='My account'
         />
         {this.state.showingChangeUserlandId &&
           <ChangeUserlandIdModal
@@ -168,7 +168,7 @@ class StateAccount extends Component {
           <StyledState>
             <Box>
               <section className='account'>
-                <Heading1>Account</Heading1>
+                <Heading1>My account</Heading1>
                 <Input label='Name' value={this.state.user.name} onChange={(v) => this.onUpdateProp('name', v)} />
                 {this.state.user.userlandId.indexOf('@') > 0 &&
                   <Fragment>

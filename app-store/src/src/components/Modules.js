@@ -12,17 +12,12 @@ const StyledModules = styled.div`
 `
 
 const Modules = ({ modules }) => {
-  // console.warn('[component-Bricks] modules', modules)
+  // console.warn('[component-Modules] modules', modules)
   return (
     <StyledModules className='component--modules'>
       {modules.map(module => {
-        const {
-          id,
-          name,
-          price
-        } = module
         return (
-          <Module key={id} id={id} name={name} price={price} />
+          <Module key={module.id} module={module} isPurchased={false} />
         )
       })}
     </StyledModules>

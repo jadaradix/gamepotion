@@ -17,13 +17,12 @@ const StyledToolbarButton = styled.li`
   }
   ul {
     position: absolute;
-    top: calc(3rem + 4px);
+    top: calc(3rem + 4px + 0.5rem);
     right: 0;
     min-width: 128px;
     list-style-type: none;
     background-color: red;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-radius: 4px;
     box-shadow: 0 2px 4px rgb(172, 172, 172);
     li {
       padding: 0.75rem;
@@ -33,6 +32,10 @@ const StyledToolbarButton = styled.li`
     }
     li + li {
       border-top: 1px solid rgb(220, 220, 200);
+    }
+    li:first-of-type {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
     }
     li:last-of-type {
       border-bottom-left-radius: 4px;

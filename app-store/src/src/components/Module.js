@@ -37,18 +37,18 @@ const hackErroredImage = (e) => {
   element.style.height = '172px'
 }
 
-const Module = ({ id, name, price, isPurchased }) => {
-  // console.warn('[component-Module] id/isPurchased', id, isPurchased)
+const Module = ({ module, isPurchased }) => {
+  // console.warn('[component-Module] module', module)
   return (
     <StyledModule className='component--module'>
-      <Link to={`/modules/${id}`}>
+      <Link to={`/modules/${module.id}`}>
         <img
-          src={`https://storage.googleapis.com/gmc-internal/module-${id}.png`}
-          alt={`${name} module`}
+          src={`https://storage.googleapis.com/gmc-internal/${module.image}`}
+          alt={module.name}
           onError={hackErroredImage}
         />
         {isPurchased === false &&
-          <span>{price}</span>
+          <span>{module.price}</span>
         }
         {isPurchased === true &&
           <span>Purchased</span>
@@ -59,15 +59,12 @@ const Module = ({ id, name, price, isPurchased }) => {
 }
 
 Module.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.string,
+  module: PropTypes.object.isRequired,
   isPurchased: PropTypes.bool
 }
 
 Module.defaultProps = {
-  isPurchased: false,
-  price: 'Free'
+  isPurchased: false
 }
 
 export default Module

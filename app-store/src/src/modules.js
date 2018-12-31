@@ -7,7 +7,8 @@ export default [
       <p>
         Hello, World.
       </p>
-    `
+    `,
+    image: 'module.png'
   },
   {
     id: 'resource-pack',
@@ -17,6 +18,7 @@ export default [
     <p>
       Hello, World.
     </p>
-    `
+    `,
+    image: 'module.png'
   }
 ]
