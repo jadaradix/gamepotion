@@ -20,14 +20,30 @@ const StyledModule = styled.div`
       // border-radius: 8px;
       // background-color: orange;
     }
-    span {
+    span.name {
+      display: block;
+      position: absolute;
+      bottom: 2.5rem;
+      left: 0;
+      width: 100%;
+      color: white;
+      ${font}
+      font-size: 150%;
+      text-align: center;
+    }
+    span.price, span.purchased {
       display: block;
       position: absolute;
       bottom: 0.5rem;
-      right: 0.5rem;
       color: white;
       ${font}
       // background-color: pink;
+    }
+    span.price {
+      left: 0.5rem;
+    }
+    span.purchased {
+      right: 0.5rem;
     }
   }
 `
@@ -47,11 +63,12 @@ const Module = ({ module, isPurchased }) => {
           alt={module.name}
           onError={hackErroredImage}
         />
+        <span className='name'>{module.name}</span>
         {isPurchased === false &&
-          <span>{module.price}</span>
+          <span className='price'>{module.price}</span>
         }
         {isPurchased === true &&
-          <span>Purchased</span>
+          <span className='purchased'>Purchased</span>
         }
       </Link>
     </StyledModule>
