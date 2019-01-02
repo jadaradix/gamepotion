@@ -55,7 +55,7 @@ class StateStore extends Component {
         <MainToolbarContainer />
         <ResponsiveContainer>
           <StyledState>
-            <iframe title='Store' src={store(process.env.NODE_ENV, 'modules/pro', this.state.user.accessToken)}>...</iframe>
+            <iframe title='Store' src={store(process.env.NODE_ENV, this.props.match.params[0], this.state.user.accessToken)}>...</iframe>
           </StyledState>
         </ResponsiveContainer>
       </Fragment>
