@@ -20,14 +20,30 @@ const StyledModule = styled.div`
       // border-radius: 8px;
       // background-color: orange;
     }
-    span {
+    span.name {
+      display: block;
+      position: absolute;
+      bottom: 2.5rem;
+      left: 0;
+      width: 100%;
+      color: white;
+      ${font}
+      font-size: 150%;
+      text-align: center;
+    }
+    span.price, span.bought {
       display: block;
       position: absolute;
       bottom: 0.5rem;
-      right: 0.5rem;
       color: white;
       ${font}
       // background-color: pink;
+    }
+    span.price {
+      left: 0.5rem;
+    }
+    span.bought {
+      right: 0.5rem;
     }
   }
 `
@@ -37,21 +53,22 @@ const hackErroredImage = (e) => {
   element.style.height = '172px'
 }
 
-const Module = ({ id, name, price, isPurchased }) => {
-  // console.warn('[component-Module] id/isPurchased', id, isPurchased)
+const Module = ({ module, hasBought }) => {
+  // console.warn('[component-Module] module', module)
   return (
     <StyledModule className='component--module'>
-      <Link to={`/modules/${id}`}>
+      <Link to={`/modules/${module.id}`}>
         <img
-          src={`https://storage.googleapis.com/gmc-internal/module-${id}.png`}
-          alt={`${name} module`}
+          src={`https://storage.googleapis.com/gmc-internal/${module.image}`}
+          alt={module.name}
           onError={hackErroredImage}
         />
-        {isPurchased === false &&
-          <span>{price}</span>
+        <span className='name'>{module.name}</span>
+        {hasBought === false &&
+          <span className='price'>{module.price}</span>
         }
-        {isPurchased === true &&
-          <span>Purchased</span>
+        {hasBought === true &&
+          <span className='bought'>Purchased</span>
         }
       </Link>
     </StyledModule>
@@ -59,15 +76,12 @@ const Module = ({ id, name, price, isPurchased }) => {
 }
 
 Module.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.string,
-  isPurchased: PropTypes.bool
+  module: PropTypes.object.isRequired,
+  hasBought: PropTypes.bool
 }
 
 Module.defaultProps = {
-  isPurchased: false,
-  price: 'Free'
+  hasBought: false
 }
 
 export default Module

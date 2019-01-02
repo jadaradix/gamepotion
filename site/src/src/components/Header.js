@@ -166,7 +166,7 @@ class Header extends PureComponent {
           <nav className={this.state.isMenuOpen ? 'open' : ''}>
             <ul>
               {/* <CustomLink to='/games'>Games</CustomLink> */}
-              {/* <CustomLink to='/store'>Store</CustomLink> */}
+              {/* <CustomLink to='/store/'>Store</CustomLink> */}
               {/* <CustomLink to='/tutorials'>Tutorials</CustomLink> */}
               <CustomLink to='/about'>About</CustomLink>
               <li className='important'><a href={appDashboard(process.env.NODE_ENV)}>Join</a></li>

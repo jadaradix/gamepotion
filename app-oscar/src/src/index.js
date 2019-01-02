@@ -45,7 +45,7 @@ const app = (
         <PrivateRoute path='/dashboard' exact strict WhichComponent={Dashboard} />
         <PrivateRoute path='/account' exact strict WhichComponent={Account} />
         <PrivateRoute path='/team' exact strict WhichComponent={Team} />
-        <PrivateRoute path='/store' exact strict WhichComponent={Store} />
+        <PrivateRoute path='/store/*' strict WhichComponent={Store} />
         <PrivateRoute path='/projects/new' exact strict WhichComponent={ProjectNew} />
         <PrivateRoute path='/projects/:id/play' exact strict WhichComponent={ProjectPlay} />
         <PrivateRoute path='/projects/:id/preferences' exact strict WhichComponent={ProjectPreferences} />

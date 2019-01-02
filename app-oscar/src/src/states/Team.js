@@ -99,14 +99,14 @@ class StateTeam extends Component {
     return (
       <Fragment>
         <CustomHelmet
-          title='Team'
+          title='My team'
         />
         <MainToolbarContainer />
         <ResponsiveContainer>
           <StyledState>
             <Box>
               <section>
-                <Heading1>Team</Heading1>
+                <Heading1>My team</Heading1>
                 <Input label='Name' value={this.state.team.name} onChange={(v) => this.onUpdateProp('name', v)} />
               </section>
               <section>

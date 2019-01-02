@@ -22,6 +22,7 @@ import updateProjectResource from './actions/projects/resources/update'
 import deleteProjectResource from './actions/projects/resources/delete'
 import getFeed from './actions/feeds/get'
 import localSettingsUpdate from './actions/localSettings/update'
+import buyModule from './actions/buyModule'
 
 let state = {
   credentials: {
@@ -56,7 +57,8 @@ const actions = new Map([
   ['PROJECTS_RESOURCES_UPDATE', updateProjectResource],
   ['PROJECTS_RESOURCES_DELETE', deleteProjectResource],
   ['FEEDS_GET', getFeed],
-  ['LOCAL_SETTINGS_UPDATE', localSettingsUpdate]
+  ['LOCAL_SETTINGS_UPDATE', localSettingsUpdate],
+  ['BUY_MODULE', buyModule]
 ])
 
 const element = document.createElement('SPAN')
@@ -66,11 +68,11 @@ const element = document.createElement('SPAN')
 //     const electron = window.require('electron') // webpack is trying to understand this!!!
 //     electron.ipcRenderer.on('incoming-play-pause', event => {
 //       console.warn('[service pubsub] incoming-play-pause')
-//       this.publish('player-user-play-pause')
+//       doesnt work dispatch('player-user-play-pause', {})
 //     })
 //     electron.ipcRenderer.on('incoming-next', event => {
 //       console.warn('[service pubsub] incoming-next')
-//       this.publish('player-next')
+//       doesnt work dispatch('player-next', {})
 //     })
 //   }
 //   // ...
@@ -99,7 +101,7 @@ export function dispatch ({ name, pleaseThrow = false, data = {} }) {
   return foundAction(state, data)
     .then(newState => {
       state = newState
-      publish(name, state)
+      element.dispatchEvent(new window.CustomEvent(`oscar-dispatch-${name}`, { detail: state }))
       return state
     })
     .catch(error => {
@@ -110,6 +112,19 @@ export function dispatch ({ name, pleaseThrow = false, data = {} }) {
       }
       if (name === 'USER_LOG_IN' && data.password === 'dummy-password') {
         throw error
+      }
+      if (
+        error.hasOwnProperty('response') &&
+        typeof error.response.data.message === 'string' &&
+        error.response.data.message.indexOf('buy ') === 0
+      ) {
+        dispatch({
+          name: 'BUY_MODULE',
+          data: {
+            moduleToBuy: error.response.data.message.substring('buy '.length)
+          }
+        })
+        return
       }
       const errorMessage = (() => {
         if (error.message === 'Network Error') {
@@ -129,19 +144,14 @@ export function dispatch ({ name, pleaseThrow = false, data = {} }) {
     })
 }
 
-export function publish (name, detail) {
-  console.log('[state] [publish]', name)
-  element.dispatchEvent(new window.CustomEvent(`oscar-pub-sub-event-${name}`, { detail }))
-}
-
 export function getState () {
   return state
 }
 
 export function subscribe (name, handler) {
   const logic = e => handler(e.detail)
-  element.addEventListener(`oscar-pub-sub-event-${name}`, logic, false)
+  element.addEventListener(`oscar-dispatch-${name}`, logic, false)
   return {
-    unsubscribe: () => element.removeEventListener(`oscar-pub-sub-event-${name}`, logic)
+    unsubscribe: () => element.removeEventListener(`oscar-dispatch-${name}`, logic)
   }
 }

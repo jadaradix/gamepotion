@@ -7,7 +7,7 @@ const fixedResourceCollectionsByType = {
   'image': [
     {
       'id': 'oscar',
-      'requiresPurchasedResourcePackModule': false,
+      'requiresboughtResourcePackModule': false,
       'credit': 'James Garner',
       'resources': [
         {
@@ -38,7 +38,7 @@ const fixedResourceCollectionsByType = {
     },
     {
       'id': 'cilein-kearns',
-      'requiresPurchasedResourcePackModule': false,
+      'requiresboughtResourcePackModule': false,
       'credit': 'Ciléin Kearns',
       resources: [
         { id: 'cilein-kearns-Aquatic Pack-BubbleBig',
@@ -301,7 +301,7 @@ const fixedResourceCollectionsByType = {
     },
     {
       'id': 'reiners-tilesets',
-      'requiresPurchasedResourcePackModule': false,
+      'requiresboughtResourcePackModule': false,
       'credit': 'Reiner "Tiles" Prokein',
       'resources': [
         {
@@ -394,7 +394,7 @@ const fixedResourceCollectionsByType = {
   'sound': [
     {
       'id': 'oscar',
-      'requiresPurchasedResourcePackModule': false,
+      'requiresboughtResourcePackModule': false,
       'credit': 'James Garner',
       'resources': [
         {
@@ -425,9 +425,9 @@ export default [
     nameSingular: 'image',
     namePlural: 'Images',
     component: Image,
-    getFixed(purchasedResourcePackModule = false) {
+    getFixed(boughtResourcePackModule = false) {
       const availableFixedImageResourceCollections = fixedResourceCollectionsByType['image'].filter(ic => {
-        return (ic.requiresPurchasedResourcePackModule ? purchasedResourcePackModule : true)
+        return (ic.requiresboughtResourcePackModule ? boughtResourcePackModule : true)
       })
       return availableFixedImageResourceCollections.reduce(
         (finalCollections, currentCollection) => finalCollections.concat(currentCollection.resources),
@@ -440,9 +440,9 @@ export default [
     nameSingular: 'sound',
     namePlural: 'Sounds',
     component: Sound,
-    getFixed(purchasedResourcePackModule = false) {
+    getFixed(boughtResourcePackModule = false) {
       const availableFixedImageResourceCollections = fixedResourceCollectionsByType['sound'].filter(ic => {
-        return (ic.requiresPurchasedResourcePackModule ? purchasedResourcePackModule : true)
+        return (ic.requiresboughtResourcePackModule ? boughtResourcePackModule : true)
       })
       return availableFixedImageResourceCollections.reduce(
         (finalCollections, currentCollection) => finalCollections.concat(currentCollection.resources),

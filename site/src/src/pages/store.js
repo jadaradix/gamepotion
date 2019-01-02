@@ -1,7 +1,7 @@
 import React from 'react'
 import Page from '../Page'
 
-import { storeHome } from '../inter-router' 
+import { store } from '../inter-router' 
 
 const TITLE = 'Store'
 
@@ -14,7 +14,7 @@ const ThisPage = () => (
         height: '800px'
       }}
       title='Store'
-      src={storeHome(process.env.NODE_ENV)}
+      src={store(process.env.NODE_ENV, '')}
     />
   </Page>
 )

@@ -11,6 +11,17 @@ import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 
+const appliesToOptions = [
+  {
+    id: 'this',
+    name: 'This instance'
+  },
+  {
+    id: 'other',
+    name: 'Other instance'
+  }
+]
+
 const StyledModal = styled.div`
   .component--modal {
     .component--heading1 {
@@ -113,17 +124,6 @@ class ActionModal extends PureComponent {
     )
   }
 }
-
-const appliesToOptions = [
-  {
-    id: 'this',
-    name: 'This instance'
-  },
-  {
-    id: 'other',
-    name: 'Other instance'
-  }
-]
 
 ActionModal.propTypes = {
   actionClassInstance: PropTypes.any.isRequired,

@@ -40,7 +40,7 @@ const ThisPage = () => (
           <li>Joining is free forever &mdash; this isn't a trial</li>
           <li>There's nothing to install &mdash; Game Maker Club works completely in your browser</li>
           <li>You can make an unlimited number of games and share them with your friends (they don't need to join)</li>
-          <li>If you like Game Maker Club, you can pay for Pro membership, unlocking unlimited resources and over 100 more included images</li>
+          <li>If you like Game Maker Club, you can pay for Pro membership, removing pre-game advertising and unlocking unlimited resources</li>
         </UL>
       </div>
     </LeftRight>
