@@ -8,7 +8,7 @@ import Banner from '../components/Banner/Banner'
 const BuyModuleBanner = ({ moduleId, moduleName, verb }) => {
   return (
     <Banner>
-      To {verb}, buy <Link to="/store">{moduleName}</Link> in the Store!
+      To {verb}, buy <Link to={`/store/${moduleId}`}>{moduleName}</Link> in the Store!
     </Banner>
   )
 }

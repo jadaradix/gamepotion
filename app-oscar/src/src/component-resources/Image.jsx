@@ -123,14 +123,14 @@ class ResourceImage extends PureComponent {
 
   render() {
 
-    const purchasedResourcePackModule = this.props.moduleIds.includes('resource-pack')
+    const boughtResourcePackModule = this.props.moduleIds.includes('resource-pack')
     const fixedOptions = [
       {
         id: 'none',
         name: '<None>',
         url: null
       },
-      ...resourceTypes.find(rt => rt.type === 'image').getFixed(purchasedResourcePackModule).map(o => {
+      ...resourceTypes.find(rt => rt.type === 'image').getFixed(boughtResourcePackModule).map(o => {
         return {
           id: o.id,
           name: o.name,
@@ -151,7 +151,7 @@ class ResourceImage extends PureComponent {
           <Box className='file'>
             <ImageChooser title='Choose an included file' id='image-fixed' images={fixedOptions} currentImage={fixedValue} onChoose={this.onChooseFixed} />
             <p>Choosing an included file won&rsquo;t erase a file you have uploaded.</p>
-            {purchasedResourcePackModule === false &&
+            {boughtResourcePackModule === false &&
               <BuyModuleBanner moduleId='resource-pack' moduleName='Resource Pack' verb='get more included files' />
             }
           </Box>

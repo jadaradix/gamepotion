@@ -31,7 +31,7 @@ const StyledModule = styled.div`
       font-size: 150%;
       text-align: center;
     }
-    span.price, span.purchased {
+    span.price, span.bought {
       display: block;
       position: absolute;
       bottom: 0.5rem;
@@ -42,7 +42,7 @@ const StyledModule = styled.div`
     span.price {
       left: 0.5rem;
     }
-    span.purchased {
+    span.bought {
       right: 0.5rem;
     }
   }
@@ -53,7 +53,7 @@ const hackErroredImage = (e) => {
   element.style.height = '172px'
 }
 
-const Module = ({ module, isPurchased }) => {
+const Module = ({ module, hasBought }) => {
   // console.warn('[component-Module] module', module)
   return (
     <StyledModule className='component--module'>
@@ -64,11 +64,11 @@ const Module = ({ module, isPurchased }) => {
           onError={hackErroredImage}
         />
         <span className='name'>{module.name}</span>
-        {isPurchased === false &&
+        {hasBought === false &&
           <span className='price'>{module.price}</span>
         }
-        {isPurchased === true &&
-          <span className='purchased'>Purchased</span>
+        {hasBought === true &&
+          <span className='bought'>Purchased</span>
         }
       </Link>
     </StyledModule>
@@ -77,11 +77,11 @@ const Module = ({ module, isPurchased }) => {
 
 Module.propTypes = {
   module: PropTypes.object.isRequired,
-  isPurchased: PropTypes.bool
+  hasBought: PropTypes.bool
 }
 
 Module.defaultProps = {
-  isPurchased: false
+  hasBought: false
 }
 
 export default Module

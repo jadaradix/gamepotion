@@ -35,7 +35,8 @@ const route = async (request, response, next) => {
     const hasBoughtPro = request.authorization.user.modules.find(m => m.id === 'pro')
     const isOverResourceOfThisTypeLimit = (resourcesOfThisType >= MAX_RESOURCES_BEFORE_PURCHASE_PRO)
     if (!hasBoughtPro && isOverResourceOfThisTypeLimit) {
-      response.send(new errors.BadRequestError(`you need to buy Pro in the Store to add more than ${MAX_RESOURCES_BEFORE_PURCHASE_PRO} ${resourceClass.type}s`))
+      response.send(new errors.BadRequestError('buy pro'))
+      // response.send(new errors.BadRequestError(`you need to buy Pro in the Store to add more than ${MAX_RESOURCES_BEFORE_PURCHASE_PRO} ${resourceClass.type}s`))
       return next(false)
     }
     resourceClass.fromApiPost(request.body)

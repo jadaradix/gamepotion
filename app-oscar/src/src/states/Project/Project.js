@@ -11,6 +11,8 @@ import MainToolbarContainer from '../../component-instances/MainToolbarContainer
 import ResourceList from '../../component-instances/ResourceList'
 import Resource from '../../component-instances/Resource'
 
+import BuyProModal from '../../modals/BuyPro'
+
 const StyledState = styled.div`
   > aside {
     padding: 1rem;
@@ -51,10 +53,13 @@ class StateProjectProject extends Component {
       moduleIds: [],
       currentProject: null,
       resourceToLoadId: null,
+      buyProModuleShowing: false,
       localSettings: getState().localSettings
     }
     this.hackUrlResourceId = 'load'
     this.onLoadResource = this.onLoadResource.bind(this)
+    this.buyProModalOnGood = this.buyProModalOnGood.bind(this)
+    this.buyProModalOnBad = this.buyProModalOnBad.bind(this)
   }
 
   componentDidMount() {
@@ -90,6 +95,16 @@ class StateProjectProject extends Component {
         this.setState({
           currentProject: state.currentProject
         })
+      }),
+      subscribe('BUY_MODULE', (state) => {
+        const actions = {
+          pro: () => {
+            this.setState({
+              buyProModuleShowing: true
+            })
+          }
+        }
+        actions[state.moduleToBuy]()
       }),
       subscribe('PROJECTS_RESOURCES_UPDATE', (state) => {
         this.setState({
@@ -199,6 +214,18 @@ class StateProjectProject extends Component {
     })
   }
 
+  buyProModalOnGood() {
+    this.setState({
+      buyProModuleShowing: false
+    })
+  }
+
+  buyProModalOnBad() {
+    this.setState({
+      buyProModuleShowing: false
+    })
+  }
+
   render() {
     // if (this.state.currentProject && this.state.currentProject.currentResource) {
     //   console.warn('[state-Project] [render] this.state.currentProject.currentResource', this.state.currentProject.currentResource)
@@ -207,6 +234,12 @@ class StateProjectProject extends Component {
       <Fragment>
         <MainToolbarContainer />
         <StyledState>
+          {this.state.buyProModuleShowing &&
+            <BuyProModal
+              onGood={this.buyProModalOnGood}
+              onBad={this.buyProModalOnBad}
+            />
+          }
           <aside>
             {this.state.currentProject === null &&
               <Loading />

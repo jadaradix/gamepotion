@@ -4,9 +4,11 @@ export default [
     name: 'Pro',
     price: '$10',
     description: `
-      <p>
-        Hello, World.
-      </p>
+    <ul>
+      <li>Add more than 5 Image, Sound, Atom or Space resources</li>
+      <li>Remove pre-game advertising</li>
+      <li>Support the continued development of Game Maker Club</li>
+    </ul>
     `,
     image: 'module.png'
   },
@@ -16,7 +18,7 @@ export default [
     price: '$5',
     description: `
     <p>
-      Hello, World.
+      
     </p>
     `,
     image: 'module.png'

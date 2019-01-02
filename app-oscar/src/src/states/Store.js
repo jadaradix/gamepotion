@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 
-import { storeHome } from '../inter-router'
+import { store } from '../inter-router'
 import { getState, dispatch, subscribe } from '../state'
 
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
@@ -55,7 +55,7 @@ class StateStore extends Component {
         <MainToolbarContainer />
         <ResponsiveContainer>
           <StyledState>
-            <iframe title='Store' src={storeHome(process.env.NODE_ENV, this.state.user.accessToken)}>...</iframe>
+            <iframe title='Store' src={store(process.env.NODE_ENV, 'modules/pro', this.state.user.accessToken)}>...</iframe>
           </StyledState>
         </ResponsiveContainer>
       </Fragment>
