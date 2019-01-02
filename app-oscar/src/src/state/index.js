@@ -113,11 +113,15 @@ export function dispatch ({ name, pleaseThrow = false, data = {} }) {
       if (name === 'USER_LOG_IN' && data.password === 'dummy-password') {
         throw error
       }
-      if (error.hasOwnProperty('response') && error.response.data.message === 'buy pro') {
+      if (
+        error.hasOwnProperty('response') &&
+        typeof error.response.data.message === 'string' &&
+        error.response.data.message.indexOf('buy ') === 0
+      ) {
         dispatch({
           name: 'BUY_MODULE',
           data: {
-            moduleToBuy: 'pro'
+            moduleToBuy: error.response.data.message.substring('buy '.length)
           }
         })
         return

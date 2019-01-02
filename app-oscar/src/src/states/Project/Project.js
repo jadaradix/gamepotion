@@ -104,7 +104,7 @@ class StateProjectProject extends Component {
             })
           }
         }
-        actions[state.moduleToBuy]()
+        typeof actions[state.moduleToBuy] === 'function' && actions[state.moduleToBuy]()
       }),
       subscribe('PROJECTS_RESOURCES_UPDATE', (state) => {
         this.setState({
