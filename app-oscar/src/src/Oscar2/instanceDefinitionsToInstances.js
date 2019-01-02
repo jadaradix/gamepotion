@@ -9,7 +9,7 @@ const instanceDefinitionsToInstances = (instances, resourceContainers) => {
     .map(i => {
       const atomContainer = resourceContainers.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
       if (atomContainer === undefined) return undefined
-      const { x, y, z, angle } = i
+      const { x, y, z, angle, scale } = i
       const props = {
         x,
         y,
@@ -18,7 +18,8 @@ const instanceDefinitionsToInstances = (instances, resourceContainers) => {
         vy: 0,
         vz: 0,
         frame: 0,
-        angle: degreesToRadians(angle)
+        angle: degreesToRadians(angle),
+        scale
       }
       const newInstance = new Instance(props, atomContainer)
       newInstance.setImage(atomContainer.resource.imageId, resourceContainers)

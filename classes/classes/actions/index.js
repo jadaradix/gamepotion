@@ -1,9 +1,10 @@
 import Create from './Create.js'
 import Move from './Move.js'
 import MoveInADirection from './MoveInADirection.js'
-import Rotate from './Rotate.js'
 import SetImage from './SetImage.js'
 import SetFrame from './SetFrame.js'
+import Rotate from './Rotate.js'
+import Scale from './Scale.js'
 import Destroy from './Destroy.js'
 
 import PlaySound from './PlaySound.js'
@@ -29,9 +30,10 @@ export default {
   Create,
   Move,
   MoveInADirection,
-  Rotate,
   SetImage,
   SetFrame,
+  Rotate,
+  Scale,
   Destroy,
 
   PlaySound,
