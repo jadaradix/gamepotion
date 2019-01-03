@@ -422,6 +422,7 @@ const fixedResourceCollectionsByType = {
 export default [
   {
     type: 'image',
+    label: 'Image',
     nameSingular: 'image',
     namePlural: 'Images',
     component: Image,
@@ -437,6 +438,7 @@ export default [
   },
   {
     type: 'sound',
+    label: 'Sound',
     nameSingular: 'sound',
     namePlural: 'Sounds',
     component: Sound,
@@ -452,12 +454,14 @@ export default [
   },
   {
     type: 'atom',
+    label: 'Atom',
     nameSingular: 'atom',
     namePlural: 'Atoms',
     component: Atom
   },
   {
     type: 'space',
+    label: 'Space',
     nameSingular: 'space',
     namePlural: 'Spaces',
     component: Space

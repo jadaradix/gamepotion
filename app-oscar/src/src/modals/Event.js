@@ -59,14 +59,14 @@ class EventModal extends PureComponent {
     this.configurations = [
       {
         type: 'generic',
-        render(name, values = [], value, onUpdate, onGood) {
+        render: (name, values = [], value, onUpdate, onGood) => {
           const key = `default-${name}`
           return <Input key={key} label={name} value={value} onChange={onUpdate} onDone={onGood} />
         }
       },
       {
         type: 'options',
-        render(name, values = [], value, onUpdate, onGood) {
+        render: (name, values = [], value, onUpdate, onGood) => {
           const key = `options-${name}`
           return <Dropper key={key} options={values} value={value} label={name} onChoose={onUpdate} />
         }
@@ -74,14 +74,13 @@ class EventModal extends PureComponent {
       ...resourceTypes.map(rt => {
         return {
           type: rt.type,
-          render(name, values = [], value, onUpdate, onGood) {
+          render: (name, values = [], value, onUpdate, onGood) => {
             const key = `resource-type-${rt.name}`
-            return <Dropper key={key} options={this.resourcesByType[rt.type]} value={value} label={rt.name} onChoose={onUpdate} />
+            return <Dropper key={key} options={this.resourcesByType[rt.type]} value={value} label={rt.label} onChoose={onUpdate} />
           }
         }
       })
     ]
-    console.warn('this.configurations', this.configurations)
     this.state = {
       eventClass
     }
@@ -93,13 +92,17 @@ class EventModal extends PureComponent {
 
   onChooseEvent(id) {
     const eventClass = this.eventClasses.find(ec => ec.id === id)
-    const configuration = eventClass.defaultConfiguration.map(dc => dc.defaultValue)
-    if (configuration.length === 0) {
-      return this.props.onGood(eventClass.id, configuration)
+    eventClass.configuration = eventClass.defaultConfiguration.map(dc => {
+      if (typeof this.resourcesByType[dc.type] === 'object' && this.resourcesByType[dc.type].length > 0) {
+        return this.resourcesByType[dc.type][0].id
+      }
+      return dc.defaultValue
+    })
+    if (eventClass.configuration.length === 0) {
+      return this.props.onGood(eventClass.id, eventClass.configuration)
     }
     this.setState({
-      eventClass,
-      configuration
+      eventClass
     })
   }
 
