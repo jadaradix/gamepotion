@@ -1,6 +1,6 @@
 {
   "name": "gmc-app-play",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Play",
   "dependencies": {
     "axios": "^0.18.0",

@@ -84,6 +84,30 @@ const StyledListItem = styled.li`
       }
     }
   }
+  > .tags {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 2rem;
+    span {
+      display: block;
+      float: left;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      margin-top: 0.25rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      border-radius: 5000px;
+      ${font}
+      font-weight: 800;
+      font-size: 80%;
+      text-transform: uppercase;
+      color: white;
+    }
+    span + span {
+      margin-left: 0.5rem;
+    }
+  }
 `
 
 const actions = {
@@ -102,7 +126,7 @@ const getAction = (onAction, id, name) => {
   return null
 }
 
-const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, indentation }) => {
+const ListItem = ({ id, icon, selected, actions, tags, children, onChoose, onAction, indentation }) => {
   const handleKeypress = (e) => {
     if (e.key === 'Enter') {
       onChoose(id)
@@ -122,6 +146,11 @@ const ListItem = ({ id, icon, selected, actions, children, onChoose, onAction, i
       <div className='actions'>
         {actions.map(name => getAction(handleOnAction, id, name))}
       </div>
+      <div className='tags'>
+        {tags.map(tag => (
+          <span key={tag.name} style={{backgroundColor: tag.colour}}>{tag.name}</span>
+        ))}
+      </div>
     </StyledListItem>
   )
 }
@@ -131,6 +160,7 @@ ListItem.propTypes = {
   icon: PropTypes.string,
   selected: PropTypes.bool,
   actions: PropTypes.array,
+  tags: PropTypes.arrayOf(PropTypes.object),
   onChoose: PropTypes.func,
   onAction: PropTypes.func,
   indentation: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
@@ -140,6 +170,7 @@ ListItem.defaultProps = {
   icon: '',
   selected: false,
   actions: [],
+  tags: [],
   onChoose: () => {},
   onAction: () => {},
   indentation: 4

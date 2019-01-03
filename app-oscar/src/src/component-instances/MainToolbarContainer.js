@@ -70,7 +70,6 @@ class MainToolbarContainer extends Component {
         isAccountDropdownShowing: !this.state.isAccountDropdownShowing
       })
     }
-    const setState = this.setState.bind(this)
     const actions = {
       'account'() {
         updateIsAccountDropdownShowing()

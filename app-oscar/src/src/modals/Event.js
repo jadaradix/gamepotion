@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import resourceTypes from '../resourceTypes'
 import { events } from '../classes'
 import icons from '../icons'
 
@@ -37,23 +38,50 @@ const StyledModal = styled.div`
   }
 `
 
-const getConfiguration = (name, type, values = [], value, onUpdate, onGood) => {
-  const key = `${type}-${name}`
-  switch (type) {
-  case 'options':
-    return <Dropper key={key} options={values} value={value} label={name} onChoose={onUpdate} />
-  default:
-    return <Input key={key} label={name} value={value} onChange={onUpdate} onDone={onGood} />
-  }
-}
-
 class EventModal extends PureComponent {
   constructor(props) {
     super(props)
     this.eventClasses = Object.keys(events).map(k => {
       return new events[k]()
     })
-    const eventClass = this.eventClasses.find(ec => ec.id === this.props.id)
+    const eventClass = this.eventClasses.find(ec => ec.id === props.id)
+    this.resourcesByType = {}
+    resourceTypes.forEach(rt => {
+      this.resourcesByType[rt.type] = props.resources
+        .filter(r => r.type === rt.type)
+        .map(r => {
+          return {
+            id: r.id,
+            name: r.name
+          }
+        })
+    })
+    this.configurations = [
+      {
+        type: 'generic',
+        render(name, values = [], value, onUpdate, onGood) {
+          const key = `default-${name}`
+          return <Input key={key} label={name} value={value} onChange={onUpdate} onDone={onGood} />
+        }
+      },
+      {
+        type: 'options',
+        render(name, values = [], value, onUpdate, onGood) {
+          const key = `options-${name}`
+          return <Dropper key={key} options={values} value={value} label={name} onChoose={onUpdate} />
+        }
+      },
+      ...resourceTypes.map(rt => {
+        return {
+          type: rt.type,
+          render(name, values = [], value, onUpdate, onGood) {
+            const key = `resource-type-${rt.name}`
+            return <Dropper key={key} options={this.resourcesByType[rt.type]} value={value} label={rt.name} onChoose={onUpdate} />
+          }
+        }
+      })
+    ]
+    console.warn('this.configurations', this.configurations)
     this.state = {
       eventClass
     }
@@ -114,7 +142,8 @@ class EventModal extends PureComponent {
           </List>
           <div className='configuration'>
             {this.state.eventClass.defaultConfiguration.map((dc, dci) => {
-              return getConfiguration(dc.name, dc.type, dc.values, this.state.eventClass.configuration[dci], (v) => this.onChangeConfiguration(dci, v), this.handleOnGood)
+              const foundConfiguration = this.configurations.find(c => c.type === dc.type)
+              return foundConfiguration.render(dc.name, dc.values, this.state.eventClass.configuration[dci], (v) => this.onChangeConfiguration(dci, v), this.handleOnGood)
             })}
           </div>
           <div className='decision'>
@@ -128,6 +157,7 @@ class EventModal extends PureComponent {
 
 EventModal.propTypes = {
   id: PropTypes.string,
+  resources: PropTypes.array.isRequired,
   configuration: PropTypes.array,
   onGood: PropTypes.func,
   onBad: PropTypes.func

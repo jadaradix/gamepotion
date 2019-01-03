@@ -171,7 +171,7 @@ class StateDashboard extends Component {
       return <Redirect to={`/projects/${this.state.projectToLoad.project.id}/resources/load`} />
     }
 
-    const newsFeed = this.state.feeds.get('news')
+    // const newsFeed = this.state.feeds.get('news')
     return (
       <Fragment>
         <MainToolbarContainer />

@@ -2,7 +2,7 @@ import classes from '../classes'
 import instanceDefinitionsToInstances from './instanceDefinitionsToInstances'
 import handleActionBack from './handleActionBack'
 
-import isInstanceIntersectingInstance from './isInstanceIntersectingInstance'
+// import isInstanceIntersectingInstance from './isInstanceIntersectingInstance'
 
 const actionClasses = new Map(
   Object.keys(classes.actions).map(k => {
