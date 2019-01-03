@@ -1,7 +1,7 @@
 import {
   appProject,
   store,
-  siteHome,
+  site,
   playProject,
 } from './index.js'
 
@@ -18,9 +18,9 @@ describe('interRouter', () => {
     expect(link).toBe('https://store.gamemaker.club/modules/pro?access-token')
   })
 
-  it('generates a site home route', () => {
-    const link = siteHome(NODE_ENV)
-    expect(link).toBe('https://gamemaker.club')
+  it('generates a site route', () => {
+    const link = site(NODE_ENV, 'credits')
+    expect(link).toBe('https://gamemaker.club/credits')
   })
 
   it('generates a play project route', () => {

@@ -30,10 +30,10 @@ export function playProject(environment, projectId) {
   return environments[environment]
 }
 
-export function siteHome(environment) {
+export function site(environment, route) {
   const environments = {
-    'development': 'http://localhost:3003',
-    'production': 'https://gamemaker.club'
-  }
+    'development': `http://localhost:3003/${route}`,
+    'production': `https://gamemaker.club/${route}`
+}
   return environments[environment]
 }

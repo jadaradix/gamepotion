@@ -235,14 +235,14 @@ const loadResources = (resourceContainers, spaceContainer) => {
 }
 
 const eventListeners = []
-const addEventListener = (element, name, logic) => {
+const addEventListener = (element, name, logic, isPassive) => {
   const event = {
     element,
     name,
     logic
   }
   eventListeners.push(event)
-  element.addEventListener(name, logic)
+  element.addEventListener(name, logic, isPassive ? {passive: true} : undefined)
 }
 
 const isInstanceIntersecting = (instance, coords) => {
@@ -445,7 +445,7 @@ const RenderGameSpace = (
 
     addEventListener(c, 'touchmove', (e) => {
       onTouchMove(getTouchData(domBoundsX, domBoundsY, e))
-    })
+    }, true)
     addEventListener(c, 'mousemove', (e) => {
       onTouchMove(getMouseData(domBoundsX, domBoundsY, e))
     })
@@ -485,7 +485,7 @@ const RenderGameSpace = (
         coords: getTouchData(domBoundsX, domBoundsY, e),
         time: Date.now()
       }
-    })
+    }, true)
     addEventListener(c, 'touchend', () => {
       const timeDifference = Date.now() - jInputs.touch.time
       const normalisedCoords = normaliseCoords(camera, designMode, gridOn, gridWidth, gridHeight, jInputs.touch.coords)
