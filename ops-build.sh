@@ -28,3 +28,7 @@ cd ..;
 cd site;
   . build.sh;
 cd ..;
+
+cd service-mail;
+  . build.sh;
+cd ..;

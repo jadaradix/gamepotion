@@ -15,7 +15,7 @@ cp -R ../classes files;
 rm -rf files/classes/node_modules;
 
 rm files/config-gcp.json;
-cp ../config-gcp.json files/config-gcp.json;
+cp ../secrets/config-gcp.json files/config-gcp.json;
 
 docker stop oscar-production-api-bin;
 docker rm oscar-production-api-bin;

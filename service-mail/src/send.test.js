@@ -4,11 +4,13 @@ const send = require('./send')
 test('works', async () => {
   const assert = jest.fn()
   const ctx = {
-    body: {
-      to: 'j@jada.io',
-      subject: 'Hi James',
-      contentText: 'Hey James',
-      contentHtml: 'Hey <strong>James</strong>'
+    request: {
+      body: {
+        to: 'j@jada.io',
+        subject: 'Hi James',
+        contentText: 'Hey James',
+        contentHtml: 'Hey <strong>James</strong>'
+      }
     },
     assert
   }
@@ -23,8 +25,10 @@ test('provides basic validation by calling ctx assert', async () => {
     throw new Error('validation error')
   })
   const ctx = {
-    body: {
-      to: undefined
+    request: {
+      body: {
+        to: undefined
+      }
     },
     assert
   }

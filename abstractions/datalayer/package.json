@@ -14,8 +14,8 @@
     "jest": "^23.6.0"
   },
   "scripts": {
-    "deploy-indexes": "GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/config-gcp.json  gcloud datastore indexes create index.yaml",
-    "clean-indexes": "GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/config-gcp.json  gcloud datastore indexes cleanup index.yaml",
-    "test": "NODE_ENV=local GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/config-gcp.json jest"
+    "deploy-indexes": "GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/secrets/config-gcp.json  gcloud datastore indexes create index.yaml",
+    "clean-indexes": "GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/secrets/config-gcp.json  gcloud datastore indexes cleanup index.yaml",
+    "test": "NODE_ENV=local GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/secrets/config-gcp.json jest"
   }
 }
