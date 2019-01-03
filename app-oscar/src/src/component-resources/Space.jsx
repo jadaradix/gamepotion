@@ -10,7 +10,7 @@ import ImageChooser from '../components/ImageChooser/ImageChooser'
 import Button from '../components/Button/Button'
 import GridModal from '../modals/Grid'
 
-import { font, colours } from '../styleAbstractions'
+import { font } from '../styleAbstractions'
 
 import Oscar2 from '../Oscar2'
 

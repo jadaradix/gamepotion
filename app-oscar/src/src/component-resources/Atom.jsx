@@ -340,6 +340,7 @@ class ResourceAtom extends Component {
         }
         {this.state.isEventDialogShowing &&
           <EventModal
+            resources={this.props.resources}
             onGood={this.onEventModalGood}
             onBad={this.onEventModalBad}
           />
@@ -374,8 +375,8 @@ class ResourceAtom extends Component {
             <Button onClick={this.onChooseAddEvent}>Add event</Button>
           </Box>
           <Box className='settings'>
-          <Input label='Angle (&plusmn;360)' value={this.props.resource.angle} type='number' min='-360' max='360' onChange={(v) => this.props.onUpdate({'angle': parseInt(v, 10)})} />
-          <Input label='Depth (0-5)' value={this.props.resource.depth} type='number' min='0' max='5' onChange={(v) => this.props.onUpdate({'depth': parseInt(v, 10)})} />
+            <Input label='Angle (&plusmn;360)' value={this.props.resource.angle} type='number' min='-360' max='360' onChange={(v) => this.props.onUpdate({'angle': parseInt(v, 10)})} />
+            <Input label='Depth (0-5)' value={this.props.resource.depth} type='number' min='0' max='5' onChange={(v) => this.props.onUpdate({'depth': parseInt(v, 10)})} />
           </Box>
         </section>
         {currentEvent &&

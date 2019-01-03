@@ -39,6 +39,12 @@ docker stop oscar-production-site;
 docker rm oscar-production-site;
 docker run --name oscar-production-site --net container-router -p 1030:1030 -d eu.gcr.io/thegmc-219013/oscar-production-site;
 
+echo "5 running service-mail";
+docker pull eu.gcr.io/thegmc-219013/oscar-production-service-mail:latest;
+docker stop oscar-production-service-mail;
+docker rm oscar-production-service-mail;
+docker run --name oscar-production-service-mail --net container-router -p 1031:1031 -d eu.gcr.io/thegmc-219013/oscar-production-service-mail;
+
 echo "6 running container-router";
 docker pull eu.gcr.io/thegmc-219013/oscar-production-container-router:latest;
 docker stop oscar-production-container-router;

@@ -19,7 +19,7 @@ cp -R ../platforms files;
 rm -rf files/platforms/nds/node_modules;
 
 rm files/config-gcp.json;
-cp ../config-gcp.json files/config-gcp.json;
+cp ../secrets/config-gcp.json files/config-gcp.json;
 
 docker stop oscar-production-api-core;
 docker rm oscar-production-api-core;

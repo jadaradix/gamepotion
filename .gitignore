@@ -4,7 +4,8 @@ package-lock.json
 yarn.lock
 npm-debug.log
 
-config-gcp.json
+secrets/config-gcp.json
+secrets/env-service-mail
 
 abstractions/uuid/index.dist.js
 
@@ -36,6 +37,9 @@ app-play/src/coverage
 api-core/files
 
 api-bin/files
+
+service-mail/src/.env
+service-mail/files
 
 app-oscar/src/src/inter-router
 

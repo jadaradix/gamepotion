@@ -1,4 +1,4 @@
-FROM node:10.13.0
+FROM node:10.15.0
 USER root
 
 RUN apt-get update
@@ -6,12 +6,5 @@ ADD files /files
 
 RUN cd /files && npm i --only=production
 
-RUN cd /files/abstractions/api && npm i --only=production
-RUN cd /files/abstractions/datalayer && npm i --only=production
-RUN cd /files/abstractions/storage && npm i --only=production
-RUN cd /files/abstractions/uuid && npm i --only=production
-
-RUN cd /files/classes && npm i
-
-CMD cd /files && npm run start-production
-EXPOSE 1026
+CMD cd /files && npm start
+EXPOSE 1031

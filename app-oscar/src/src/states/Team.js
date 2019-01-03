@@ -114,8 +114,18 @@ class StateTeam extends Component {
                 <List>
                   {this.state.teamUsers.map(tu => {
                     const isYou = tu.id === this.state.user.id
+                    const tags = (tu.isTeamAdmin ?
+                      [
+                        {
+                          name: 'Team admin',
+                          colour: '#a537fd'
+                        }
+                      ]
+                      :
+                      []
+                    )
                     return (
-                      <ListItem id={tu.id} key={tu.id} icon={icons.generic.teamMember}>{tu.name}{isYou ? ' (you)' : ''}</ListItem>
+                      <ListItem id={tu.id} key={tu.id} icon={icons.generic.teamMember} tags={tags}>{tu.name}{isYou ? ' (you)' : ''}</ListItem>
                     )
                   })}
                 </List>
