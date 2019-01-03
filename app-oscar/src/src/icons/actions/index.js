@@ -1,9 +1,10 @@
 import Create from './files/Create.svg'
 import Move from './files/Move.svg'
 import MoveInADirection from './files/MoveInADirection.svg'
-import Rotate from './files/Rotate.svg'
 import SetImage from './files/SetImage.svg'
 import SetFrame from './files/SetFrame.svg'
+import Rotate from './files/Rotate.svg'
+import Scale from './files/Scale.svg'
 import Destroy from './files/Destroy.svg'
 
 import PlaySound from './files/PlaySound.svg'
@@ -29,9 +30,10 @@ export default {
   Create,
   Move,
   MoveInADirection,
-  Rotate,
   SetImage,
   SetFrame,
+  Rotate,
+  Scale,
   Destroy,
 
   PlaySound,

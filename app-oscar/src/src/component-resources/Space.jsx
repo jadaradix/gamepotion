@@ -182,18 +182,21 @@ class ResourceSpace extends PureComponent {
     })
   }
 
-  plotAtom(coords, angle) {
+  plotAtom(coords, angle = undefined, scale = 1) {
     const atomId = this.state.atomToPlot
-    if (typeof angle !== 'number') {
-      const atom = this.props.resources.find(r => r.id === atomId)
-      angle = atom.angle
-    }
-    if (coords.x < 0 || coords.y < 0 || coords.x > this.props.resource.width || coords.y > this.props.resource.height) {
-      return console.error('out ot bounds coords', coords)
-    }
-    console.warn('[plotAtom] atomId', atomId, 'at', coords)
     if (atomId === 'none') {
       return
+    }
+    const atom = this.props.resources.find(r => r.id === atomId)
+    if (typeof atom !== 'object') {
+      return console.error('[plotAtom] atom not found; returning!')
+    }
+    if (coords.x < 0 || coords.y < 0 || coords.x > this.props.resource.width || coords.y > this.props.resource.height) {
+      return console.error('[plotAtom] out ot bounds coords', coords)
+    }
+    // console.warn('[plotAtom] atomId', atomId, 'at', coords)
+    if (typeof angle !== 'number') {
+      angle = atom.angle
     }
     this.props.onUpdate({
       instances: [
@@ -201,7 +204,8 @@ class ResourceSpace extends PureComponent {
         {
           atomId,
           ...coords,
-          angle
+          angle,
+          scale
         }
       ]
     })

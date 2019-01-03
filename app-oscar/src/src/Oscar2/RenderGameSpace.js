@@ -50,8 +50,18 @@ const drawInstance = (ctx, camera, designMode, instance) => {
   if (image !== null) {
     ctx.translate(translateX, translateY)
     ctx.rotate(instance.props.angle)
-    // docs: drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
-    ctx.drawImage(image, 0, frame * height, width, height, -(width / 2), -(height / 2), width, height)
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+    ctx.drawImage(
+      image,
+      0,
+      frame * height,
+      width,
+      height,
+      -(width / 2),
+      -(height / 2),
+      width * instance.props.scale,
+      height * instance.props.scale
+    )
     ctx.rotate(-instance.props.angle)
     ctx.translate(-translateX, -translateY)
   }
@@ -144,6 +154,13 @@ const loadResources = (resourceContainers, spaceContainer) => {
   const resourcesImages = resourceContainers.filter(r => r.resource.type === 'image')
   const resourcesSounds = resourceContainers.filter(r => r.resource.type === 'sound')
   const resourcesAtoms = resourceContainers.filter(r => r.resource.type === 'atom')
+
+  // const extraImages = [
+  //   {
+  //     id: 'font',
+  //     url: ''
+  //   }
+  // ]
 
   return new Promise((resolve, reject) => {
 
@@ -248,8 +265,8 @@ const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, grid
     const thisDepth = instance.atomContainer.resource.depth
     depths.get(thisDepth).push(instance)
   })
-  depths.forEach((value) => {
-    value.forEach(instance => {
+  depths.forEach(instancesAtThisDepth => {
+    instancesAtThisDepth.forEach(instance => {
       drawInstance(ctx, camera, true, instance)
     })
   })
@@ -276,8 +293,8 @@ const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, g
     //     instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
     //   })
   })
-  depths.forEach((value) => {
-    value.forEach(instance => {
+  depths.forEach(instancesAtThisDepth => {
+    instancesAtThisDepth.forEach(instance => {
       drawInstance(ctx, camera, true, instance)
     })
   })
@@ -374,9 +391,16 @@ const RenderGameSpace = (
   c.height = (designMode ? spaceContainer.resource.height : camera.height)
   c.style.display = 'block'
   c.style.backgroundColor = 'black'
-  // stop blurred lines from https://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
-  // ctx.imageSmoothingEnabled = false
+
+  // https://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
+  ctx.imageSmoothingEnabled = false
+
+  // https://medium.com/wdstack/fixing-html5-2d-canvas-blur-8ebe27db07da
   // ctx.translate(0.5, 0.5)
+  // const styleWidth = +getComputedStyle(c).getPropertyValue('width').slice(0, -2)
+  // const styleHeight = +getComputedStyle(c).getPropertyValue('height').slice(0, -2)
+  // c.setAttribute('width', styleWidth * window.devicePixelRatio)
+  // c.setAttribute('height', styleHeight * window.devicePixelRatio)
 
   // sorry
   const domBoundsX = c.getBoundingClientRect().x
@@ -388,6 +412,11 @@ const RenderGameSpace = (
   console.warn('[RenderGameSpace] instances', instances)
 
   const onLoadedResources = ({ depthValues }) => {
+
+    const sortedDepthValues = Array.from(depthValues.entries())
+      .sort((a, b) => {
+        return a[0] - b[0]
+      })
 
     let jInputs = {
       touch: {
@@ -491,22 +520,20 @@ const RenderGameSpace = (
       }
     })
     const currentTouchCoords = typeof jInputs.touch.coords === 'object' ? normaliseCoords(camera, false, gridOn, gridWidth, gridHeight, jInputs.touch.coords) : null
+
     const depths = new Map(
-      Array.from(depthValues.entries())
-        .sort((a, b) => {
-          return a[0] - b[0]
-        })
-        .map(dv => {
-          return [
-            dv[0],
-            []
-          ]
-        })
+      sortedDepthValues.map(dv => ([
+        dv[0],
+        []
+      ]))
     )
     if (designMode === true) {
       gameLoopDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, depths)
     } else {
       const doGameLoopNotDesignMode = () => {
+        depths.forEach((instancesAtThisDepth, depth) => {
+          depths.set(depth, [])
+        })
         gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext, depths)
         // setTimeout(doGameLoopNotDesignMode, 100)
         requestAnimationFrameHandle = window.requestAnimationFrame(doGameLoopNotDesignMode)

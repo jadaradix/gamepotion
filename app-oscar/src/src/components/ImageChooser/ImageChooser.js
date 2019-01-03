@@ -75,7 +75,9 @@ class ImageChooser extends Component {
   constructor(props) {
     super(props)
     let currentImage = this.props.currentImage || get(`component--image-chooser-current-image-${props.id}`)
-    if (!currentImage && props.images.length > 0) {
+    const hasCurrentImageButIsntFound = (currentImage && this.props.images.find(i => i.id === currentImage) === undefined)
+    const doesntHaveCurrentImage = (!currentImage && props.images.length > 0)
+    if (hasCurrentImageButIsntFound || doesntHaveCurrentImage) {
       currentImage = props.images[0].id
       set(`component--image-chooser-current-image-${props.id}`, currentImage)
     }
