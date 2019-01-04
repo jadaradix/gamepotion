@@ -277,9 +277,20 @@ const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, grid
   drawCamera(ctx, spaceContainer)
 }
 
+let seconds = 0
+let frame = 0
 const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext, depths) => {
   clear(ctx, true, spaceContainer, camera)
   drawBackgroundImage(ctx, spaceContainer, camera, true)
+  if (frame === 60) {
+    seconds += 1
+    for (let [alarm, time] of eventContext.alarms) {
+      (typeof time === 'number' && time > 0) && eventContext.alarms.set(alarm, time - 1)
+    }
+    frame = 0
+  } else {
+    frame += 1
+  }
   instances.forEach(instance1 => {
     const thisDepth = instance1.atomContainer.resource.depth
     depths.get(thisDepth).push(instance1)

@@ -1,18 +1,28 @@
 import parseRunArguments from './parseRunArguments'
 
 const parseContext = {
-  instanceClass: {
+  instance: {
     props: {
       x: 100,
       y: 200
+    },
+    getWidth: () => {
+      return 32
+    },
+    getHeight: () => {
+      return 64
     }
   },
   eventContext: {
     variables: new Map([
       ['name', 'James'],
-      ['speed', 2]
+      ['speed', 2],
+      ['both', 5]
     ]),
-    alarms: new Map([]),
+    alarms: new Map([
+      ['countdown', 1000],
+      ['both', 5]
+    ]),
     spaceContainer: {
       resource: {
         width: 100,
@@ -70,6 +80,22 @@ test('works for a variable', () => {
   const arg = 'name'
   const r = parseRunArguments([argType], [arg], parseContext)
   expect(r[0]).toBe('James')
+})
+
+test('works for an alarm', () => {
+  const argType = 'generic'
+  const arg = 'countdown'
+  const r = parseRunArguments([argType], [arg], parseContext)
+  expect(r[0]).toBe(1000)
+})
+
+test('has a bad time when alarm or variable is ambiguous', () => {
+  const argType = 'generic'
+  const arg = 'both'
+  expect(() => {
+    parseRunArguments([argType], [arg], parseContext)
+  })
+    .toThrow('found a variable and an alarm with name both')
 })
 
 test('doesnt work for an unknown variable', () => {

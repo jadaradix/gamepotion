@@ -82,11 +82,15 @@ const parsers = {
   },
   'Identifier'(j, parseContext, memberExpressions) {
     const foundVariable = parseContext.eventContext.variables.get(j.name)
-    if (foundVariable !== undefined) {
-      return foundVariable
-    } else {
-      throw new Error(`variable ${j.name} unknown`)
+    const foundAlarm = parseContext.eventContext.alarms.get(j.name)
+
+    if (foundVariable && foundAlarm) {
+      throw new Error(`found a variable and an alarm with name ${j.name}`)
     }
+    if (foundVariable || foundAlarm) {
+      return foundVariable || foundAlarm
+    }
+    throw new Error(`variable ${j.name} unknown`)
   },
   'MemberExpression'(j, parseContext, memberExpressions) {
     const foundMemberExpression = memberExpressions[j.object.name]
@@ -142,9 +146,9 @@ const parseToken = (token, typeHint, parseContext) => {
   if (typeof foundParser === 'function') {
     const memberExpressions = {
       instance: {
-        ...parseContext.instanceClass.props,
-        width: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameWidth : 0),
-        height: (typeof parseContext.instanceClass.imageContainer === 'object' ? parseContext.instanceClass.imageContainer.resource.frameHeight : 0),
+        ...parseContext.instance.props,
+        width: parseContext.instance.getWidth(),
+        height: parseContext.instance.getHeight(),
       },
       space: parseContext.eventContext.spaceContainer.resource,
       camera: parseContext.eventContext.camera

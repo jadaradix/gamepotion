@@ -184,7 +184,7 @@ input.c1::-moz-placeholder {
   >
     <input
       disabled={false}
-      id="component-Input-897ef684-56b0-4de3-8e75-17aa12f1ad69"
+      id="component-Input-id"
       onChange={[Function]}
       onKeyDown={[Function]}
       placeholder="Filter..."

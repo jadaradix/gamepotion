@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import resourceTypes from '../resourceTypes'
 import icons from '../icons'
+import { playProject } from '../inter-router'
 
 import Toolbar from '../components/Toolbar/Toolbar'
 import ToolbarButton from '../components/ToolbarButton/ToolbarButton'
@@ -30,7 +31,11 @@ const MainToolbar = ({ currentProject, onClick, disabled, isAccountDropdownShowi
         <ToolbarButton fixedWidth='180' disabled />
       }
       <ToolbarGap />
-      <ToolbarButton route={getProjectRoute('play', currentProject)} disabled={disabled || currentProject === null} icon={icons.generic.project.run} hint='Play game' />
+      <ToolbarButton
+        onClick={() => {
+          window.open(playProject(process.env.NODE_ENV, currentProject.project.id), '_blank')
+        }}
+        disabled={disabled || currentProject === null} icon={icons.generic.project.run} hint='Play game' />
       <ToolbarButton route={getProjectRoute('preferences', currentProject)} disabled={disabled || currentProject === null} icon={icons.generic.preferences} hint='Game settings' />
       <ToolbarGap />
       {resourceTypes.map(rt => (

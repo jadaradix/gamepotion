@@ -39,9 +39,6 @@ const StyledResource = styled.div`
   section + section {
     margin-top: 2rem;
   }
-  .component--uploader {
-    height: 100%;
-  }
   .component--heading2 + .frame-stuff {
     margin-top: 1rem;
   }
@@ -64,6 +61,11 @@ const StyledResource = styled.div`
       margin-top: 1rem;
     }
     p + .component--banner {
+      margin-top: 1rem;
+    }
+  }
+  .own-file {
+    .component--uploader {
       margin-top: 1rem;
     }
   }
@@ -157,11 +159,12 @@ class ResourceImage extends PureComponent {
           </Box>
         </section>
         <section className='split-two'>
-          <Box>
+          <Box className='own-file'>
+            <Heading2>Upload your own file</Heading2>
             <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['image/png', 'image/gif', 'image/bmp']} onDone={this.onUploadDone} />
           </Box>
           <Box>
-            <Heading2>Frame</Heading2>
+            <Heading2>Frame settings</Heading2>
             <div className='frame-stuff'>
               <Input label='Width' value={this.props.resource.frameWidth} type='number' min='0' max='4096' onChange={(v) => this.onUpdateProp('frameWidth', v)} />
               <Input label='Height' value={this.props.resource.frameHeight} type='number' min='0' max='4096' onChange={(v) => this.onUpdateFrameHeight(v)} />

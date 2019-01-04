@@ -9,6 +9,7 @@ import Box from '../components/Box/Box'
 import Dropper from '../components/Dropper/Dropper'
 import Uploader from '../components/Uploader/Uploader'
 import AudioPlayer from '../components/AudioPlayer/AudioPlayer'
+import Heading2 from '../components/Heading2/Heading2'
 
 import BuyModuleBanner from '../component-instances/BuyModuleBanner'
 
@@ -25,9 +26,6 @@ const StyledResource = styled.div`
   section + section {
     margin-top: 2rem;
   }
-  .component--uploader {
-    height: 100%;
-  }
   .file {
     .component--dropper + p {
       margin-top: 1rem;
@@ -38,6 +36,11 @@ const StyledResource = styled.div`
       color: #bdc3c7;
     }
     p + .component--banner {
+      margin-top: 1rem;
+    }
+  }
+  .own-file {
+    .component--uploader {
       margin-top: 1rem;
     }
   }
@@ -87,17 +90,16 @@ class ResourceSound extends PureComponent {
           <AudioPlayer url={remoteUrl} />
         </section>
         <section className='split-two'>
-          <Box>
+          <Box className='own-file'>
+            <Heading2>Upload your own file</Heading2>
             <Uploader route={`me/team/projects/${this.props.project.id}/resources/${this.props.resource.id}`} mimeTypes={['audio/wav', 'audio/mpeg', 'audio/mp3']} onDone={this.onUploadDone} />
           </Box>
-          <Box>
-            <div className='file'>
-              <Dropper label={'Choose an included file'} options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
-              <p>Choosing an included file won&rsquo;t erase a file you have uploaded.</p>
-              {boughtResourcePackModule === false &&
-                <BuyModuleBanner moduleId='resource-pack' moduleName='Resource Pack' verb='get more included files' />
-              }
-            </div>
+          <Box className='file'>
+            <Dropper label={'Choose an included file'} options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
+            <p>Choosing an included file won&rsquo;t erase a file you have uploaded.</p>
+            {boughtResourcePackModule === false &&
+              <BuyModuleBanner moduleId='resource-pack' moduleName='Resource Pack' verb='get more included files' />
+            }
           </Box>
         </section>
       </StyledResource>

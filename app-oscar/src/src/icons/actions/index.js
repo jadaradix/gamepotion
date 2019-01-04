@@ -16,15 +16,18 @@ import MoveCamera from './files/MoveCamera.svg'
 import SetSpaceBackgroundImage from './files/SetSpaceBackgroundImage.svg'
 import SetSpaceForegroundImage from './files/SetSpaceForegroundImage.svg'
 
+import Debug from './files/Debug.svg'
 import ShowMessage from './files/ShowMessage.svg'
+import SetVariable from './files/SetVariable.svg'
+import SetAlarm from './files/Debug.svg'
+import CancelAlarm from './files/Debug.svg'
+import IfAlarmRinging from './files/IfAlarmRinging.svg'
 import IfPlayerConfirms from './files/IfPlayerConfirms.svg'
 import If from './files/If.svg'
 import IfInstances from './files/IfInstances.svg'
 import IfNextSpace from './files/IfNextSpace.svg'
 import Else from './files/Else.svg'
 import EndIf from './files/EndIf.svg'
-import SetVariable from './files/SetVariable.svg'
-import Debug from './files/Debug.svg'
 
 export default {
   Create,
@@ -45,13 +48,16 @@ export default {
   SetSpaceBackgroundImage,
   SetSpaceForegroundImage,
 
+  Debug,
   ShowMessage,
+  SetVariable,
+  SetAlarm,
+  CancelAlarm,
+  IfAlarmRinging,
   IfPlayerConfirms,
   If,
   IfInstances,
   IfNextSpace,
   Else,
-  EndIf,
-  SetVariable,
-  Debug
+  EndIf
 }

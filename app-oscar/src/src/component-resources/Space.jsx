@@ -280,7 +280,6 @@ class ResourceSpace extends PureComponent {
             <div id='oscar2-container' />
             <Oscar2
               containerElementId='oscar2-container'
-              project={this.props.project}
               resources={this.props.resources}
               spaceId={this.props.resource.id}
               designMode={!this.state.isPlaying}
