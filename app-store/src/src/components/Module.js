@@ -44,7 +44,7 @@ const StyledModule = styled.div`
       left: 0.5rem;
     }
     span.bought {
-      right: 0.5rem;
+      left: 0.5rem;
     }
   }
 `

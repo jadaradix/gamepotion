@@ -2,8 +2,8 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
-import api from '../api'
 import modules from '../modules'
+import getBoughtModuleIds from '../getBoughtModuleIds'
 import buy from '../buy'
 import { font } from '../styleAbstractions'
 import formatPrice from '../formatPrice'
@@ -45,11 +45,11 @@ class Module extends React.PureComponent {
   }
 
   componentDidMount() {
-    api.get('api-core', 'me')
-      .then(user => {
+    getBoughtModuleIds()
+      .then(boughtModuleIds => {
         this.setState({
           authenticated: true,
-          boughtModuleIds: user.modules.map(m => m.id)
+          boughtModuleIds
         })
       })
       .catch(() => {
@@ -69,10 +69,10 @@ class Module extends React.PureComponent {
       boughtModuleIds,
       authenticated
     } = this.state
+
     if (currentModule === undefined) {
       return <Redirect to='/' />
     }
-
     if (typeof authenticated !== 'boolean') {
       return null
     }
