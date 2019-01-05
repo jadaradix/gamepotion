@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import './index.css'
 import logo from './images/logo.png'
 
+import { set } from './localStorage'
+
 import Home from './routes/Home'
 import Module from './routes/Module'
 
@@ -21,14 +23,31 @@ const StyledApp = styled.div`
   // }
 `
 
+const getAccessToken = () => {
+  const query = window.location.search
+  if (query.indexOf('?accessToken=') === 0) {
+    return query.substring(query.indexOf('?accessToken=') + '?accessToken='.length) 
+  }
+  return undefined
+}
+
+const maybeUpdateAccessToken = () => {
+  const accessToken = getAccessToken()
+  accessToken && set('access-token', accessToken)
+  return null
+}
+
 const App = () => {
   return (
     <StyledApp>
       <Router>
-        <Switch>
-          <Route path='/modules/:id' exact strict component={Module} />
-          <Route component={Home} />
-        </Switch>
+        <div>
+          <Route component={maybeUpdateAccessToken} />
+          <Switch>
+            <Route path='/modules/:id' exact strict component={Module} />
+            <Route component={Home} />
+          </Switch>
+        </div>
       </Router>
     </StyledApp>
   )

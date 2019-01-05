@@ -22,7 +22,11 @@ const addModule = async (userId, transactionId, moduleId) => {
 
 const route = async (request, response, next) => {
   console.warn('[route stripe-callback] request.body', JSON.stringify(request.body, null, 4))
-  const { client_reference_id } = request.body
+  // "data": {
+  //   "object": {
+  //       "object": "checkout_beta",
+  //       "client_reference_id": "fe9b1af2-a8db-458d-a606-9e61745622d5",
+  const client_reference_id = request.body.data && request.body.data.object && request.body.data.object.client_reference_id
   try {
     assert(typeof client_reference_id === 'string', 'client_reference_id is not a string')
     const transaction = await getTransaction(client_reference_id)

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { get } from './localStorage'
 
 const env = (window.location.protocol === 'http:' ? 'local' : 'production')
 const envs = {
@@ -16,8 +17,7 @@ const envs = {
 const apis = envs[env].apis
 
 const getAccessToken = () => {
-  const query = window.location.search
-  return query.substring(query.indexOf('=') + '='.length)
+  return get('access-token')
 }
 
 function dGet (whichApi, url) {

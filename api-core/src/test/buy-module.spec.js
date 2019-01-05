@@ -32,9 +32,7 @@ test('creates a transaction', () => {
 test('doesnt call back when there is no id', () => {
   return axios({
     method: 'post',
-    data: {
-      client_reference_id: undefined
-    },
+    data: {},
     url: `${testData.URL_API_CORE}/stripe-callback`,
     ...testData.configs.noAuth
   })
@@ -48,7 +46,11 @@ test('doesnt call back when the transaction doesnt exist', () => {
   return axios({
     method: 'post',
     data: {
-      client_reference_id: 'xyz'
+      data: {
+        object: {
+          client_reference_id: 'xyz'
+        }
+      }
     },
     url: `${testData.URL_API_CORE}/stripe-callback`,
     ...testData.configs.noAuth
@@ -63,7 +65,11 @@ test('calls back', () => {
   return axios({
     method: 'post',
     data: {
-      client_reference_id: transactionId
+      data: {
+        object: {
+          client_reference_id: transactionId
+        }
+      }
     },
     url: `${testData.URL_API_CORE}/stripe-callback`,
     ...testData.configs.noAuth
