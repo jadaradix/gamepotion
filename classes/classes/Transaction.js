@@ -11,7 +11,7 @@ const states = [
   'PAID'
 ]
 
-class Team {
+class Transaction {
   constructor (json = {}) {
     this.id = json.id || uuid()
     this.createdAt = json.createdAt || Math.floor(new Date() / 1000)
@@ -55,4 +55,4 @@ class Team {
   }
 }
 
-export default Team
+export default Transaction

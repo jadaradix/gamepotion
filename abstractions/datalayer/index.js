@@ -11,7 +11,8 @@ const sampleDatas = {
   'Teams': require('./sample-data/Teams.json'),
   'Projects': require('./sample-data/Projects.json'),
   'Resources': require('./sample-data/Resources.json'),
-  'FeedItems': require('./sample-data/FeedItems.json')
+  'FeedItems': require('./sample-data/FeedItems.json'),
+  'Transactions': require('./sample-data/Transactions.json')
 }
 
 const write = (entity, id, data) => {
@@ -39,7 +40,7 @@ const write = (entity, id, data) => {
           return {
             name: $,
             value: data[$],
-            excludeFromIndexes: ['name', 'modules'].includes($)
+            excludeFromIndexes: ['name', 'modules', 'isTeamAdmin'].includes($)
           }
         })
       },
