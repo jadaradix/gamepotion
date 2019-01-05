@@ -1,4 +1,8 @@
 import api from './api'
+import envs from './envs'
+
+const env = (window.location.protocol === 'http:' ? 'local' : 'production')
+const { callbackUrl } = envs[env]
 
 const createTransaction = (module) => {
   return api.post('api-core', 'me/transactions', {
@@ -25,8 +29,8 @@ const buy = async (module) => {
     items: [
       {sku: module.sku, quantity: 1}
     ],
-    successUrl: `${window.location.origin}?callback=good`,
-    cancelUrl: `${window.location.origin}?callback=bad`,
+    successUrl: `${callbackUrl}?callback=good`,
+    cancelUrl: `${callbackUrl}?callback=bad`,
   })
 }
 

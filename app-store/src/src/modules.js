@@ -11,7 +11,7 @@ export default {
       image: 'module.png'
     },
     {
-      id: 'pro',
+      id: 'resource-pack',
       sku: 'sku_EHy4trg94brPma',
       name: '[test] Resource Pack',
       price: 500,

@@ -1,20 +1,9 @@
 import axios from 'axios'
 import { get } from './localStorage'
+import envs from './envs'
 
 const env = (window.location.protocol === 'http:' ? 'local' : 'production')
-const envs = {
-  'local': {
-    apis: {
-      'api-core': 'http://localhost:1025/v1'
-    }
-  },
-  'production': {
-    apis: {
-      'api-core': 'https://api-core.gamemaker.club/v1'
-    }
-  }
-}
-const apis = envs[env].apis
+const { apis } = envs[env]
 
 const getAccessToken = () => {
   return get('access-token')

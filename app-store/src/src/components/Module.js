@@ -55,6 +55,7 @@ const hackErroredImage = (e) => {
 
 const Module = ({ module, hasBought }) => {
   // console.warn('[component-Module] module', module)
+  const price = `$${module.price / 100}`
   return (
     <StyledModule className='component--module'>
       <Link to={`/modules/${module.id}`}>
@@ -65,7 +66,7 @@ const Module = ({ module, hasBought }) => {
         />
         <span className='name'>{module.name}</span>
         {hasBought === false &&
-          <span className='price'>{module.price}</span>
+          <span className='price'>{price}</span>
         }
         {hasBought === true &&
           <span className='bought'>Purchased</span>
