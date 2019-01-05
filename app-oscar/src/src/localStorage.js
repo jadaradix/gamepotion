@@ -1,11 +1,3 @@
-const defaults = new Map([
-  ['credentials-userlandId', ''],
-  ['credentials-password', ''],
-  ['grid-on', true],
-  ['grid-width', 16],
-  ['grid-height', 16]
-])
-
 let localLocalStorage = {}
 let useLocalLocalStorage = false
 if (typeof window.Storage !== 'undefined') {
@@ -79,19 +71,11 @@ export function getAll (exludeKeys = []) {
     }, {})
 }
 
-export function clear () {
-  console.log('[localStorage] [clear]')
-  localLocalStorage = {}
-  window.localStorage.clear()
-  init()
-}
-
-function init (force) {
-  console.log('[localStorage] [init] force', force)
+export function init (defaults = new Map([]), force = false) {
+  // console.log('[localStorage] [init] force', force)
   defaults.forEach((value, key) => {
     if (get(key) === null || force === true) {
       set(key, value)
     }
   })
 }
-init(false)

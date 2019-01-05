@@ -1,12 +1,22 @@
 export default {
   'development': [
     {
-      id: 'test-pro',
+      id: 'pro',
       sku: 'sku_EHvMIHGeNO3WkR',
       name: '[test] Pro',
       price: 1000,
       description: `
-      <p>blah blah blah</p>
+      <p>[pro]</p>
+      `,
+      image: 'module.png'
+    },
+    {
+      id: 'pro',
+      sku: 'sku_EHy4trg94brPma',
+      name: '[test] Resource Pack',
+      price: 500,
+      description: `
+      <p>[resource-pack]</p>
       `,
       image: 'module.png'
     },

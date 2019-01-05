@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import './index.css'
 import logo from './images/logo.png'
 
-import { set } from './localStorage'
+import { init, set } from './localStorage'
 import notify from './notify'
 
 import Home from './routes/Home'
@@ -60,6 +60,8 @@ const hackyRoutingCallback = () => {
 }
 
 const App = () => {
+  init()
+
   return (
     <StyledApp>
       <Router>
