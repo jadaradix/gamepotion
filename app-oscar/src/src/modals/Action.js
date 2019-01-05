@@ -58,6 +58,50 @@ class ActionModal extends PureComponent {
           }
         })
     })
+    this.argumentTypes = [
+      {
+        types: ['boolean'],
+        render: (index, value, values, name) => {
+          return <Switch checked={value} onChange={(v) => this.updateArgument(index, v)}>{name}</Switch>
+        },
+        isValid: (value) => {
+          return (typeof value === 'boolean')
+        }
+      },
+      {
+        types: ['options'],
+        render: (index, value, values, name) => {
+          return <Dropper label={name} value={value} options={values} onChoose={(v) => this.updateArgument(index, v)} />
+        },
+        isValid: (value) => {
+          return (typeof value === 'string' && value.length > 0)
+        }
+      },
+      {
+        types: ['generic', 'variable'],
+        render: (index, value, values, name) => {
+          return <Input label={name} value={value} onChange={(v) => this.updateArgument(index, v)} onDone={() => this.props.onGood(this.props.actionClassInstance)} />
+        },
+        isValid: (value) => {
+          return (value !== undefined && value.toString().length > 0)
+        }
+      },
+      ...resourceTypes.map(rt => {
+        return {
+          types: [rt.type],
+          render: (index, value, values, name) => {
+            const key = `resource-type-${rt.name}`
+            return <Dropper key={key} options={this.resourcesByType[rt.type]} value={value} label={rt.label} onChoose={(v) => this.updateArgument(index, v)} />
+          },
+          isValid: (value) => {
+            return (typeof value === 'string' && value.length > 0)
+          }
+        }
+      })
+    ]
+    this.state = {
+      isValid: this.isValid()
+    }
     this.updateAppliesTo = this.updateAppliesTo.bind(this)
   }
 
@@ -66,9 +110,25 @@ class ActionModal extends PureComponent {
     this.forceUpdate()
   }
 
+  isValid() {
+    const defaultRunArgumentTypes = Array.from(this.props.actionClassInstance.defaultRunArguments.entries()).map(e => e[1].type)
+    const isValid = this.props.actionClassInstance.runArguments.every((ra, i) => {
+      return this.argumentTypes.find(at => at.types.includes(defaultRunArgumentTypes[i])).isValid(ra)
+    })
+    return isValid
+  }
+
   updateArgument(index, value) {
     this.props.actionClassInstance.runArguments[index] = value
     this.forceUpdate()
+    const isValid = this.isValid()
+    if (this.state.isValid === isValid) {
+      this.forceUpdate()
+    } else {
+      this.setState({
+        isValid
+      })
+    }
   }
 
   getArgument (index, name, type, values, value) {
@@ -79,18 +139,7 @@ class ActionModal extends PureComponent {
         this.props.actionClassInstance.runArguments[index] = '?'
       }
     }
-    if (this.resourcesByType.hasOwnProperty(type)) {
-      return <Dropper onChoose={(v) => this.updateArgument(index, v)} label={name} value={value} options={this.resourcesByType[type]} />
-    }
-    switch (type) {
-    case 'boolean':
-      return <Switch onChange={(v) => this.updateArgument(index, v)} checked={value}>{name}</Switch>
-    case 'options':
-      return <Dropper onChoose={(v) => this.updateArgument(index, v)} label={name} value={value} options={values} />
-    case 'generic':
-    default:
-      return <Input onChange={(v) => this.updateArgument(index, v)} label={name} value={value} onDone={() => this.props.onGood(this.props.actionClassInstance)} />
-    }
+    return this.argumentTypes.find(at => at.types.includes(type)).render(index, value, values, name)
   }
 
   render() {
@@ -117,7 +166,7 @@ class ActionModal extends PureComponent {
             })}
           </div>
           <div className='decision'>
-            <Button onClick={() => this.props.onGood(this.props.actionClassInstance)}>Done</Button>
+            <Button disabled={!this.state.isValid} onClick={() => this.props.onGood(this.props.actionClassInstance)}>Done</Button>
           </div>
         </Modal>
       </StyledModal>

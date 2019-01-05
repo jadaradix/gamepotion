@@ -15,6 +15,7 @@ const middlewareAuthPublicRoutes = [
   ['EXACT', 'GET', '/v1'],
   ['EXACT', 'POST', '/v1/users'],
   ['START', 'GET', '/v1/feed/'],
+  ['START', 'GET', '/v1/public-projects/'],
   ['EXACT', 'GET', '/v1/stripe-callback']
 ]
 
@@ -47,6 +48,7 @@ const routes = {
   'GET      /v1': require('./routes/healthcheck'),
   'GET      /v1/stripe-callback': require('./routes/stripe-callback'),
   'GET      /v1/feed/:id': require('./routes/feed'),
+  'GET      /v1/public-projects/:id/play': require('./routes/play-project'),
   // -> users
   'POST     /v1/users': require('./routes/users/create'),
   'GET      /v1/me': require('./routes/users/get'),

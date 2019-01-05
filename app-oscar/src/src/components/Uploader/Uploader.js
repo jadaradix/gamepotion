@@ -11,7 +11,7 @@ const StyledUploader = styled.div`
   @keyframes oscar-in-progress {
     100% { transform: rotate(360deg); }
   }
-  position: relative;
+  height: 128px;
   border: 2px dashed #dadfe1;
   border-radius: 4px;
   cursor: copy;
@@ -22,29 +22,33 @@ const StyledUploader = styled.div`
     cursor: default;
   }
   > div {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    height: 100%;
     img.icon {
       display: block;
       width: 48px;
       height: 48px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       margin: 0 auto 0.25rem auto;
       // background-color: yellow;
     }
     img.icon--in-progress {
       animation: oscar-in-progress 4s linear infinite;
     }
-    p {
-      padding: 0.5rem 1rem 0.5rem 1rem;
-      ${font}
-      font-size: 90%;
-      text-align: center;
-      color: #6c7a89;
-    }
+    // p {
+    //   padding: 0.5rem 1rem 0.5rem 1rem;
+    //   ${font}
+    //   font-size: 90%;
+    //   text-align: center;
+    //   color: #6c7a89;
+    // }
   }
 `
+
+const RESET_TIME = 1.5 * 1000
 
 class Uploader extends PureComponent {
   constructor(props) {
@@ -85,7 +89,7 @@ class Uploader extends PureComponent {
             isDone: false,
             hasErrored: false
           })
-        }, 1500)
+        }, RESET_TIME)
         this.props.onDone(data)
       })
       .catch(() => {
@@ -100,7 +104,7 @@ class Uploader extends PureComponent {
             isDone: false,
             hasErrored: false
           })
-        }, 1500)
+        }, RESET_TIME)
       })
   }
 
@@ -128,22 +132,13 @@ class Uploader extends PureComponent {
     return (
       <StyledUploader className={`component--uploader${className}`}>
         {this.state.inProgress === true &&
-          <div>
-            <img src={icons.generic.uploadInProgress} className='icon icon--in-progress' alt='' />
-            <p>Uploading...</p>
-          </div>
+          <div><img src={icons.generic.uploadInProgress} className='icon icon--in-progress' alt='' /></div>
         }
         {this.state.isDone === true &&
-          <div>
-            <img src={icons.generic.uploadDone} className='icon icon--done' alt='' />
-            <p>Done!</p>
-          </div>
+          <div><img src={icons.generic.uploadDone} className='icon icon--done' alt='' /></div>
         }
         {this.state.hasErrored === true &&
-          <div>
-            <img src={icons.generic.uploadErrored} className='icon icon--errored' alt='' />
-            <p>Upload failed.</p>
-          </div>
+          <div><img src={icons.generic.uploadErrored} className='icon icon--errored' alt='' /></div>
         }
         {this.state.inProgress === false && this.state.isDone === false && this.state.hasErrored === false &&
           <Dropzone
@@ -155,25 +150,16 @@ class Uploader extends PureComponent {
             {({ isDragActive, isDragReject }) => {
               if (isDragReject) {
                 return (
-                  <div>
-                    <img src={icons.generic.upload} className='icon' alt='' />
-                    <p>You can&rsquo;t use this file.</p>
-                  </div>
+                  <img src={icons.generic.uploadErrored} className='icon' alt='' />
                 )
               }
               if (isDragActive) {
                 return (
-                  <div>
-                    <img src={icons.generic.upload} className='icon' alt='' />
-                    <p>You can use this file.</p>
-                  </div>
+                  <img src={icons.generic.uploadDone} className='icon' alt='' />
                 )
               }
               return (
-                <div>
-                  <img src={icons.generic.upload} className='icon' alt='' />
-                  <p>Drop a file here or touch to upload.</p>
-                </div>
+                <img src={icons.generic.upload} className='icon' alt='' />
               )
             }}
           </Dropzone>

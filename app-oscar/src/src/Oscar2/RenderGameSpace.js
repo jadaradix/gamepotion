@@ -114,7 +114,6 @@ const clear = (ctx, designMode, spaceContainer, camera) => {
 }
 
 const getTouchData = (domBoundsX, domBoundsY, e) => {
-  e.preventDefault()
   // console.error('[getTouchData]', e.touches[0].clientY, domBoundsY, window.scrollY)
   let x = parseInt(e.touches[0].clientX - domBoundsX - window.scrollX, 10)
   let y = parseInt(e.touches[0].clientY - domBoundsY - window.scrollY, 10)
@@ -277,9 +276,20 @@ const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, grid
   drawCamera(ctx, spaceContainer)
 }
 
+let seconds = 0
+let frame = 0
 const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext, depths) => {
   clear(ctx, true, spaceContainer, camera)
   drawBackgroundImage(ctx, spaceContainer, camera, true)
+  if (frame === 60) {
+    seconds += 1
+    for (let [alarm, time] of eventContext.alarms) {
+      (typeof time === 'number' && time > 0) && eventContext.alarms.set(alarm, time - 1)
+    }
+    frame = 0
+  } else {
+    frame += 1
+  }
   instances.forEach(instance1 => {
     const thisDepth = instance1.atomContainer.resource.depth
     depths.get(thisDepth).push(instance1)
@@ -403,8 +413,15 @@ const RenderGameSpace = (
   // c.setAttribute('height', styleHeight * window.devicePixelRatio)
 
   // sorry
-  const domBoundsX = c.getBoundingClientRect().x
-  const domBoundsY = c.getBoundingClientRect().y
+  let domBoundsX
+  let domBoundsY
+  const updateDomBounds = () => {
+    domBoundsX = c.getBoundingClientRect().x
+    domBoundsY = c.getBoundingClientRect().y
+  }
+  updateDomBounds()
+  const updateDomBoundsHandle = setInterval(updateDomBounds, 1000)
+
   let requestAnimationFrameHandle
 
   // let because it can be spliced
@@ -559,6 +576,7 @@ const RenderGameSpace = (
 
   const free = () => {
     console.warn('[RenderGameSpace] [free]')
+    clearInterval(updateDomBoundsHandle)
     window.cancelAnimationFrame(requestAnimationFrameHandle)
     eventListeners.forEach(event => {
       event.element.removeEventListener(event.name, event.logic)

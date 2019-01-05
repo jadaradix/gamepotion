@@ -88,8 +88,18 @@ const StyledResource = styled.div`
     section.actions {
       margin-top: 0;
       margin-left: calc(240px + 2rem);
+      .component--box.actions {
+        .component--list {
+          max-height: 420px;
+          overflow: scroll;
+        }
+      }
       .component--box.add-action {
         margin-top: 2rem;
+        .component--list {
+          max-height: 420px;
+          overflow: scroll;
+        }
       }
     }
   }

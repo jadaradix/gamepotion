@@ -8,7 +8,7 @@ class SetAlarm extends Action {
     this.description = 'Sets an alarm.'
     this.defaultRunArguments = new Map([
       ['Name', {
-        type: 'generic',
+        type: 'variable',
         value: ''
       }],
       ['Time (seconds)', {

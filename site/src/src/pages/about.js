@@ -24,7 +24,7 @@ const ThisPage = () => (
           <li>Use dozens of included images and sounds to get started</li>
           <li>Make your games come to life with drag-and-drop events, animation, physics and more</li>
           <li>Go all the way with advanced features like alarms, variables and debugging</li>
-          <li>You can even run real JavaScript inside your games through GMCVM</li>
+          <li>You can even run real JavaScript inside your games through a virtual machine</li>
         </UL>
       </div>
       <div>

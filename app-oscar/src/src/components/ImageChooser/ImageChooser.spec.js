@@ -3,6 +3,8 @@ import renderer from 'react-test-renderer'
 import 'jest-styled-components'
 import ImageChooser from './ImageChooser'
 
+jest.mock('uuid', () => jest.fn().mockReturnValue('id'))
+
 it('renders', () => {
   const images = [
     {

@@ -2,7 +2,7 @@
 
 exports[`Uploader renders 1`] = `
 .c0 {
-  position: relative;
+  height: 128px;
   border: 2px dashed #dadfe1;
   border-radius: 4px;
   cursor: copy;
@@ -17,36 +17,31 @@ exports[`Uploader renders 1`] = `
 }
 
 .c0 > div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
+  position: relative;
+  height: 100%;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 .c0 > div img.icon {
   display: block;
   width: 48px;
   height: 48px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
   margin: 0 auto 0.25rem auto;
 }
 
 .c0 > div img.icon--in-progress {
   -webkit-animation: oscar-in-progress 4s linear infinite;
   animation: oscar-in-progress 4s linear infinite;
-}
-
-.c0 > div p {
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  font-weight: 400;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  font-size: 90%;
-  text-align: center;
-  color: #6c7a89;
 }
 
 <div
@@ -67,16 +62,11 @@ exports[`Uploader renders 1`] = `
       }
     }
   >
-    <div>
-      <img
-        alt=""
-        className="icon"
-        src="upload.svg"
-      />
-      <p>
-        Drop a file here or touch to upload.
-      </p>
-    </div>
+    <img
+      alt=""
+      className="icon"
+      src="upload.svg"
+    />
     <input
       accept="audio/wav"
       autoComplete="off"
@@ -102,7 +92,7 @@ exports[`Uploader renders 1`] = `
 
 exports[`Uploader renders disabled 1`] = `
 .c0 {
-  position: relative;
+  height: 128px;
   border: 2px dashed #dadfe1;
   border-radius: 4px;
   cursor: copy;
@@ -117,36 +107,31 @@ exports[`Uploader renders disabled 1`] = `
 }
 
 .c0 > div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%,-50%);
-  -ms-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
+  position: relative;
+  height: 100%;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 .c0 > div img.icon {
   display: block;
   width: 48px;
   height: 48px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
   margin: 0 auto 0.25rem auto;
 }
 
 .c0 > div img.icon--in-progress {
   -webkit-animation: oscar-in-progress 4s linear infinite;
   animation: oscar-in-progress 4s linear infinite;
-}
-
-.c0 > div p {
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  font-weight: 400;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  font-size: 90%;
-  text-align: center;
-  color: #6c7a89;
 }
 
 <div
@@ -167,16 +152,11 @@ exports[`Uploader renders disabled 1`] = `
       }
     }
   >
-    <div>
-      <img
-        alt=""
-        className="icon"
-        src="upload.svg"
-      />
-      <p>
-        Drop a file here or touch to upload.
-      </p>
-    </div>
+    <img
+      alt=""
+      className="icon"
+      src="upload.svg"
+    />
     <input
       accept="audio/wav"
       autoComplete="off"

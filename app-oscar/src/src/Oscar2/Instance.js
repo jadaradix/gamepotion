@@ -55,7 +55,7 @@ class Instance {
       const action = actions[i]
       const parseContext = {
         eventContext,
-        instanceClass: this
+        instance: this
       }
       // console.warn('[onEvent] parseContext', parseContext)
       const runArguments = parseRunArguments(action.argumentTypes, action.runArguments, parseContext)

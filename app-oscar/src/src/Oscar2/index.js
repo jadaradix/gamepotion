@@ -107,7 +107,6 @@ class Oscar2 extends Component {
 
 Oscar2.propTypes = {
   containerElementId: PropTypes.string.isRequired,
-  project: PropTypes.any.isRequired,
   resources: PropTypes.array.isRequired,
   spaceId: PropTypes.string.isRequired,
   designMode: PropTypes.bool.isRequired,
