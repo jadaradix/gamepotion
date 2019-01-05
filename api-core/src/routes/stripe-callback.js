@@ -13,7 +13,9 @@ const updateTransaction = async (transaction, delta) => {
   return datalayer.write('Transactions', transaction.id, transaction.toDatastore())
 }
 
-const addModule = async (user, transactionId, moduleId) => {
+const addModule = async (userId, transactionId, moduleId) => {
+  const userObject = await datalayer.readOne('Users', { id: userId })
+  const user = new classes.User(userObject)
   user.addModule(moduleId, transactionId)
   return datalayer.write('Users', user.id, user.toDatastore())
 }
@@ -29,7 +31,7 @@ const route = async (request, response, next) => {
         state: 'PAID'
       }
     )
-    await addModule(request.authorization.user, transaction.id, transaction.moduleId)
+    await addModule(transaction.userId, transaction.id, transaction.moduleId)
     response.header('content-type', 'text/plain')
     response.send(`stripe-callback:${transaction.state}`)
     return next()

@@ -56,6 +56,7 @@ const routes = {
   'DEL      /v1/me': require('./routes/users/delete'),
   //   -> transactions
   'POST     /v1/me/transactions': require('./routes/users/transactions/create'),
+  'DEL      /v1/me/transactions/:id': require('./routes/users/transactions/delete'),
   //   -> teams
   'POST     /v1/teams': require('./routes/users/teams/create'),
   'GET      /v1/me/team': require('./routes/users/teams/get'),

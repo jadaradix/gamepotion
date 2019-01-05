@@ -37,7 +37,7 @@ test('doesnt call back when there is no id', () => {
       id: undefined
     },
     url: `${testData.URL_API_CORE}/stripe-callback`,
-    ...testData.configs.auth
+    ...testData.configs.noAuth
   })
     .then(response => {
       expect(response.data.message).toBe('couldnt update transaction; id is not a string')
@@ -52,7 +52,7 @@ test('doesnt call back when the transaction doesnt exist', () => {
       id: 'xyz'
     },
     url: `${testData.URL_API_CORE}/stripe-callback`,
-    ...testData.configs.auth
+    ...testData.configs.noAuth
   })
     .then(response => {
       expect(response.data.message).toBe('couldnt update transaction; couldnt find Transactions')
@@ -67,10 +67,32 @@ test('calls back', () => {
       id: transactionId
     },
     url: `${testData.URL_API_CORE}/stripe-callback`,
-    ...testData.configs.auth
+    ...testData.configs.noAuth
   })
     .then(response => {
       expect(response.status).toBe(200)
       expect(response.data).toBe('stripe-callback:PAID')
+    })
+})
+
+test('doesnt delete a transaction that doesnt exist', () => {
+  return axios({
+    method: 'delete',
+    url: `${testData.URL_API_CORE}/me/transactions/xyz`,
+    ...testData.configs.auth
+  })
+    .then(response => {
+      expect(response.status).toBe(404)
+    })
+})
+
+test('deletes the transaction', () => {
+  return axios({
+    method: 'delete',
+    url: `${testData.URL_API_CORE}/me/transactions/${transactionId}`,
+    ...testData.configs.auth
+  })
+    .then(response => {
+      expect(response.status).toBe(204)
     })
 })
