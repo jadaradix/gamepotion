@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { font } from '../styleAbstractions'
+import formatPrice from '../formatPrice'
 
 const StyledModule = styled.div`
   position: relative;
@@ -55,7 +56,7 @@ const hackErroredImage = (e) => {
 
 const Module = ({ module, hasBought }) => {
   // console.warn('[component-Module] module', module)
-  const price = `$${module.price / 100}`
+  const price = formatPrice(module.price)
   return (
     <StyledModule className='component--module'>
       <Link to={`/modules/${module.id}`}>

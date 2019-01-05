@@ -2,9 +2,11 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
+import api from '../api'
 import modules from '../modules'
 import buy from '../buy'
 import { font } from '../styleAbstractions'
+import formatPrice from '../formatPrice'
 
 import Heading1 from '../components/Heading1'
 import Button from '../components/Button'
@@ -35,9 +37,26 @@ class Module extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      currentModule: modules[process.env.NODE_ENV].find(m => m.id === this.props.match.params.id)
+      currentModule: modules[process.env.NODE_ENV].find(m => m.id === this.props.match.params.id),
+      boughtModuleIds: [],
+      authenticated: undefined
     }
     this.buy = this.buy.bind(this)
+  }
+
+  componentDidMount() {
+    api.get('api-core', 'me')
+      .then(user => {
+        this.setState({
+          authenticated: true,
+          boughtModuleIds: user.modules.map(m => m.id)
+        })
+      })
+      .catch(() => {
+        this.setState({
+          authenticated: false
+        })
+      })
   }
 
   buy() {
@@ -46,20 +65,27 @@ class Module extends React.PureComponent {
 
   render() {
     const {
-      currentModule
+      currentModule,
+      boughtModuleIds,
+      authenticated
     } = this.state
     if (currentModule === undefined) {
       return <Redirect to='/' />
     }
 
-    const hasBought = false
+    if (typeof authenticated !== 'boolean') {
+      return null
+    }
+
+    const price = formatPrice(currentModule.price)
+    const hasBought = boughtModuleIds.includes(currentModule.id)
 
     return (
       <StyledRoute>
         <section>
           <Heading1>{currentModule.name}</Heading1>
           <div className='actions'>
-            <Button disabled={hasBought} onClick={this.buy}>Buy now ({currentModule.price})</Button>
+            {authenticated && <Button disabled={hasBought} onClick={this.buy}>Buy now ({price})</Button>}
             <Button route='/' flavour='weak'>Go back</Button>
           </div>
           <div className='description' dangerouslySetInnerHTML={{__html: currentModule.description}} />
