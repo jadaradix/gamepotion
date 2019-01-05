@@ -21,6 +21,7 @@ const addModule = async (userId, transactionId, moduleId) => {
 }
 
 const route = async (request, response, next) => {
+  console.warn('[route stripe-callback] request.body', JSON.stringify(request.body, null, 4))
   const { id } = request.body
   try {
     assert(typeof id === 'string', 'id is not a string')
