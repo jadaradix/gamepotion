@@ -18,7 +18,7 @@ class Home extends React.PureComponent {
       <StyledRoute>
         <section>
           <Modules
-            modules={modules}
+            modules={modules[process.env.NODE_ENV]}
           />
         </section>
       </StyledRoute>

@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 import modules from '../modules'
+import buy from '../buy'
 import { font } from '../styleAbstractions'
 
 import Heading1 from '../components/Heading1'
@@ -30,23 +31,35 @@ const StyledRoute = styled.div`
   }
 `
 
-class Home extends React.PureComponent {
+class Module extends React.PureComponent {
   constructor(props) {
     super(props)
+    this.state = {
+      currentModule: modules[process.env.NODE_ENV].find(m => m.id === this.props.match.params.id)
+    }
+    this.buy = this.buy.bind(this)
+  }
+
+  buy() {
+    buy(this.state.currentModule)
   }
 
   render() {
-    const currentModule = modules.find(m => m.id === this.props.match.params.id)
+    const {
+      currentModule
+    } = this.state
     if (currentModule === undefined) {
       return <Redirect to='/' />
     }
+
+    const hasBought = false
 
     return (
       <StyledRoute>
         <section>
           <Heading1>{currentModule.name}</Heading1>
           <div className='actions'>
-            <Button disabled>Buy now ({currentModule.price})</Button>
+            <Button disabled={hasBought} onClick={this.buy}>Buy now ({currentModule.price})</Button>
             <Button route='/' flavour='weak'>Go back</Button>
           </div>
           <div className='description' dangerouslySetInnerHTML={{__html: currentModule.description}} />
@@ -56,4 +69,4 @@ class Home extends React.PureComponent {
   }
 }
 
-export default Home
+export default Module

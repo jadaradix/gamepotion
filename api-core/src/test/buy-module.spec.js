@@ -18,7 +18,6 @@ test('creates a transaction', () => {
     data: {
       moduleId: 'pro',
       total: 1000,
-      currency: 'GBP'
     },
     url: `${testData.URL_API_CORE}/me/transactions`,
     ...testData.configs.auth
@@ -34,13 +33,13 @@ test('doesnt call back when there is no id', () => {
   return axios({
     method: 'post',
     data: {
-      id: undefined
+      client_reference_id: undefined
     },
     url: `${testData.URL_API_CORE}/stripe-callback`,
     ...testData.configs.noAuth
   })
     .then(response => {
-      expect(response.data.message).toBe('couldnt update transaction; id is not a string')
+      expect(response.data.message).toBe('couldnt update transaction; client_reference_id is not a string')
       expect(response.status).toBe(400)
     })
 })
@@ -49,7 +48,7 @@ test('doesnt call back when the transaction doesnt exist', () => {
   return axios({
     method: 'post',
     data: {
-      id: 'xyz'
+      client_reference_id: 'xyz'
     },
     url: `${testData.URL_API_CORE}/stripe-callback`,
     ...testData.configs.noAuth
@@ -64,7 +63,7 @@ test('calls back', () => {
   return axios({
     method: 'post',
     data: {
-      id: transactionId
+      client_reference_id: transactionId
     },
     url: `${testData.URL_API_CORE}/stripe-callback`,
     ...testData.configs.noAuth

@@ -18,7 +18,6 @@ class Transaction {
     this.userId = json.userId || null
     this.moduleId = json.moduleId || null
     this.total = (typeof json.total === 'number' ? json.total : 0)
-    this.currency = json.currency || currencies[0]
     this.state = json.state || states[0]
   }
 
@@ -29,7 +28,6 @@ class Transaction {
       userId: this.userId,
       moduleId: this.moduleId,
       total: this.total,
-      currency: this.currency,
       state: this.state
     }
     return JSON.parse(JSON.stringify(json))
@@ -42,7 +40,6 @@ class Transaction {
       userId: this.userId,
       moduleId: this.moduleId,
       total: this.total,
-      currency: this.currency,
       state: this.state
     }
     return JSON.parse(JSON.stringify(json))
