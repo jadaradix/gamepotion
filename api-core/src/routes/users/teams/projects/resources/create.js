@@ -52,7 +52,7 @@ const route = async (request, response, next) => {
     })
     .catch(error => {
       console.error('[route users teams projects resources create] datalayer.write caught', error)
-      response.send(new errors.InternalServerError('couldnt create resource'))
+      response.send(new errors.InternalServerError('couldnt create'))
       return next(false)
     })
 }

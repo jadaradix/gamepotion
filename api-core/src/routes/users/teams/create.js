@@ -17,7 +17,7 @@ const route = (request, response, next) => {
     })
     .catch(error => {
       console.error('[route users teams create] datalayer.write caught', error)
-      response.send(new errors.InternalServerError('couldnt create team'))
+      response.send(new errors.InternalServerError('couldnt create'))
       return next(false)
     })
 }
