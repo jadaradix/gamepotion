@@ -114,7 +114,6 @@ const clear = (ctx, designMode, spaceContainer, camera) => {
 }
 
 const getTouchData = (domBoundsX, domBoundsY, e) => {
-  e.preventDefault()
   // console.error('[getTouchData]', e.touches[0].clientY, domBoundsY, window.scrollY)
   let x = parseInt(e.touches[0].clientX - domBoundsX - window.scrollX, 10)
   let y = parseInt(e.touches[0].clientY - domBoundsY - window.scrollY, 10)
@@ -414,8 +413,15 @@ const RenderGameSpace = (
   // c.setAttribute('height', styleHeight * window.devicePixelRatio)
 
   // sorry
-  const domBoundsX = c.getBoundingClientRect().x
-  const domBoundsY = c.getBoundingClientRect().y
+  let domBoundsX
+  let domBoundsY
+  const updateDomBounds = () => {
+    domBoundsX = c.getBoundingClientRect().x
+    domBoundsY = c.getBoundingClientRect().y
+  }
+  updateDomBounds()
+  const updateDomBoundsHandle = setInterval(updateDomBounds, 1000)
+
   let requestAnimationFrameHandle
 
   // let because it can be spliced
@@ -570,6 +576,7 @@ const RenderGameSpace = (
 
   const free = () => {
     console.warn('[RenderGameSpace] [free]')
+    clearInterval(updateDomBoundsHandle)
     window.cancelAnimationFrame(requestAnimationFrameHandle)
     eventListeners.forEach(event => {
       event.element.removeEventListener(event.name, event.logic)
