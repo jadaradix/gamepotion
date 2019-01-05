@@ -24,12 +24,15 @@ const StyledApp = styled.div`
   // }
 `
 
+const queryParameters = {}
+window.location.search.substring(1).split('&').forEach(qp => {
+  const [key, value] = qp.split('=')
+  queryParameters[key] = value
+})
+
+
 const getSingleQueryParameter = (paramater) => {
-  const query = window.location.search
-  if (query.indexOf(`?${paramater}=`) === 0) {
-    return query.substring(query.indexOf(`?${paramater}=`) + `?${paramater}=`.length) 
-  }
-  return undefined
+  return queryParameters[paramater]
 }
 
 const getAccessToken = () => {

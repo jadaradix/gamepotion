@@ -14,8 +14,8 @@ describe('interRouter', () => {
   })
 
   it('generates a store route', () => {
-    const link = store(NODE_ENV, 'modules/pro', 'access-token')
-    expect(link).toBe('https://store.gamemaker.club/modules/pro?accessToken=access-token')
+    const link = store(NODE_ENV, 'modules/pro')
+    expect(link).toBe('https://store.gamemaker.club/modules/pro')
   })
 
   it('generates a site route', () => {

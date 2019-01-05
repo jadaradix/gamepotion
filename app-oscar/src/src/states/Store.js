@@ -47,6 +47,9 @@ class StateStore extends Component {
     if (this.state.user === null) {
       return null
     }
+
+    const url = `${this.props.match.params[0]}?accessToken=${this.state.user.accessToken}&${window.location.search.substring(1)}`
+
     return (
       <Fragment>
         <CustomHelmet
@@ -55,7 +58,7 @@ class StateStore extends Component {
         <MainToolbarContainer />
         <ResponsiveContainer>
           <StyledState>
-            <iframe title='Store' src={store(process.env.NODE_ENV, this.props.match.params[0], this.state.user.accessToken)}>...</iframe>
+            <iframe title='Store' src={store(process.env.NODE_ENV, url)}>...</iframe>
           </StyledState>
         </ResponsiveContainer>
       </Fragment>

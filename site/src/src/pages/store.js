@@ -14,7 +14,7 @@ const ThisPage = () => (
         height: '800px'
       }}
       title='Store'
-      src={store(process.env.NODE_ENV, '')}
+      src={store(process.env.NODE_ENV)}
     />
   </Page>
 )
