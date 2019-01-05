@@ -286,6 +286,7 @@ class ResourceSpace extends PureComponent {
               gridOn={this.props.localSettings['grid-on'] && !this.state.isPlaying}
               gridWidth={this.props.localSettings['grid-width']}
               gridHeight={this.props.localSettings['grid-height']}
+              scaleByViewportHeight={false}
               onTouch={this.plotAtom}
               onTouchSecondary={this.unplotAtoms}
               onTouchMove={this.updateTouchCoords}

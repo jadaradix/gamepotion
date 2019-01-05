@@ -80,6 +80,7 @@ class Oscar2 extends Component {
         gridOn: this.props.gridOn,
         gridWidth: this.props.gridWidth,
         gridHeight: this.props.gridHeight,
+        scaleByViewportHeight: this.props.scaleByViewportHeight,
         onTouch: this.props.onTouch,
         onTouchSecondary: this.props.onTouchSecondary,
         onTouchMove: this.props.onTouchMove
@@ -112,10 +113,12 @@ Oscar2.propTypes = {
   designMode: PropTypes.bool.isRequired,
   gridOn: PropTypes.bool.isRequired,
   gridWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.number]),
-  gridHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.number])
+  gridHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.number]),
+  scaleByViewportHeight: PropTypes.bool
 }
 
 Oscar2.defaultProps = {
+  scaleByViewportHeight: false
 }
 
 export default Oscar2

@@ -113,20 +113,23 @@ const clear = (ctx, designMode, spaceContainer, camera) => {
   )
 }
 
-const getTouchData = (domBoundsX, domBoundsY, e) => {
-  // console.error('[getTouchData]', e.touches[0].clientY, domBoundsY, window.scrollY)
-  let x = parseInt(e.touches[0].clientX - domBoundsX - window.scrollX, 10)
-  let y = parseInt(e.touches[0].clientY - domBoundsY - window.scrollY, 10)
+const getTouchData = (scaleFactor, domBounds, e) => {
+  let x = parseInt((e.touches[0].clientX - domBounds.x) * scaleFactor, 10)
+  let y = parseInt((e.touches[0].clientY - domBounds.y) * scaleFactor, 10)
   const z = parseInt(0, 10)
+  // console.warn('[getTouchData] scaleFactor', scaleFactor)
+  // console.warn('[getTouchData] e.touches[0].clientY', e.touches[0].clientY)
+  // console.warn('[getTouchData] domBounds.y', domBounds.y)
+  // console.warn('[getTouchData] return { x, y, z }', { x, y, z })
   return { x, y, z }
 }
 
-const getMouseData = (domBoundsX, domBoundsY, e) => {
-  e.preventDefault()
-  // console.error('[getMouseData]', e.clientY, domBoundsY, window.scrollY)
-  const x = parseInt(e.clientX - domBoundsX - window.scrollX, 10)
-  const y = parseInt(e.clientY - domBoundsY - window.scrollY, 10)
+const getMouseData = (scaleFactor, domBounds, e) => {
+  let x = parseInt((e.clientX - domBounds.x) * scaleFactor, 10)
+  let y = parseInt((e.clientY - domBounds.y) * scaleFactor, 10)
   const z = parseInt(0, 10)
+  // console.warn('[getMouseData] scaleFactor', scaleFactor)
+  // console.warn('[getMouseData] return { x, y, z }', { x, y, z })
   return { x, y, z }
 }
 
@@ -276,13 +279,11 @@ const gameLoopDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, grid
   drawCamera(ctx, spaceContainer)
 }
 
-let seconds = 0
 let frame = 0
 const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext, depths) => {
   clear(ctx, true, spaceContainer, camera)
   drawBackgroundImage(ctx, spaceContainer, camera, true)
   if (frame === 60) {
-    seconds += 1
     for (let [alarm, time] of eventContext.alarms) {
       (typeof time === 'number' && time > 0) && eventContext.alarms.set(alarm, time - 1)
     }
@@ -379,6 +380,7 @@ const RenderGameSpace = (
     gridOn = false,
     gridWidth = 16,
     gridHeight = 16,
+    scaleByViewportHeight = false,
     onSwitchSpace,
     onTouch = () => {},
     onTouchSecondary = () => {},
@@ -397,10 +399,13 @@ const RenderGameSpace = (
   }
 
   const [c, ctx] = [canvasElement, canvasElement.getContext('2d')]
-  c.width = (designMode ? spaceContainer.resource.width : camera.width)
-  c.height = (designMode ? spaceContainer.resource.height : camera.height)
+  const renderWidth = (designMode ? spaceContainer.resource.width : camera.width)
+  const renderHeight = (designMode ? spaceContainer.resource.height : camera.height)
+  c.width = renderWidth
+  c.height = renderHeight
   c.style.display = 'block'
   c.style.backgroundColor = 'black'
+  c.style.maxWidth = '100%'
 
   // https://stackoverflow.com/questions/4261090/html5-canvas-and-anti-aliasing
   ctx.imageSmoothingEnabled = false
@@ -413,11 +418,22 @@ const RenderGameSpace = (
   // c.setAttribute('height', styleHeight * window.devicePixelRatio)
 
   // sorry
-  let domBoundsX
-  let domBoundsY
+  let domBounds
+  let scaleFactor
+  let yOffset = 0
   const updateDomBounds = () => {
-    domBoundsX = c.getBoundingClientRect().x
-    domBoundsY = c.getBoundingClientRect().y
+    const { x, y, width, height } = c.getBoundingClientRect()
+    domBounds = { x, y, width, height }
+    if (scaleByViewportHeight === false) {
+      scaleFactor = 1
+      return
+    }
+    const newScaleFactor = renderWidth / domBounds.width
+    if (scaleFactor !== newScaleFactor) {
+      scaleFactor = newScaleFactor
+      yOffset = (window.innerHeight / 2) - ((renderHeight * (1 / scaleFactor)) / 2)
+      c.style.margin = `${yOffset}px auto 0 auto`
+    }
   }
   updateDomBounds()
   const updateDomBoundsHandle = setInterval(updateDomBounds, 1000)
@@ -460,11 +476,13 @@ const RenderGameSpace = (
       }
     }
 
-    addEventListener(c, 'touchmove', (e) => {
-      onTouchMove(getTouchData(domBoundsX, domBoundsY, e))
+    const supportsTouch = ('ontouchstart' in window)
+
+    supportsTouch && addEventListener(c, 'touchmove', (e) => {
+      onTouchMove(getTouchData(scaleFactor, domBounds, e))
     }, true)
-    addEventListener(c, 'mousemove', (e) => {
-      onTouchMove(getMouseData(domBoundsX, domBoundsY, e))
+    !supportsTouch && addEventListener(c, 'mousemove', (e) => {
+      onTouchMove(getMouseData(scaleFactor, domBounds, e))
     })
     addEventListener(c, 'contextmenu', (e) => {
       e.preventDefault()
@@ -496,14 +514,14 @@ const RenderGameSpace = (
         }
       })
     }
-    addEventListener(c, 'touchstart', (e) => {
+    supportsTouch && addEventListener(c, 'touchstart', (e) => {
       jInputs.touch = {
         primary: true,
-        coords: getTouchData(domBoundsX, domBoundsY, e),
+        coords: getTouchData(scaleFactor, domBounds, e),
         time: Date.now()
       }
     }, true)
-    addEventListener(c, 'touchend', () => {
+    supportsTouch && addEventListener(c, 'touchend', () => {
       const timeDifference = Date.now() - jInputs.touch.time
       const normalisedCoords = normaliseCoords(camera, designMode, gridOn, gridWidth, gridHeight, jInputs.touch.coords)
       const instancesAtCoords = instances.filter(i => isInstanceIntersecting(i, normalisedCoords))
@@ -520,9 +538,8 @@ const RenderGameSpace = (
         instances = handleEvent('Touch', undefined, eventContext, instances, instancesAtCoords)
       }
     })
-    addEventListener(c, 'mousedown', (e) => {
-      e.preventDefault()
-      const coords = getMouseData(domBoundsX, domBoundsY, e)
+    !supportsTouch && addEventListener(c, 'mousedown', (e) => {
+      const coords = getMouseData(scaleFactor, domBounds, e)
       const normalisedCoords = normaliseCoords(camera, designMode, gridOn, gridWidth, gridHeight, coords)
       const instancesAtCoords = instances.filter(i => isInstanceIntersecting(i, normalisedCoords))
       if (designMode === true) {

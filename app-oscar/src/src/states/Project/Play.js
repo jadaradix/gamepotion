@@ -64,6 +64,7 @@ class StateProjectPlay extends PureComponent {
                 spaceId={this.state.currentProject.project.startSpace}
                 designMode={false}
                 gridOn={false}
+                scaleByViewportHeight={false}
               />
             </Fragment>
           }

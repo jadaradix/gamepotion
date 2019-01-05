@@ -84,6 +84,7 @@ class App extends PureComponent {
             gridOn={false}
             gridWidth={16}
             gridHeight={16}
+            scaleByViewportHeight={true}
           />
         </Fragment>
       )

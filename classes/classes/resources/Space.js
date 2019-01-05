@@ -1,7 +1,7 @@
 import Resource from '../Resource.js'
 
-const DEFAULT_WIDTH = 610
-const DEFAULT_HEIGHT = 280
+const DEFAULT_WIDTH = 812
+const DEFAULT_HEIGHT = 375
 
 class ResourceSpace extends Resource {
   constructor (json = {}) {
