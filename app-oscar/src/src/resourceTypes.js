@@ -6,7 +6,7 @@ import Space from './component-resources/Space'
 const fixedResourceCollectionsByType = {
   'image': [
     {
-      'id': 'oscar',
+      'id': 'gmc',
       'requiresboughtResourcePackModule': false,
       'credit': 'James Garner',
       'resources': [
@@ -393,7 +393,7 @@ const fixedResourceCollectionsByType = {
   ],
   'sound': [
     {
-      'id': 'oscar',
+      'id': 'gmc',
       'requiresboughtResourcePackModule': false,
       'credit': 'James Garner',
       'resources': [

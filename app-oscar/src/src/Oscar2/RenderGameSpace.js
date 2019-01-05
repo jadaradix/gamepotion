@@ -206,7 +206,7 @@ const loadResources = (resourceContainers, spaceContainer) => {
       const element = new window.Image()
       addEventListener(element, 'load', loadBack)
       addEventListener(element, 'error', () => {
-        element.dataset.oscarErrored = true
+        element.dataset.gmcErrored = true
         loadBack()
       })
       resource.extras.element = element

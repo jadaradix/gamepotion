@@ -8,7 +8,7 @@ import { font } from '../../styleAbstractions'
 import icons from '../../icons'
 
 const StyledUploader = styled.div`
-  @keyframes oscar-in-progress {
+  @keyframes gmc-in-progress {
     100% { transform: rotate(360deg); }
   }
   height: 128px;
@@ -36,7 +36,7 @@ const StyledUploader = styled.div`
       // background-color: yellow;
     }
     img.icon--in-progress {
-      animation: oscar-in-progress 4s linear infinite;
+      animation: gmc-in-progress 4s linear infinite;
     }
     // p {
     //   padding: 0.5rem 1rem 0.5rem 1rem;

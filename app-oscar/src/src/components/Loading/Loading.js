@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import icons from '../../icons'
 
 const StyledLoading = styled.div`
-  @keyframes oscar-loading {
+  @keyframes gmc-loading {
     100% { transform: rotate(360deg); }
   }
   display: block;
@@ -15,7 +15,7 @@ const StyledLoading = styled.div`
     display: block;
     width: 2rem;
     margin: 0 auto 0 auto;
-    animation: oscar-loading 4s linear infinite;
+    animation: gmc-loading 4s linear infinite;
     // background-color: blue;
   }
 `

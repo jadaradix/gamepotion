@@ -75,9 +75,9 @@ class App extends PureComponent {
     if (typeof this.state.projectAndResources === 'object') {
       return (
         <Fragment>
-          <div id='oscar2-container' />
+          <div id='gmc-container' />
           <Oscar2
-            containerElementId='oscar2-container'
+            containerElementId='gmc-container'
             resources={this.state.projectAndResources.resources}
             spaceId={this.state.projectAndResources.project.startSpace}
             designMode={false}

@@ -40,11 +40,14 @@ const getCallback = () => {
   return getSingleQueryParameter('callback')
 }
 
-const callbacks = {
-    notify.good('Thank you for your purchase!')
+const CALLBACK_WAIT = 10 * 1000
+
+const CALLBACKS = {
+  'good': () => {
+    notify.good('Thank you for your purchase!', CALLBACK_WAIT)
   },
   'bad': () => {
-    notify.bad('Your purchase did not complete successfully.')
+    notify.bad('Your purchase did not complete successfully.', CALLBACK_WAIT)
   }
 }
 
@@ -52,7 +55,7 @@ const hackyRoutingCallback = () => {
   const accessToken = getAccessToken()
   accessToken && set('access-token', accessToken)
   const callback = getCallback()
-  callback && callbacks[callback]()
+  callback && CALLBACKS[callback]()
   return null
 }
 

@@ -14,36 +14,34 @@ class Notify {
     this.elementTimeout = null
     this.elementFadeOutTimeout = null
     injectCss(`
-      @keyframes oscar-notification-fade-in {
+      @keyframes gmc-notification-fade-in {
         from { opacity: 0; }
         to { opacity: 1; }
       }
-      .oscar-notification-fade-in {
-        animation: oscar-notification-fade-in 1s;
+      .gmc-notification-fade-in {
+        animation: gmc-notification-fade-in 1s;
       }
-      @keyframes oscar-notification-fade-out {
+      @keyframes gmc-notification-fade-out {
         from { opacity: 1; }
         to { opacity: 0; }
       }
-      .oscar-notification-fade-out {
-        animation: oscar-notification-fade-out 1s;
+      .gmc-notification-fade-out {
+        animation: gmc-notification-fade-out 1s;
       }
       .notification {
         position: fixed;
         z-index: 3;
-        bottom: 16px;
-        border-radius: 4px;
+        top: 0;
+        left: 0;
+        right: 0;
         box-shadow: 0 1px 3px rgba(172, 172, 172, 0.75);
-        padding: 12px 14px 14px 14px;
-        width: calc(100vw - 48px);
-        max-width: 992px;
+        padding: 1rem;
+        width: 100%;
         color: white;
         background-color: #666666;
         cursor: default;
         font-size: 15px;
         text-align: center;
-        left: 50%;
-        transform: translate(-50%, 0);
         ${font}
       }
       .notification.good {
@@ -65,7 +63,7 @@ class Notify {
     }
     this.element = document.createElement('div')
     this.element.classList.add('notification')
-    this.element.classList.add('oscar-notification-fade-in')
+    this.element.classList.add('gmc-notification-fade-in')
     this.element.classList.add(dClass)
     this.element.innerHTML = `<span>${message}</span>`
     document.body.appendChild(this.element)
@@ -87,7 +85,7 @@ class Notify {
 
   _removeElement () {
     if (this.element === null) return
-    this.element.classList.add('oscar-notification-fade-out')
+    this.element.classList.add('gmc-notification-fade-out')
     this.elementFadeOutTimeout = setTimeout(() => {
       this._removeElementByForce()
     }, 1000 * 0.9) // ???

@@ -277,9 +277,9 @@ class ResourceSpace extends PureComponent {
         />}
         <section className='main'>
           <div className='game'>
-            <div id='oscar2-container' />
+            <div id='gmc-container' />
             <Oscar2
-              containerElementId='oscar2-container'
+              containerElementId='gmc-container'
               resources={this.props.resources}
               spaceId={this.props.resource.id}
               designMode={!this.state.isPlaying}
