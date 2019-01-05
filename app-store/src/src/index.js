@@ -7,6 +7,7 @@ import './index.css'
 import logo from './images/logo.png'
 
 import { set } from './localStorage'
+import notify from './notify'
 
 import Home from './routes/Home'
 import Module from './routes/Module'
@@ -23,17 +24,35 @@ const StyledApp = styled.div`
   // }
 `
 
-const getAccessToken = () => {
+const getSingleQueryParameter = (paramater) => {
   const query = window.location.search
-  if (query.indexOf('?accessToken=') === 0) {
-    return query.substring(query.indexOf('?accessToken=') + '?accessToken='.length) 
+  if (query.indexOf(`?${paramater}=`) === 0) {
+    return query.substring(query.indexOf(`?${paramater}=`) + `?${paramater}=`.length) 
   }
   return undefined
 }
 
-const maybeUpdateAccessToken = () => {
+const getAccessToken = () => {
+  return getSingleQueryParameter('accessToken')
+}
+
+const getCallback = () => {
+  return getSingleQueryParameter('callback')
+}
+
+const callbacks = {
+    notify.good('Thank you for your purchase!')
+  },
+  'bad': () => {
+    notify.bad('Your purchase did not complete successfully.')
+  }
+}
+
+const hackyRoutingCallback = () => {
   const accessToken = getAccessToken()
   accessToken && set('access-token', accessToken)
+  const callback = getCallback()
+  callback && callbacks[callback]()
   return null
 }
 
@@ -42,7 +61,7 @@ const App = () => {
     <StyledApp>
       <Router>
         <div>
-          <Route component={maybeUpdateAccessToken} />
+          <Route component={hackyRoutingCallback} />
           <Switch>
             <Route path='/modules/:id' exact strict component={Module} />
             <Route component={Home} />
