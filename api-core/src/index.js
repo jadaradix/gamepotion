@@ -16,7 +16,7 @@ const middlewareAuthPublicRoutes = [
   ['EXACT', 'POST', '/v1/users'],
   ['START', 'GET', '/v1/feed/'],
   ['START', 'GET', '/v1/public-projects/'],
-  ['EXACT', 'GET', '/v1/stripe-callback']
+  ['EXACT', 'POST', '/v1/stripe-callback']
 ]
 
 const morgan = require('morgan')
@@ -46,7 +46,7 @@ const middlewares = {
 
 const routes = {
   'GET      /v1': require('./routes/healthcheck'),
-  'GET      /v1/stripe-callback': require('./routes/stripe-callback'),
+  'POST     /v1/stripe-callback': require('./routes/stripe-callback'),
   'GET      /v1/feed/:id': require('./routes/feed'),
   'GET      /v1/public-projects/:id/play': require('./routes/play-project'),
   // -> users
@@ -54,6 +54,9 @@ const routes = {
   'GET      /v1/me': require('./routes/users/get'),
   'PATCH    /v1/me': require('./routes/users/update'),
   'DEL      /v1/me': require('./routes/users/delete'),
+  //   -> transactions
+  'POST     /v1/me/transactions': require('./routes/users/transactions/create'),
+  'DEL      /v1/me/transactions/:id': require('./routes/users/transactions/delete'),
   //   -> teams
   'POST     /v1/teams': require('./routes/users/teams/create'),
   'GET      /v1/me/team': require('./routes/users/teams/get'),

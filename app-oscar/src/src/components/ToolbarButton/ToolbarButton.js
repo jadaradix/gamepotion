@@ -19,6 +19,7 @@ const StyledToolbarButton = styled.li`
     position: absolute;
     top: calc(3rem + 4px + 0.5rem);
     right: 0;
+    z-index: 3;
     min-width: 128px;
     list-style-type: none;
     background-color: red;

@@ -1,6 +1,7 @@
 module.exports = {
   'User': require('./dist/User.js'),
   'Team': require('./dist/Team.js'),
+  'Transaction': require('./dist/Transaction.js'),
   'Project': require('./dist/Project.js'),
   'FeedItem': require('./dist/FeedItem.js'),
   'resources': require('./dist/resources/index.js'),

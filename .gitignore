@@ -30,6 +30,7 @@ app-oscar/src/coverage
 
 app-store/src/build
 app-store/src/coverage
+app-store/src/src/inter-router
 
 app-play/src/build
 app-play/src/coverage

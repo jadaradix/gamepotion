@@ -6,6 +6,9 @@ import styled from 'styled-components'
 import './index.css'
 import logo from './images/logo.png'
 
+import { init, set } from './localStorage'
+import getQueryParameter from './getQueryParameter'
+
 import Home from './routes/Home'
 import Module from './routes/Module'
 
@@ -21,14 +24,29 @@ const StyledApp = styled.div`
   // }
 `
 
+const getAccessToken = () => {
+  return getQueryParameter('accessToken')
+}
+
+const hackyRoutingCallback = () => {
+  const accessToken = getAccessToken()
+  accessToken && set('access-token', accessToken)
+  return null
+}
+
 const App = () => {
+  init()
+
   return (
     <StyledApp>
       <Router>
-        <Switch>
-          <Route path='/modules/:id' exact strict component={Module} />
-          <Route component={Home} />
-        </Switch>
+        <div>
+          <Route component={hackyRoutingCallback} />
+          <Switch>
+            <Route path='/modules/:id' exact strict component={Module} />
+            <Route component={Home} />
+          </Switch>
+        </div>
       </Router>
     </StyledApp>
   )

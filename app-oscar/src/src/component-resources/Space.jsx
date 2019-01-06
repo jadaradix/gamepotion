@@ -65,20 +65,12 @@ const StyledResource = styled.div`
         margin-left: 1rem;
         float: left;
         .component--button {
+          margin-right: 1rem;
           font-size: 80%;
           height: 2rem;
           line-height: 2rem;
           padding: 0 0.4rem 0 0.4rem;
         }
-      }
-      .touches {
-        margin-left: 1rem;
-        float: left;
-        line-height: 2rem;
-        // background-color: red;
-        ${font}
-        font-size: 80%;
-        color: #6c7a89;
       }
     }
     .game {
@@ -101,6 +93,23 @@ const StyledResource = styled.div`
   }
   section.atom-to-place {
     margin-top: 1rem;
+  }
+  section.main .play-touches-grid {
+    padding-bottom: 1rem;
+    .hint {
+      float: left;
+      margin-right: 1rem;
+      line-height: 2rem;
+      // background-color: red;
+      ${font}
+      font-size: 80%;
+      color: #6c7a89;
+    }
+  }
+  @media screen and (min-width: 872px) {
+    section.main .play-touches-grid {
+      padding-bottom: 0;
+    }
   }
   @media screen and (min-width: 1202px) {
     section.main {
@@ -265,6 +274,8 @@ class ResourceSpace extends PureComponent {
 
     console.warn('[Space] [render] this.props.localSettings', this.props.localSettings)
 
+    const supportsTouch = ('ontouchstart' in window)
+
     return (
       <StyledResource>
         {this.state.showingGridModal &&
@@ -277,26 +288,31 @@ class ResourceSpace extends PureComponent {
         />}
         <section className='main'>
           <div className='game'>
-            <div id='oscar2-container' />
+            <div id='gmc-container' />
             <Oscar2
-              containerElementId='oscar2-container'
+              containerElementId='gmc-container'
               resources={this.props.resources}
               spaceId={this.props.resource.id}
               designMode={!this.state.isPlaying}
               gridOn={this.props.localSettings['grid-on'] && !this.state.isPlaying}
               gridWidth={this.props.localSettings['grid-width']}
               gridHeight={this.props.localSettings['grid-height']}
+              scaleByViewportHeight={false}
               onTouch={this.plotAtom}
               onTouchSecondary={this.unplotAtoms}
               onTouchMove={this.updateTouchCoords}
-            />          
+            />
           </div>
           <div className='play-touches-grid'>
             <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>
             <div className='grid-settings'>
               <Button onClick={this.showGridModal}>Grid settings</Button>
             </div>
-            <div className='touches'>
+            <div className='hint'>
+              {!supportsTouch && <span>Click to place; right-click to destroy</span>}
+              {supportsTouch && <span>Touch to place; long press to destroy</span>}
+            </div>
+            <div className='hint'>
               <span ref={(r) => { this.thisRefs.touchCoordsX = r }}>0</span>&times;<span ref={(r) => { this.thisRefs.touchCoordsY = r }}>0</span>
             </div>
           </div>

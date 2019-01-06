@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import ReactDOM from 'react-dom'
 
 import api from './api'
-import { set } from './localStorage'
+import { init, set } from './localStorage'
 
 import CustomHelmet from './component-instances/CustomHelmet.js'
 import Version from './component-instances/Version.js'
@@ -34,6 +34,14 @@ const PrivateRoute = ({ WhichComponent, ...rest }) => (
     } 
   />
 )
+
+init(new Map([
+  ['credentials-userlandId', ''],
+  ['credentials-password', ''],
+  ['grid-on', true],
+  ['grid-width', 16],
+  ['grid-height', 16]
+]))
 
 const app = (
   <Fragment>

@@ -72,7 +72,7 @@ export function getAll (exludeKeys = []) {
 }
 
 export function init (defaults = new Map([]), force = false) {
-  // console.log('[localStorage] [init] force', force)
+  console.log('[localStorage] [init] force', force)
   defaults.forEach((value, key) => {
     if (get(key) === null || force === true) {
       set(key, value)

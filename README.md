@@ -10,7 +10,7 @@ Be the game boss.
 
 ## /etc/hosts file
 ```
-167.99.203.136	oscar-production
+167.99.203.136 gmc-production
 127.0.0.1	api-core.gamemaker.club
 127.0.0.1	api-bin.gamemaker.club
 127.0.0.1	app.gamemaker.club

@@ -21,7 +21,7 @@ class Instance {
     if (this.imageContainer === undefined) {
       return null
     }
-    if (typeof this.imageContainer.extras.image.dataset.oscarErrored === 'string') {
+    if (typeof this.imageContainer.extras.image.dataset.gmcErrored === 'string') {
       return null
     }
     return this.imageContainer.extras.image

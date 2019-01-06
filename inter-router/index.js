@@ -14,10 +14,10 @@ export function appProject(environment, projectId) {
   return environments[environment]
 }
 
-export function store(environment, route, accessToken) {
+export function store(environment, route = '') {
   const environments = {
-    'development': `http://localhost:3001/${route}?accessToken=${accessToken}`,
-    'production': `https://store.gamemaker.club/${route}?accessToken=${accessToken}`
+    'development': `http://localhost:3001/${route}`,
+    'production': `https://store.gamemaker.club/${route}`
   }
   return environments[environment]
 }
@@ -34,6 +34,6 @@ export function site(environment, route) {
   const environments = {
     'development': `http://localhost:3003/${route}`,
     'production': `https://gamemaker.club/${route}`
-}
+  }
   return environments[environment]
 }

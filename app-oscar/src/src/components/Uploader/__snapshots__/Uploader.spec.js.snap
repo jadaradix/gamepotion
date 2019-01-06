@@ -40,8 +40,8 @@ exports[`Uploader renders 1`] = `
 }
 
 .c0 > div img.icon--in-progress {
-  -webkit-animation: oscar-in-progress 4s linear infinite;
-  animation: oscar-in-progress 4s linear infinite;
+  -webkit-animation: gmc-in-progress 4s linear infinite;
+  animation: gmc-in-progress 4s linear infinite;
 }
 
 <div
@@ -130,8 +130,8 @@ exports[`Uploader renders disabled 1`] = `
 }
 
 .c0 > div img.icon--in-progress {
-  -webkit-animation: oscar-in-progress 4s linear infinite;
-  animation: oscar-in-progress 4s linear infinite;
+  -webkit-animation: gmc-in-progress 4s linear infinite;
+  animation: gmc-in-progress 4s linear infinite;
 }
 
 <div

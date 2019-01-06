@@ -1,5 +1,6 @@
 import User from './classes/User.js'
 import Team from './classes/Team.js'
+import Transaction from './classes/Transaction.js'
 import Project from './classes/Project.js'
 import FeedItem from './classes/FeedItem.js'
 
@@ -15,6 +16,7 @@ export {
 export default {
   User,
   Team,
+  Transaction,
   Project,
   FeedItem,
   resources,

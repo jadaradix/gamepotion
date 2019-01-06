@@ -22,7 +22,7 @@ const route = (request, response, next) => {
     })
     .catch(error => {
       console.error('[route users teams projects create] datalayer.write caught', error)
-      response.send(new errors.InternalServerError('couldnt create project'))
+      response.send(new errors.InternalServerError('couldnt create'))
       return next(false)
     })
 }

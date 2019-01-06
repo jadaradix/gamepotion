@@ -6,7 +6,7 @@ import Space from './component-resources/Space'
 const fixedResourceCollectionsByType = {
   'image': [
     {
-      'id': 'oscar',
+      'id': 'gmc',
       'requiresboughtResourcePackModule': false,
       'credit': 'James Garner',
       'resources': [
@@ -38,7 +38,7 @@ const fixedResourceCollectionsByType = {
     },
     {
       'id': 'cilein-kearns',
-      'requiresboughtResourcePackModule': false,
+      'requiresboughtResourcePackModule': true,
       'credit': 'Ciléin Kearns',
       resources: [
         { id: 'cilein-kearns-Aquatic Pack-BubbleBig',
@@ -393,7 +393,7 @@ const fixedResourceCollectionsByType = {
   ],
   'sound': [
     {
-      'id': 'oscar',
+      'id': 'gmc',
       'requiresboughtResourcePackModule': false,
       'credit': 'James Garner',
       'resources': [

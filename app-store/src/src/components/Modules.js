@@ -11,13 +11,15 @@ const StyledModules = styled.div`
   // background-color: red;
 `
 
-const Modules = ({ modules }) => {
+const Modules = ({ modules, boughtModuleIds }) => {
   // console.warn('[component-Modules] modules', modules)
+  
   return (
     <StyledModules className='component--modules'>
       {modules.map(module => {
+        const hasBought = boughtModuleIds.includes(module.id)
         return (
-          <Module key={module.id} module={module} isPurchased={false} />
+          <Module key={module.id} module={module} hasBought={hasBought} />
         )
       })}
     </StyledModules>
@@ -25,7 +27,8 @@ const Modules = ({ modules }) => {
 }
 
 Modules.propTypes = {
-  modules: PropTypes.array.isRequired
+  modules: PropTypes.array.isRequired,
+  boughtModuleIds: PropTypes.array.isRequired
 }
 
 Modules.defaultProps = {

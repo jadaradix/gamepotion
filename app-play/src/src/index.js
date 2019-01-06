@@ -7,9 +7,8 @@ import Oscar2 from './Oscar2'
 
 import './index.css'
 
-const env = (window.location.protocol === 'http:' ? 'local' : 'production')
 const envs = {
-  'local': {
+  'development': {
     apis: {
       'api-core': 'http://localhost:1025/v1'
     }
@@ -20,7 +19,7 @@ const envs = {
     }
   }
 }
-const apis = envs[env].apis
+const apis = envs[process.env.NODE_ENV].apis
 
 const getProjectAndResources = async (id) => {
   const { data: { project, resources } } = await axios.get(`${apis['api-core']}/public-projects/${id}/play`)
@@ -75,15 +74,16 @@ class App extends PureComponent {
     if (typeof this.state.projectAndResources === 'object') {
       return (
         <Fragment>
-          <div id='oscar2-container' />
+          <div id='gmc-container' />
           <Oscar2
-            containerElementId='oscar2-container'
+            containerElementId='gmc-container'
             resources={this.state.projectAndResources.resources}
             spaceId={this.state.projectAndResources.project.startSpace}
             designMode={false}
             gridOn={false}
             gridWidth={16}
             gridHeight={16}
+            scaleByViewportHeight={true}
           />
         </Fragment>
       )

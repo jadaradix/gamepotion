@@ -1,110 +1,32 @@
 const axios = require('axios')
-const createRandomString = require('../abstractions/createRandomString.js')
+const { setup, teardown } = require('./setup-teardown')
 
-const URL_API_CORE = 'http://localhost:1025/v1'
+let testData
 
-const user = {
-  userlandId: `${createRandomString()}@gamemaker.club`
-}
+beforeAll(async () => {
+  testData = await setup()
+})
 
-const team = {
-  name: 'FatQuack'
-}
-
-const project = {
-  name: 'Aggressive Avians'
-}
-
-const configs = {
-  auth: {
-    validateStatus: false,
-    auth: {
-      username: user.userlandId
-    }
-  },
-  noAuth: {
-    validateStatus: false
+afterAll(async () => {
+  if (typeof testData !== 'object') {
+    throw new Error('setup failed so teardown will not work')
   }
-}
-
-test('creates a user', (done) => {
-  axios({
-    method: 'post',
-    url: `${URL_API_CORE}/users`,
-    data: user,
-    ...configs.noAuth
-  })
-    .then(response => {
-      expect(response.status).toBe(201)
-      user.id = response.data.id
-      configs.auth.auth.password = response.data.password
-      return done()
-    })
-    .catch(done)
-})
-
-test('creates a team', (done) => {
-  axios({
-    method: 'post',
-    url: `${URL_API_CORE}/teams`,
-    data: team,
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(201)
-      expect(response.data.name).toBe(team.name)
-      team.id = response.data.id
-      return done()
-    })
-    .catch(done)
-})
-
-test('updates the users team', (done) => {
-  axios({
-    method: 'patch',
-    url: `${URL_API_CORE}/me`,
-    data: {
-      teamId: team.id
-    },
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(200)
-      expect(response.data.teamId).toBe(team.id)
-      return done()
-    })
-    .catch(done)
-})
-
-test('creates a project', (done) => {
-  axios({
-    method: 'post',
-    url: `${URL_API_CORE}/me/team/projects`,
-    data: project,
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(201)
-      expect(response.data.name).toBe(project.name)
-      project.id = response.data.id
-      return done()
-    })
-    .catch(done)
+  await teardown(testData)
 })
 
 test('updates a project', (done) => {
   axios({
     method: 'patch',
-    url: `${URL_API_CORE}/me/team/projects/${project.id}`,
+    url: `${testData.URL_API_CORE}/me/team/projects/${testData.project.id}`,
     data: {
       name: 'DinoRun'
     },
-    ...configs.auth
+    ...testData.configs.auth
   })
     .then(response => {
       expect(response.status).toBe(200)
       expect(response.data.name).toBe('DinoRun')
-      project.name = response.data.name
+      testData.project.name = response.data.name
       return done()
     })
     .catch(done)
@@ -113,13 +35,13 @@ test('updates a project', (done) => {
 test('lists the project', (done) => {
   axios({
     method: 'get',
-    url: `${URL_API_CORE}/me/team/projects`,
-    ...configs.auth
+    url: `${testData.URL_API_CORE}/me/team/projects`,
+    ...testData.configs.auth
   })
     .then(response => {
       expect(response.status).toBe(200)
       expect(response.data).toHaveLength(1)
-      const foundProject = response.data.find(p => p.id === project.id)
+      const foundProject = response.data.find(p => p.id === testData.project.id)
       expect(typeof foundProject).toBe('object')
       return done()
     })
@@ -130,8 +52,8 @@ describe('resources', () => {
   test('lists none', (done) => {
     axios({
       method: 'get',
-      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
-      ...configs.auth
+      url: `${testData.URL_API_CORE}/me/team/projects/${testData.project.id}/resources`,
+      ...testData.configs.auth
     })
       .then(response => {
         expect(response.status).toBe(200)
@@ -144,11 +66,11 @@ describe('resources', () => {
   test('doesnt add one with a stupid type', (done) => {
     axios({
       method: 'post',
-      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
+      url: `${testData.URL_API_CORE}/me/team/projects/${testData.project.id}/resources`,
       data: {
         type: 'qweqweqwe'
       },
-      ...configs.auth
+      ...testData.configs.auth
     })
       .then(response => {
         expect(response.status).toBe(400)
@@ -162,12 +84,12 @@ describe('resources', () => {
   test('adds one', (done) => {
     axios({
       method: 'post',
-      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
+      url: `${testData.URL_API_CORE}/me/team/projects/${testData.project.id}/resources`,
       data: {
         type: 'sound',
         name: 'Bird Sound'
       },
-      ...configs.auth
+      ...testData.configs.auth
     })
       .then(response => {
         expect(response.status).toBe(201)
@@ -182,8 +104,8 @@ describe('resources', () => {
   test('lists one', (done) => {
     axios({
       method: 'get',
-      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
-      ...configs.auth
+      url: `${testData.URL_API_CORE}/me/team/projects/${testData.project.id}/resources`,
+      ...testData.configs.auth
     })
       .then(response => {
         expect(response.status).toBe(200)
@@ -198,12 +120,12 @@ describe('resources', () => {
   test('renames it', (done) => {
     axios({
       method: 'patch',
-      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources/${resourceId}`,
+      url: `${testData.URL_API_CORE}/me/team/projects/${testData.project.id}/resources/${resourceId}`,
       data: {
         type: 'stoopid-type',
         name: 'Fox Sound'
       },
-      ...configs.auth
+      ...testData.configs.auth
     })
       .then(response => {
         expect(response.status).toBe(200)
@@ -217,8 +139,8 @@ describe('resources', () => {
   test('deletes it', (done) => {
     axios({
       method: 'delete',
-      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources/${resourceId}`,
-      ...configs.auth
+      url: `${testData.URL_API_CORE}/me/team/projects/${testData.project.id}/resources/${resourceId}`,
+      ...testData.configs.auth
     })
       .then(response => {
         expect(response.status).toBe(204)
@@ -230,8 +152,8 @@ describe('resources', () => {
   test('lists none after deletion', (done) => {
     axios({
       method: 'get',
-      url: `${URL_API_CORE}/me/team/projects/${project.id}/resources`,
-      ...configs.auth
+      url: `${testData.URL_API_CORE}/me/team/projects/${testData.project.id}/resources`,
+      ...testData.configs.auth
     })
       .then(response => {
         expect(response.status).toBe(200)
@@ -245,48 +167,8 @@ describe('resources', () => {
 test('deletes the project', (done) => {
   axios({
     method: 'delete',
-    url: `${URL_API_CORE}/me/team/projects/${project.id}`,
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(204)
-      return done()
-    })
-    .catch(done)
-})
-
-test('doesnt list the project', (done) => {
-  axios({
-    method: 'get',
-    url: `${URL_API_CORE}/me/team/projects`,
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(200)
-      expect(response.data).toHaveLength(0)
-      return done()
-    })
-    .catch(done)
-})
-
-test('deletes the team', (done) => {
-  axios({
-    method: 'delete',
-    url: `${URL_API_CORE}/me/team`,
-    ...configs.auth
-  })
-    .then(response => {
-      expect(response.status).toBe(204)
-      return done()
-    })
-    .catch(done)
-})
-
-test('deletes the user', (done) => {
-  axios({
-    method: 'delete',
-    url: `${URL_API_CORE}/me`,
-    ...configs.auth
+    url: `${testData.URL_API_CORE}/me/team/projects/${testData.project.id}`,
+    ...testData.configs.auth
   })
     .then(response => {
       expect(response.status).toBe(204)

@@ -13,12 +13,11 @@ html {
 }
 
 body {
+  background-color: white;
 }
 
 #root {
   padding: 1rem;
-  border-radius: 4px;
-  background-color: white;
 }
 
 strong {

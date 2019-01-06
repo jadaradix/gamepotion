@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { font } from '../styleAbstractions'
+import formatPrice from '../formatPrice'
 
 const StyledModule = styled.div`
   position: relative;
@@ -43,7 +44,7 @@ const StyledModule = styled.div`
       left: 0.5rem;
     }
     span.bought {
-      right: 0.5rem;
+      left: 0.5rem;
     }
   }
 `
@@ -55,6 +56,7 @@ const hackErroredImage = (e) => {
 
 const Module = ({ module, hasBought }) => {
   // console.warn('[component-Module] module', module)
+  const price = formatPrice(module.price)
   return (
     <StyledModule className='component--module'>
       <Link to={`/modules/${module.id}`}>
@@ -65,7 +67,7 @@ const Module = ({ module, hasBought }) => {
         />
         <span className='name'>{module.name}</span>
         {hasBought === false &&
-          <span className='price'>{module.price}</span>
+          <span className='price'>{price}</span>
         }
         {hasBought === true &&
           <span className='bought'>Purchased</span>

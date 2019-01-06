@@ -101,7 +101,7 @@ export function dispatch ({ name, pleaseThrow = false, data = {} }) {
   return foundAction(state, data)
     .then(newState => {
       state = newState
-      element.dispatchEvent(new window.CustomEvent(`oscar-dispatch-${name}`, { detail: state }))
+      element.dispatchEvent(new window.CustomEvent(`gmc-dispatch-${name}`, { detail: state }))
       return state
     })
     .catch(error => {
@@ -150,8 +150,8 @@ export function getState () {
 
 export function subscribe (name, handler) {
   const logic = e => handler(e.detail)
-  element.addEventListener(`oscar-dispatch-${name}`, logic, false)
+  element.addEventListener(`gmc-dispatch-${name}`, logic, false)
   return {
-    unsubscribe: () => element.removeEventListener(`oscar-dispatch-${name}`, logic)
+    unsubscribe: () => element.removeEventListener(`gmc-dispatch-${name}`, logic)
   }
 }

@@ -56,14 +56,15 @@ class StateProjectPlay extends PureComponent {
               <CustomHelmet
                 title={this.state.currentProject.project.name}
               />
-              <div id='oscar2-container' />
+              <div id='gmc-container' />
               <Oscar2
-                containerElementId='oscar2-container'
+                containerElementId='gmc-container'
                 project={this.state.currentProject.project}
                 resources={this.state.currentProject.resources}
                 spaceId={this.state.currentProject.project.startSpace}
                 designMode={false}
                 gridOn={false}
+                scaleByViewportHeight={false}
               />
             </Fragment>
           }
