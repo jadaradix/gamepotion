@@ -1,9 +1,8 @@
 import axios from 'axios'
 import { getState } from './state'
 
-const env = (window.location.protocol === 'http:' ? 'local' : 'production')
 const envs = {
-  'local': {
+  'development': {
     apis: {
       'api-core': 'http://localhost:1025/v1',
       'api-bin': 'http://localhost:1026/v1'
@@ -16,7 +15,7 @@ const envs = {
     }
   }
 }
-const apis = envs[env].apis
+const apis = envs[process.env.NODE_ENV].apis
 
 const auth = {
   username: getState().credentials.userlandId,

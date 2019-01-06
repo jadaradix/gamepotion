@@ -14,7 +14,7 @@ export function appProject(environment, projectId) {
   return environments[environment]
 }
 
-export function store(environment, route) {
+export function store(environment, route = '') {
   const environments = {
     'development': `http://localhost:3001/${route}`,
     'production': `https://store.gamemaker.club/${route}`

@@ -1,7 +1,7 @@
 import React from 'react'
 import Page from '../Page'
 
-import { store } from '../inter-router' 
+import { store } from '../inter-router'
 
 const TITLE = 'Store'
 

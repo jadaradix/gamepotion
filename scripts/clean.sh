@@ -28,8 +28,3 @@ cd api-bin/src;
   rm -rf abstractions;
   rm -rf classes;
 cd ../..;
-
-cd app-oscar/src/src;
-  rm -rf classes;
-  rm -rf inter-router;
-cd ../../..;

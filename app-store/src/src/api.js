@@ -2,8 +2,7 @@ import axios from 'axios'
 import { get } from './localStorage'
 import envs from './envs'
 
-const env = (window.location.protocol === 'http:' ? 'local' : 'production')
-const { apis } = envs[env]
+const { apis } = envs[process.env.NODE_ENV]
 
 const getAccessToken = () => {
   return get('access-token')

@@ -1,8 +1,5 @@
 import api from './api'
-import envs from './envs'
-
-const env = (window.location.protocol === 'http:' ? 'local' : 'production')
-const { callbackUrl } = envs[env]
+import { store } from './inter-router'
 
 const createTransaction = (module) => {
   return api.post('api-core', 'me/transactions', {
@@ -20,6 +17,7 @@ const getStripeApiKey = (environment) => {
 }
 
 const STRIPE_API_KEY = getStripeApiKey(process.env.NODE_ENV)
+const callbackUrl = store(process.env.NODE_ENV)
 
 const buy = async (module) => {
   const transaction = await createTransaction(module)

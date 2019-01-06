@@ -7,9 +7,8 @@ import Oscar2 from './Oscar2'
 
 import './index.css'
 
-const env = (window.location.protocol === 'http:' ? 'local' : 'production')
 const envs = {
-  'local': {
+  'development': {
     apis: {
       'api-core': 'http://localhost:1025/v1'
     }
@@ -20,7 +19,7 @@ const envs = {
     }
   }
 }
-const apis = envs[env].apis
+const apis = envs[process.env.NODE_ENV].apis
 
 const getProjectAndResources = async (id) => {
   const { data: { project, resources } } = await axios.get(`${apis['api-core']}/public-projects/${id}/play`)

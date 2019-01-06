@@ -19,6 +19,10 @@ cd app-oscar/src;
   rm -rf src/inter-router; cp -R ../../inter-router src/inter-router; rm -rf src/inter-router/node_modules;
 cd ../..;
 
+cd app-store/src;
+  rm -rf src/inter-router; cp -R ../../inter-router src/inter-router; rm -rf src/inter-router/node_modules;
+cd ../..;
+
 cd site/src;
   rm src/inter-router;
   rm src/videos.json;

@@ -7,7 +7,6 @@ import './index.css'
 import logo from './images/logo.png'
 
 import { init, set } from './localStorage'
-import notify from './notify'
 import getQueryParameter from './getQueryParameter'
 
 import Home from './routes/Home'
@@ -29,26 +28,9 @@ const getAccessToken = () => {
   return getQueryParameter('accessToken')
 }
 
-const getCallback = () => {
-  return getQueryParameter('callback')
-}
-
-const CALLBACK_WAIT = 10 * 1000
-
-const CALLBACKS = {
-  'good': () => {
-    notify.good('Thank you for your purchase!', CALLBACK_WAIT)
-  },
-  'bad': () => {
-    notify.bad('Your purchase did not complete successfully.', CALLBACK_WAIT)
-  }
-}
-
 const hackyRoutingCallback = () => {
   const accessToken = getAccessToken()
   accessToken && set('access-token', accessToken)
-  const callback = getCallback()
-  callback && CALLBACKS[callback]()
   return null
 }
 

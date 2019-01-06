@@ -5,6 +5,7 @@ import modules from '../modules'
 import getBoughtModuleIds from '../getBoughtModuleIds'
 import getQueryParameter from '../getQueryParameter'
 import { font } from '../styleAbstractions'
+import notify from '../notify'
 
 import Modules from '../components/Modules'
 
@@ -18,6 +19,21 @@ const StyledRoute = styled.div`
   }
 `
 
+const getCallback = () => {
+  return getQueryParameter('callback')
+}
+
+const CALLBACK_WAIT = 10 * 1000
+
+const CALLBACKS = {
+  'good': () => {
+    notify.good('Thank you for your purchase!', CALLBACK_WAIT)
+  },
+  'bad': () => {
+    notify.bad('Your purchase did not complete successfully.', CALLBACK_WAIT)
+  }
+}
+
 class Home extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -28,7 +44,9 @@ class Home extends React.PureComponent {
   }
 
   componentDidMount() {
-    const delay = (typeof getQueryParameter('callback') === 'string' ? 5000 : 0)
+    const callback = getCallback()
+    callback && CALLBACKS[callback]()
+    const delay = (callback ? 5000 : 0)
     const doGetBoughtModuleIds = () => {
       getBoughtModuleIds()
         .then(boughtModuleIds => {
