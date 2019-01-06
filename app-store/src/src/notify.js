@@ -16,13 +16,13 @@ class Notify {
     injectCss(`
       @keyframes gmc-notification-fade-in {
         from { opacity: 0; }
-        to { opacity: 1; }
+        to { opacity: 0.9; }
       }
       .gmc-notification-fade-in {
         animation: gmc-notification-fade-in 1s;
       }
       @keyframes gmc-notification-fade-out {
-        from { opacity: 1; }
+        from { opacity: 0.9; }
         to { opacity: 0; }
       }
       .gmc-notification-fade-out {
@@ -31,7 +31,7 @@ class Notify {
       .notification {
         position: fixed;
         z-index: 3;
-        top: 0;
+        bottom: 0;
         left: 0;
         right: 0;
         box-shadow: 0 1px 3px rgba(172, 172, 172, 0.75);
@@ -39,6 +39,7 @@ class Notify {
         width: 100%;
         color: white;
         background-color: #666666;
+        opacity: 0.9;
         cursor: default;
         font-size: 15px;
         text-align: center;

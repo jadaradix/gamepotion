@@ -301,7 +301,7 @@ class ResourceSpace extends PureComponent {
               onTouch={this.plotAtom}
               onTouchSecondary={this.unplotAtoms}
               onTouchMove={this.updateTouchCoords}
-            />          
+            />
           </div>
           <div className='play-touches-grid'>
             <Switch checked={this.state.isPlaying} onChange={(v) => this.updatePlaying(v)}>Play</Switch>

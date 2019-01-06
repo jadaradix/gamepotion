@@ -8,6 +8,7 @@ import logo from './images/logo.png'
 
 import { init, set } from './localStorage'
 import notify from './notify'
+import getQueryParameter from './getQueryParameter'
 
 import Home from './routes/Home'
 import Module from './routes/Module'
@@ -24,23 +25,12 @@ const StyledApp = styled.div`
   // }
 `
 
-const queryParameters = {}
-window.location.search.substring(1).split('&').forEach(qp => {
-  const [key, value] = qp.split('=')
-  queryParameters[key] = value
-})
-
-
-const getSingleQueryParameter = (paramater) => {
-  return queryParameters[paramater]
-}
-
 const getAccessToken = () => {
-  return getSingleQueryParameter('accessToken')
+  return getQueryParameter('accessToken')
 }
 
 const getCallback = () => {
-  return getSingleQueryParameter('callback')
+  return getQueryParameter('callback')
 }
 
 const CALLBACK_WAIT = 10 * 1000

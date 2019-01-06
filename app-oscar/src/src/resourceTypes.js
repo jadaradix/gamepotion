@@ -38,7 +38,7 @@ const fixedResourceCollectionsByType = {
     },
     {
       'id': 'cilein-kearns',
-      'requiresboughtResourcePackModule': false,
+      'requiresboughtResourcePackModule': true,
       'credit': 'Ciléin Kearns',
       resources: [
         { id: 'cilein-kearns-Aquatic Pack-BubbleBig',
