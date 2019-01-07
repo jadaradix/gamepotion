@@ -3,6 +3,7 @@ const errors = require('restify-errors')
 const datalayer = require('../../abstractions/datalayer')
 const uuid = require('../../abstractions/uuid/index.dist.js')
 const classes = require('../../classes/dist.js')
+const sendMail = require('../../sendMail')
 
 const getExistingUser = (userlandId) => {
   return datalayer.readOne('Users', { userlandId })
@@ -14,6 +15,27 @@ const createRandomPassword = () => {
 
 const getPasswordHash = (password, callback) => {
   return bcrypt.hash(password, null, null, callback)
+}
+
+const sendWelcomeEmail = async (name, userlandId) => {
+  await sendMail({
+    subject: 'Welcome to Game Maker Club',
+    to: userlandId,
+    contentText:
+`Hey ${name},
+
+Thanks for joining Game Maker Club! Welcome.
+
+- GMC
+`,
+    contentHtml:
+`<p>Hey ${name},</p>
+
+<p>Thanks for joining Game Maker Club! Welcome.</p>
+
+<p>- GMC</p>
+`
+  })
 }
 
 const route = async (request, response, next) => {
@@ -41,8 +63,9 @@ const route = async (request, response, next) => {
         }
         userClass.passwordHash = passwordHash
         datalayer.write('Users', userClass.id, userClass.toDatastore())
-          .then(() => {
+          .then(async () => {
             const toApi = userClass.toApi()
+            await sendWelcomeEmail(userClass.name, userClass.userlandId)
             response.send(201, {
               ...toApi,
               password
