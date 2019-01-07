@@ -1,4 +1,8 @@
+const assert = require('assert').strict
 const sendgrid = require('@sendgrid/mail')
+
+assert(typeof process.env.SENDGRID_API_KEY === 'string', 'process.env.SENDGRID_API_KEY is not a string')
+
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
 const func = async ctx => {

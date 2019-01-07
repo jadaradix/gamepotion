@@ -11,7 +11,7 @@
     "koa-router": "^7.4.0"
   },
   "scripts": {
-    "start": "node -r dotenv/config index.js",
+    "start": "node index.js",
     "test": "jest"
   },
   "devDependencies": {
