@@ -6,6 +6,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "console-stamp": "^0.2.7",
+    "got": "^9.5.0",
     "morgan": "^1.9.1",
     "restify": "6.4.0",
     "restify-errors": "5.0.0"

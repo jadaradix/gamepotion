@@ -24,8 +24,11 @@ const func = async ctx => {
     text: contentText,
     html: contentHtml
   }
+  console.log(message)
   await sendgrid.send(message)
-  ctx.body = 'ok'
+  ctx.body = {
+    status: 'ok'
+  }
 }
 
 module.exports = func
