@@ -22,18 +22,20 @@ const BRAND_NAME = 'Game Potion'
 const templates = {
   'welcome': {
     subject: `Welcome to ${BRAND_NAME}`,
-    contentText:
-`Hey ${name},
+    contentText({ name }) {
+      return `Hey ${name},
 
 Thanks for joining ${BRAND_NAME}! Welcome.
 
-${BRAND_NAME}`,
-    contentHtml:
-`<p>Hey ${name},</p>
+${BRAND_NAME}`
+    },
+    contentHtml({ name }) {
+      return `<p>Hey ${name},</p>
 
 <p>Thanks for joining ${BRAND_NAME}! Welcome.</p>
 
 <p>${BRAND_NAME}</p>`
+    }
   }
 }
 
@@ -42,7 +44,7 @@ const sendWelcomeEmail = async (name, userlandId) => {
     subject,
     contentText,
     contentHtml
-  } = templates['welcome']
+  } = templates['welcome']({ name })
   await sendMail({
     subject,
     to: userlandId,
