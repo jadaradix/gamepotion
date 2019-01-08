@@ -1,7 +1,7 @@
 {
   "name": "gmc-app-store",
   "version": "0.0.2",
-  "description": "Store",
+  "description": "Game Potion Store",
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",

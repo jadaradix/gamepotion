@@ -10,7 +10,7 @@ const func = async ctx => {
   ctx.assert(ctx.request.body.subject, 400, 'missing "subject"')
   ctx.assert(ctx.request.body.contentText, 400, 'missing "contentText"')
   ctx.assert(ctx.request.body.contentHtml, 400, 'missing "contentHtml"')
-  const from = ctx.request.body.from || 'Game Maker Club <james@euphoricadventur.es>'
+  const from = ctx.request.body.from || 'Game Potion <james@euphoricadventur.es>'
   const {
     to,
     subject,

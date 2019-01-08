@@ -17,24 +17,39 @@ const getPasswordHash = (password, callback) => {
   return bcrypt.hash(password, null, null, callback)
 }
 
-const sendWelcomeEmail = async (name, userlandId) => {
-  await sendMail({
-    subject: 'Welcome to Game Maker Club',
-    to: userlandId,
+const BRAND_NAME = 'Game Potion'
+
+const templates = {
+  'welcome': {
+    subject: `Welcome to ${BRAND_NAME}`,
     contentText:
 `Hey ${name},
 
-Thanks for joining Game Maker Club! Welcome.
+Thanks for joining ${BRAND_NAME}! Welcome.
 
 - GMC
 `,
     contentHtml:
 `<p>Hey ${name},</p>
 
-<p>Thanks for joining Game Maker Club! Welcome.</p>
+<p>Thanks for joining ${BRAND_NAME}! Welcome.</p>
 
 <p>- GMC</p>
 `
+  }
+}
+
+const sendWelcomeEmail = async (name, userlandId) => {
+  const {
+    subject,
+    contentText,
+    contentHtml
+  } = templates['welcome']
+  await sendMail({
+    subject,
+    to: userlandId,
+    contentText,
+    contentHtml
   })
 }
 
@@ -65,7 +80,11 @@ const route = async (request, response, next) => {
         datalayer.write('Users', userClass.id, userClass.toDatastore())
           .then(async () => {
             const toApi = userClass.toApi()
-            await sendWelcomeEmail(userClass.name, userClass.userlandId)
+            try {
+              await sendWelcomeEmail(userClass.name, userClass.userlandId)
+            } catch (error) {
+              console.error('[route users create] sendWelcomeEmail threw; silently ignoring', error)
+            }
             response.send(201, {
               ...toApi,
               password

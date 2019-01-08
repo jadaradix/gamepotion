@@ -31,7 +31,7 @@ export default {
       <ul>
         <li>Add more than 5 Image, Sound, Atom or Space resources</li>
         <li>Remove pre-game advertising</li>
-        <li>Support the continued development of Game Maker Club</li>
+        <li>Support the continued development of ${process.env.REACT_APP_NAME}</li>
       </ul>
       `,
       image: 'module.png'

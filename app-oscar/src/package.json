@@ -1,7 +1,7 @@
 {
   "name": "gmc-app-oscar",
   "version": "0.0.8",
-  "description": "Game Maker Club",
+  "description": "Game Potion",
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
