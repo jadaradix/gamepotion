@@ -2,7 +2,7 @@ import axios from 'axios'
 import { getState } from './state'
 
 const productionBaseDomain = (() => {
-  return window.location.hostname.substring('app.'.length)
+  return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
 })()
 
 const envs = {

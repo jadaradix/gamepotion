@@ -8,7 +8,7 @@ import Oscar2 from './Oscar2'
 import './index.css'
 
 const productionBaseDomain = (() => {
-  return window.location.hostname.substring('app.'.length)
+  return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
 })()
 
 const envs = {
