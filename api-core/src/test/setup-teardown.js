@@ -5,7 +5,7 @@ const URL_API_CORE = 'http://localhost:1025/v1'
 
 async function setup () {
   const user = {
-    userlandId: `${createRandomString()}@gamemaker.club`
+    userlandId: `${createRandomString()}@example.com`
   }
   const team = {
     name: 'FatQuack'

@@ -3,6 +3,7 @@ const errors = require('restify-errors')
 const datalayer = require('../../abstractions/datalayer')
 const uuid = require('../../abstractions/uuid/index.dist.js')
 const classes = require('../../classes/dist.js')
+const sendMail = require('../../sendMail')
 
 const getExistingUser = (userlandId) => {
   return datalayer.readOne('Users', { userlandId })
@@ -14,6 +15,42 @@ const createRandomPassword = () => {
 
 const getPasswordHash = (password, callback) => {
   return bcrypt.hash(password, null, null, callback)
+}
+
+const BRAND_NAME = 'Game Potion'
+
+const templates = {
+  'welcome': {
+    subject: `Welcome to ${BRAND_NAME}`,
+    contentText({ name }) {
+      return `Hey ${name},
+
+Thanks for joining ${BRAND_NAME}! Welcome.
+
+${BRAND_NAME}`
+    },
+    contentHtml({ name }) {
+      return `<p>Hey ${name},</p>
+
+<p>Thanks for joining ${BRAND_NAME}! Welcome.</p>
+
+<p>${BRAND_NAME}</p>`
+    }
+  }
+}
+
+const sendWelcomeEmail = async (name, userlandId) => {
+  const {
+    subject,
+    contentText,
+    contentHtml
+  } = templates['welcome']({ name })
+  await sendMail({
+    subject,
+    to: userlandId,
+    contentText,
+    contentHtml
+  })
 }
 
 const route = async (request, response, next) => {
@@ -41,8 +78,13 @@ const route = async (request, response, next) => {
         }
         userClass.passwordHash = passwordHash
         datalayer.write('Users', userClass.id, userClass.toDatastore())
-          .then(() => {
+          .then(async () => {
             const toApi = userClass.toApi()
+            try {
+              await sendWelcomeEmail(userClass.name, userClass.userlandId)
+            } catch (error) {
+              console.error('[route users create] sendWelcomeEmail threw; silently ignoring', error)
+            }
             response.send(201, {
               ...toApi,
               password

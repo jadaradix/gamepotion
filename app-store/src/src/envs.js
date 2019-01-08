@@ -1,3 +1,7 @@
+const productionBaseDomain = (() => {
+  return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
+})()
+
 export default {
   'development': {
     apis: {
@@ -6,7 +10,7 @@ export default {
   },
   'production': {
     apis: {
-      'api-core': 'https://api-core.gamemaker.club/v1'
+      'api-core': `https://api-core.${productionBaseDomain}/v1`
     }
   }
 }

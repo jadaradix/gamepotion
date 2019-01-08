@@ -10,14 +10,14 @@ test('can be created from an API call', () => {
   const user = new User()
   const body = {
     teamId: 'team-id',
-    userlandId: 'james@gamemaker.club'
+    userlandId: 'j@jada.io'
   }
   user.fromApiPost(body)
   expect(user.id).toHaveLength(36)
   expect(user.accessToken).toHaveLength(36)
   expect(user.name).toBe('James')
   expect(user.isTeamAdmin).toBe(true)
-  expect(user.userlandId).toBe('james@gamemaker.club')
+  expect(user.userlandId).toBe('j@jada.io')
 })
 
 test('throws an error when being created from an API call if there is no userlandId', () => {
@@ -31,16 +31,16 @@ test('throws an error when being created from an API call if there is no userlan
 test('can be updated from an API call', () => {
   const user = new User()
   user.name = 'James'
-  user.userlandId = 'james@gamemaker.club'
+  user.userlandId = 'j@jada.io'
   const body = {
     teamId: 'should-be-persisted',
     name: 'Robert',
-    userlandId: 'fatquack@gamemaker.club',
+    userlandId: 'me@fatquack.net',
     id: 'should-not-be-persisted'
   }
   user.fromApiPatch(body)
   expect(user.name).toBe('Robert')
-  expect(user.userlandId).toBe('fatquack@gamemaker.club')
+  expect(user.userlandId).toBe('me@fatquack.net')
   expect(user.teamId).toBe('should-be-persisted')
   expect(user.id).not.toBe('should-not-be-persisted')
 })

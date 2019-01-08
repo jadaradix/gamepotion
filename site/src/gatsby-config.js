@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'Game Maker Club',
+    title: 'Game Potion',
   },
   plugins: [
     'gatsby-plugin-react-helmet',

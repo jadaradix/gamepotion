@@ -1,4 +1,4 @@
-# Game Maker Club
+# Game Potion
 Be the game boss.
 
 ## Install

@@ -34,3 +34,8 @@ cd app-play/src;
   rm -rf src/Oscar2;
   cp -R ../../app-oscar/src/src/Oscar2 src;
 cd ../..;
+
+cd service-mail/src;
+  rm .env;
+  cp ../../secrets/env-service-mail .env;
+cd ../..;

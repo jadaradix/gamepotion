@@ -109,7 +109,7 @@ const stages = new Map([
               Enter your e-mail to get started!
             </p>
             <form onSubmit={goNext}>
-              <Input type='email' placeholder='james@gamemaker.club' required autoFocus value={state.userlandId} onChange={(v) => update('userlandId', v)} />
+              <Input type='email' required autoFocus value={state.userlandId} onChange={(v) => update('userlandId', v)} />
               <Button disabled={!canGoNext()}>Next</Button>
             </form>
           </Fragment>
