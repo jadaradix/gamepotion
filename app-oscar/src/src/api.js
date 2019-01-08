@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { getState } from './state'
 
+const productionBaseDomain = (() => {
+  return window.location.hostname.substring('app.'.length)
+})()
+
 const envs = {
   'development': {
     apis: {
@@ -10,8 +14,8 @@ const envs = {
   },
   'production': {
     apis: {
-      'api-core': 'https://api-core.gamemaker.club/v1',
-      'api-bin': 'https://api-bin.gamemaker.club/v1'
+      'api-core': `https://api-core.${productionBaseDomain}/v1`,
+      'api-bin': `https://api-bin.${productionBaseDomain}/v1`
     }
   }
 }

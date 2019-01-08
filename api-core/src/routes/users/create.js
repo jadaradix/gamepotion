@@ -27,15 +27,13 @@ const templates = {
 
 Thanks for joining ${BRAND_NAME}! Welcome.
 
-- GMC
-`,
+${BRAND_NAME}`,
     contentHtml:
 `<p>Hey ${name},</p>
 
 <p>Thanks for joining ${BRAND_NAME}! Welcome.</p>
 
-<p>- GMC</p>
-`
+<p>${BRAND_NAME}</p>`
   }
 }
 

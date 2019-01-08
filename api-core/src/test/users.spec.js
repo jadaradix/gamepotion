@@ -5,7 +5,7 @@ const URL_API_CORE = 'http://localhost:1025/v1'
 
 const id = createRandomString()
 const user = {
-  userlandId: `xxx${id}@gamemaker.club`
+  userlandId: `xxx${id}@example.com`
 }
 
 const configs = {
