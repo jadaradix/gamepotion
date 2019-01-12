@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Rubik';
+  src: url(./fonts/Rubik.woff2) format('woff2'), url(./fonts/Rubik.woff) format('woff');
+  /* src: local('Rubik') */
+}
+
 * {
   margin: 0;
   padding: 0;

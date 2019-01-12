@@ -4,8 +4,8 @@ import { font, colours } from '../styleAbstractions'
 
 const StyledHeading1 = styled.h1`
   ${font}
-  font-size: 200%;
   font-weight: 800;
+  font-size: 200%;
   color: ${colours.fore};
   // background-color: red;
 `

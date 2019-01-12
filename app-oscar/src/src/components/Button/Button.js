@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
-import { font, colours } from '../../styleAbstractions'
+import { fontAlternative, colours } from '../../styleAbstractions'
 
 const StyledButton = styled.button`
   display: block;
   padding: 0.4rem 0.8rem 0.4rem 0.8rem;
   transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
-  ${font}
+  ${fontAlternative}
   border-radius: 4px;
   border-width: 2px;
   border-style: solid;
