@@ -1,11 +1,5 @@
 import uuid from '../abstractions/uuid/index.dist.js'
 
-const currencies = [
-  'USD',
-  'GBP',
-  'EUR'
-]
-
 const states = [
   'UNPAID',
   'PAID'

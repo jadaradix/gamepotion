@@ -15,6 +15,8 @@ import uploadDone from './files/upload-done.svg'
 import uploadErrored from './files/upload-errored.svg'
 
 import actionLoad from './files/action-load.svg'
+import actionMoveUp from './files/action-move-up.svg'
+import actionMoveDown from './files/action-move-down.svg'
 import actionAdd from './files/action-add.svg'
 import actionEdit from './files/action-edit.svg'
 import actionDelete from './files/action-delete.svg'
@@ -44,6 +46,10 @@ export default {
   uploadErrored,
   actions: {
     load: actionLoad,
+    move: {
+      up: actionMoveUp,
+      down: actionMoveDown
+    },
     add: actionAdd,
     edit: actionEdit,
     delete: actionDelete

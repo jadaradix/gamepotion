@@ -29,7 +29,7 @@ class FilterableList extends React.PureComponent {
   render() {
     const filteredListItems = this.props.children.filter(c => c.props.children.toLowerCase().indexOf(this.state.filter.toLowerCase()) >= 0)
     return (
-      <StyledFilterableList className='component--list'>
+      <StyledFilterableList className='component--filterable-list'>
         <Input type='text' placeholder='Filter...' value={this.state.filter} onChange={this.onUpdateFilter} />
         <List>
           {filteredListItems}

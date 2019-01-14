@@ -47,7 +47,12 @@ const ActionsList = ({ resources, actions, onAction }) => {
             indentation += 1
           }
           const label = getLabel(resourceTypeTypes, resources, actionClassInstance, action)
-          const actionActions = [...(isActionConfigurable(actionClassInstance) ? ['edit'] : []), 'delete']
+          const actionActions = [
+            ...(isActionConfigurable(actionClassInstance) ? ['edit'] : []),
+            ...(i > 0 ? ['move-up'] : []),
+            ...(i < actions.length - 1 ? ['move-down'] : []),
+            'delete'
+          ]
           return (<ListItem id={`${i}`} key={`${i}`} icon={icons.actions[action.id]} actions={actionActions} indentation={indentation32} onChoose={() => onAction(i, 'edit')} onAction={onAction}>{label}</ListItem>)
         })}
       </List>
