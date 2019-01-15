@@ -1,4 +1,7 @@
 const productionBaseDomain = (() => {
+  if (process.env.NODE_ENV === 'production') {
+    return 'gamepotion.online'
+  }
   return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
 })()
 
