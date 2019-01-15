@@ -1,11 +1,14 @@
 const productionBaseDomain = (() => {
+  if (process.env.NODE_ENV === 'production') {
+    return 'gamepotion.online'
+  }
   return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
 })()
 
 export function appDashboard(environment) {
   const environments = {
     'development': 'http://localhost:3000/dashboard',
-    'production': 'https://app.${productionBaseDomain}/dashboard'
+    'production': `https://app.${productionBaseDomain}/dashboard`
   }
   return environments[environment]
 }

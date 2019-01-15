@@ -1,7 +1,7 @@
 {
   "name": "gmc-app-play",
   "version": "0.0.2",
-  "description": "Game Potion",
+  "description": "Gamepotion",
   "dependencies": {
     "axios": "^0.18.0",
     "debounce": "^1.2.0",
@@ -23,5 +23,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "homepage": "https://play.gamemaker.club"
+  "homepage": "https://play.gamepotion.online"
 }

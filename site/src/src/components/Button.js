@@ -22,9 +22,9 @@ const StyledButton = styled.div`
     }
   }
   a.flavour-strong {
-    background-color: #2e3131;
+    background: linear-gradient(#D168FF, #A537FD);
     color: #ffffff;
-    border-color: #2e3131;
+    border-color: #D168FF;
   }
   a.flavour-strong:not([disabled]):hover {
     background-color: #6c7a89;

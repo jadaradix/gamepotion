@@ -9,7 +9,7 @@ import { font, colours } from '../../styleAbstractions'
 const StyledListItem = styled.li`
   position: relative;
   display: block;
-  width: 100%;
+  width: calc(100% - 4px);
   height: 2rem;
   list-style-type: none;
   border-width: 2px;
@@ -113,6 +113,8 @@ const StyledListItem = styled.li`
 const actions = {
   'load': (id, handleOnAction) => (<img title='Load' key='action-load' onClick={(e) => handleOnAction(e, id, 'load')} className='action' src={icons.generic.actions.load} alt='' tabIndex='0' />),
   'add': (id, handleOnAction) => (<img title='Add' key='action-add' onClick={(e) => handleOnAction(e, id, 'add')} className='action' src={icons.generic.actions.add} alt='' tabIndex='0' />),
+  'move-up': (id, handleOnAction) => (<img title='Move up' key='action-move-up' onClick={(e) => handleOnAction(e, id, 'move-up')} className='action' src={icons.generic.actions.move.up} alt='' tabIndex='0' />),
+  'move-down': (id, handleOnAction) => (<img title='Move down' key='action-move-down' onClick={(e) => handleOnAction(e, id, 'move-down')} className='action' src={icons.generic.actions.move.down} alt='' tabIndex='0' />),
   'rename': (id, handleOnAction) => (<img title='Rename' key='action-rename' onClick={(e) => handleOnAction(e, id, 'rename')} className='action' src={icons.generic.actions.edit} alt='' tabIndex='0' />),
   'edit': (id, handleOnAction) => (<img title='Edit' key='action-edit' onClick={(e) => handleOnAction(e, id, 'edit')} className='action' src={icons.generic.actions.edit} alt='' tabIndex='0' />),
   'delete': (id, handleOnAction) => (<img title='Delete' key='action-delete' onClick={(e) => handleOnAction(e, id, 'delete')} className='action' src={icons.generic.actions.delete} alt='' tabIndex='0' />)

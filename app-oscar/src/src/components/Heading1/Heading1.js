@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { font, colours } from '../../styleAbstractions'
+import { font, fontAlternative, colours } from '../../styleAbstractions'
 
 const StyledHeading1 = styled.h1`
-  ${font}
+  ${fontAlternative}
   font-size: 200%;
-  font-weight: 800;
   color: ${colours.fore};
   // background-color: red;
 `

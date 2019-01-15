@@ -233,14 +233,37 @@ class ResourceAtom extends Component {
           actionClassInstanceIsAdding: false
         })
       },
+      'move-up': () => {
+        // console.warn('[component-resource-Atom] [actOnAction] move-up')
+        this.props.onUpdate({
+          events: this.props.resource.events.map((e, index) => {
+            if (index !== this.state.currentEventIndex) return e
+            const b = e.actions[id]
+            e.actions[id] = e.actions[id - 1]
+            e.actions[id - 1] = b
+            return e
+          })
+        })
+      },
+      'move-down': () => {
+        // console.warn('[component-resource-Atom] [actOnAction] move-down')
+        this.props.onUpdate({
+          events: this.props.resource.events.map((e, index) => {
+            if (index !== this.state.currentEventIndex) return e
+            const b = e.actions[id]
+            e.actions[id] = e.actions[id + 1]
+            e.actions[id + 1] = b
+            return e
+          })
+        })
+      },
       'delete': () => {
         this.props.onUpdate({
           events: this.props.resource.events.map((e, index) => {
-            if (index === this.state.currentEventIndex) {
-              e.actions = e.actions.filter((a, i) => {
-                return (i !== id)
-              })
-            }
+            if (index !== this.state.currentEventIndex) return e
+            e.actions = e.actions.filter((a, i) => {
+              return (i !== id)
+            })
             return e
           })
         })

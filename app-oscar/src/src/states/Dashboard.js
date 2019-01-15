@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import icons from '../icons'
 import { font, colours } from '../styleAbstractions'
+import logo from '../images/logo.png'
 
 import Button from '../components/Button/Button'
 import Heading1 from '../components/Heading1/Heading1'
@@ -34,16 +35,17 @@ const StyledState = styled.div`
     ${font}
     color: ${colours.fore};
   }
-  .component--box {
+  .component--box.welcome {
+    background-color: white;
+    img {
+      display: block;
+      width: 256px;
+    }
     p {
       margin-top: 1rem;
-      margin-bottom: 1.5rem;
     }
-  }
-  .welcome {
-    padding: 2rem 0 0 1rem;
-    .component--heading1 + p {
-      margin-top: 1rem;
+    img + p {
+      margin-top: 1.5rem;
     }
     p + p {
       margin-top: 1rem;
@@ -203,8 +205,8 @@ class StateDashboard extends Component {
                   </Fragment>
                 }
               </Box>
-              <div className='welcome'>
-                <Heading1>Welcome</Heading1>
+              <Box className='welcome'>
+                <img src={logo} alt={process.env.REACT_APP_NAME} />
                 <p>Are you ready to make your own games and become the game boss?</p>
                 <p>Choose 'Create a game' to get started!</p>
                 {/* <Box>{newsFeed === undefined ?
@@ -226,7 +228,7 @@ class StateDashboard extends Component {
                     </List>
                   </Fragment>
                 }</Box> */}
-              </div>
+              </Box>
             </section>
           </StyledState>
         </ResponsiveContainer>

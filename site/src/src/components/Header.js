@@ -28,7 +28,7 @@ const StyledHeader = styled.header`
     .menu {
       display: block;
       position: absolute;
-      top: 1.5rem;
+      top: 1.75rem;
       left: 2rem;
       width: 2rem;
       height: 2rem;
@@ -60,6 +60,7 @@ const StyledHeader = styled.header`
             display: inline-block;
             text-decoration: none;
             font-size: 110%;
+            border: 2px solid transparent;
           }
           a.current {
             color: #11998E;
@@ -67,9 +68,10 @@ const StyledHeader = styled.header`
         }
         li.important {
           a {
-            border-radius: 6px;
+            border-radius: 4px;
             color: white;
-            background: linear-gradient(#38EF7D, #11998E);
+            background: linear-gradient(#D168FF, #A537FD);
+            border: 2px solid #D168FF;
           }
         }
         li + li {
@@ -83,7 +85,7 @@ const StyledHeader = styled.header`
     }
     nav.open {
       // max-height: 14.5rem;
-      max-height: 6.5rem;
+      max-height: 10rem;
     }
     @media screen and (min-width: 720px) {
       padding-bottom: 1rem;
@@ -100,7 +102,7 @@ const StyledHeader = styled.header`
         overflow: visible;
         max-height: none;
         position: absolute;
-        top: 2rem;
+        top: 2.75rem;
         right: 2rem;
         ul {
           margin-top: 0;
@@ -158,7 +160,7 @@ class Header extends PureComponent {
       <StyledHeader>
         <div>
           <Link to='/' className='logo'>
-            <img src={logo} alt='Game Maker Club' />
+            <img src={logo} alt='Gamepotion' />
           </Link>
           <button className='menu' onClick={this.onClickMenu}>
             <img src={menu} alt='' />
@@ -169,7 +171,8 @@ class Header extends PureComponent {
               {/* <CustomLink to='/store/'>Store</CustomLink> */}
               {/* <CustomLink to='/tutorials'>Tutorials</CustomLink> */}
               <CustomLink to='/about'>About</CustomLink>
-              <li className='important'><a href={appDashboard(process.env.NODE_ENV)}>Join</a></li>
+              <li><a href={appDashboard(process.env.NODE_ENV)}>Log in</a></li>
+              <li className='important'><a href={appDashboard(process.env.NODE_ENV)}>Sign up</a></li>
             </ul>
           </nav>
         </div>

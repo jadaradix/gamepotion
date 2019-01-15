@@ -10,8 +10,10 @@ const StyledLeftRight = styled.section`
     display: grid;
     grid-template-columns: 2fr 2fr;
     grid-gap: 3rem;
-    h1 {
-      margin-top: 2rem;
+    div {
+      h1, p:first-of-type {
+        margin-top: 2rem;
+      }
     }
     > div + div {
       margin-top: 0;
