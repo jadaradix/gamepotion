@@ -10,7 +10,7 @@ import './Page.css'
 const Page = ({ title = undefined, metaTags = [], metaDescription = undefined, children }) => (
   <Fragment>
     <Helmet
-      title={typeof title === 'string' ? `${title} - Game Maker Club` : 'Game Maker Club'}
+      title={typeof title === 'string' ? `${title} - Gamepotion` : 'Gamepotion'}
     >
       <html lang='en' />
       {Array.isArray(metaTags) && metaTags.length > 0 && <meta name='keywords' content={metaTags.join(', ')} />}

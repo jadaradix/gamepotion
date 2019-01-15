@@ -5,7 +5,7 @@ const productionBaseDomain = (() => {
 export function appDashboard(environment) {
   const environments = {
     'development': 'http://localhost:3000/dashboard',
-    'production': 'https://app.${productionBaseDomain}/dashboard'
+    'production': `https://app.${productionBaseDomain}/dashboard`
   }
   return environments[environment]
 }
