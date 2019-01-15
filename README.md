@@ -8,11 +8,11 @@
 # /etc/hosts file
 ```
 167.99.203.136 gmc-production
-127.0.0.1	api-core.gamemaker.club
-127.0.0.1	api-bin.gamemaker.club
-127.0.0.1	app.gamemaker.club
-127.0.0.1	store.gamemaker.club
-127.0.0.1	play.gamemaker.club
+127.0.0.1	api-core.gamepotion.online
+127.0.0.1	api-bin.gamepotion.online
+127.0.0.1	app.gamepotion.online
+127.0.0.1	store.gamepotion.online
+127.0.0.1	play.gamepotion.online
 ```
 
 # Container ports

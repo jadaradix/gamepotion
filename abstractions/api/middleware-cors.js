@@ -1,6 +1,6 @@
 const envs = [
-  'staging.gamemaker.club',
-  'gamemaker.club'
+  'staging.gamepotion.online',
+  'gamepotion.online'
 ]
 
 const Middleware = require('restify-cors-middleware')
