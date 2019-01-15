@@ -1,14 +1,11 @@
-# Game Potion
-Be the game boss.
-
-## Install
+# Install
 ```
   . scripts/install.sh
   . scripts/build.sh
   . scripts/build-classes.sh
 ```
 
-## /etc/hosts file
+# /etc/hosts file
 ```
 167.99.203.136 gmc-production
 127.0.0.1	api-core.gamemaker.club
@@ -18,7 +15,7 @@ Be the game boss.
 127.0.0.1	play.gamemaker.club
 ```
 
-## Container ports
+# Container ports
 ```
 1024 container-router
 1025 api-core

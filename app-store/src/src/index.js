@@ -13,15 +13,15 @@ import Home from './routes/Home'
 import Module from './routes/Module'
 
 const StyledApp = styled.div`
-  // a.logo {
-  //   max-width: 256px;
-  //   display: block;
-  //   margin-bottom: 1rem;
-  //   img {
-  //     display: block;
-  //     width: 100%;
-  //   }
-  // }
+  a.logo {
+    max-width: 256px;
+    display: block;
+    margin-bottom: 1rem;
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
 `
 
 const getAccessToken = () => {
@@ -41,6 +41,7 @@ const App = () => {
     <StyledApp>
       <Router>
         <div>
+          <Link to='/' class='logo'><img src={logo} /></Link>
           <Route component={hackyRoutingCallback} />
           <Switch>
             <Route path='/modules/:id' exact strict component={Module} />

@@ -17,7 +17,7 @@ const getPasswordHash = (password, callback) => {
   return bcrypt.hash(password, null, null, callback)
 }
 
-const BRAND_NAME = 'Game Potion'
+const BRAND_NAME = 'Gamepotion'
 
 const templates = {
   'welcome': {
