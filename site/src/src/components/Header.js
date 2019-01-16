@@ -35,17 +35,23 @@ const StyledHeader = styled.header`
       display: block;
       position: absolute;
       top: 1.75rem;
-      left: 2rem;
+      right: 2rem;
       width: 2rem;
       height: 2rem;
       background-color: transparent;
       border: 0;
       // background-color: pink;
+      transition: background-color 0.2s ease-in-out;
       img {
         display: block;
         width: 100%;
         height: 100%;
       }
+    }
+    .menu:focus {
+      background-color: rgba(209, 104, 255, 0.2);
+      outline: 0;
+      border-radius: 4px;
     }
     nav {
       overflow: hidden;
@@ -69,11 +75,12 @@ const StyledHeader = styled.header`
             border: 2px solid transparent;
             border-radius: 4px;
             outline: 0;
-            transition: background-color 0.2s ease-in-out;
+            transition: color 0.2s ease-in-out;
             font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
           }
           a:focus {
-            background-color: rgba(209, 104, 255, 0.2);
+            background-color: transparent;
+            color: rgb(128, 128, 128) !important;
           }
           a.current {
             color: #D168FF;
@@ -87,6 +94,7 @@ const StyledHeader = styled.header`
             transition: border-color 0.2s ease-in-out;
           }
           a:focus {
+            color: white !important;
             border: 2px solid rgb(128, 128, 128);
           }
         }
