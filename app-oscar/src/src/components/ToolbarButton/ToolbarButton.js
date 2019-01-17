@@ -116,7 +116,7 @@ const ToolbarButton = ({ match, history, route, onClick, icon, hint, significant
   const selected = (match.url === route)
   const buttonClassName = classnames({'significant': significant, selected, 'disabled': disabled, 'fixed-width': fixedWidth})
   return (
-    <StyledToolbarButton title={hint}>
+    <StyledToolbarButton className='component--toolbar-button' title={hint}>
       {isDropdownShowing && dropdownItems.length > 0 &&
         <ul>
           {dropdownItems.map(di => {
