@@ -14,6 +14,7 @@ const StyledButton = styled.div`
     outline: 0;
     color: inherit;
     text-decoration: none;
+    font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     > span {
       display: block;
       height: 1.5rem;
@@ -39,7 +40,7 @@ const StyledButton = styled.div`
     opacity: 0.5;
   }
   a:focus {
-    border-color: #38EF7D;
+    border-color: rgb(128, 128, 128);
   }
 `
 

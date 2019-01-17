@@ -8,6 +8,10 @@ const StyledToolbar = styled.ul`
   background-color: #2e3131;
   // overflow: scroll;
   // box-shadow: 0 2px 4px red;
+  .component--toolbar-button:first-of-type button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 `
 
 const Toolbar = ({ children }) => (

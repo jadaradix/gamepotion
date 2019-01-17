@@ -19,27 +19,39 @@ const StyledHeader = styled.header`
       width: 100%;
       max-width: 156px;
       margin: 0 auto 1rem auto;
+      transition: background-color 0.2s ease-in-out;
       img {
         display: block;
         width: 100%;
         height: 100%;
       }
     }
+    .logo:focus {
+      background-color: rgba(209, 104, 255, 0.2);
+      outline: 0;
+      border-radius: 4px;
+    }
     .menu {
       display: block;
       position: absolute;
       top: 1.75rem;
-      left: 2rem;
+      right: 2rem;
       width: 2rem;
       height: 2rem;
       background-color: transparent;
       border: 0;
       // background-color: pink;
+      transition: background-color 0.2s ease-in-out;
       img {
         display: block;
         width: 100%;
         height: 100%;
       }
+    }
+    .menu:focus {
+      background-color: rgba(209, 104, 255, 0.2);
+      outline: 0;
+      border-radius: 4px;
     }
     nav {
       overflow: hidden;
@@ -61,17 +73,29 @@ const StyledHeader = styled.header`
             text-decoration: none;
             font-size: 110%;
             border: 2px solid transparent;
+            border-radius: 4px;
+            outline: 0;
+            transition: color 0.2s ease-in-out;
+            font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          }
+          a:focus {
+            background-color: transparent;
+            color: rgb(128, 128, 128) !important;
           }
           a.current {
-            color: #11998E;
+            color: #D168FF;
           }
         }
         li.important {
           a {
-            border-radius: 4px;
             color: white;
             background: linear-gradient(#D168FF, #A537FD);
             border: 2px solid #D168FF;
+            transition: border-color 0.2s ease-in-out;
+          }
+          a:focus {
+            color: white !important;
+            border: 2px solid rgb(128, 128, 128);
           }
         }
         li + li {

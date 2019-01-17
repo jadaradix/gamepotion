@@ -89,8 +89,7 @@ class Input extends PureComponent {
       this.props.onChange(event.target.value) // which is useful?
     }
     this.handleOnDone = (event) => {
-      if (this.props.onDone === null) return
-      if (event.which === 13) {
+      if (typeof this.props.onDone === 'function' && event.which === 13) {
         event.preventDefault()
         this.props.onDone(this.props.value)
       }

@@ -53,9 +53,9 @@ const StyledToolbarButton = styled.li`
     background-color: transparent;
     transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.5s ease-in-out;
     overflow: hidden;
+    border-radius: 4px;
     :focus {
       border-color: ${colours.outline};
-      border-radius: 4px;
     }
     img {
       display: block;
@@ -116,7 +116,7 @@ const ToolbarButton = ({ match, history, route, onClick, icon, hint, significant
   const selected = (match.url === route)
   const buttonClassName = classnames({'significant': significant, selected, 'disabled': disabled, 'fixed-width': fixedWidth})
   return (
-    <StyledToolbarButton title={hint}>
+    <StyledToolbarButton className='component--toolbar-button' title={hint}>
       {isDropdownShowing && dropdownItems.length > 0 &&
         <ul>
           {dropdownItems.map(di => {

@@ -45,7 +45,7 @@ const Footer = () => {
     <StyledFooter>
       <div>
         <ul>
-          <li>&copy; <a href='https://jada.io'>James Garner</a> and <a href='https://euphoricadventur.es'>Euphoric Adventures</a>, 2018 &mdash;</li>
+          <li>&copy; <a href='https://euphoricadventur.es'>Euphoric Adventures</a> 2018 &mdash;</li>
           <li><Link to='/credits'>Credits</Link></li>
         </ul>
       </div>

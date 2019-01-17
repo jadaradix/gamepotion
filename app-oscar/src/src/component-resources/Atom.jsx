@@ -274,7 +274,10 @@ class ResourceAtom extends Component {
 
   onChooseAddEvent() {
     this.setState({
-      isEventDialogShowing: true
+      isEventDialogShowing: true,
+      isEventAdding: true,
+      editingEventId: undefined,
+      editingEventConfiguration: null
     })
   }
 
@@ -289,7 +292,20 @@ class ResourceAtom extends Component {
   actOnEvent(id, thingThatCouldHappen) {
     id = parseInt(id, 10)
     const thingsThatCouldHappen = {
+      'edit': () => {
+        this.setState({
+          isEventDialogShowing: true,
+          isEventAdding: false,
+          editingEventIndex: id,
+          editingEventId: this.props.resource.events[id].id,
+          editingEventConfiguration: this.props.resource.events[id].configuration
+        })
+      },
       'delete': () => {
+        const confirmation = window.confirm('Are you sure you want to delete this event?')
+        if (confirmation === false) {
+          return
+        }
         this.props.onUpdate({
           events: this.props.resource.events.filter((e, i) => {
             return (i !== id)
@@ -310,19 +326,31 @@ class ResourceAtom extends Component {
         isEventDialogShowing: false
       },
       () => {
-        this.setState({
-          currentEventIndex: this.props.resource.events.length
-        })
-        this.props.onUpdate({
-          events: [
-            ...this.props.resource.events,
-            {
-              id,
-              configuration,
-              actions: []
-            }
-          ]
-        })
+        if (this.state.isEventAdding) {
+          this.setState({
+            currentEventIndex: this.props.resource.events.length
+          })
+          this.props.onUpdate({
+            events: [
+              ...this.props.resource.events,
+              {
+                id,
+                configuration,
+                actions: []
+              }
+            ]
+          })
+        } else {
+          this.props.onUpdate({
+            events: this.props.resource.events.map((e, i) => {
+              if (i === this.state.editingEventIndex) {
+                e.id = id
+                e.configuration = configuration
+              }
+              return e
+            })
+          })
+        }
       }
     )
   }
@@ -373,6 +401,9 @@ class ResourceAtom extends Component {
         }
         {this.state.isEventDialogShowing &&
           <EventModal
+            id={this.state.editingEventId}
+            configuration={this.state.editingEventConfiguration}
+            isAdding={this.state.isEventAdding}
             resources={this.props.resources}
             onGood={this.onEventModalGood}
             onBad={this.onEventModalBad}
@@ -397,7 +428,7 @@ class ResourceAtom extends Component {
                   key={eventIndex}
                   icon={icons.events[eventClass.icon]}
                   selected={eventIndex === this.state.currentEventIndex}
-                  actions={['delete']}
+                  actions={['edit', 'delete']}
                   onChoose={this.onChooseEvent}
                   onAction={this.actOnEvent}
                 >

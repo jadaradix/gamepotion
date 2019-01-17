@@ -44,7 +44,6 @@ class EventModal extends PureComponent {
     this.eventClasses = Object.keys(events).map(k => {
       return new events[k]()
     })
-    const eventClass = this.eventClasses.find(ec => ec.id === props.id)
     this.resourcesByType = {}
     resourceTypes.forEach(rt => {
       this.resourcesByType[rt.type] = props.resources
@@ -56,6 +55,17 @@ class EventModal extends PureComponent {
           }
         })
     })
+    const eventClass = this.eventClasses.find(ec => ec.id === props.id)
+    if (Array.isArray(this.props.configuration)) {
+      eventClass.configuration = this.props.configuration
+    } else {
+      eventClass.configuration = eventClass.defaultConfiguration.map(dc => {
+        if (typeof this.resourcesByType[dc.type] === 'object' && this.resourcesByType[dc.type].length > 0) {
+          return this.resourcesByType[dc.type][0].id
+        }
+        return dc.defaultValue
+      })
+    }
     this.configurations = [
       {
         type: 'generic',
@@ -127,7 +137,7 @@ class EventModal extends PureComponent {
     return (
       <StyledModal>
         <Modal onClose={this.props.onBad}>
-          <Heading1>Add event</Heading1>
+          <Heading1>{this.props.isAdding ? 'Add' : 'Edit'} event</Heading1>
           <List>
             {this.eventClasses.map(ec => {
               return (
@@ -160,6 +170,7 @@ class EventModal extends PureComponent {
 
 EventModal.propTypes = {
   id: PropTypes.string,
+  isAdding: PropTypes.bool,
   resources: PropTypes.array.isRequired,
   configuration: PropTypes.array,
   onGood: PropTypes.func,
@@ -168,6 +179,7 @@ EventModal.propTypes = {
 
 EventModal.defaultProps = {
   id: 'Create',
+  isAdding: true,
   configuration: null,
   onGood: () => {},
   onBad: () => {}

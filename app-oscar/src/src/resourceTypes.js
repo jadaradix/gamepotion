@@ -307,8 +307,8 @@ const fixedResourceCollectionsByType = {
         {
           id: 'reiners-tilesets-gold-sacks',
           name: 'Reiner\'s Tilesets > Gold sacks',
-          width: 32,
-          height: 32
+          width: 64,
+          height: 64
         },
         {
           id: 'reiners-tilesets-grass',
