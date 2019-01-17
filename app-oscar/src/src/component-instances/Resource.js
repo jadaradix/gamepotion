@@ -59,15 +59,6 @@ const rename = (resource, onUpdate) => {
   })
 }
 
-
-// dispatch({
-//   name: 'PROJECTS_RESOURCES_UPDATE',
-//   data: {
-//     id: resource.id,
-//     name
-//   }
-// })
-
 const Resource = ({ moduleIds, project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate }) => {
   // console.warn('[component-Resource] resource', resource)
   return (
