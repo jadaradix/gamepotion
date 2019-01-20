@@ -16,7 +16,10 @@ export default {
       name: '[test] Resource Pack',
       price: 500,
       description: `
-      <p>[resource-pack]</p>
+      <ul>
+        <li>li 1</li>
+        <li>li 2</li>
+      </ul>
       `,
       image: 'module.png'
     },

@@ -32,7 +32,7 @@ const StyledState = styled.div`
       display: inline-block;
     }
     .component--button + .component--button {
-      margin-left: 0.5rem;
+      margin-left: 1rem;
     }
   }
 `
