@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 const axios = require('axios')
 const { setup, teardown } = require('./setup-teardown')
 
@@ -8,6 +12,9 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
+  if (typeof testData !== 'object') {
+    throw new Error('setup failed so teardown will not work')
+  }
   await teardown(testData)
 })
 

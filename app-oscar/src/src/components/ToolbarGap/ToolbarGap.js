@@ -5,7 +5,7 @@ const StyledToolbarGap = styled.li`
   display: flex;
   flex-shrink: 0;
   width: 1.5rem;
-  height: calc(3rem + 4px);
+  height: 3rem;
   background-color: #2e3131;
 `
 

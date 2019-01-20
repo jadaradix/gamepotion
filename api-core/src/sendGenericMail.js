@@ -1,6 +1,7 @@
 const assert = require('assert').strict
 const got = require('got')
 
+const BRAND_NAME = 'Gamepotion'
 const SERVICE_MAIL_URL = 'http://oscar-production-service-mail:1031'
 
 const sendMail = async ({
@@ -30,4 +31,41 @@ const sendMail = async ({
   }
 }
 
-module.exports = sendMail
+const templates = {
+  'welcome': {
+    subject: `Welcome to ${BRAND_NAME}`,
+    contentText({ name }) {
+      return `Hey ${name},
+
+Thanks for joining ${BRAND_NAME}! Welcome.
+
+${BRAND_NAME}`
+    },
+    contentHtml({ name }) {
+      return `<p>Hey ${name},</p>
+
+<p>Thanks for joining ${BRAND_NAME}! Welcome.</p>
+
+<p>${BRAND_NAME}</p>`
+    }
+  }
+}
+
+const sendGenericMail = async (template, userClass) => {
+  const {
+    name
+  } = userClass
+  const {
+    subject,
+    contentText,
+    contentHtml
+  } = templates[template]
+  await sendMail({
+    subject,
+    to: userClass.userlandId,
+    contentText: contentText({ name }),
+    contentHtml: contentHtml({ name })
+  })
+}
+
+module.exports = sendGenericMail

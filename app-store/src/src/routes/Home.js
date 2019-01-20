@@ -29,9 +29,11 @@ const CALLBACK_NOTIFY_SHOW_TIME = 10 * 1000
 const CALLBACKS = {
   'good': () => {
     notify.good('Thank you for your purchase!', CALLBACK_NOTIFY_SHOW_TIME)
+    return true
   },
   'bad': () => {
     notify.bad('Your purchase did not complete successfully.', CALLBACK_NOTIFY_SHOW_TIME)
+    return true
   }
 }
 

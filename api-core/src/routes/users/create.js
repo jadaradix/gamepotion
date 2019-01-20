@@ -3,7 +3,7 @@ const errors = require('restify-errors')
 const datalayer = require('../../abstractions/datalayer')
 const uuid = require('../../abstractions/uuid/index.dist.js')
 const classes = require('../../classes/dist.js')
-const sendMail = require('../../sendMail')
+const sendGenericMail = require('../../sendGenericMail')
 
 const getExistingUser = (userlandId) => {
   return datalayer.readOne('Users', { userlandId })
@@ -15,42 +15,6 @@ const createRandomPassword = () => {
 
 const getPasswordHash = (password, callback) => {
   return bcrypt.hash(password, null, null, callback)
-}
-
-const BRAND_NAME = 'Gamepotion'
-
-const templates = {
-  'welcome': {
-    subject: `Welcome to ${BRAND_NAME}`,
-    contentText({ name }) {
-      return `Hey ${name},
-
-Thanks for joining ${BRAND_NAME}! Welcome.
-
-${BRAND_NAME}`
-    },
-    contentHtml({ name }) {
-      return `<p>Hey ${name},</p>
-
-<p>Thanks for joining ${BRAND_NAME}! Welcome.</p>
-
-<p>${BRAND_NAME}</p>`
-    }
-  }
-}
-
-const sendWelcomeEmail = async (name, userlandId) => {
-  const {
-    subject,
-    contentText,
-    contentHtml
-  } = templates['welcome']({ name })
-  await sendMail({
-    subject,
-    to: userlandId,
-    contentText,
-    contentHtml
-  })
 }
 
 const route = async (request, response, next) => {
@@ -81,7 +45,7 @@ const route = async (request, response, next) => {
           .then(async () => {
             const toApi = userClass.toApi()
             try {
-              await sendWelcomeEmail(userClass.name, userClass.userlandId)
+              await sendGenericMail('welcome', userClass)
             } catch (error) {
               console.error('[route users create] sendWelcomeEmail threw; silently ignoring', error)
             }

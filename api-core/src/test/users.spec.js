@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 const axios = require('axios')
 const createRandomString = require('../abstractions/createRandomString.js')
 

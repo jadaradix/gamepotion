@@ -26,7 +26,7 @@ const StyledButton = styled.button`
     background-color: #3C4850;
   }
   &.flavour-weak {
-    background-color: #F2F6F9;
+    background-color: #eff3f4;
     color: ${colours.fore};
   }
   &.flavour-weak:not([disabled]):hover {

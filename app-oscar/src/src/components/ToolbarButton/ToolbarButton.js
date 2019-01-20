@@ -10,7 +10,7 @@ const StyledToolbarButton = styled.li`
   position: relative;
   display: flex;
   flex-shrink: 0;
-  height: calc(3rem + 4px);
+  height: 3rem;
   background-color: #2e3131;
   &.fixed-width {
 
@@ -46,16 +46,12 @@ const StyledToolbarButton = styled.li`
   button {
     display: block;
     padding: 0.75rem;
-    border-width: 2px;
-    border-style: solid;
-    border-color: transparent;
     outline: 0;
     background-color: transparent;
-    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.5s ease-in-out;
+    transition: background-color 0.2s ease-in-out, opacity 0.5s ease-in-out;
     overflow: hidden;
-    border-radius: 4px;
     :focus {
-      border-color: ${colours.outline};
+      background-color: #6c7a89;
     }
     img {
       display: block;
