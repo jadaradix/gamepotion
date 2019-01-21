@@ -103,9 +103,10 @@ class ResourceImage extends PureComponent {
     } else {
       const {
         width,
-        height
+        height,
+        overrideFrameHeight
       } = resourceTypes.find(rt => rt.type === 'image').getFixed(this.boughtResourcePackModule).find(o => o.id === fixed)
-      const frameHeight = (height < width ? height : width)
+      const frameHeight = overrideFrameHeight || ((height < width ? height : width))
       this.props.onUpdate({
         fixed,
         extension: 'png',
