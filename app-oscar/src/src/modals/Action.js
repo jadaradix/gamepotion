@@ -99,6 +99,17 @@ class ActionModal extends PureComponent {
         }
       })
     ]
+    const defaultRunArgumentTypes = Array.from(this.props.actionClassInstance.defaultRunArguments.entries()).map(e => e[1].type)
+    this.props.actionClassInstance.runArguments.forEach((ra, i) => {
+      const type = defaultRunArgumentTypes[i]
+      if (this.resourcesByType.hasOwnProperty(type) && this.props.actionClassInstance.runArguments[i].length === 0) {
+        if (this.resourcesByType[type].length > 0) {
+          this.props.actionClassInstance.runArguments[i] = this.resourcesByType[type][0].id
+        } else {
+          this.props.actionClassInstance.runArguments[i] = '?'
+        }
+      }
+    })
     this.state = {
       isValid: this.isValid()
     }
@@ -114,15 +125,6 @@ class ActionModal extends PureComponent {
     const defaultRunArgumentTypes = Array.from(this.props.actionClassInstance.defaultRunArguments.entries()).map(e => e[1].type)
     const isValid = this.props.actionClassInstance.runArguments.every((ra, i) => {
       const type = defaultRunArgumentTypes[i]
-      if (this.resourcesByType.hasOwnProperty(type) && this.props.actionClassInstance.runArguments[i].length === 0) {
-        if (this.resourcesByType[type].length > 0) {
-          this.props.actionClassInstance.runArguments[i] = this.resourcesByType[type][0].id
-          ra = this.resourcesByType[type][0].id
-        } else {
-          this.props.actionClassInstance.runArguments[i] = '?'
-          ra = '?'
-        }
-      }
       return this.argumentTypes.find(at => at.types.includes(type)).isValid(ra)
     })
     return isValid
