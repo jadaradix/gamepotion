@@ -9,7 +9,7 @@ const instanceDefinitionsToInstances = (instances, resourceContainers) => {
     .map(i => {
       const atomContainer = resourceContainers.find(r => r.resource.type === 'atom' && r.resource.id === i.atomId)
       if (atomContainer === undefined) return undefined
-      const { x, y, z, angle, scale } = i
+      const { x, y, z, angle = 0, scale = 1 } = i
       const props = {
         x,
         y,

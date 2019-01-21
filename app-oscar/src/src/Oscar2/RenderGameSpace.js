@@ -2,7 +2,7 @@ import classes from '../classes'
 import instanceDefinitionsToInstances from './instanceDefinitionsToInstances'
 import handleActionBack from './handleActionBack'
 
-// import isInstanceIntersectingInstance from './isInstanceIntersectingInstance'
+import isInstanceIntersectingInstance from './isInstanceIntersectingInstance'
 
 const actionClasses = new Map(
   Object.keys(classes.actions).map(k => {
@@ -48,6 +48,7 @@ const drawInstance = (ctx, camera, designMode, instance) => {
   const translateX = instance.props.x + (width / 2) - offsetX
   const translateY = instance.props.y + (height / 2) - offsetY
   if (image !== null) {
+    // console.warn('[drawInstance] instance.props', instance.props)
     ctx.translate(translateX, translateY)
     ctx.rotate(instance.props.angle)
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
@@ -291,22 +292,28 @@ const gameLoopNotDesignMode = (ctx, spaceContainer, camera, gridOn, gridWidth, g
   } else {
     frame += 1
   }
+  const collidedInstances = []
   instances.forEach(instance1 => {
     const thisDepth = instance1.atomContainer.resource.depth
     depths.get(thisDepth).push(instance1)
     instance1.onStep()
     // const isIntersecting = currentTouchCoords && isInstanceIntersecting(instance1, currentTouchCoords)
-    // instances
-    //   .filter(instance2 => isInstanceIntersectingInstance(instance1, instance2))
-    //   .forEach(is => {
-    //     const requiredConfiguration = [is.atomContainer.resource.id]
-    //     console.warn('requiredConfiguration', requiredConfiguration)
-    //     instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [instance1], [is])
-    //   })
+    instances.forEach(instance2 => {
+      const isIntersecting = isInstanceIntersectingInstance(instance1, instance2)
+      isIntersecting && collidedInstances.push({
+        instance1,
+        instance2
+      })
+    })
   })
+  collidedInstances.forEach(ci => {
+    const requiredConfiguration = [ci.instance2.atomContainer.resource.id]
+    instances = handleEvent('Collision', requiredConfiguration, eventContext, instances, [ci.instance1], [ci.instance2])
+  })
+  
   depths.forEach(instancesAtThisDepth => {
     instancesAtThisDepth.forEach(instance => {
-      drawInstance(ctx, camera, true, instance)
+      drawInstance(ctx, camera, false, instance)
     })
   })
   drawForegroundImage(ctx, spaceContainer)
@@ -343,7 +350,8 @@ const handleEvent = (eventId, requiredConfiguration = [], eventContext, instance
     })
   })
   if (instancesToDestroy.length > 0) {
-    console.log('[handleEvent] instancesToDestroy', instancesToDestroy)
+    // console.log('[handleEvent] instancesToDestroy.length > 0', instancesToDestroy)
+    // console.log('[handleEvent] instances count before', instances.length)
     instances = instances.filter(ic => {
       const willDestroy = instancesToDestroy.includes(ic)
       return (!willDestroy)
@@ -352,10 +360,11 @@ const handleEvent = (eventId, requiredConfiguration = [], eventContext, instance
   }
   if (instancesToCreate.length > 0) {
     const createdInstances = instanceDefinitionsToInstances(instancesToCreate, eventContext.resourceContainers)
+    // console.log('[handleEvent] createdInstances', createdInstances)
     instances = instances.concat(createdInstances)
-    console.log('[handleEvent] createdInstances', createdInstances)
     instances = handleEvent('Create', undefined, eventContext, instances, createdInstances)
   }
+  // console.warn('[handleEvent] instances count before return', instances.length)
   return instances
 }
 
@@ -566,8 +575,8 @@ const RenderGameSpace = (
         depths.forEach((instancesAtThisDepth, depth) => {
           depths.set(depth, [])
         })
-        gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext, depths)
-        // setTimeout(doGameLoopNotDesignMode, 100)
+        instances = gameLoopNotDesignMode(ctx, spaceContainer, camera, gridOn, gridWidth, gridHeight, instances, currentTouchCoords, eventContext, depths)
+        // setTimeout(doGameLoopNotDesignMode, 500)
         requestAnimationFrameHandle = window.requestAnimationFrame(doGameLoopNotDesignMode)
       }
       instances = handleEventStart(instances, eventContext)
