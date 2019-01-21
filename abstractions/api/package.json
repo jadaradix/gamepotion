@@ -4,6 +4,7 @@
   "description": "gmc-api-abstractions",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.18.0",
     "bcrypt-nodejs": "0.0.3",
     "restify-cors-middleware": "^1.1.1",
     "restify-errors": "5.0.0"

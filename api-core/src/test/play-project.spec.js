@@ -3,7 +3,7 @@
  */
 
 const axios = require('axios')
-const { setup, teardown } = require('./setup-teardown')
+const { setup, teardown } = require('../abstractions/api/setup-teardown')
 
 let testData
 

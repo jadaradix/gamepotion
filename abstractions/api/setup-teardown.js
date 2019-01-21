@@ -1,5 +1,5 @@
 const axios = require('axios')
-const createRandomString = require('../abstractions/createRandomString.js')
+const createRandomString = require('../createRandomString.js')
 
 const URL_API_CORE = 'http://localhost:1025/v1'
 
