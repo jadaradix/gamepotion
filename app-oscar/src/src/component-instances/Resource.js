@@ -33,8 +33,8 @@ const StyledResource = styled.div`
     }
     > .component--button {
       float: left;
-      margin-top: 0.3rem;
-      margin-left: 0.5rem;
+      margin-top: 0.5rem;
+      margin-left: 0.75rem;
       padding: 0.25rem;
       opacity: 0.5;
       > img {

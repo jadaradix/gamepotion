@@ -419,18 +419,16 @@ const RenderGameSpace = (
 
   // sorry
   let domBounds
-  let scaleFactor
+  let scaleFactor = 1
   let yOffset = 0
   const updateDomBounds = () => {
     const { x, y, width, height } = c.getBoundingClientRect()
     domBounds = { x, y, width, height }
-    if (scaleByViewportHeight === false) {
-      scaleFactor = 1
-      return
-    }
     const newScaleFactor = renderWidth / domBounds.width
     if (scaleFactor !== newScaleFactor) {
       scaleFactor = newScaleFactor
+    }
+    if (scaleByViewportHeight){
       yOffset = (window.innerHeight / 2) - ((renderHeight * (1 / scaleFactor)) / 2)
       c.style.margin = `${yOffset}px auto 0 auto`
     }

@@ -97,7 +97,7 @@ class StateStore extends Component {
       return null
     }
 
-    const url = `${this.props.match.params[0]}?accessToken=${this.state.user.accessToken}}`
+    const url = `${this.props.match.params[0]}?accessToken=${this.state.user.accessToken}`
 
     return (
       <Fragment>
