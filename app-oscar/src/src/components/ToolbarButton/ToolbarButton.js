@@ -25,11 +25,16 @@ const StyledToolbarButton = styled.li`
     background-color: red;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgb(172, 172, 172);
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
     li {
       padding: 0.75rem;
       ${font}
       background-color: white;
       cursor: default;
+      transition: background-color 0.2s ease-in-out;
+    }
+    li:hover {
+      background-color: #eef3f4;
     }
     li + li {
       border-top: 1px solid rgb(220, 220, 200);
@@ -113,15 +118,13 @@ const ToolbarButton = ({ match, history, route, onClick, icon, hint, significant
   const buttonClassName = classnames({'significant': significant, selected, 'disabled': disabled, 'fixed-width': fixedWidth})
   return (
     <StyledToolbarButton className='component--toolbar-button' title={hint}>
-      {isDropdownShowing && dropdownItems.length > 0 &&
-        <ul>
-          {dropdownItems.map(di => {
-            return (
-              <li key={di.name} onClick={() => handleOnClick(history, di.route, di.onClick)}>{di.name}</li>
-            )
-          })}
-        </ul>
-      }
+      <ul style={isDropdownShowing ? {visibility: 'visible', opacity: 1} : {visibility: 'hidden', opacity: 0}}>
+        {dropdownItems.map(di => {
+          return (
+            <li key={di.name} onClick={() => handleOnClick(history, di.route, di.onClick)}>{di.name}</li>
+          )
+        })}
+      </ul>
       <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={buttonClassName} style={fixedWithStyle}>
         {icon && <img src={icon} alt={hint} className={`icon-${icon}`} />}
         {children && <span>{children}</span>}

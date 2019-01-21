@@ -97,10 +97,6 @@ class StateProjectNew extends PureComponent {
     return (isNameValid && !isInProgress)
   }
 
-  getCreateButtonText() {
-    return (!this.state.inProgress ? 'Create' : 'Creating...')
-  }
-
   render() {
     if (this.state.currentProject.project.id !== undefined) {
       return <Redirect to={`/projects/${this.state.currentProject.project.id}/resources/load`} />
@@ -116,8 +112,8 @@ class StateProjectNew extends PureComponent {
             <Box>
               <Heading1>Create a game</Heading1>
               <Input label='What would you like to call your game?' autoFocus value={this.state.currentProject.project.name} onChange={(v) => this.update('name', v)} onDone={this.createProject} />
-              <Button disabled={!this.canCreateProject()} onClick={this.createProject}>{this.getCreateButtonText()}</Button>
-              <Button route='/dashboard' flavour='weak'>Cancel</Button>
+              <Button disabled={!this.canCreateProject()} onClick={this.createProject}>{(!this.state.inProgress ? 'Create' : 'Creating...')}</Button>
+              {!this.state.inProgress && <Button route='/dashboard' flavour='weak'>Cancel</Button>}
             </Box>
           </StyledState>
         </ResponsiveContainer>

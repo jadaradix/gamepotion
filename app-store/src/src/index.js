@@ -28,7 +28,7 @@ const getAccessToken = () => {
   return getQueryParameter('accessToken')
 }
 
-const hackyRoutingCallback = () => {
+const everyRouteHandler = () => {
   const accessToken = getAccessToken()
   accessToken && set('access-token', accessToken)
   return null
@@ -42,7 +42,7 @@ const App = () => {
       <Router>
         <div>
           <Link to='/' className='logo'><img src={logo} /></Link>
-          <Route component={hackyRoutingCallback} />
+          <Route component={everyRouteHandler} />
           <Switch>
             <Route path='/modules/:id' exact strict component={Module} />
             <Route component={Home} />

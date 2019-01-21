@@ -8,6 +8,7 @@ import List from '../List/List'
 const StyledCollapsibleList = styled.ul`
   .component--button {
     width: 100%;
+    opacity: 0.5;
   }
   .component--button + .component--list {
     margin-top: 0.5rem;

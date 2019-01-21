@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import debounce from 'debounce'
 
 import RenderGameSpace from './RenderGameSpace.js'
 
-class Oscar2 extends Component {
+class Oscar2 extends React.Component {
   constructor(props) {
     super(props)
     this.loadGameSpace(this.props.spaceId, this.props.resources)

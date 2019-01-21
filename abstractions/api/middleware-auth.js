@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt-nodejs')
 const classes = require('../../classes/dist.js')
 const datalayer = require('../datalayer')
 
-const skipPasswordCheck = false // (process.env.NODE_ENV === 'local')
+const skipPasswordCheck = (process.env.NODE_ENV === 'local')
+console.log('[middleware-auth] process.env.NODE_ENV', process.env.NODE_ENV)
 console.log('[middleware-auth] skipPasswordCheck', skipPasswordCheck)
 
 async function comparePasswordAndPasswordHash (password, hash) {
