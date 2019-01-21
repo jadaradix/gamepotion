@@ -51,6 +51,7 @@ class ResourceSound extends PureComponent {
     super(props)
     this.onChooseFixed = this.onChooseFixed.bind(this)
     this.onUploadDone = this.onUploadDone.bind(this)
+    this.boughtResourcePackModule = this.props.moduleIds.includes('resource-pack')
   }
 
   onChooseFixed(fixed) {
@@ -68,13 +69,12 @@ class ResourceSound extends PureComponent {
   }
 
   render() {
-    const boughtResourcePackModule = this.props.moduleIds.includes('resource-pack')
     const fixedOptions = [
       {
         id: 'none',
         name: '<None>'
       },
-      ...resourceTypes.find(rt => rt.type === 'sound').getFixed(boughtResourcePackModule).map(o => {
+      ...resourceTypes.find(rt => rt.type === 'sound').getFixed(this.boughtResourcePackModule).map(o => {
         return {
           id: o.id,
           name: o.name
@@ -97,7 +97,7 @@ class ResourceSound extends PureComponent {
           <Box className='file'>
             <Dropper label={'Choose an included file'} options={fixedOptions} value={fixedValue} onChoose={this.onChooseFixed} />
             <p>Choosing an included file won&rsquo;t erase a file you have uploaded.</p>
-            {boughtResourcePackModule === false &&
+            {this.boughtResourcePackModule === false &&
               <BuyModuleBanner moduleId='resource-pack' moduleName='Resource Pack' verb='get more included files' />
             }
           </Box>

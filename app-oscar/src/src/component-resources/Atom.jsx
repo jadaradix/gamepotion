@@ -199,7 +199,7 @@ class ResourceAtom extends Component {
       })
     } else {
       this.props.onUpdate({
-        events
+        events: this.props.resource.events
       })
     }
     this.setState({
