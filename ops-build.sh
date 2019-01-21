@@ -1,5 +1,6 @@
 . scripts/build.sh;
 . scripts/build-classes.sh;
+. scripts/build-react-components.sh;
 
 cd container-router;
   . build.sh;

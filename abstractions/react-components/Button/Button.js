@@ -3,9 +3,12 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
-import { fontAlternative, colours } from '../../styleAbstractions'
-
-const font = fontAlternative
+export const font = `
+  font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 400;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+`
 
 const StyledButton = styled.button`
   display: block;
@@ -17,7 +20,7 @@ const StyledButton = styled.button`
   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
   &.flavour-strong {
     background-color: #2e3131;
-    color: ${colours.foreNegative};
+    color: #ffffff;
   }
   &.flavour-strong:not([disabled]):hover {
     background-color: #3C4850;
@@ -27,7 +30,7 @@ const StyledButton = styled.button`
   }
   &.flavour-weak {
     background-color: #eff3f4;
-    color: ${colours.fore};
+    color: #2e3131;
   }
   &.flavour-weak:not([disabled]):hover {
   }

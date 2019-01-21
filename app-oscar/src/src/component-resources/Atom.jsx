@@ -13,7 +13,7 @@ import FilterableList from '../components/FilterableList/FilterableList'
 import ListItem from '../components/ListItem/ListItem'
 import Image from '../components/Image/Image'
 import Heading2 from '../components/Heading2/Heading2'
-import Button from '../components/Button/Button'
+import Button from '../react-components/Button/Button'
 import Input from '../components/Input/Input'
 
 import ActionModal from '../modals/Action'

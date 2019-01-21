@@ -6,7 +6,7 @@ import { font, colours } from '../styleAbstractions'
 
 import Box from '../components/Box/Box'
 import Input from '../components/Input/Input'
-import Button from '../components/Button/Button'
+import Button from '../react-components/Button/Button'
 import Heading1 from '../components/Heading1/Heading1'
 
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'

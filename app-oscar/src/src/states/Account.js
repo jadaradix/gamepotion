@@ -7,7 +7,7 @@ import Loading from '../components/Loading/Loading'
 import Box from '../components/Box/Box'
 import Heading1 from '../components/Heading1/Heading1'
 import Input from '../components/Input/Input'
-import Button from '../components/Button/Button'
+import Button from '../react-components/Button/Button'
 
 import MainToolbarContainer from '../component-instances/MainToolbarContainer'
 import ResponsiveContainer from '../component-instances/ResponsiveContainer'

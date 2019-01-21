@@ -9,7 +9,7 @@ import CustomHelmet from '../../component-instances/CustomHelmet'
 import Box from '../../components/Box/Box'
 import Heading1 from '../../components/Heading1/Heading1'
 import Input from '../../components/Input/Input'
-import Button from '../../components/Button/Button'
+import Button from '../../react-components/Button/Button'
 
 import { dispatch, subscribe } from '../../state'
 
