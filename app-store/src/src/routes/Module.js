@@ -20,7 +20,7 @@ const StyledRoute = styled.div`
       display: inline-block;
     }
     .component--button:not(:last-of-type) {
-      margin-right: 0.5rem;
+      margin-right: 1rem;
     }
   }
   .actions + .description {
@@ -29,6 +29,12 @@ const StyledRoute = styled.div`
   .description {
     p {
       ${font}
+    }
+    ul {
+      padding-left: 2rem;
+      li {
+        ${font}
+      }
     }
   }
 `
@@ -85,7 +91,8 @@ class Module extends React.PureComponent {
         <section>
           <Heading1>{currentModule.name}</Heading1>
           <div className='actions'>
-            {authenticated && <Button disabled={hasBought} onClick={this.buy}>Buy now ({price})</Button>}
+            {authenticated && !hasBought && <Button onClick={this.buy}>Buy now ({price})</Button>}
+            {/* {authenticated && hasBought && <Button disabled onClick={this.buy}>Purchased</Button>} */}
             <Button route='/' flavour='weak'>Go back</Button>
           </div>
           <div className='description' dangerouslySetInnerHTML={{__html: currentModule.description}} />

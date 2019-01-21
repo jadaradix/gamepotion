@@ -7,32 +7,35 @@ import { font, colours } from '../styleAbstractions'
 
 const StyledButton = styled.button`
   display: block;
-  padding: 0.4rem 0.8rem 0.4rem 0.8rem;
-  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  padding: 0.4rem 0.8rem 0.3rem 0.8rem;
+  transition: background-color 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s cubic-bezier(.4,0,.2,1), opacity 0.2s ease-in-out;
   ${font}
-  border-radius: 4px;
-  border-width: 2px;
-  border-style: solid;
+  border-radius: 6px;
   outline: 0;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
   &.flavour-strong {
     background-color: #2e3131;
     color: ${colours.foreNegative};
-    border-color: #2e3131;
   }
   &.flavour-strong:not([disabled]):hover {
-    background-color: #6c7a89;
-    border-color: #6c7a89;
+    background-color: #3C4850;
+  }
+  &.flavour-strong:focus {
+    background-color: #3C4850;
   }
   &.flavour-weak {
-    background-color: transparent;
+    background-color: #eff3f4;
     color: ${colours.fore};
-    border-color: transparent;
+  }
+  &.flavour-weak:not([disabled]):hover {
+  }
+  &.flavour-weak:focus {
+  }
+  :not([disabled]):hover, :focus {
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
   }
   &[disabled] {
     opacity: 0.5;
-  }
-  :focus {
-    border-color: ${colours.outline};
   }
   > img {
     display: block;

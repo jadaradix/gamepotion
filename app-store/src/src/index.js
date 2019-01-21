@@ -41,7 +41,7 @@ const App = () => {
     <StyledApp>
       <Router>
         <div>
-          <Link to='/' class='logo'><img src={logo} /></Link>
+          <Link to='/' className='logo'><img src={logo} /></Link>
           <Route component={hackyRoutingCallback} />
           <Switch>
             <Route path='/modules/:id' exact strict component={Module} />

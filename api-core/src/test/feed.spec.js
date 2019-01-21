@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 const axios = require('axios')
 
 const URL_API_CORE = 'http://localhost:1025/v1'

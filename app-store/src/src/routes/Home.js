@@ -23,14 +23,17 @@ const getCallback = () => {
   return getQueryParameter('callback')
 }
 
-const CALLBACK_WAIT = 10 * 1000
+const CALLBACK_DELAY = 5000
+const CALLBACK_NOTIFY_SHOW_TIME = 10 * 1000
 
 const CALLBACKS = {
   'good': () => {
-    notify.good('Thank you for your purchase!', CALLBACK_WAIT)
+    notify.good('Thank you for your purchase!', CALLBACK_NOTIFY_SHOW_TIME)
+    return true
   },
   'bad': () => {
-    notify.bad('Your purchase did not complete successfully.', CALLBACK_WAIT)
+    notify.bad('Your purchase did not complete successfully.', CALLBACK_NOTIFY_SHOW_TIME)
+    return true
   }
 }
 
@@ -45,8 +48,6 @@ class Home extends React.PureComponent {
 
   componentDidMount() {
     const callback = getCallback()
-    callback && CALLBACKS[callback]()
-    const delay = (callback ? 5000 : 0)
     const doGetBoughtModuleIds = () => {
       getBoughtModuleIds()
         .then(boughtModuleIds => {
@@ -61,7 +62,8 @@ class Home extends React.PureComponent {
           })
         })
     }
-    setTimeout(doGetBoughtModuleIds, delay)
+    !callback && doGetBoughtModuleIds()
+    callback && CALLBACKS[callback]() && setTimeout(doGetBoughtModuleIds, CALLBACK_DELAY)
   }
 
   render() {

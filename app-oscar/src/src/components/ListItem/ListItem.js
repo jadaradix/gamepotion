@@ -100,7 +100,7 @@ const StyledListItem = styled.li`
       border-radius: 5000px;
       ${font}
       font-weight: 800;
-      font-size: 80%;
+      font-size: 70%;
       text-transform: uppercase;
       color: white;
     }

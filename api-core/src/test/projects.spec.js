@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 const axios = require('axios')
 const { setup, teardown } = require('./setup-teardown')
 

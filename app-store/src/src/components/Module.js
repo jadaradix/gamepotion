@@ -17,6 +17,7 @@ const StyledModule = styled.div`
       display: block;
       width: 100%;
       height: 100%;
+      min-height: 174px;
       text-indent: -5000px;
       // border-radius: 8px;
       // background-color: orange;

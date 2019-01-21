@@ -20,7 +20,6 @@ html {
 
 body {
   background-color: #ecf0f1;
-  transition: background-color 0.5s ease-in-out;
 }
 
 strong {
@@ -29,7 +28,7 @@ strong {
 
 #root {
   background: linear-gradient(rgb(172, 172, 172), transparent);
-  background-position: 0 calc(3rem + 4px);
+  background-position: 0 calc(3rem);
   background-size: 100% 4px;
   background-repeat: no-repeat;
 }

@@ -11,7 +11,7 @@ const StyledLeftRight = styled.section`
     grid-template-columns: 2fr 2fr;
     grid-gap: 3rem;
     div {
-      h1, p:first-of-type {
+      h1, p:first-child {
         margin-top: 2rem;
       }
     }
