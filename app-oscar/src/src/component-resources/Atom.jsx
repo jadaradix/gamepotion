@@ -302,21 +302,18 @@ class ResourceAtom extends Component {
         })
       },
       'delete': () => {
-        const confirmation = window.confirm('Are you sure you want to delete this event?')
-        if (confirmation === false) {
-          return
-        }
-        this.props.onUpdate({
-          events: this.props.resource.events.filter((e, i) => {
-            return (i !== id)
+        const doDelete = () => {
+          this.props.onUpdate({
+            events: this.props.resource.events.filter((e, i) => {
+              return (i !== id)
+            })
           })
-        })
+        }
+        this.props.resource.events[id] && this.props.resource.events[id].actions.length === 0 && doDelete()
+        this.props.resource.events[id] && this.props.resource.events[id].actions.length > 0 && window.confirm('Are you sure you want to delete this event?') && doDelete()
       }
     }
-    const foundThingThatCouldHappen = thingsThatCouldHappen[thingThatCouldHappen]
-    if (typeof foundThingThatCouldHappen === 'function') {
-      thingsThatCouldHappen[thingThatCouldHappen]()
-    }
+    typeof thingsThatCouldHappen[thingThatCouldHappen] === 'function' && thingsThatCouldHappen[thingThatCouldHappen]()
   }
 
   onEventModalGood(id, configuration) {
