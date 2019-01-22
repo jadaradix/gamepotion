@@ -13,7 +13,7 @@ import FilterableList from '../components/FilterableList/FilterableList'
 import ListItem from '../components/ListItem/ListItem'
 import Image from '../components/Image/Image'
 import Heading2 from '../components/Heading2/Heading2'
-import Button from '../components/Button/Button'
+import Button from '../react-components/Button/Button'
 import Input from '../components/Input/Input'
 
 import ActionModal from '../modals/Action'
@@ -199,7 +199,7 @@ class ResourceAtom extends Component {
       })
     } else {
       this.props.onUpdate({
-        events
+        events: this.props.resource.events
       })
     }
     this.setState({
@@ -302,21 +302,18 @@ class ResourceAtom extends Component {
         })
       },
       'delete': () => {
-        const confirmation = window.confirm('Are you sure you want to delete this event?')
-        if (confirmation === false) {
-          return
-        }
-        this.props.onUpdate({
-          events: this.props.resource.events.filter((e, i) => {
-            return (i !== id)
+        const doDelete = () => {
+          this.props.onUpdate({
+            events: this.props.resource.events.filter((e, i) => {
+              return (i !== id)
+            })
           })
-        })
+        }
+        this.props.resource.events[id] && this.props.resource.events[id].actions.length === 0 && doDelete()
+        this.props.resource.events[id] && this.props.resource.events[id].actions.length > 0 && window.confirm('Are you sure you want to delete this event?') && doDelete()
       }
     }
-    const foundThingThatCouldHappen = thingsThatCouldHappen[thingThatCouldHappen]
-    if (typeof foundThingThatCouldHappen === 'function') {
-      thingsThatCouldHappen[thingThatCouldHappen]()
-    }
+    typeof thingsThatCouldHappen[thingThatCouldHappen] === 'function' && thingsThatCouldHappen[thingThatCouldHappen]()
   }
 
   onEventModalGood(id, configuration) {

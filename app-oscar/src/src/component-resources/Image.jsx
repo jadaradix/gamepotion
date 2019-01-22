@@ -78,6 +78,7 @@ class ResourceImage extends PureComponent {
     this.onUploadDone = this.onUploadDone.bind(this)
     this.imageHeight = null
     this.onImageLoad = this.onImageLoad.bind(this)
+    this.boughtResourcePackModule = this.props.moduleIds.includes('resource-pack')
   }
 
   onUpdateFrameHeight(value) {
@@ -102,9 +103,10 @@ class ResourceImage extends PureComponent {
     } else {
       const {
         width,
-        height
-      } = resourceTypes.find(rt => rt.type === 'image').getFixed().find(o => o.id === fixed)
-      const frameHeight = (height < width ? height : width)
+        height,
+        overrideFrameHeight
+      } = resourceTypes.find(rt => rt.type === 'image').getFixed(this.boughtResourcePackModule).find(o => o.id === fixed)
+      const frameHeight = overrideFrameHeight || ((height < width ? height : width))
       this.props.onUpdate({
         fixed,
         extension: 'png',
@@ -124,15 +126,13 @@ class ResourceImage extends PureComponent {
   }
 
   render() {
-
-    const boughtResourcePackModule = this.props.moduleIds.includes('resource-pack')
     const fixedOptions = [
       {
         id: 'none',
         name: '<None>',
         url: null
       },
-      ...resourceTypes.find(rt => rt.type === 'image').getFixed(boughtResourcePackModule).map(o => {
+      ...resourceTypes.find(rt => rt.type === 'image').getFixed(this.boughtResourcePackModule).map(o => {
         return {
           id: o.id,
           name: o.name,
@@ -153,7 +153,7 @@ class ResourceImage extends PureComponent {
           <Box className='file'>
             <ImageChooser title='Choose an included file' id='image-fixed' images={fixedOptions} currentImage={fixedValue} onChoose={this.onChooseFixed} />
             <p>Choosing an included file won&rsquo;t erase a file you have uploaded.</p>
-            {boughtResourcePackModule === false &&
+            {this.boughtResourcePackModule === false &&
               <BuyModuleBanner moduleId='resource-pack' moduleName='Resource Pack' verb='get more included files' />
             }
           </Box>

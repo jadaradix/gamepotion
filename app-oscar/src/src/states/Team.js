@@ -34,7 +34,8 @@ class StateTeam extends Component {
     super(props)
     this.state = {
       user: getState().user,
-      team: getState().team
+      team: getState().team,
+      teamUsers: getState().teamUsers
     }
   }
 

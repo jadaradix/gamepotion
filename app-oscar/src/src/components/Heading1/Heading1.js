@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { font, fontAlternative, colours } from '../../styleAbstractions'
+import { fontAlternative, colours } from '../../styleAbstractions'
 
 const StyledHeading1 = styled.h1`
   ${fontAlternative}

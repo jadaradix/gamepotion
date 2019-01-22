@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import Modal from '../components/Modal/Modal'
 import Heading1 from '../components/Heading1/Heading1'
-import Button from '../components/Button/Button'
+import Button from '../react-components/Button/Button'
 import Input from '../components/Input/Input'
 
 const StyledModal = styled.div`

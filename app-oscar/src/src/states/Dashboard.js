@@ -6,7 +6,7 @@ import icons from '../icons'
 import { font, colours } from '../styleAbstractions'
 import logo from '../images/logo.png'
 
-import Button from '../components/Button/Button'
+import Button from '../react-components/Button/Button'
 import Heading1 from '../components/Heading1/Heading1'
 import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'

@@ -7,7 +7,7 @@ import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
 import ImageChooser from '../components/ImageChooser/ImageChooser'
-import Button from '../components/Button/Button'
+import Button from '../react-components/Button/Button'
 import GridModal from '../modals/Grid'
 
 import { font } from '../styleAbstractions'

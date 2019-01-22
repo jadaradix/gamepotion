@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Modal from '../components/Modal/Modal'
 import Switch from '../components/Switch/Switch'
 import Input from '../components/Input/Input'
-import Button from '../components/Button/Button'
+import Button from '../react-components/Button/Button'
 
 const StyledModal = styled.div`
   .component--modal {

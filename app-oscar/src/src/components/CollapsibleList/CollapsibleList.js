@@ -2,12 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import Button from '../Button/Button'
+import Button from '../../react-components/Button/Button'
 import List from '../List/List'
 
 const StyledCollapsibleList = styled.ul`
   .component--button {
     width: 100%;
+    opacity: 0.5;
   }
   .component--button + .component--list {
     margin-top: 0.5rem;

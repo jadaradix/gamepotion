@@ -17,26 +17,28 @@ const StyledToolbarButton = styled.li`
   }
   ul {
     position: absolute;
-    top: calc(3rem + 4px + 0.5rem);
+    top: 3rem;
     right: 0;
-    z-index: 3;
     min-width: 128px;
     list-style-type: none;
-    background-color: red;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgb(172, 172, 172);
+    box-shadow: 0 2px 2px rgb(172, 172, 172);
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    // background-color: red;
     li {
       padding: 0.75rem;
       ${font}
-      background-color: white;
+      font-size: 90%;
+      background-color: #2e3131;
+      color: ${colours.foreNegative};
       cursor: default;
+      transition: background-color 0.1s ease-in-out;
+    }
+    li:hover {
+      background-color: #6c7a89;
     }
     li + li {
-      border-top: 1px solid rgb(220, 220, 200);
-    }
-    li:first-of-type {
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
+      border-top: 1px solid #6c7a89;
     }
     li:last-of-type {
       border-bottom-left-radius: 4px;
@@ -113,15 +115,13 @@ const ToolbarButton = ({ match, history, route, onClick, icon, hint, significant
   const buttonClassName = classnames({'significant': significant, selected, 'disabled': disabled, 'fixed-width': fixedWidth})
   return (
     <StyledToolbarButton className='component--toolbar-button' title={hint}>
-      {isDropdownShowing && dropdownItems.length > 0 &&
-        <ul>
-          {dropdownItems.map(di => {
-            return (
-              <li key={di.name} onClick={() => handleOnClick(history, di.route, di.onClick)}>{di.name}</li>
-            )
-          })}
-        </ul>
-      }
+      <ul style={isDropdownShowing ? {visibility: 'visible', opacity: 1} : {visibility: 'hidden', opacity: 0}}>
+        {dropdownItems.map(di => {
+          return (
+            <li key={di.name} onClick={() => handleOnClick(history, di.route, di.onClick)}>{di.name}</li>
+          )
+        })}
+      </ul>
       <button onClick={() => handleOnClick(history, route, onClick)} disabled={disabled} className={buttonClassName} style={fixedWithStyle}>
         {icon && <img src={icon} alt={hint} className={`icon-${icon}`} />}
         {children && <span>{children}</span>}

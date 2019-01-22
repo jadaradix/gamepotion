@@ -6,7 +6,7 @@ import resourceTypes from '../resourceTypes'
 
 import Modal from '../components/Modal/Modal'
 import Heading1 from '../components/Heading1/Heading1'
-import Button from '../components/Button/Button'
+import Button from '../react-components/Button/Button'
 import Input from '../components/Input/Input'
 import Dropper from '../components/Dropper/Dropper'
 import Switch from '../components/Switch/Switch'
@@ -99,6 +99,17 @@ class ActionModal extends PureComponent {
         }
       })
     ]
+    const defaultRunArgumentTypes = Array.from(this.props.actionClassInstance.defaultRunArguments.entries()).map(e => e[1].type)
+    this.props.actionClassInstance.runArguments.forEach((ra, i) => {
+      const type = defaultRunArgumentTypes[i]
+      if (this.resourcesByType.hasOwnProperty(type) && this.props.actionClassInstance.runArguments[i].length === 0) {
+        if (this.resourcesByType[type].length > 0) {
+          this.props.actionClassInstance.runArguments[i] = this.resourcesByType[type][0].id
+        } else {
+          this.props.actionClassInstance.runArguments[i] = '?'
+        }
+      }
+    })
     this.state = {
       isValid: this.isValid()
     }
@@ -113,7 +124,8 @@ class ActionModal extends PureComponent {
   isValid() {
     const defaultRunArgumentTypes = Array.from(this.props.actionClassInstance.defaultRunArguments.entries()).map(e => e[1].type)
     const isValid = this.props.actionClassInstance.runArguments.every((ra, i) => {
-      return this.argumentTypes.find(at => at.types.includes(defaultRunArgumentTypes[i])).isValid(ra)
+      const type = defaultRunArgumentTypes[i]
+      return this.argumentTypes.find(at => at.types.includes(type)).isValid(ra)
     })
     return isValid
   }
@@ -132,13 +144,6 @@ class ActionModal extends PureComponent {
   }
 
   getArgument (index, name, type, values, value) {
-    if (this.resourcesByType.hasOwnProperty(type) && this.props.actionClassInstance.runArguments[index].length === 0) {
-      if (this.resourcesByType[type].length > 0) {
-        this.props.actionClassInstance.runArguments[index] = this.resourcesByType[type][0].id
-      } else {
-        this.props.actionClassInstance.runArguments[index] = '?'
-      }
-    }
     return this.argumentTypes.find(at => at.types.includes(type)).render(index, value, values, name)
   }
 

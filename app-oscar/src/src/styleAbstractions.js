@@ -13,7 +13,7 @@ export const fontAlternative = `
 `
 
 export const colours = {
-  'outline': '#38EF7D',
+  'outline': '#a537fd',
   'highlight': '#dadfe1',
   'fore': '#2e3131',
   'foreNegative': '#ffffff',
