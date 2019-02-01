@@ -6,10 +6,10 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "console-stamp": "^0.2.7",
-    "got": "^9.5.0",
+    "got": "^9.6.0",
     "morgan": "^1.9.1",
-    "restify": "6.4.0",
-    "restify-errors": "5.0.0"
+    "restify": "7.6.0",
+    "restify-errors": "6.1.1"
   },
   "scripts": {
     "start": "NODE_ENV=local PORT=1025 GOOGLE_APPLICATION_CREDENTIALS=~/src/gmc/secrets/config-gcp.json node --max-old-space-size=8192 index.js",
@@ -18,6 +18,6 @@
   },
   "devDependencies": {
     "axios": "^0.18.0",
-    "jest": "^23.6.0"
+    "jest": "^24.0.0"
   }
 }
