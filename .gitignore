@@ -45,7 +45,6 @@ service-mail/files
 app-oscar/src/src/inter-router
 
 app-oscar/src/src/react-components
-app-oscar/src/src/localStorage.js
 app-store/src/src/react-components
 app-store/src/src/localStorage.js
 

@@ -39,3 +39,6 @@ cd service-mail/src;
   rm .env;
   cp ../../secrets/env-service-mail .env;
 cd ../..;
+
+rm app-store/src/src/localStorage.js;
+cp app-oscar/src/src/localStorage.js app-store/src/src/localStorage.js;
