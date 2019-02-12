@@ -2,10 +2,6 @@
 . scripts/build-classes.sh;
 . scripts/build-react-components.sh;
 
-cd container-router;
-  . build.sh;
-cd ..;
-
 cd api-core;
   . build.sh;
 cd ..;
