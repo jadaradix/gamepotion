@@ -8,7 +8,7 @@ import icons  from '../../icons'
 const styleAbstractions = {
   colours: {
     'outline': '#a537fd',
-    'fore': '#2e3131'
+    'back': '#ecf0f1'
   }
 }
 

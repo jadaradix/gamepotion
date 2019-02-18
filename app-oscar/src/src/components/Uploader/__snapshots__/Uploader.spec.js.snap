@@ -19,11 +19,6 @@ exports[`Uploader renders 1`] = `
 .c0 > div {
   position: relative;
   height: 100%;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  font-weight: 400;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
 }
 
 .c0 > div img.icon {
@@ -109,11 +104,6 @@ exports[`Uploader renders disabled 1`] = `
 .c0 > div {
   position: relative;
   height: 100%;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  font-weight: 400;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
 }
 
 .c0 > div img.icon {
