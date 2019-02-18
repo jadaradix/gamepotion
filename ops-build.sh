@@ -10,7 +10,7 @@ cd api-bin;
   . build.sh;
 cd ..;
 
-cd app-oscar;
+cd app;
   . build.sh;
 cd ..;
 

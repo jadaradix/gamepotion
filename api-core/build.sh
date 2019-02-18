@@ -21,9 +21,9 @@ rm -rf files/platforms/nds/node_modules;
 rm files/config-gcp.json;
 cp ../secrets/config-gcp.json files/config-gcp.json;
 
-docker stop oscar-production-api-core;
-docker rm oscar-production-api-core;
-docker build -t oscar-production-api-core .;
+docker stop gamepotion-api-core;
+docker rm gamepotion-api-core;
+docker build -t gamepotion-api-core .;
 
-docker tag oscar-production-api-core eu.gcr.io/thegmc-219013/oscar-production-api-core:latest;
-docker push eu.gcr.io/thegmc-219013/oscar-production-api-core:latest;
+docker tag gamepotion-api-core eu.gcr.io/thegmc-219013/gamepotion-api-core:latest;
+docker push eu.gcr.io/thegmc-219013/gamepotion-api-core:latest;

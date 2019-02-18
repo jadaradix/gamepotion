@@ -6,14 +6,20 @@ cd classes;
   npm run build;
 cd ..;
 
-cd app-oscar/src;
-  # how can we avoid copying node_modules?
-  rm -rf src/classes; cp -R ../../classes src/classes; rm -rf src/classes/node_modules;
+cd app/src;
+  rm -rf src/classes; mkdir -p src/classes;
+  cp -R ../../classes/classes src/classes/classes;
+  cp -R ../../classes/abstractions src/classes/abstractions;
+  cp ../../classes/factory.js src/classes/factory.js;
+  cp ../../classes/index.js src/classes/index.js;
 cd ../..;
 
 cd app-play/src;
-  # how can we avoid copying node_modules?
-  rm -rf src/classes; cp -R ../../classes src/classes; rm -rf src/classes/node_modules;
+  rm -rf src/classes; mkdir -p src/classes;
+  cp -R ../../classes/classes src/classes/classes;
+  cp -R ../../classes/abstractions src/classes/abstractions;
+  cp ../../classes/factory.js src/classes/factory.js;
+  cp ../../classes/index.js src/classes/index.js;
 cd ../..;
 
 cd api-core/src;

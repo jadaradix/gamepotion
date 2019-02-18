@@ -1,4 +1,4 @@
-FROM node:11.6.0
+FROM node:latest
 USER root
 
 RUN apt-get update

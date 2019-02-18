@@ -17,9 +17,9 @@ rm -rf files/classes/node_modules;
 rm files/config-gcp.json;
 cp ../secrets/config-gcp.json files/config-gcp.json;
 
-docker stop oscar-production-api-bin;
-docker rm oscar-production-api-bin;
-docker build -t oscar-production-api-bin .;
+docker stop gamepotion-api-bin;
+docker rm gamepotion-api-bin;
+docker build -t gamepotion-api-bin .;
 
-docker tag oscar-production-api-bin eu.gcr.io/thegmc-219013/oscar-production-api-bin:latest;
-docker push eu.gcr.io/thegmc-219013/oscar-production-api-bin:latest;
+docker tag gamepotion-api-bin eu.gcr.io/thegmc-219013/gamepotion-api-bin:latest;
+docker push eu.gcr.io/thegmc-219013/gamepotion-api-bin:latest;

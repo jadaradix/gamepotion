@@ -15,7 +15,7 @@ cd api-bin/src;
   rm -rf abstractions; ln -s ../../abstractions abstractions;
 cd ../..;
 
-cd app-oscar/src;
+cd app/src;
   rm -rf src/inter-router; cp -R ../../inter-router src/inter-router; rm -rf src/inter-router/node_modules;
 cd ../..;
 
@@ -32,7 +32,7 @@ cd ../..;
 
 cd app-play/src;
   rm -rf src/Oscar2;
-  cp -R ../../app-oscar/src/src/Oscar2 src;
+  cp -R ../../app/src/src/Oscar2 src;
 cd ../..;
 
 cd service-mail/src;
@@ -41,4 +41,4 @@ cd service-mail/src;
 cd ../..;
 
 rm app-store/src/src/localStorage.js;
-cp app-oscar/src/src/localStorage.js app-store/src/src/localStorage.js;
+cp app/src/src/localStorage.js app-store/src/src/localStorage.js;

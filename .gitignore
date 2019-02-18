@@ -18,15 +18,15 @@ api-core/src/abstractions
 api-bin/src/abstractions
 
 platforms/nds/classes
-app-oscar/src/src/classes
+app/src/src/classes
 app-play/src/src/classes
 api-core/src/classes
 api-bin/src/classes
 
 api-core/src/platforms
 
-app-oscar/src/build
-app-oscar/src/coverage
+app/src/build
+app/src/coverage
 
 app-store/src/build
 app-store/src/coverage
@@ -42,9 +42,7 @@ api-bin/files
 service-mail/src/.env
 service-mail/files
 
-app-oscar/src/src/inter-router
-
-app-oscar/src/src/react-components
+app/src/src/inter-router
 app-store/src/src/react-components
 app-store/src/src/localStorage.js
 

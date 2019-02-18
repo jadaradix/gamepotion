@@ -23,7 +23,7 @@ cd api-bin/src;
   npm test;
 cd ../..;
 
-cd app-oscar/src;
+cd app/src;
   CI=true npm test;
 cd ../..;
 

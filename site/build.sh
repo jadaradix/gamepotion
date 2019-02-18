@@ -3,9 +3,9 @@ cd src;
   npm run build;
 cd ..;
 
-docker stop oscar-production-site;
-docker rm oscar-production-site;
-docker build -t oscar-production-site .;
+docker stop gamepotion-site;
+docker rm gamepotion-site;
+docker build -t gamepotion-site .;
 
-docker tag oscar-production-site eu.gcr.io/thegmc-219013/oscar-production-site:latest;
-docker push eu.gcr.io/thegmc-219013/oscar-production-site:latest;
+docker tag gamepotion-site eu.gcr.io/thegmc-219013/gamepotion-site:latest;
+docker push eu.gcr.io/thegmc-219013/gamepotion-site:latest;

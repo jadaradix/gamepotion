@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Uploader renders 1`] = `
+.c0 {
+  height: 128px;
+  border: 2px dashed #dadfe1;
+  border-radius: 4px;
+  cursor: copy;
+}
+
+.c0.component--uploader-in-progress {
+  cursor: wait;
+}
+
+.c0.component--uploader-done {
+  cursor: default;
+}
+
+.c0 > div {
+  position: relative;
+  height: 100%;
+}
+
+.c0 > div img.icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  margin: 0 auto 0.25rem auto;
+}
+
+.c0 > div img.icon--in-progress {
+  -webkit-animation: gmc-in-progress 4s linear infinite;
+  animation: gmc-in-progress 4s linear infinite;
+}
+
+<div
+  className="component--uploader c0"
+>
+  <div
+    aria-disabled={false}
+    className=""
+    onClick={[Function]}
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    onDragOver={[Function]}
+    onDragStart={[Function]}
+    onDrop={[Function]}
+    style={
+      Object {
+        "position": "relative",
+      }
+    }
+  >
+    <img
+      alt=""
+      className="icon"
+      src="upload.svg"
+    />
+    <input
+      accept="audio/wav"
+      autoComplete="off"
+      disabled={false}
+      multiple={true}
+      onChange={[Function]}
+      style={
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0.00001,
+          "pointerEvents": "none",
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+      type="file"
+    />
+  </div>
+</div>
+`;
+
+exports[`Uploader renders disabled 1`] = `
+.c0 {
+  height: 128px;
+  border: 2px dashed #dadfe1;
+  border-radius: 4px;
+  cursor: copy;
+}
+
+.c0.component--uploader-in-progress {
+  cursor: wait;
+}
+
+.c0.component--uploader-done {
+  cursor: default;
+}
+
+.c0 > div {
+  position: relative;
+  height: 100%;
+}
+
+.c0 > div img.icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  margin: 0 auto 0.25rem auto;
+}
+
+.c0 > div img.icon--in-progress {
+  -webkit-animation: gmc-in-progress 4s linear infinite;
+  animation: gmc-in-progress 4s linear infinite;
+}
+
+<div
+  className="component--uploader c0"
+>
+  <div
+    aria-disabled={false}
+    className=""
+    onClick={[Function]}
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    onDragOver={[Function]}
+    onDragStart={[Function]}
+    onDrop={[Function]}
+    style={
+      Object {
+        "position": "relative",
+      }
+    }
+  >
+    <img
+      alt=""
+      className="icon"
+      src="upload.svg"
+    />
+    <input
+      accept="audio/wav"
+      autoComplete="off"
+      disabled={false}
+      multiple={true}
+      onChange={[Function]}
+      style={
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0.00001,
+          "pointerEvents": "none",
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+      type="file"
+    />
+  </div>
+</div>
+`;
