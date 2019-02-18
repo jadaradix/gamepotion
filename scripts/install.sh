@@ -23,7 +23,7 @@ cd api-bin/src;
   npm i;
 cd ../..;
 
-cd app-oscar/src;
+cd app/src;
   npm i;
 cd ../..;
 cd app-store/src;

@@ -6,7 +6,7 @@ cd classes;
   npm run build;
 cd ..;
 
-cd app-oscar/src;
+cd app/src;
   rm -rf src/classes; mkdir -p src/classes;
   cp -R ../../classes/classes src/classes/classes;
   cp -R ../../classes/abstractions src/classes/abstractions;
