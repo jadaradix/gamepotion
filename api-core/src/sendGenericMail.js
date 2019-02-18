@@ -2,7 +2,7 @@ const assert = require('assert').strict
 const got = require('got')
 
 const BRAND_NAME = 'Gamepotion'
-const SERVICE_MAIL_URL = 'http://oscar-production-service-mail:1031'
+const SERVICE_MAIL_URL = 'http://gamepotion-service-mail:1031'
 
 const sendMail = async ({
   subject,

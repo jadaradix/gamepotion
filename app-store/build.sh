@@ -3,9 +3,9 @@ cd src;
   npm run build;
 cd ..;
 
-docker stop oscar-production-app-store;
-docker rm oscar-production-app-store;
-docker build -t oscar-production-app-store .;
+docker stop gamepotion-app-store;
+docker rm gamepotion-app-store;
+docker build -t gamepotion-app-store .;
 
-docker tag oscar-production-app-store eu.gcr.io/thegmc-219013/oscar-production-app-store:latest;
-docker push eu.gcr.io/thegmc-219013/oscar-production-app-store:latest;
+docker tag gamepotion-app-store eu.gcr.io/thegmc-219013/gamepotion-app-store:latest;
+docker push eu.gcr.io/thegmc-219013/gamepotion-app-store:latest;

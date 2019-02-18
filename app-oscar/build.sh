@@ -3,9 +3,9 @@ cd src;
   npm run build;
 cd ..;
 
-docker stop oscar-production-app-oscar;
-docker rm oscar-production-app-oscar;
-docker build -t oscar-production-app-oscar .;
+docker stop gamepotion-app-oscar;
+docker rm gamepotion-app-oscar;
+docker build -t gamepotion-app-oscar .;
 
-docker tag oscar-production-app-oscar eu.gcr.io/thegmc-219013/oscar-production-app-oscar:latest;
-docker push eu.gcr.io/thegmc-219013/oscar-production-app-oscar:latest;
+docker tag gamepotion-app-oscar eu.gcr.io/thegmc-219013/gamepotion-app-oscar:latest;
+docker push eu.gcr.io/thegmc-219013/gamepotion-app-oscar:latest;
