@@ -10,14 +10,14 @@ test('can be created from an API call', () => {
   const user = new User()
   const body = {
     teamId: 'team-id',
-    userlandId: 'j@jada.io'
+    userlandId: 'thingy@jada.io'
   }
   user.fromApiPost(body)
   expect(user.id).toHaveLength(36)
   expect(user.accessToken).toHaveLength(36)
-  expect(user.name).toBe('James')
+  expect(user.name).toBe('Thingy')
   expect(user.isTeamAdmin).toBe(true)
-  expect(user.userlandId).toBe('j@jada.io')
+  expect(user.userlandId).toBe('thingy@jada.io')
 })
 
 test('throws an error when being created from an API call if there is no userlandId', () => {
