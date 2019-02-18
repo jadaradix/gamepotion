@@ -77,7 +77,7 @@ const stages = new Map([
                 })
               })
               .catch(error => {
-                if (error.response === undefined) {
+                if (error.response === undefined || error.response.data === null) {
                   return setStateCallback({
                     inProgress: false
                   }) 
