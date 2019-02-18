@@ -8,8 +8,8 @@ import buy from '../buy'
 import { font } from '../styleAbstractions'
 import formatPrice from '../formatPrice'
 
-import Heading1 from '../components/Heading1'
-import Button from '../components/Button/Button'
+import Heading1 from '../react-components/Heading1/Heading1'
+import Button from '../react-components/Button/Button'
 
 const StyledRoute = styled.div`
   .component--heading1 + .actions {

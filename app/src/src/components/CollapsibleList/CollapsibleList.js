@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import Button from '../../components/Button/Button'
+import Button from '../Button/Button'
 import List from '../List/List'
 
 const StyledCollapsibleList = styled.ul`
