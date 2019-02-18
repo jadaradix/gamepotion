@@ -33,7 +33,7 @@ exports[`renders 1`] = `
 .c1 {
   position: relative;
   display: block;
-  width: 100%;
+  width: calc(100% - 4px);
   height: 2rem;
   list-style-type: none;
   border-width: 2px;
@@ -52,7 +52,7 @@ exports[`renders 1`] = `
 }
 
 .c1:focus {
-  border-color: #38EF7D;
+  border-color: #a537fd;
 }
 
 .c1 > img {
@@ -113,7 +113,7 @@ exports[`renders 1`] = `
 
 .c1 > .actions img:focus {
   opacity: 1;
-  background-color: #38EF7D;
+  background-color: #a537fd;
 }
 
 .c1 > .actions img:hover {
@@ -142,7 +142,7 @@ exports[`renders 1`] = `
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   font-weight: 800;
-  font-size: 80%;
+  font-size: 70%;
   text-transform: uppercase;
   color: white;
 }
