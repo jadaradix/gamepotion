@@ -1,3 +1,0 @@
-{
-  "testPathIgnorePatterns": ["/node_modules/", "<rootDir>/src/classes/test/"]
-}
