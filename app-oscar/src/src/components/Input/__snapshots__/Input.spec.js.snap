@@ -77,12 +77,12 @@ input.c0::-moz-placeholder {
 >
   <input
     disabled={false}
-    id="component-Input-id"
+    id="component--input-id"
     onChange={[Function]}
     onKeyDown={[Function]}
     required={false}
     type="text"
-    value="James"
+    value="hey there"
   />
 </div>
 `;
