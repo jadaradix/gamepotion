@@ -19,7 +19,8 @@ const envs = {
     }
   }
 }
-const apis = envs[process.env.NODE_ENV].apis
+const env = envs[process.env.NODE_ENV]
+const apis = Array.isArray(env) ? env.apis : {}
 
 const auth = {
   username: getState().credentials.userlandId,
