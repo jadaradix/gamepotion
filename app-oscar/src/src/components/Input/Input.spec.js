@@ -8,7 +8,7 @@ jest.mock('uuid', () => jest.fn().mockReturnValue('id'))
 it('renders', () => {
   const tree = renderer
     .create(
-      <Input value='James' />
+      <Input value='hey there' />
     )
     .toJSON()
   expect(tree).toMatchSnapshot()

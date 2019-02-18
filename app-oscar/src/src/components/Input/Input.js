@@ -3,13 +3,24 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import uuid from 'uuid'
 
-import { font, colours } from '../../styleAbstractions'
+const styleAbstractions = {
+  colours: {
+    'fore': '#2e3131',
+    'highlight': '#dadfe1'
+  },
+  font: `
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledInput = styled.div`
   label {
     display: block;
     width: 100%;
-    ${font}
+    ${styleAbstractions.font}
     font-size: 80%;
     color: #6c7a89;
   }
@@ -28,14 +39,14 @@ const StyledInput = styled.div`
     background-color: transparent;
     letter-spacing: 0;
     transition: border-color 0.2s ease-in-out;
-    ${font}
-    color: ${colours.fore};
+    ${styleAbstractions.font}
+    color: ${styleAbstractions.colours.fore};
     -webkit-appearance: none;
     &:focus {
       border-color: #bdc3c7;
     }
     &::selection {
-      background-color: ${colours.highlight};
+      background-color: ${styleAbstractions.colours.highlight};
     }
   }
   input[disabled] {
@@ -54,14 +65,6 @@ const StyledInput = styled.div`
     color: #bdc3c7;
   }
 `
-
-// const getDefaultValue = (props) => {
-//   if (props.value !== undefined) {
-//     return props.value
-//   }
-//   // hack - touch x/y refs
-//   return (props.type === 'number' ? undefined : '')
-// }
 
 const getMin = (props) => {
   return (typeof props.min === 'string' ? props.min : undefined)
@@ -86,7 +89,7 @@ class Input extends PureComponent {
       id: uuid()
     }
     this.handleOnChange = (event) => {
-      this.props.onChange(event.target.value) // which is useful?
+      this.props.onChange(event.target.value)
     }
     this.handleOnDone = (event) => {
       if (typeof this.props.onDone === 'function' && event.which === 13) {
@@ -100,9 +103,9 @@ class Input extends PureComponent {
   render () {
     return (
       <StyledInput className='component--input'>
-        {this.props.label && <label htmlFor={`component-Input-${this.state.id}`} aria-disabled={this.props.disabled}>{this.props.label}</label>}
+        {this.props.label && <label htmlFor={`component--input-${this.state.id}`} aria-disabled={this.props.disabled}>{this.props.label}</label>}
         <input
-          id={`component-Input-${this.state.id}`}
+          id={`component--input-${this.state.id}`}
           type={this.props.type}
           placeholder={this.props.placeholder}
           disabled={this.props.disabled}
@@ -115,14 +118,11 @@ class Input extends PureComponent {
           onChange={this.handleOnChange}
           onKeyDown={this.handleOnDone}
           ref={(inputRef) => {
-            if (inputRef === null) {
-              return
-            }
-            if (this.props.autoFocus === true) {
+            if (this.props.autoFocus === true && this.inputRef.current === null) {
+              this.inputRef = inputRef
               inputRef.focus()
+              this.props.onRef(inputRef)
             }
-            this.inputRef = inputRef
-            this.props.onRef(inputRef)
           }}
         />
       </StyledInput>
