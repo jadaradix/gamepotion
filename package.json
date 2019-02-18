@@ -14,12 +14,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Storydust/gmc.git"
+    "url": "git+https://github.com/EuphoricAdventures/gamepotion.git"
   },
   "author": "James Garner <j@jada.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Storydust/gmc/issues"
+    "url": "https://github.com/EuphoricAdventures/gamepotion/issues"
   },
-  "homepage": "https://github.com/Storydust/gmc"
+  "homepage": "https://github.com/EuphoricAdventures/gamepotion"
 }
