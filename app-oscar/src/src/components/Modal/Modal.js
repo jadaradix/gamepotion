@@ -4,7 +4,13 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 import icons  from '../../icons'
-import { colours } from '../../styleAbstractions'
+
+const styleAbstractions = {
+  colours: {
+    'outline': '#a537fd',
+    'fore': '#2e3131'
+  }
+}
 
 const KEY_TAB = 'Tab'
 const KEY_ESC = 'Escape'
@@ -32,7 +38,7 @@ const StyledModal = styled.div`
     margin-right: -50%;
     padding: 4rem 2rem 2rem 2rem;
     transform: translate(-50%, -50%);
-    background-color: ${colours.back};
+    background-color: ${styleAbstractions.colours.back};
     border-radius: 4px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.75);
     .icon--close {
@@ -52,7 +58,7 @@ const StyledModal = styled.div`
         height: 100%;
       }
       &:focus {
-        background-color: ${colours.outline};
+        background-color: ${styleAbstractions.colours.outline};
       }
     }
   }

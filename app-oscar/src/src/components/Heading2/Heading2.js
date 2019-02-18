@@ -1,11 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
-import { fontAlternative, colours } from '../../styleAbstractions'
+
+const styleAbstractions = {
+  colours: {
+    'fore': '#2e3131'
+  },
+  fontAlternative: `
+    font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledHeading2 = styled.h2`
-  ${fontAlternative}
+  ${styleAbstractions.fontAlternative}
   font-size: 120%;
-  color: ${colours.fore};
+  color: ${styleAbstractions.colours.fore};
 `
 
 const Heading2 = ({ children }) => {

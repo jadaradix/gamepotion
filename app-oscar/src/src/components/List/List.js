@@ -2,7 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { font, colours } from '../../styleAbstractions'
+const styleAbstractions = {
+  colours: {
+    'fore': '#2e3131'
+  },
+  font: `
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledList = styled.ul`
   .component--list {
@@ -20,9 +30,9 @@ const StyledList = styled.ul`
   .empty-text {
     padding-top: 2rem;
     padding-bottom: 2rem;
-    ${font}
+    ${styleAbstractions.font}
     text-align: center;
-    color: ${colours.fore};
+    color: ${styleAbstractions.colours.fore};
     opacity: 0.5;
     // background-color: navy;
   }

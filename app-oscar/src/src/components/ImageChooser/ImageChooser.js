@@ -7,7 +7,18 @@ import Input from '../Input/Input'
 import Image from '../Image/Image'
 
 import { get, set } from '../../localStorage'
-import { font, colours } from '../../styleAbstractions'
+
+const styleAbstractions = {
+  colours: {
+    'fore': '#2e3131'
+  },
+  font: `
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledImageChooser = styled.div`
   position: relative;
@@ -55,9 +66,9 @@ const StyledImageChooser = styled.div`
           height: 2rem;
           padding-top: 0.25rem;
           line-height: 0.75rem;
-          ${font}
+          ${styleAbstractions.font}
           font-size: 80%;
-          color: ${colours.fore};
+          color: ${styleAbstractions.colours.fore};
           cursor: default;
         }
       }

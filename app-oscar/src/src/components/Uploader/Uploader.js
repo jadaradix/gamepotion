@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import Dropzone from 'react-dropzone'
 
 import api from '../../api'
-import { font } from '../../styleAbstractions'
 import icons from '../../icons'
 
 const StyledUploader = styled.div`
@@ -38,13 +37,6 @@ const StyledUploader = styled.div`
     img.icon--in-progress {
       animation: gmc-in-progress 4s linear infinite;
     }
-    // p {
-    //   padding: 0.5rem 1rem 0.5rem 1rem;
-    //   ${font}
-    //   font-size: 90%;
-    //   text-align: center;
-    //   color: #6c7a89;
-    // }
   }
 `
 

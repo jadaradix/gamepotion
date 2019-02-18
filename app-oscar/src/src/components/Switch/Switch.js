@@ -3,7 +3,16 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import uuid from 'uuid'
 
-import { font, colours } from '../../styleAbstractions'
+const styleAbstractions = {
+  colours: {
+  },
+  font: `
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledSwitch = styled.div`
   // nearly all of this code is stolen from http://www.designcouch.com/home/why/2013/09/19/ios7-style-pure-css-toggle/
@@ -19,7 +28,7 @@ const StyledSwitch = styled.div`
   > label + label {
     line-height: 2rem;
     margin-left: 0.6666rem;
-    ${font}
+    ${styleAbstractions.font}
     font-size: 80%;
     color: #6c7a89;
   }
@@ -27,7 +36,7 @@ const StyledSwitch = styled.div`
     display: block;
     position: relative;
     // off colour background
-    background-color: ${colours.back};
+    background-color: #ecf0f1;
     // off colour border
     box-shadow: inset 0 0 0px 2px rgb(192, 192, 192);
     text-indent: -5000px;

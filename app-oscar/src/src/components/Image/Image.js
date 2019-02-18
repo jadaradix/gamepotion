@@ -3,7 +3,17 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import uuid from 'uuid'
 
-import { font, colours } from '../../styleAbstractions'
+const styleAbstractions = {
+  colours: {
+    'fore': '#2e3131'
+  },
+  font: `
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledImage = styled.div`
   // background-color: yellow;
@@ -14,8 +24,8 @@ const StyledImage = styled.div`
   }
   > p {
     width: 100%;
-    ${font}
-    color: ${colours.fore};
+    ${styleAbstractions.font}
+    color: ${styleAbstractions.colours.fore};
     opacity: 0.5;
     position: absolute;
     top: 50%;

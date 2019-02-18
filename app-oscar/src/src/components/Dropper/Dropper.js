@@ -3,13 +3,24 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import uuid from 'uuid'
 
-import { font, colours } from '../../styleAbstractions'
+const styleAbstractions = {
+  colours: {
+    'outline': '#a537fd',
+    'fore': '#2e3131',
+  },
+  font: `
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledDropper = styled.div`
   label {
     display: block;
     width: 100%;
-    ${font}
+    ${styleAbstractions.font}
     font-size: 80%;
     color: #6c7a89;
   }
@@ -19,9 +30,9 @@ const StyledDropper = styled.div`
     padding: 0.35rem;
     width: 100%;
     transition: border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
-    ${font}
+    ${styleAbstractions.font}
     background-color: #dadfe1;
-    color: ${colours.fore};
+    color: ${styleAbstractions.colours.fore};
     border-radius: 4px;
     border-width: 2px;
     border-style: solid;
@@ -36,7 +47,7 @@ const StyledDropper = styled.div`
       opacity: 0.5;
     }
     :focus {
-      border-color: ${colours.outline};
+      border-color: ${styleAbstractions.colours.outline};
     }
   }
   label + select {

@@ -1,6 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { font, colours } from '../../styleAbstractions'
+
+const styleAbstractions = {
+  colours: {
+    'fore': '#2e3131'
+  },
+  font: `
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledBanner = styled.div`
   padding: 1rem;
@@ -16,11 +27,11 @@ const StyledBanner = styled.div`
     background-color: #F8D8D4;
   }
   p {
-    ${font}
+    ${styleAbstractions.font}
     font-size: 80%;
     line-height: 1.5;
     text-align: center;
-    color: ${colours.fore};
+    color: ${styleAbstractions.colours.fore};
     a {
       color: inherit;
     }

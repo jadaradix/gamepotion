@@ -4,7 +4,19 @@ import styled from 'styled-components'
 import classnames from 'classnames'
 
 import icons from '../../icons'
-import { font, colours } from '../../styleAbstractions'
+
+const styleAbstractions = {
+  colours: {
+    'outline': '#a537fd',
+    'fore': '#2e3131',
+  },
+  font: `
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledListItem = styled.li`
   position: relative;
@@ -24,7 +36,7 @@ const StyledListItem = styled.li`
     background-color: #dadfe1;
   }
   &:focus {
-    border-color: ${colours.outline};
+    border-color: ${styleAbstractions.colours.outline};
   }
   > img {
     display: block;
@@ -44,8 +56,8 @@ const StyledListItem = styled.li`
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     margin-left: 0.5rem;
-    ${font}
-    color: ${colours.fore};
+    ${styleAbstractions.font}
+    color: ${styleAbstractions.colours.fore};
     // background-color: green;
   }
   &:hover {
@@ -77,7 +89,7 @@ const StyledListItem = styled.li`
       // background-color: blue;
       &:focus {
         opacity: 1;
-        background-color: ${colours.outline};
+        background-color: ${styleAbstractions.colours.outline};
       }
       &:hover {
         opacity: 1;
@@ -98,7 +110,7 @@ const StyledListItem = styled.li`
       padding-left: 0.5rem;
       padding-right: 0.5rem;
       border-radius: 5000px;
-      ${font}
+      ${styleAbstractions.font}
       font-weight: 800;
       font-size: 70%;
       text-transform: uppercase;

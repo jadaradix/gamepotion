@@ -4,7 +4,17 @@ import styled from 'styled-components'
 import classnames from 'classnames'
 import { withRouter } from 'react-router-dom'
 
-import { font, colours } from '../../styleAbstractions'
+const styleAbstractions = {
+  colours: {
+    'foreNegative': '#ffffff'
+  },
+  font: `
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledToolbarButton = styled.li`
   position: relative;
@@ -27,10 +37,10 @@ const StyledToolbarButton = styled.li`
     // background-color: red;
     li {
       padding: 0.75rem;
-      ${font}
+      ${styleAbstractions.font}
       font-size: 90%;
       background-color: #2e3131;
-      color: ${colours.foreNegative};
+      color: ${styleAbstractions.colours.foreNegative};
       cursor: default;
       transition: background-color 0.1s ease-in-out;
     }
@@ -67,8 +77,8 @@ const StyledToolbarButton = styled.li`
       margin-left: 0.75rem;
       margin-right: 0.75rem;
       line-height: 1.5rem;
-      color: ${colours.foreNegative};
-      ${font}
+      color: ${styleAbstractions.colours.foreNegative};
+      ${styleAbstractions.font}
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
