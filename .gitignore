@@ -43,8 +43,6 @@ service-mail/src/.env
 service-mail/files
 
 app-oscar/src/src/inter-router
-
-app-oscar/src/src/react-components
 app-store/src/src/react-components
 app-store/src/src/localStorage.js
 
