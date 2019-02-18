@@ -9,7 +9,7 @@ import { font } from '../styleAbstractions'
 import formatPrice from '../formatPrice'
 
 import Heading1 from '../components/Heading1'
-import Button from '../react-components/Button/Button'
+import Button from '../components/Button/Button'
 
 const StyledRoute = styled.div`
   .component--heading1 + .actions {

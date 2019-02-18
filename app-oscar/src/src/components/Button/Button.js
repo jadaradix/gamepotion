@@ -3,18 +3,20 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
-export const font = `
-  font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-weight: 400;
-  text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-`
+const styleAbstractions = {
+  font: `
+    font-family: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 400;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  `
+}
 
 const StyledButton = styled.button`
   display: block;
   padding: 0.4rem 0.8rem 0.3rem 0.8rem;
   transition: background-color 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s cubic-bezier(.4,0,.2,1), opacity 0.2s ease-in-out;
-  ${font}
+  ${styleAbstractions.font}
   border-radius: 6px;
   outline: 0;
   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);

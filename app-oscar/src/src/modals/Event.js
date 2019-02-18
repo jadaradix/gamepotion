@@ -10,7 +10,7 @@ import Modal from '../components/Modal/Modal'
 import Heading1 from '../components/Heading1/Heading1'
 import List from '../components/List/List'
 import ListItem from '../components/ListItem/ListItem'
-import Button from '../react-components/Button/Button'
+import Button from '../components/Button/Button'
 
 import Dropper from '../components/Dropper/Dropper'
 import Input from '../components/Input/Input'

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import icons from '../../icons'
 
-import Button from '../../react-components/Button/Button'
+import Button from '../../components/Button/Button'
 
 const StyledAudioPlayer = styled.div`
   // background-color: yellow;
