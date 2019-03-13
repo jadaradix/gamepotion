@@ -76,8 +76,9 @@ function logOut () {
 }
 
 function isLoggedIn () {
-  // console.log('[api] [isLoggedIn] auth', auth)
-  return (auth.username.length > 0 && auth.password.length > 0)
+  const hasUsername = (typeof auth.username === 'string' && auth.username.length > 0)
+  const hasPassword = (typeof auth.password === 'string' && auth.password.length > 0)
+  return (hasUsername && hasPassword)
   // return new Promise(resolve => {
   //   logIn(auth.username, auth.password)
   //     .then(() => resolve(true))

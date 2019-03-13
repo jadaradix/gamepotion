@@ -51,8 +51,8 @@ const stages = new Map([
       },
       'render': (state, setStateCallback) => {
         const canGoNext = () => {
-          const { inProgress } = state
-          const isEmailValid = (state.userlandId.indexOf('@') > 0 && state.userlandId.length > state.userlandId.indexOf('@') + 1)
+          const { inProgress, userlandId } = state
+          const isEmailValid = (typeof userlandId === 'string' && userlandId.indexOf('@') > 0 && userlandId.length > userlandId.indexOf('@') + 1)
           return !inProgress && isEmailValid
         }
         const goNext = (e) => {
