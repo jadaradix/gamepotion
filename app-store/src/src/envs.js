@@ -1,6 +1,6 @@
-const productionBaseDomain = (() => {
-  return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
-})()
+// const productionBaseDomain = (() => {
+//   return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
+// })()
 
 export default {
   'development': {
@@ -10,7 +10,7 @@ export default {
   },
   'production': {
     apis: {
-      'api-core': `https://api-core.${productionBaseDomain}/v1`
+      'api-core': `https://gamepotion--api-core.sticky.to/v1`
     }
   }
 }

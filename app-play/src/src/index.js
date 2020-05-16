@@ -7,9 +7,9 @@ import Oscar2 from './Oscar2'
 
 import './index.css'
 
-const productionBaseDomain = (() => {
-  return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
-})()
+// const productionBaseDomain = (() => {
+//   return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
+// })()
 
 const envs = {
   'development': {
@@ -19,7 +19,7 @@ const envs = {
   },
   'production': {
     apis: {
-      'api-core': `https://api-core.${productionBaseDomain}/v1`
+      'api-core': `https://gamepotion--api-core.sticky.to/v1`
     }
   }
 }

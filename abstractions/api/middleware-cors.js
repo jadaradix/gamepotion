@@ -1,6 +1,5 @@
 const envs = [
-  'staging.gamepotion.online',
-  'gamepotion.online'
+  'sticky.to'
 ]
 
 const Middleware = require('restify-cors-middleware')
@@ -13,9 +12,9 @@ const CORS_ORIGINS = (() => {
     (acc, env) => {
       acc = acc.concat(
         [
-          `https://app.${env}`,
-          `https://store.${env}`,
-          `https://play.${env}`,
+          `https://gamepotion--app.${env}`,
+          `https://gamepotion--app-store.${env}`,
+          `https://gamepotion--app-play.${env}`,
           `https://${env}`
         ]
       )

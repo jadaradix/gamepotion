@@ -78,7 +78,11 @@ class ResourceImage extends PureComponent {
     this.onUploadDone = this.onUploadDone.bind(this)
     this.imageHeight = null
     this.onImageLoad = this.onImageLoad.bind(this)
-    this.boughtResourcePackModule = this.props.moduleIds.includes('resource-pack')
+    console.error('[component-resources] [Image] [constructor]', this.props.moduleIds)
+  }
+
+  get boughtResourcePackModule () {
+    return true // well we arent selling this any more
   }
 
   onUpdateFrameHeight(value) {
@@ -126,6 +130,7 @@ class ResourceImage extends PureComponent {
   }
 
   render() {
+    console.error('[component-resources] [Image] [render]', { boughtResourcePackModule: this.boughtResourcePackModule })
     const fixedOptions = [
       {
         id: 'none',

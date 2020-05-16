@@ -43,7 +43,7 @@ const MainToolbar = ({ currentProject, onClick, disabled, isAccountDropdownShowi
       ))
       }
       <ToolbarGap />
-      <ToolbarButton route={'/store/'} disabled={disabled} icon={icons.generic.store} hint='Store' />
+      {/* <ToolbarButton route={'/store/'} disabled={disabled} icon={icons.generic.store} hint='Store' /> */}
       <ToolbarButton
         onClick={() => onClick('account')}
         isDropdownShowing={isAccountDropdownShowing}

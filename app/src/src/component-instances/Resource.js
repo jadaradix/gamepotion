@@ -45,6 +45,7 @@ const StyledResource = styled.div`
 `
 
 const getComponent = (moduleIds, project, resources, resource, localSettings, onUpdateLocalSetting, onUpdate) => {
+  console.error('[getComponent] moduleIds', moduleIds)
   const FoundResourceType = resourceTypes.find(r => r.type === resource.type).component
   return <FoundResourceType moduleIds={moduleIds} project={project} resources={resources} resource={resource} localSettings={localSettings} onUpdate={onUpdate} onUpdateLocalSetting={onUpdateLocalSetting} />
 }

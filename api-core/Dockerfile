@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:12
 USER root
 
 RUN apt-get update

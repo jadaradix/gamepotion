@@ -50,7 +50,7 @@ class StateProjectProject extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      moduleIds: [],
+      moduleIds: null,
       currentProject: null,
       resourceToLoadId: null,
       buyProModuleShowing: false,
@@ -134,7 +134,9 @@ class StateProjectProject extends Component {
   shouldComponentUpdate(nextProps) {
     if (nextProps.match.params.resourceId === 'load' && this.hackUrlResourceId !== 'load') {
       this.hackSwitchUrl(this.hackUrlResourceId)
+      return false
     }
+    console.error('[Project] [shouldComponentUpdate] returning true')
     return true
   }
 
@@ -227,6 +229,7 @@ class StateProjectProject extends Component {
   }
 
   render() {
+    console.error('[Project] [render]')
     // if (this.state.currentProject && this.state.currentProject.currentResource) {
     //   console.warn('[state-Project] [render] this.state.currentProject.currentResource', this.state.currentProject.currentResource)
     // }

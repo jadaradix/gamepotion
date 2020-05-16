@@ -5,9 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "console-stamp": "^0.2.7",
+    "console-stamp": "^0.2.9",
     "got": "^9.6.0",
-    "morgan": "^1.9.1",
+    "morgan": "^1.10.0",
     "restify": "7.6.0",
     "restify-errors": "6.1.1"
   },
@@ -17,7 +17,7 @@
     "test": "NODE_ENV=local PORT=1025 GOOGLE_APPLICATION_CREDENTIALS=~/src/gamepotion/secrets/config-gcp.json jest --runInBand"
   },
   "devDependencies": {
-    "axios": "^0.18.0",
-    "jest": "^24.0.0"
+    "axios": "^0.19.2",
+    "jest": "^26.0.1"
   }
 }

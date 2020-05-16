@@ -34,6 +34,7 @@ const StyledToolbarButton = styled.li`
     border-radius: 4px;
     box-shadow: 0 2px 2px rgb(172, 172, 172);
     transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    z-index: 3;
     // background-color: red;
     li {
       padding: 0.75rem;

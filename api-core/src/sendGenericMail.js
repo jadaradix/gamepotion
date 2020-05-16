@@ -2,7 +2,7 @@ const assert = require('assert').strict
 const got = require('got')
 
 const BRAND_NAME = 'Gamepotion'
-const SERVICE_MAIL_URL = 'http://gamepotion-service-mail:1031'
+const SERVICE_MAIL_URL = 'http://openbox-mail:2010'
 
 const sendMail = async ({
   subject,
@@ -34,24 +34,28 @@ const sendMail = async ({
 const templates = {
   'welcome': {
     subject: `Welcome to ${BRAND_NAME}`,
-    contentText({ name }) {
+    contentText({ name, password }) {
       return `Hey ${name},
 
 Thanks for joining ${BRAND_NAME}! Welcome.
 
+Your nearly-impossible-to-guess password is ${password}. Please go to 'My account' and choose 'Change password'.
+
 ${BRAND_NAME}`
     },
-    contentHtml({ name }) {
+    contentHtml({ name, password }) {
       return `<p>Hey ${name},</p>
 
 <p>Thanks for joining ${BRAND_NAME}! Welcome.</p>
+
+<p>Your nearly-impossible-to-guess password is <strong>${password}</strong>. Please go to 'My account' and choose 'Change password'.</p>
 
 <p>${BRAND_NAME}</p>`
     }
   }
 }
 
-const sendGenericMail = async (template, userClass) => {
+const sendGenericMail = async (template, userClass, extras = {}) => {
   const {
     name
   } = userClass
@@ -63,8 +67,8 @@ const sendGenericMail = async (template, userClass) => {
   await sendMail({
     subject,
     to: userClass.userlandId,
-    contentText: contentText({ name }),
-    contentHtml: contentHtml({ name })
+    contentText: contentText({ name, ...extras }),
+    contentHtml: contentHtml({ name, ...extras })
   })
 }
 

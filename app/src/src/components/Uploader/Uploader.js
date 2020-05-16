@@ -7,9 +7,6 @@ import api from '../../api'
 import icons from '../../icons'
 
 const StyledUploader = styled.div`
-  @keyframes gmc-in-progress {
-    100% { transform: rotate(360deg); }
-  }
   height: 128px;
   border: 2px dashed #dadfe1;
   border-radius: 4px;
@@ -35,7 +32,6 @@ const StyledUploader = styled.div`
       // background-color: yellow;
     }
     img.icon--in-progress {
-      animation: gmc-in-progress 4s linear infinite;
     }
   }
 `

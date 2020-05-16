@@ -15,6 +15,7 @@ class User {
     if (this.modules.length === 0) {
       this.addModule('free', 'none')
       this.addModule('pro', 'none')
+      this.addModule('resource-pack', 'none')
     }
   }
 

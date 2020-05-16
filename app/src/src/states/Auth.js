@@ -128,7 +128,7 @@ const stages = new Map([
       'render': (state, setStateCallback) => {
         const canGoNext = () => {
           const { inProgress } = state
-          const isPasswordValid = (state.password.length > 0)
+          const isPasswordValid = (typeof state.password === 'string' && state.password.length > 0)
           return !inProgress && isPasswordValid
         }
         const goNext = () => {

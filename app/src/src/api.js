@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { getState } from './state'
 
-const productionBaseDomain = (() => {
-  return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
-})()
+// const productionBaseDomain = (() => {
+//   return window.location.hostname.substring(window.location.hostname.indexOf('.') + 1)
+// })()
 
 const envs = {
   'development': {
@@ -14,8 +14,8 @@ const envs = {
   },
   'production': {
     apis: {
-      'api-core': `https://api-core.${productionBaseDomain}/v1`,
-      'api-bin': `https://api-bin.${productionBaseDomain}/v1`
+      'api-core': `https://gamepotion--api-core.sticky.to/v1`,
+      'api-bin': `https://gamepotion--api-bin.sticky.to/v1`
     }
   }
 }

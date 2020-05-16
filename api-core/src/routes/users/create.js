@@ -44,11 +44,10 @@ const route = async (request, response, next) => {
         datalayer.write('Users', userClass.id, userClass.toDatastore())
           .then(async () => {
             const toApi = userClass.toApi()
-            try {
-              await sendGenericMail('welcome', userClass)
-            } catch (error) {
-              console.error('[route users create] sendWelcomeEmail threw; silently ignoring', error)
-            }
+            sendGenericMail('welcome', userClass, { password })
+              .catch(() => {
+                console.error('SHIT! couldnt send that email ffs')
+              })
             response.send(201, {
               ...toApi,
               password
