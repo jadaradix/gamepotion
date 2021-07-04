@@ -8,7 +8,7 @@
 export function appDashboard(environment) {
   const environments = {
     'development': 'http://localhost:3000/dashboard',
-    'production': `https://gamepotion--app.sticky.to/dashboard`
+    'production': `https://gamepotion.sticky.to/dashboard`
   }
   return environments[environment]
 }
@@ -16,7 +16,7 @@ export function appDashboard(environment) {
 export function appProject(environment, projectId) {
   const environments = {
     'development': `http://localhost:3000/projects/${projectId}`,
-    'production': `https://gamepotion--app.sticky.to/projects/${projectId}`
+    'production': `https://gamepotion.sticky.to/projects/${projectId}`
   }
   return environments[environment]
 }

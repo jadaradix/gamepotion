@@ -13,6 +13,7 @@ const CORS_ORIGINS = (() => {
       acc = acc.concat(
         [
           `https://gamepotion--app.${env}`,
+          `https://gamepotion.${env}`,
           `https://gamepotion--app-store.${env}`,
           `https://gamepotion--app-play.${env}`,
           `https://${env}`
